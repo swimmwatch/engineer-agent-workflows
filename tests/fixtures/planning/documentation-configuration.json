@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "documentation-configuration",
+  "requirements": ["DOC-001", "CFG-002"],
+  "evidence": [
+    "README.md owns operator guidance.",
+    "config/schema.json owns accepted configuration keys."
+  ],
+  "expected": {
+    "status": "ready",
+    "uncertainties": [],
+    "tradeoffs": [],
+    "units": [
+      {
+        "boundary": "README.md",
+        "state": "existing",
+        "kind": "document-section",
+        "symbol": "Configuration",
+        "purpose": "Document the verified timeout setting and failure behavior.",
+        "inputs": ["approved configuration contract"],
+        "outputs": ["operator-facing instructions"],
+        "stateLifecycle": "Documentation follows the stable configuration schema.",
+        "errorsInvariants": ["Examples contain only accepted keys."],
+        "dependencies": [
+          {
+            "target": "config/schema.json",
+            "direction": "outbound",
+            "reason": "The schema is authoritative for accepted configuration."
+          }
+        ],
+        "requirements": ["DOC-001"],
+        "verification": ["Documentation link and example validation."]
+      },
+      {
+        "boundary": "config/schema.json",
+        "state": "existing",
+        "kind": "configuration-key",
+        "symbol": "timeoutSeconds",
+        "purpose": "Define the bounded timeout configuration.",
+        "inputs": ["positive integer seconds"],
+        "outputs": ["validated runtime setting"],
+        "stateLifecycle": "Loaded once during application startup.",
+        "errorsInvariants": ["Values outside the approved range fail validation."],
+        "dependencies": [],
+        "requirements": ["CFG-002"],
+        "verification": ["Schema boundary tests for minimum and maximum values."]
+      }
+    ]
+  }
+}

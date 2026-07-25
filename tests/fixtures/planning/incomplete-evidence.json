@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "incomplete-evidence",
+  "requirements": ["API-004"],
+  "evidence": [
+    "The request names an endpoint, but no router or public schema is present."
+  ],
+  "expected": {
+    "status": "blocked",
+    "uncertainties": [
+      "The repository does not establish which component owns the public route."
+    ],
+    "tradeoffs": [],
+    "units": []
+  }
+}

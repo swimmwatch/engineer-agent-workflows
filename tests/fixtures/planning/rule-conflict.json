@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "rule-conflict",
+  "requirements": ["DOC-003"],
+  "evidence": [
+    "Repository guidance requires a single declarative table.",
+    "No executable component or object lifecycle exists."
+  ],
+  "conflict": {
+    "genericPrinciple": "Consider dependency inversion at external boundaries.",
+    "repositoryRule": "Keep this mapping in the existing declarative table.",
+    "appliedRule": "repositoryRule"
+  },
+  "expected": {
+    "status": "ready",
+    "uncertainties": [],
+    "tradeoffs": [
+      "Do not add an interface: repository guidance and the declarative ownership boundary are more specific."
+    ],
+    "units": [
+      {
+        "boundary": "docs/support-matrix.md",
+        "state": "existing",
+        "kind": "document-section",
+        "symbol": "Supported targets",
+        "purpose": "Add the approved target to the authoritative table.",
+        "inputs": ["approved support decision"],
+        "outputs": ["updated support matrix"],
+        "stateLifecycle": "The table is maintained as one authoritative document section.",
+        "errorsInvariants": ["Every documented target has acceptance evidence."],
+        "dependencies": [],
+        "requirements": ["DOC-003"],
+        "verification": ["Table structure and link checks."]
+      }
+    ]
+  }
+}

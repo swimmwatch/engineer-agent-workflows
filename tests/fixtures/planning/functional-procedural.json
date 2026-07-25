@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "functional-procedural",
+  "requirements": ["DATA-001"],
+  "evidence": [
+    "The repository uses pure transformation functions and immutable values."
+  ],
+  "expected": {
+    "status": "ready",
+    "uncertainties": [],
+    "tradeoffs": [],
+    "units": [
+      {
+        "boundary": "lib/records.mjs",
+        "state": "proposed",
+        "kind": "function",
+        "symbol": "normalizeRecords(records)",
+        "purpose": "Normalize validated records without mutation.",
+        "inputs": ["ordered record values"],
+        "outputs": ["new normalized record values"],
+        "stateLifecycle": "Pure function with no retained state.",
+        "errorsInvariants": ["Input order is preserved.", "Caller values are not mutated."],
+        "dependencies": [
+          {
+            "target": "validateRecord(record)",
+            "direction": "outbound",
+            "reason": "Normalization consumes the module's existing validation policy."
+          }
+        ],
+        "requirements": ["DATA-001"],
+        "verification": ["Table tests for ordering, invalid input, and copy isolation."]
+      }
+    ]
+  }
+}

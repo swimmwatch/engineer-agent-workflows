@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "object-oriented",
+  "requirements": ["AUTH-001", "STORE-002"],
+  "evidence": [
+    "The repository exposes an existing SessionStore interface.",
+    "SessionService owns session lifecycle."
+  ],
+  "expected": {
+    "status": "ready",
+    "uncertainties": [],
+    "tradeoffs": [],
+    "units": [
+      {
+        "boundary": "src/session/session-service.ts",
+        "state": "existing",
+        "kind": "class",
+        "symbol": "SessionService",
+        "purpose": "Coordinate validated session creation and revocation.",
+        "inputs": ["validated account identity", "session policy"],
+        "outputs": ["session result"],
+        "stateLifecycle": "Owns no durable state; delegates persistence.",
+        "errorsInvariants": ["Never persists an expired session."],
+        "dependencies": [
+          {
+            "target": "SessionStore",
+            "direction": "outbound",
+            "reason": "Policy depends on the existing persistence boundary."
+          }
+        ],
+        "requirements": ["AUTH-001", "STORE-002"],
+        "verification": ["SessionService behavior tests with a fake SessionStore."]
+      },
+      {
+        "boundary": "src/session/session-store.ts",
+        "state": "existing",
+        "kind": "interface",
+        "symbol": "SessionStore.save",
+        "purpose": "Persist one valid session through the established boundary.",
+        "inputs": ["session record"],
+        "outputs": ["persistence acknowledgement"],
+        "stateLifecycle": "The implementation owns durable session records.",
+        "errorsInvariants": ["Reject duplicate session identity."],
+        "dependencies": [],
+        "requirements": ["STORE-002"],
+        "verification": ["Existing SessionStore conformance suite."]
+      }
+    ]
+  }
+}

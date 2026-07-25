@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "disproved-boundary",
+  "requirements": ["CACHE-001"],
+  "evidence": [
+    "Repository inspection shows CacheManager does not exist.",
+    "cache-entry.mjs already owns expiry policy."
+  ],
+  "initialProposal": {
+    "boundary": "src/cache-manager.mjs",
+    "symbol": "CacheManager"
+  },
+  "expected": {
+    "status": "revised",
+    "uncertainties": [],
+    "tradeoffs": [
+      "Revise the proposed boundary to extend the existing expiry-policy owner."
+    ],
+    "units": [
+      {
+        "boundary": "src/cache-entry.mjs",
+        "state": "existing",
+        "kind": "function",
+        "symbol": "isExpired(entry, now)",
+        "purpose": "Extend the established cache expiry policy.",
+        "inputs": ["cache entry", "current time"],
+        "outputs": ["expiry decision"],
+        "stateLifecycle": "Pure function; the caller owns cache state.",
+        "errorsInvariants": ["The current time is supplied for deterministic behavior."],
+        "dependencies": [],
+        "requirements": ["CACHE-001"],
+        "verification": ["Boundary tests around the expiry instant."]
+      }
+    ]
+  }
+}
