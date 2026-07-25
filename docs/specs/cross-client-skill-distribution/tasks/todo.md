@@ -9,7 +9,7 @@ Specification: [../spec.md](../spec.md)
 - [x] Public GitHub repository `swimmwatch/engineer-agent-workflows` created.
 - [x] [Packet 01 — Repository foundation](01_repository_foundation.md)
 - [x] [Packet 02 — Engineering manual and planning](02_engineering_manual_and_planning.md)
-- [ ] [Packet 03 — Specification and incremental workflows](03_specification_and_incremental.md)
+- [x] [Packet 03 — Specification and incremental workflows](03_specification_and_incremental.md)
 - [ ] [Packet 04 — Code-quality workflows](04_code_quality_workflows.md)
 - [ ] [Packet 05 — Context and discovery workflows](05_context_and_discovery_workflows.md)
 - [ ] [Packet 06 — Documentation workflows](06_documentation_workflows.md)
