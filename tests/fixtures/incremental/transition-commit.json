@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "transition-commit",
+  "cases": [
+    {
+      "previousComplete": true,
+      "commitAuthorized": true,
+      "stagedPathsExact": true,
+      "expectedCommit": true,
+      "expectedStartNext": true
+    },
+    {
+      "previousComplete": true,
+      "commitAuthorized": false,
+      "stagedPathsExact": true,
+      "expectedCommit": false,
+      "expectedStartNext": false
+    },
+    {
+      "previousComplete": false,
+      "commitAuthorized": true,
+      "stagedPathsExact": true,
+      "expectedCommit": false,
+      "expectedStartNext": false
+    },
+    {
+      "previousComplete": true,
+      "commitAuthorized": true,
+      "stagedPathsExact": false,
+      "expectedCommit": false,
+      "expectedStartNext": false
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "status-recovery",
+  "syntheticSentinel": "SYNTHETIC_NONANSWER_SENTINEL",
+  "outcomes": [
+    {
+      "status": "answered",
+      "committed": true,
+      "durable": true,
+      "expectedState": "answered",
+      "persistAnswer": true
+    },
+    {
+      "status": "cancelled",
+      "committed": false,
+      "durable": false,
+      "expectedState": "blocked",
+      "persistAnswer": false
+    },
+    {
+      "status": "timed_out",
+      "committed": false,
+      "durable": false,
+      "expectedState": "blocked",
+      "persistAnswer": false
+    },
+    {
+      "status": "unavailable",
+      "committed": false,
+      "durable": false,
+      "expectedState": "blocked",
+      "persistAnswer": false
+    },
+    {
+      "status": "conflict",
+      "committed": false,
+      "durable": false,
+      "expectedState": "blocked",
+      "persistAnswer": false
+    },
+    {
+      "status": "invalid_request",
+      "committed": false,
+      "durable": false,
+      "expectedState": "needs_user",
+      "persistAnswer": false
+    },
+    {
+      "status": "failed",
+      "committed": false,
+      "durable": false,
+      "expectedState": "blocked",
+      "persistAnswer": false
+    }
+  ],
+  "revisions": [
+    {
+      "id": "compatibility.policy",
+      "revision": 1,
+      "state": "superseded",
+      "supersedesRevision": null
+    },
+    {
+      "id": "compatibility.policy",
+      "revision": 2,
+      "state": "answered",
+      "supersedesRevision": 1
+    }
+  ],
+  "resumeFrom": "security.retention"
+}

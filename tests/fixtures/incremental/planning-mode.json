@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "planning-mode",
+  "productionMutation": false,
+  "requirements": ["PLAN-001"],
+  "units": [
+    {
+      "boundary": "config/policy.json",
+      "state": "existing",
+      "kind": "configuration-key",
+      "symbol": "retryLimit",
+      "purpose": "Represent the bounded retry policy.",
+      "inputs": ["approved positive integer"],
+      "outputs": ["validated retry limit"],
+      "stateLifecycle": "Loaded when configuration is validated.",
+      "errorsInvariants": ["Values outside the approved range fail closed."],
+      "dependencies": [],
+      "requirements": ["PLAN-001"],
+      "verification": ["Configuration boundary tests."]
+    }
+  ]
+}

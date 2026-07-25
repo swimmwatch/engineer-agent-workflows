@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "verification-failure",
+  "verification": [
+    {
+      "command": "repository-defined focused check",
+      "status": "failed",
+      "evidence": "fixed bounded failure summary"
+    }
+  ],
+  "expected": {
+    "checklistCompleted": false,
+    "handoffRecordsFailure": true,
+    "nextPacketStarted": false,
+    "stoppedForReview": true
+  }
+}

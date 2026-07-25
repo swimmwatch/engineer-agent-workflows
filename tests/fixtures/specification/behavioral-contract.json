@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "behavioral-contract",
+  "requirements": ["API-001", "SAFE-002", "ACC-003"],
+  "observedEvidence": [
+    "Public requests already use stable string identities.",
+    "Repository guidance requires bounded diagnostics."
+  ],
+  "expectedSpecification": {
+    "status": "Draft",
+    "sections": [
+      "outcomes",
+      "interfaces",
+      "validation-and-limits",
+      "failure-and-recovery",
+      "security-and-privacy",
+      "compatibility",
+      "non-goals",
+      "acceptance"
+    ],
+    "requirementIds": ["API-001", "SAFE-002", "ACC-003"],
+    "forbiddenImplementationUnits": [
+      "class",
+      "function",
+      "internal-file",
+      "dependency-injection-container",
+      "task-order"
+    ]
+  }
+}

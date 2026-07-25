@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "packet-execution",
+  "authorizedPacket": "03_api-contract",
+  "availablePackets": ["03_api-contract", "04_storage", "05_delivery"],
+  "readPaths": [
+    "AGENTS.md",
+    "docs/specs/example/tasks/todo.md",
+    "docs/specs/example/tasks/03_api-contract.md",
+    "docs/specs/example/tasks/handoff.md"
+  ],
+  "changedPaths": [
+    "src/api-contract.mjs",
+    "tests/api-contract.test.mjs",
+    "docs/specs/example/tasks/todo.md",
+    "docs/specs/example/tasks/handoff.md"
+  ],
+  "unrelatedPaths": [
+    "src/storage.mjs",
+    "docs/specs/example/tasks/04_storage.md"
+  ],
+  "verification": [
+    {
+      "command": "repository-defined focused check",
+      "status": "passed"
+    }
+  ],
+  "expected": {
+    "completedPacket": "03_api-contract",
+    "checkedItems": ["03_api-contract"],
+    "handoffReplaced": true,
+    "stoppedForReview": true,
+    "currentPacketCommitted": false
+  }
+}

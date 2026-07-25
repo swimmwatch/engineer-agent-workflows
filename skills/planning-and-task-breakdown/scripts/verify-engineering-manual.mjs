@@ -163,6 +163,10 @@ export async function verifyEngineeringManual(fromSkillDir) {
     locateBundleRoot(fromSkillDir),
     readExpectedDigest(fromSkillDir),
   ]);
+  const planningExpected =
+    callerSkill === planningSkill
+      ? expected
+      : await readExpectedDigest(planningSkill);
   const manual = await readRegularFile(
     path.join(planningSkill, ...MANUAL_PARTS),
     "E_MANUAL_FILE",
@@ -172,7 +176,7 @@ export async function verifyEngineeringManual(fromSkillDir) {
     throw failure("E_MANUAL_FILE", "engineering manual is invalid");
   }
   const actual = crypto.createHash("sha256").update(manual).digest("hex");
-  if (actual !== expected) {
+  if (actual !== expected || actual !== planningExpected) {
     throw failure(
       "E_MANUAL_MISMATCH",
       "engineering manual does not match the installed bundle",
