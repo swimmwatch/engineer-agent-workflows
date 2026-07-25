@@ -1,0 +1,18 @@
+{
+  "name": "engineer-agent-workflows-maintenance",
+  "version": "0.0.0-development",
+  "private": true,
+  "description": "Maintenance and validation tools for reusable engineering Agent Skills.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.20.0"
+  },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node scripts/validate.mjs",
+    "validate:foundation": "node scripts/validate.mjs --allow-incomplete",
+    "generate": "node scripts/generate.mjs",
+    "generate:check": "node scripts/generate.mjs --check"
+  }
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "first-skill",
+    "description": "First fixture skill.",
+    "classification": "bundle-required",
+    "dependencies": [
+      "second-skill"
+    ],
+    "policies": {
+      "codex": {
+        "allowImplicitInvocation": false
+      },
+      "claude": {
+        "disableModelInvocation": true,
+        "userInvocable": true
+      }
+    }
+  },
+  {
+    "name": "second-skill",
+    "description": "Second fixture skill.",
+    "classification": "bundle-required",
+    "dependencies": [
+      "first-skill"
+    ],
+    "policies": {
+      "codex": {
+        "allowImplicitInvocation": false
+      },
+      "claude": {
+        "disableModelInvocation": true,
+        "userInvocable": true
+      }
+    }
+  }
+]

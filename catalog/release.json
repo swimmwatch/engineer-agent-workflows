@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "repository": "swimmwatch/engineer-agent-workflows",
+  "version": "0.0.0-development",
+  "releaseReady": false,
+  "channels": [
+    "stable"
+  ],
+  "license": "MIT",
+  "node": {
+    "minimum": "22.20.0"
+  },
+  "lifecycleTool": {
+    "package": "skills",
+    "version": "1.5.20",
+    "integrity": "sha512-lPl5KzMfTW+qwHFwc8t6R+wAqmdmSHw1+HWbGdJ/FZYbWLdB34bAZNFWiencM5DVoRaKAgXArmfTWMlNAbl9Gg==",
+    "telemetry": {
+      "environment": "DISABLE_TELEMETRY",
+      "value": "1"
+    }
+  }
+}
