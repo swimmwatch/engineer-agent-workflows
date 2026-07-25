@@ -79,7 +79,7 @@ test("code quality skills are standalone, explicit-only, bounded, and portable",
     assert.doesNotMatch(validated.body, EMBEDDED_COMMANDS);
 
     const entries = await fs.readdir(path.join(projectRoot, "skills", name));
-    assert.deepEqual(entries, ["SKILL.md"]);
+    assert.deepEqual(entries.sort(), ["SKILL.md", "agents"]);
   }
 });
 

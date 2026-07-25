@@ -1,0 +1,25 @@
+{
+  "name": "engineer-agent-workflows",
+  "owner": {
+    "name": "Dmitry Vasiliev",
+    "email": "contact.vasiliev.dmitry@gmail.com",
+    "url": "https://github.com/swimmwatch"
+  },
+  "metadata": {
+    "description": "Fifteen reusable, explicit-only engineering workflows for Codex and Claude Code.",
+    "version": "0.0.0-development"
+  },
+  "plugins": [
+    {
+      "name": "engineer-agent-workflows",
+      "source": "./plugins/engineer-agent-workflows",
+      "version": "0.0.0-development",
+      "description": "Fifteen reusable, explicit-only engineering workflows for Codex and Claude Code.",
+      "author": {
+        "name": "Dmitry Vasiliev",
+        "email": "contact.vasiliev.dmitry@gmail.com",
+        "url": "https://github.com/swimmwatch"
+      }
+    }
+  ]
+}

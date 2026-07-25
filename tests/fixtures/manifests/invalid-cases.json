@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "codex-plugin-unknown-field",
+      "artifact": "codex-plugin",
+      "operation": "add",
+      "path": ["hooks"],
+      "value": "./hooks.json"
+    },
+    {
+      "id": "codex-marketplace-policy-drift",
+      "artifact": "codex-marketplace",
+      "operation": "replace",
+      "path": ["plugins", 0, "policy", "authentication"],
+      "value": "ON_USE"
+    },
+    {
+      "id": "claude-marketplace-path-escape",
+      "artifact": "claude-marketplace",
+      "operation": "replace",
+      "path": ["plugins", 0, "source"],
+      "value": "../outside"
+    },
+    {
+      "id": "claude-plugin-version-drift",
+      "artifact": "claude-plugin",
+      "operation": "replace",
+      "path": ["version"],
+      "value": "1.0.0"
+    },
+    {
+      "id": "plugin-catalog-release-drift",
+      "artifact": "plugin-catalog",
+      "operation": "replace",
+      "path": ["releaseReady"],
+      "value": true
+    }
+  ]
+}

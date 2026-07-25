@@ -1,0 +1,5 @@
+interface:
+  display_name: "Documentation And ADRs"
+  short_description: "Write or revise technical documentation or an architecture decision record when the user explicitly requests it. Ground claims in repository evidence, distinguish current from proposed behavior, and record settled trade-offs."
+policy:
+  allow_implicit_invocation: false

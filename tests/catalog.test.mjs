@@ -105,7 +105,12 @@ test("validated catalog and release boundaries are copy-isolated", async () => {
 
   const release = await readReleaseMetadata(projectRoot);
   release.node.minimum = "0";
+  release.publisher.name = "caller mutation";
   assert.equal((await readReleaseMetadata(projectRoot)).node.minimum, "22.20.0");
+  assert.equal(
+    (await readReleaseMetadata(projectRoot)).publisher.name,
+    "Dmitry Vasiliev",
+  );
 });
 
 test("release metadata matches the reviewed development baseline", async () => {
@@ -114,6 +119,11 @@ test("release metadata matches the reviewed development baseline", async () => {
   assert.equal(release.releaseReady, false);
   assert.deepEqual(release.channels, ["stable"]);
   assert.equal(release.repository, "swimmwatch/engineer-agent-workflows");
+  assert.deepEqual(release.publisher, {
+    name: "Dmitry Vasiliev",
+    email: "contact.vasiliev.dmitry@gmail.com",
+    url: "https://github.com/swimmwatch",
+  });
   assert.equal(release.lifecycleTool.version, "1.5.20");
   assert.equal(
     release.lifecycleTool.integrity,

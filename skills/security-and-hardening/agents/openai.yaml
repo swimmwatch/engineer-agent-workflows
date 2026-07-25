@@ -1,0 +1,5 @@
+interface:
+  display_name: "Security And Hardening"
+  short_description: "Audit or harden a concrete trust boundary when the user explicitly requests security work or identifies a defect. Cover inputs, privileges, secrets, dependencies, filesystem/process boundaries, failure behavior, and verification."
+policy:
+  allow_implicit_invocation: false

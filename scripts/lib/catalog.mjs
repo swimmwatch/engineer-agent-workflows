@@ -237,6 +237,7 @@ export function validateReleaseMetadata(release) {
       "releaseReady",
       "channels",
       "license",
+      "publisher",
       "node",
       "lifecycleTool",
     ],
@@ -261,6 +262,22 @@ export function validateReleaseMetadata(release) {
     release.channels[0] !== "stable"
   ) {
     throw new ValidationError("E_INVALID_RELEASE", "release channels are invalid");
+  }
+  assertExactKeys(
+    release.publisher,
+    ["name", "email", "url"],
+    "publisher metadata",
+    "E_INVALID_RELEASE",
+  );
+  if (
+    release.publisher.name !== "Dmitry Vasiliev" ||
+    release.publisher.email !== "contact.vasiliev.dmitry@gmail.com" ||
+    release.publisher.url !== "https://github.com/swimmwatch"
+  ) {
+    throw new ValidationError(
+      "E_INVALID_RELEASE",
+      "publisher metadata does not match the approved identity",
+    );
   }
   assertExactKeys(release.node, ["minimum"], "Node metadata", "E_INVALID_RELEASE");
   if (release.node.minimum !== "22.20.0") {
@@ -292,6 +309,22 @@ export function validateReleaseMetadata(release) {
     );
   }
   return structuredClone(release);
+}
+
+export function assertReleaseReady(release) {
+  const validated = validateReleaseMetadata(release);
+  if (
+    validated.releaseReady !== true ||
+    !/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(
+      validated.version,
+    )
+  ) {
+    throw new ValidationError(
+      "E_RELEASE_NOT_READY",
+      "release metadata is not eligible for stable publication",
+    );
+  }
+  return structuredClone(validated);
 }
 
 async function readJSON(filePath, relativePath) {

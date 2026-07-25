@@ -1,0 +1,5 @@
+interface:
+  display_name: "Spec Driven Development"
+  short_description: "Define or revise an implementation-ready specification when the user explicitly requests substantial specification work. Use recoverable Prompt MCP decisions, persist non-sensitive answers, require draft approval, and stop before planning."
+policy:
+  allow_implicit_invocation: false

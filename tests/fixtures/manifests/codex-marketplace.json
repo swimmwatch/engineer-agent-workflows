@@ -1,0 +1,20 @@
+{
+  "name": "engineer-agent-workflows",
+  "interface": {
+    "displayName": "Engineer Agent Workflows"
+  },
+  "plugins": [
+    {
+      "name": "engineer-agent-workflows",
+      "source": {
+        "source": "local",
+        "path": "./plugins/engineer-agent-workflows"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

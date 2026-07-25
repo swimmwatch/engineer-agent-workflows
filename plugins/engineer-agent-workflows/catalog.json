@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "name": "engineer-agent-workflows",
+  "repository": "swimmwatch/engineer-agent-workflows",
+  "version": "0.0.0-development",
+  "releaseReady": false,
+  "license": "MIT",
+  "engineeringManualSha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
+  "skills": [
+    {
+      "name": "code-review-and-quality",
+      "description": "Review a proposed or completed change when the user explicitly requests code review. Evaluate correctness, maintainability, tests, security, compatibility, and evidence; do not edit unless fixes are separately requested.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "code-simplification",
+      "description": "Simplify existing code when the user explicitly requests a behavior-preserving clarity refactor. Reduce unnecessary complexity and duplication while preserving public contracts, errors, side effects, compatibility, and verified behavior.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "context-engineering",
+      "description": "Improve agent instructions, skill routing, task context, or handoffs when the user explicitly requests context optimization, stale-guidance repair, or session recovery. Keep durable guidance aligned with current repository evidence.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "documentation-and-adrs",
+      "description": "Write or revise technical documentation or an architecture decision record when the user explicitly requests it. Ground claims in repository evidence, distinguish current from proposed behavior, and record settled trade-offs.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "doubt-driven-development",
+      "description": "Adversarially challenge a named high-risk product or technical decision when the user explicitly requests it. Compare evidence, assumptions, failure modes, reversibility, and safe experiments; do not use for routine uncertainty.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "idea-refine",
+      "description": "Refine a product, architecture, tooling, or workflow idea when the user explicitly asks to ideate, compare directions, or stress-test it before commitment. Frame goals, alternatives, trade-offs, risks, and unresolved decisions.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "incremental-implementation",
+      "description": "Implement exactly one authorized, self-contained task packet per explicit invocation, verify it, update its checklist and handoff, then stop for review. Commit the completed previous packet only with explicit commit authorization.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "planning-and-task-breakdown"
+      ]
+    },
+    {
+      "name": "interview-me",
+      "description": "Run a structured requirements interview when the user explicitly asks to be interviewed, grilled, or guided through unresolved decisions. Use available Prompt MCP tools, checkpoint committed answers, and stop before downstream work.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "performance-optimization",
+      "description": "Diagnose or improve a measured latency, throughput, memory, startup, size, cost, or CI problem when the user explicitly requests optimization or provides regression evidence. Preserve correctness and do not optimize from guesswork.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "planning-and-task-breakdown",
+      "description": "Create an implementation plan or review-gated task breakdown when the user explicitly requests planning, decomposition, milestones, or execution packets. Ground architecture and verification in repository evidence; do not implement.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "project-docs-maintainer",
+      "description": "Maintain a project documentation set when the user explicitly asks to organize, update, consolidate, or audit project knowledge. Preserve authoritative ownership, verified behavior, links, history, and audience boundaries.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "project-pull-request",
+      "description": "Create, update, or review a pull request when the user explicitly requests PR work. Discover repository policy, base/head, templates, checks, and provider state; preserve unrelated changes and require authority for external mutations.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "project-release",
+      "description": "Prepare, publish, verify, or recover a release when the user explicitly requests release work. Require a confirmed SemVer, discover repository policy, verify artifacts and trust evidence, and separate preparation from publication.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "security-and-hardening",
+      "description": "Audit or harden a concrete trust boundary when the user explicitly requests security work or identifies a defect. Cover inputs, privileges, secrets, dependencies, filesystem/process boundaries, failure behavior, and verification.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "spec-driven-development",
+      "description": "Define or revise an implementation-ready specification when the user explicitly requests substantial specification work. Use recoverable Prompt MCP decisions, persist non-sensitive answers, require draft approval, and stop before planning.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "planning-and-task-breakdown"
+      ]
+    }
+  ]
+}

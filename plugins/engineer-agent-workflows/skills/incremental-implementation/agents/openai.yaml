@@ -1,0 +1,5 @@
+interface:
+  display_name: "Incremental Implementation"
+  short_description: "Implement exactly one authorized, self-contained task packet per explicit invocation, verify it, update its checklist and handoff, then stop for review. Commit the completed previous packet only with explicit commit authorization."
+policy:
+  allow_implicit_invocation: false

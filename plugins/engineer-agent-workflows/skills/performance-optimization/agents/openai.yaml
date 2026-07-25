@@ -1,0 +1,5 @@
+interface:
+  display_name: "Performance Optimization"
+  short_description: "Diagnose or improve a measured latency, throughput, memory, startup, size, cost, or CI problem when the user explicitly requests optimization or provides regression evidence. Preserve correctness and do not optimize from guesswork."
+policy:
+  allow_implicit_invocation: false

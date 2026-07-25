@@ -40,3 +40,21 @@ export async function copyFoundationCatalog(t) {
   });
   return root;
 }
+
+export async function copyReleaseSource(t) {
+  const root = await copyFoundationCatalog(t);
+  await fs.cp(path.join(projectRoot, "skills"), path.join(root, "skills"), {
+    recursive: true,
+  });
+  for (const entry of await fs.readdir(path.join(root, "skills"), {
+    withFileTypes: true,
+  })) {
+    if (entry.isDirectory()) {
+      await fs.rm(path.join(root, "skills", entry.name, "agents"), {
+        recursive: true,
+        force: true,
+      });
+    }
+  }
+  return root;
+}

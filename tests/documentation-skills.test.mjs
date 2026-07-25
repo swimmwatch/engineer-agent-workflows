@@ -85,7 +85,7 @@ test("documentation and project docs skills are portable, explicit-only, and bou
     assert.doesNotMatch(validated.body, SOURCE_ASSUMPTIONS);
     assert.deepEqual(
       await fs.readdir(path.join(projectRoot, "skills", name)),
-      ["SKILL.md"],
+      ["SKILL.md", "agents"],
     );
   }
 });

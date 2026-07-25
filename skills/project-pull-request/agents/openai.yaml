@@ -1,0 +1,5 @@
+interface:
+  display_name: "Project Pull Request"
+  short_description: "Create, update, or review a pull request when the user explicitly requests PR work. Discover repository policy, base/head, templates, checks, and provider state; preserve unrelated changes and require authority for external mutations."
+policy:
+  allow_implicit_invocation: false

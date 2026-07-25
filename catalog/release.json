@@ -7,6 +7,11 @@
     "stable"
   ],
   "license": "MIT",
+  "publisher": {
+    "name": "Dmitry Vasiliev",
+    "email": "contact.vasiliev.dmitry@gmail.com",
+    "url": "https://github.com/swimmwatch"
+  },
   "node": {
     "minimum": "22.20.0"
   },

@@ -85,15 +85,15 @@ test("context engineering, idea refine, and interview skills are portable and ex
 
   assert.deepEqual(
     (await fs.readdir(path.join(projectRoot, "skills", "context-engineering"))).sort(),
-    ["SKILL.md"],
+    ["SKILL.md", "agents"],
   );
   assert.deepEqual(
     (await fs.readdir(path.join(projectRoot, "skills", "idea-refine"))).sort(),
-    ["SKILL.md"],
+    ["SKILL.md", "agents"],
   );
   assert.deepEqual(
     (await fs.readdir(path.join(projectRoot, "skills", "interview-me"))).sort(),
-    ["SKILL.md", "references"],
+    ["SKILL.md", "agents", "references"],
   );
 });
 

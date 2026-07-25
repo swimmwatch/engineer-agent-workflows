@@ -1,0 +1,5 @@
+interface:
+  display_name: "Context Engineering"
+  short_description: "Improve agent instructions, skill routing, task context, or handoffs when the user explicitly requests context optimization, stale-guidance repair, or session recovery. Keep durable guidance aligned with current repository evidence."
+policy:
+  allow_implicit_invocation: false

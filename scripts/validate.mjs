@@ -15,19 +15,29 @@ import {
   usageError,
   ValidationError,
 } from "./lib/errors.mjs";
+import {
+  buildGeneratedFiles,
+  collectReleaseSource,
+  compareGeneratedOutputs,
+  hasGeneratedArtifacts,
+} from "./lib/distribution.mjs";
 import { walkFiles } from "./lib/files.mjs";
 import { validateSkillDocument } from "./lib/skill-document.mjs";
 
 function parseArguments(argv) {
-  let allowIncomplete = false;
+  let mode;
   for (const argument of argv) {
-    if (argument === "--allow-incomplete" && !allowIncomplete) {
-      allowIncomplete = true;
+    if (argument === "--allow-incomplete" && mode === undefined) {
+      mode = "allow-incomplete";
+    } else if (argument === "--require-complete" && mode === undefined) {
+      mode = "require-complete";
     } else {
-      throw usageError("usage: validate.mjs [--allow-incomplete]");
+      throw usageError(
+        "usage: validate.mjs [--allow-incomplete|--require-complete]",
+      );
     }
   }
-  return { allowIncomplete };
+  return { requireComplete: mode !== "allow-incomplete" };
 }
 
 async function optionalDirectory(directoryPath, relativePath) {
@@ -121,7 +131,7 @@ async function validateSkills(root, catalog) {
   return { present, missing };
 }
 
-export async function validateRepository(root, options = {}) {
+export async function validateSourceRepository(root, options = {}) {
   const requireComplete = options.requireComplete ?? true;
   const catalogRoot = path.resolve(root, "catalog");
   await walkFiles(catalogRoot);
@@ -142,6 +152,49 @@ export async function validateRepository(root, options = {}) {
     presentSkills: [...skills.present],
     missingSkills: [...skills.missing],
     release: structuredClone(release),
+    catalog: structuredClone(catalog),
+  };
+}
+
+export async function validateRepository(root, options = {}) {
+  const requireComplete = options.requireComplete ?? true;
+  const source = await validateSourceRepository(root, {
+    requireComplete: false,
+  });
+  if (!source.complete) {
+    if (await hasGeneratedArtifacts(root, source.catalog)) {
+      throw new ValidationError(
+        "E_GENERATED_DIFF",
+        "incomplete source cannot contain generated packaging artifacts",
+      );
+    }
+    if (requireComplete) {
+      throw new ValidationError(
+        "E_INCOMPLETE",
+        "complete validation requires all 15 skill directories",
+      );
+    }
+    return structuredClone(source);
+  }
+
+  const releaseSource = await collectReleaseSource(
+    root,
+    source.catalog,
+    source.release,
+  );
+  const expected = buildGeneratedFiles(releaseSource);
+  const distribution = await compareGeneratedOutputs(
+    root,
+    source.catalog,
+    expected,
+  );
+  return {
+    ...structuredClone(source),
+    complete: true,
+    manualDigest: releaseSource.manualDigest,
+    generatedFileCount: distribution.fileCount,
+    sidecarCount: distribution.sidecarCount,
+    pluginSkillCount: distribution.pluginSkillCount,
   };
 }
 
@@ -158,7 +211,7 @@ export async function main(argv, io = {}) {
   }
   try {
     const result = await validateRepository(root, {
-      requireComplete: !options.allowIncomplete,
+      requireComplete: options.requireComplete,
     });
     const state = result.complete ? "complete" : "foundation";
     stdout.write(

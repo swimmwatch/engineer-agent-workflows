@@ -1,0 +1,5 @@
+interface:
+  display_name: "Code Review And Quality"
+  short_description: "Review a proposed or completed change when the user explicitly requests code review. Evaluate correctness, maintainability, tests, security, compatibility, and evidence; do not edit unless fixes are separately requested."
+policy:
+  allow_implicit_invocation: false

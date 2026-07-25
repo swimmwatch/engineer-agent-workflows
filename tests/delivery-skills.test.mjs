@@ -93,7 +93,7 @@ test("pull request and release skills are portable, explicit-only, and bounded",
     assert.doesNotMatch(validated.body, /\bmain\b/);
     assert.deepEqual(
       await fs.readdir(path.join(projectRoot, "skills", name)),
-      ["SKILL.md"],
+      ["SKILL.md", "agents"],
     );
   }
 });

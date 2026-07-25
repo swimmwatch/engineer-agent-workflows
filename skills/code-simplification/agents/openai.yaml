@@ -1,0 +1,5 @@
+interface:
+  display_name: "Code Simplification"
+  short_description: "Simplify existing code when the user explicitly requests a behavior-preserving clarity refactor. Reduce unnecessary complexity and duplication while preserving public contracts, errors, side effects, compatibility, and verified behavior."
+policy:
+  allow_implicit_invocation: false

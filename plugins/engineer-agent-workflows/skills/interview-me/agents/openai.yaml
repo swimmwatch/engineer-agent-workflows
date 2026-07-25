@@ -1,0 +1,5 @@
+interface:
+  display_name: "Interview Me"
+  short_description: "Run a structured requirements interview when the user explicitly asks to be interviewed, grilled, or guided through unresolved decisions. Use available Prompt MCP tools, checkpoint committed answers, and stop before downstream work."
+policy:
+  allow_implicit_invocation: false
