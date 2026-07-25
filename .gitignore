@@ -1,0 +1,37 @@
+# Node.js and test output
+node_modules/
+coverage/
+.nyc_output/
+*.log
+
+# Temporary and cache directories
+.cache/
+.tmp/
+tmp/
+temp/
+
+# Isolated test profiles and local agent state
+.test-home/
+.test-profiles/
+.agents/skills/
+.codex/
+.claude/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local release/build output
+artifacts/
+*.tgz
+*.zip
+*.tar.gz
