@@ -1,0 +1,1476 @@
+schema_version: 1
+spec_slug: cross-client-skill-distribution
+decisions:
+  - id: outcome.centralized-source
+    revision: 1
+    category: outcome
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Should reusable engineering skills have one separately versioned source instead of being copied into every project?
+      kind: single
+      options:
+        - id: centralized
+          label: Use one separate repository
+    answer:
+      selected_ids: [centralized]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [OUT-001]
+
+  - id: project.identity
+    revision: 1
+    category: scope
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Where should the new project be created?
+      kind: text
+      options: []
+    answer:
+      selected_ids: []
+      text: /home/dmitry-vasiliev/PycharmProjects/open-source/engineer-agent-workflows
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [OUT-001]
+
+  - id: compatibility.supported-hosts
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which agent hosts must the workflow bundle support?
+      kind: multiple
+      options:
+        - id: codex
+          label: Codex
+        - id: claude-code
+          label: Claude Code
+    answer:
+      selected_ids: [codex, claude-code]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [HOST-001]
+
+  - id: scope.initial-skills
+    revision: 1
+    category: scope
+    state: answered
+    provenance: user
+    evidence:
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp/.agents/skills
+    question:
+      text: Which existing skills should seed the new bundle?
+      kind: single
+      options:
+        - id: all-source-skills
+          label: All 15 skills from prompt-mcp
+    answer:
+      selected_ids: [all-source-skills]
+      text: ""
+    rationale: Each source skill will be generalized and adapted rather than copied with prompt-mcp-specific routing.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SKILL-001, SKILL-002, SKILL-005]
+
+  - id: release.versioning-policy
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: How should releases of the workflow bundle be versioned?
+      kind: single
+      options:
+        - id: semver
+          label: Semantic Versioning
+    answer:
+      selected_ids: [semver]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-001]
+
+  - id: operations.managed-lifecycle
+    revision: 1
+    category: operations
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: Which lifecycle operations should the distribution provide?
+      kind: multiple
+      options:
+        - id: install
+          label: Install
+        - id: update
+          label: Update
+        - id: rollback
+          label: Rollback
+        - id: uninstall
+          label: Uninstall
+    answer:
+      selected_ids: [install, update, rollback, uninstall]
+      text: ""
+    rationale: The user requested a repeatable alternative to copying skills between projects.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [CLI-002, LIFE-001, LIFE-004]
+
+  - id: observed.agent-skills-core
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question: null
+    answer: null
+    rationale: Both supported hosts load directory-based Agent Skills with SKILL.md as the workflow entry point.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [HOST-001, ARCH-001]
+
+  - id: observed.global-skill-locations
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question: null
+    answer: null
+    rationale: Codex uses ~/.agents/skills and Claude Code uses ~/.claude/skills for personal cross-project skills; both document symlink support.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [DIST-002]
+
+  - id: observed.host-packaging-difference
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://developers.openai.com/plugins/build/plugins
+      - https://code.claude.com/docs/en/plugins
+      - https://code.claude.com/docs/en/plugin-marketplaces
+    question: null
+    answer: null
+    rationale: Codex and Claude Code can share skill content but require different plugin manifests, marketplace metadata, commands, and cache behavior.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [ARCH-002, DIST-006]
+
+  - id: distribution.installation-model
+    revision: 1
+    category: architecture
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/plugins
+      - https://code.claude.com/docs/en/plugins
+    question:
+      text: Which distribution model should the specification require for Codex and Claude Code?
+      kind: single
+      options:
+        - id: hybrid
+          label: Hybrid global links and native plugins (Recommended)
+          description: Install one versioned checkout through global skill symlinks for local use, while also shipping native Codex and Claude plugin metadata for marketplace distribution.
+        - id: global-links-only
+          label: Global skill links only
+          description: Use one checkout and symlink every skill into both user skill directories without maintaining plugin packages or marketplaces.
+        - id: native-plugins-only
+          label: Native plugins only
+          description: Distribute through separate Codex and Claude plugin mechanisms without installing unnamespaced global skill links.
+    answer:
+      selected_ids: [hybrid]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-001]
+
+  - id: compatibility.v1-surfaces
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://developers.openai.com/plugins/build/plugins
+      - https://code.claude.com/docs/en/skills
+      - https://code.claude.com/docs/en/plugins
+    question:
+      text: Which usage surfaces must the first stable release support?
+      kind: multiple
+      options:
+        - id: local-agents
+          label: Local Codex and Claude Code (Recommended)
+          description: Support global personal skills in local Codex CLI, Codex IDE sessions, and Claude Code.
+        - id: native-marketplaces
+          label: Native plugin marketplaces (Recommended)
+          description: Package and test the bundle through the supported Codex and Claude plugin marketplace mechanisms.
+        - id: hosted-sessions
+          label: Hosted and cloud sessions
+          description: Treat Codex cloud and Claude hosted or Cowork sessions as first-class supported environments.
+        - id: organization-distribution
+          label: Team and organization distribution
+          description: Include managed installation, policy, and shared marketplace behavior for multi-user organizations.
+    answer:
+      selected_ids: [local-agents, native-marketplaces, hosted-sessions, organization-distribution]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [HOST-002, ACC-006]
+
+  - id: compatibility.desktop-platforms
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which desktop operating systems must installation, update, rollback, and uninstall support in v1?
+      kind: multiple
+      options:
+        - id: linux
+          label: Linux (Recommended)
+          description: Support the current development environment and standard POSIX filesystem behavior.
+        - id: macos
+          label: macOS
+          description: Support Codex and Claude local workflows on macOS, including user-scoped filesystem locations.
+        - id: windows
+          label: Windows
+          description: Support native Windows path, link, shell, and permission behavior rather than requiring WSL.
+    answer:
+      selected_ids: [linux, macos, windows]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [HOST-003, ACC-003]
+
+  - id: architecture.lifecycle-client
+    revision: 1
+    category: architecture
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: Which implementation should provide the cross-platform install, update, rollback, uninstall, and doctor commands?
+      kind: single
+      options:
+        - id: go-cli
+          label: Cross-platform Go CLI (Recommended)
+          description: Maintain one codebase and publish self-contained binaries for Linux, macOS, and Windows without requiring a language runtime.
+        - id: shell-powershell
+          label: POSIX shell and PowerShell scripts
+          description: Avoid compiled binaries but maintain separate implementations for Unix-like systems and Windows.
+        - id: python-cli
+          label: Python CLI
+          description: Maintain one implementation but require a compatible Python runtime on every target machine.
+    answer:
+      selected_ids: [go-cli]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [ARCH-004, CLI-001]
+
+  - id: architecture.skill-portability
+    revision: 1
+    category: architecture
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question:
+      text: How should the project represent host-specific Codex and Claude behavior while preserving one source of truth?
+      kind: single
+      options:
+        - id: portable-core-generated-adapters
+          label: Portable core with generated adapters (Recommended)
+          description: Keep each workflow in one common Agent Skills source and generate or wrap only the metadata and instructions that genuinely differ by host.
+        - id: common-subset-only
+          label: Common subset only
+          description: Forbid all host-specific features so the exact same SKILL.md is installed unchanged everywhere.
+        - id: independent-host-variants
+          label: Independent Codex and Claude variants
+          description: Maintain separate hand-edited skill implementations for each host even when most workflow content is identical.
+    answer:
+      selected_ids: [portable-core-generated-adapters]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [ARCH-001, ARCH-002]
+
+  - id: ownership.canonical-source
+    revision: 1
+    category: evolution
+    state: answered
+    provenance: user
+    evidence:
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp/.agents/skills
+    question:
+      text: After the initial extraction, which repository should own future changes to reusable skills?
+      kind: single
+      options:
+        - id: new-repository-authoritative
+          label: New workflow repository is authoritative (Recommended)
+          description: Treat prompt-mcp as the initial source only; future universal changes land here and projects consume released versions.
+        - id: prompt-mcp-authoritative
+          label: prompt-mcp remains authoritative
+          description: Continue editing skills in prompt-mcp and periodically export them into the workflow repository.
+        - id: bidirectional-sync
+          label: Bidirectional synchronization
+          description: Allow edits in both repositories and reconcile divergent changes through synchronization tooling.
+    answer:
+      selected_ids: [new-repository-authoritative]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [ARCH-003]
+
+  - id: operations.update-policy
+    revision: 1
+    category: operations
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: How should installed workflow bundles advance to a newer release?
+      kind: single
+      options:
+        - id: explicit-update
+          label: Explicit update with optional checks (Recommended)
+          description: The CLI may report that a release is available, but it changes the active version only after an explicit update command.
+        - id: automatic-update
+          label: Automatic background updates
+          description: The active skills automatically advance to the newest compatible release without a separate user action.
+        - id: pinned-only
+          label: Permanently pinned until reinstall
+          description: Installations never check for or apply updates; changing version requires a new explicit install command.
+    answer:
+      selected_ids: [explicit-update]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [TOOL-002]
+
+  - id: security.release-integrity
+    revision: 1
+    category: security
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which release-integrity policy should installation and update enforce?
+      kind: single
+      options:
+        - id: signed-tags-checksums
+          label: Signed tags and checksums (Recommended)
+          description: Require an authenticated release tag and verify published checksums before using downloaded CLI binaries or skill archives.
+        - id: immutable-tags-checksums
+          label: Immutable tags and checksums
+          description: Verify release checksums and exact tag or commit identity without requiring a cryptographic tag signature.
+        - id: repository-transport-only
+          label: Repository transport only
+          description: Trust the Git host and HTTPS or SSH transport without separately verifying signed tags or release checksums.
+    answer:
+      selected_ids: [signed-tags-checksums]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SEC-002, REL-002]
+
+  - id: compatibility.prompt-mcp-platform-gap
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence:
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp/AGENTS.md
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp/README.md
+    question:
+      text: How should interview-driven skills behave on macOS and Windows while the current Prompt MCP dialog backend supports Linux only?
+      kind: single
+      options:
+        - id: safe-native-fallback
+          label: Safe host-native fallback (Recommended)
+          description: Use Prompt MCP whenever callable; otherwise use the active host's bounded user-input mechanism, preserve the same ledger, and never infer an answer from cancellation or failure.
+        - id: block-without-prompt-mcp
+          label: Block without Prompt MCP
+          description: Mark material decisions blocked on unsupported platforms and refuse to complete specifications or plans until Prompt MCP becomes available.
+        - id: require-cross-platform-prompt-mcp
+          label: Require cross-platform Prompt MCP first
+          description: Treat a macOS and Windows Prompt MCP backend as an external prerequisite, preventing the workflow bundle from reaching v1 until that dependency exists.
+    answer:
+      selected_ids: []
+      text: >-
+        Ignore cross-platform Prompt MCP support for this project. The project
+        is primarily for personal use; revisit the decision only if Prompt MCP
+        is made cross-platform in the future.
+    rationale: Cross-platform Prompt MCP implementation and delivery are excluded from v1; installer portability does not guarantee availability of external MCP dependencies on every host.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [MCP-001]
+
+  - id: distribution.repository-access
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Who should be able to obtain released workflow bundles from the canonical repository?
+      kind: single
+      options:
+        - id: public-open-source
+          label: Public open-source distribution (Recommended)
+          description: Publish source, tagged releases, manifests, and marketplace metadata for unrestricted installation subject to an open-source license.
+        - id: private-personal
+          label: Private personal repository
+          description: Keep source and releases accessible only through the owner's authenticated Git account.
+        - id: private-team
+          label: Private team distribution
+          description: Distribute through an organization repository and managed marketplace access for approved team members.
+    answer:
+      selected_ids: [public-open-source]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-003]
+
+  - id: distribution.license
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which open-source license should cover the workflow bundle, CLI, and supporting files?
+      kind: single
+      options:
+        - id: mit
+          label: MIT License (Recommended)
+          description: Permit broad reuse, modification, and redistribution with a short attribution and warranty disclaimer.
+        - id: apache-2.0
+          label: Apache License 2.0
+          description: Permit broad reuse while adding an explicit patent grant and more detailed notice requirements.
+        - id: mpl-2.0
+          label: Mozilla Public License 2.0
+          description: Require modifications to covered source files to remain available while allowing combination with other code.
+    answer:
+      selected_ids: [mit]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-003]
+
+  - id: distribution.activation-policy
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question:
+      text: How should the hybrid distribution prevent the same workflow from being activated twice in one host?
+      kind: single
+      options:
+        - id: surface-specific-exclusive
+          label: Exclusive mode per host and surface (Recommended)
+          description: Use global links for local personal sessions and native plugins for hosted or managed distribution; refuse a duplicate active installation unless explicitly overridden.
+        - id: global-primary
+          label: Global links always take priority
+          description: Install global links on every local machine and leave plugin copies installed but disabled wherever both are present.
+        - id: simultaneous-namespaced
+          label: Allow simultaneous installations
+          description: Permit global and plugin copies together, relying on plugin namespaces and user selection to distinguish them.
+    answer:
+      selected_ids: [surface-specific-exclusive]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-003]
+
+  - id: compatibility.client-version-policy
+    revision: 1
+    category: compatibility
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which Codex and Claude Code version policy should v1 promise?
+      kind: single
+      options:
+        - id: documented-minimum-latest-test
+          label: Documented minimum plus latest testing (Recommended)
+          description: Publish the oldest verified client versions, test current stable releases continuously, and fail clearly when a required capability is absent.
+        - id: latest-stable-only
+          label: Latest stable clients only
+          description: Support only the most recent stable Codex and Claude Code releases without compatibility guarantees for older versions.
+        - id: best-effort-older
+          label: Broad best-effort compatibility
+          description: Avoid a fixed minimum and attempt to support older clients even when their plugin or skill behavior cannot be covered in CI.
+    answer:
+      selected_ids: [documented-minimum-latest-test]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [HOST-004]
+
+  - id: release.channels
+    revision: 1
+    category: evolution
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which release channels should the first version of the distribution support?
+      kind: single
+      options:
+        - id: stable-only
+          label: Stable channel only (Recommended)
+          description: Publish signed SemVer releases through one stable channel and keep unreleased development available only from source checkouts.
+        - id: stable-preview
+          label: Stable and preview channels
+          description: Maintain separate stable and prerelease marketplace refs with explicit opt-in to preview builds.
+        - id: rolling-main
+          label: Rolling main branch
+          description: Let users update directly to every accepted main-branch change in addition to or instead of tagged releases.
+    answer:
+      selected_ids: [stable-only]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-001, TOOL-002]
+
+  - id: operations.local-version-layout
+    revision: 1
+    category: operations
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: How should global personal installations store versions for update and rollback?
+      kind: single
+      options:
+        - id: immutable-version-dirs
+          label: Immutable version directories with current pointer (Recommended)
+          description: Validate each release in a separate directory, atomically switch a current pointer, and retain a bounded previous version for rollback.
+        - id: mutable-git-checkout
+          label: One mutable Git checkout
+          description: Update the active working tree in place with git fetch and checkout, using Git history for rollback.
+        - id: host-caches-only
+          label: Native host caches only
+          description: Delegate version storage and rollback entirely to Codex and Claude plugin caches without maintaining a shared global release store.
+    answer:
+      selected_ids: [immutable-version-dirs]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [LIFE-002]
+
+  - id: distribution.installation-granularity
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: What installation granularity should v1 expose?
+      kind: single
+      options:
+        - id: atomic-complete-bundle
+          label: One atomic complete bundle (Recommended)
+          description: Install and version all 15 workflows together; clients may control invocation, but lifecycle operations treat the release as one unit.
+        - id: individual-skills
+          label: Individually selectable skills
+          description: Let users install, update, and remove arbitrary skill subsets while retaining one repository release version.
+        - id: named-profiles
+          label: Named skill profiles
+          description: Offer curated groups such as specification, quality, and delivery that can be installed independently.
+    answer:
+      selected_ids: [individual-skills]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-004]
+
+  - id: distribution.skill-dependencies
+    revision: 1
+    category: distribution
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: How should lifecycle operations handle dependencies between individually selected skills?
+      kind: single
+      options:
+        - id: resolve-required-dependencies
+          label: Resolve required dependencies automatically (Recommended)
+          description: Install required skills and shared resources from the same release, report optional companions, and block removal while dependents remain unless cascade is explicit.
+        - id: require-explicit-complete-selection
+          label: Require an explicit complete selection
+          description: Reject install or update until the user manually includes every required dependency.
+        - id: allow-partial-broken-set
+          label: Allow unresolved dependencies
+          description: Install the requested files even when referenced skills or shared resources are missing.
+    answer:
+      selected_ids: [resolve-required-dependencies]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-005]
+
+  - id: distribution.plugin-granularity
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/plugins
+      - https://code.claude.com/docs/en/plugins
+    question:
+      text: How should native marketplaces preserve individual skill selection?
+      kind: single
+      options:
+        - id: per-skill-plus-meta
+          label: One plugin per skill plus an all-skills meta package (Recommended)
+          description: Let users install skills independently while offering a convenience package that resolves and installs the complete compatible set.
+        - id: one-bundle-plugin
+          label: One bundle plugin
+          description: Native marketplaces always install all skills together even though the global lifecycle CLI supports individual selection.
+        - id: profile-plugins
+          label: Curated profile plugins
+          description: Marketplace users choose predefined groups, while only the global lifecycle CLI supports arbitrary individual selection.
+    answer:
+      selected_ids: [one-bundle-plugin]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-006]
+
+  - id: operations.existing-copy-migration
+    revision: 1
+    category: operations
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: How should the CLI handle existing project-local copies of skills during migration to the global bundle?
+      kind: single
+      options:
+        - id: audit-explicit-migrate
+          label: Audit and explicitly migrate each project (Recommended)
+          description: Scan only user-selected project roots, show exact differences and shadowing, then modify or remove a copy only after explicit confirmation and a recoverable backup.
+        - id: leave-project-copies
+          label: Leave all project copies unchanged
+          description: Install global skills and report possible name conflicts, but require users to clean up every project manually.
+        - id: automatic-recursive-migration
+          label: Automatically migrate discovered copies
+          description: Search configured development roots and replace matching project skills without a separate confirmation for each project.
+    answer:
+      selected_ids: [audit-explicit-migrate]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [MIG-001, ACC-004]
+
+  - id: release.publication-gate
+    revision: 1
+    category: operations
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: What event should authorize and produce a stable public release?
+      kind: single
+      options:
+        - id: human-signed-tag-ci-release
+          label: Human-signed tag with CI publication (Recommended)
+          description: A maintainer explicitly creates a signed SemVer tag; CI verifies it, builds the platform matrix, publishes checksums and artifacts, and never invents a version.
+        - id: ci-created-release
+          label: CI creates the release from main
+          description: Merging an approved version change lets automation create the tag, sign or attest artifacts, and publish without a separate local tagging action.
+        - id: fully-manual-release
+          label: Fully manual local release
+          description: Build, sign, checksum, tag, and upload all artifacts from a maintainer workstation without hosted release automation.
+    answer:
+      selected_ids: [human-signed-tag-ci-release]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-002, ACC-005]
+
+  - id: distribution.import-rights
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence:
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp
+    question:
+      text: How should the project handle the initial skill text from prompt-mcp, which currently has no repository LICENSE file?
+      kind: single
+      options:
+        - id: owner-authorizes-mit
+          label: Owner authorizes MIT relicensing
+          description: Confirm that the user controls the source skill text and authorizes adapting and publishing it under the new project's MIT license.
+        - id: clean-room-rewrite
+          label: Rewrite from requirements only (Recommended if ownership is uncertain)
+          description: Use workflow concepts and observed behavior as requirements but write new skill text without copying protected source wording.
+        - id: block-publication
+          label: Keep imported content private
+          description: Allow local migration work but block public release until source licensing is resolved separately.
+    answer:
+      selected_ids: []
+      text: Do nothing
+    rationale: No separate provenance, clean-room rewrite, or publication blocker is required by the user; the new repository's selected MIT license remains the distribution license.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-003]
+
+  - id: distribution.public-directory-scope
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence:
+      - https://developers.openai.com/plugins/build/plugins
+      - https://code.claude.com/docs/en/plugins
+    question:
+      text: Must v1 include submission to the vendors' public plugin directories, beyond publishing installable Git marketplaces?
+      kind: single
+      options:
+        - id: git-marketplaces-only
+          label: Installable Git marketplaces only (Recommended)
+          description: Publish valid Codex and Claude marketplace sources and installation instructions, but treat vendor-directory submission as a later separately authorized release activity.
+        - id: submit-both-directories
+          label: Submit to both public directories
+          description: Include OpenAI and Anthropic public catalog submissions and their external review requirements in v1 acceptance.
+        - id: claude-community-only
+          label: Submit only to Claude community
+          description: Publish both Git marketplaces but include the Anthropic community submission in v1 while deferring OpenAI directory submission.
+    answer:
+      selected_ids: [git-marketplaces-only]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [DIST-007]
+
+  - id: interface.cli-name
+    revision: 1
+    category: interfaces
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: Which executable name should the lifecycle CLI expose on every supported desktop platform?
+      kind: single
+      options:
+        - id: agent-workflows
+          label: agent-workflows (Recommended)
+          description: Use a concise descriptive command while retaining engineer-agent-workflows as the repository and project name.
+        - id: engineer-agent-workflows
+          label: engineer-agent-workflows
+          description: Keep the command identical to the repository name at the cost of longer everyday commands.
+        - id: eaw
+          label: eaw
+          description: Use a short acronym that is easy to type but less discoverable and more collision-prone.
+    answer:
+      selected_ids: [engineer-agent-workflows]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [CLI-001]
+
+  - id: interface.install-selection-default
+    revision: 1
+    category: interfaces
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: What should engineer-agent-workflows install do when no skill selection is supplied?
+      kind: single
+      options:
+        - id: require-skill-or-all
+          label: Require --skill or --all (Recommended)
+          description: Fail with a fixed usage diagnostic until the caller explicitly chooses one or more skills or the complete set.
+        - id: default-all
+          label: Install all skills by default
+          description: Treat an omitted selection as the complete 15-skill bundle.
+        - id: interactive-selector
+          label: Open an interactive selector
+          description: Prompt on a terminal for skill choices when stdin is interactive and fail only in non-interactive use.
+    answer:
+      selected_ids: [require-skill-or-all]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [CLI-003, DIST-004]
+
+  - id: distribution.hosting-provider
+    revision: 1
+    category: distribution
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which public Git hosting service should the v1 marketplace and release workflow target?
+      kind: single
+      options:
+        - id: github
+          label: GitHub (Recommended)
+          description: Use a public GitHub repository, GitHub Actions, signed Git tags, GitHub Releases, and GitHub-compatible marketplace source references.
+        - id: gitlab
+          label: GitLab
+          description: Use a public GitLab project, GitLab CI, releases, and generic Git URL marketplace sources.
+        - id: provider-neutral
+          label: Provider-neutral Git
+          description: Avoid provider-specific automation and require releases to work through generic Git hosting and manually supplied artifact storage.
+    answer:
+      selected_ids: [github]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [REL-002, REL-003]
+
+  - id: interface.install-target-default
+    revision: 1
+    category: interfaces
+    state: superseded
+    provenance: agent-default
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [require-explicit-target]
+      text: ""
+    rationale: Requiring codex, claude, or all prevents an unattended command from mutating an unintended host configuration; the default is reversible in draft review.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [CLI-003]
+
+  - id: operations.version-retention
+    revision: 1
+    category: operations
+    state: superseded
+    provenance: agent-default
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [active-plus-two]
+      text: ""
+    rationale: The active release plus two previous successfully installed releases provide bounded multi-step rollback without unbounded storage growth.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [LIFE-002]
+
+  - id: security.foreign-path-conflict
+    revision: 1
+    category: security
+    state: superseded
+    provenance: agent-default
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [fail-closed]
+      text: ""
+    rationale: Refusing to overwrite unowned files, directories, or links is the safest reversible default for a tool that changes global user configuration.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [SEC-001]
+
+  - id: approval.spec
+    revision: 1
+    category: approval
+    state: superseded
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+    question:
+      text: Is the Cross-Client Engineering Skill Distribution draft approved as the implementation contract?
+      kind: single
+      options:
+        - id: approve
+          label: Approve specification
+          description: Set the draft to Approved and allow a separately invoked planning workflow to decompose implementation.
+        - id: request-changes
+          label: Request changes
+          description: Keep Draft status, reopen affected decisions, and revise the specification before planning.
+        - id: leave-draft
+          label: Leave as draft
+          description: Stop specification work without approval or implementation authorization.
+    answer:
+      selected_ids: []
+      text: >-
+        Do not create custom CLI utilities. Use established skill-distribution
+        tools available through developer tooling such as npx. Do not modify
+        skills inside projects; the workflows must be installed and function
+        globally.
+    rationale: Custom approval text is a request for changes and does not approve the draft.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [OUT-001]
+
+  - id: approval.spec
+    revision: 2
+    category: approval
+    state: superseded
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+    question:
+      text: Is the revised Cross-Client Engineering Skill Distribution draft approved as the implementation contract?
+      kind: single
+      options:
+        - id: approve
+          label: Approve specification
+          description: Set the revised draft to Approved and allow a separately invoked planning workflow to decompose implementation.
+        - id: request-changes
+          label: Request changes
+          description: Keep Draft status, reopen affected decisions, and revise the specification before planning.
+        - id: leave-draft
+          label: Leave as draft
+          description: Stop specification work without approval or implementation authorization.
+    answer:
+      selected_ids: []
+      text: >-
+        Let's also explicitly define the skill refinement. We need to ensure
+        they're used optimally and don't waste unnecessary tokens. We also need
+        to make sure they're called explicitly, so the agent doesn't have to
+        load them into the context every time and waste too many tokens.
+    rationale: Custom approval text requests changes and does not approve the draft.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [OUT-001]
+
+  - id: approval.spec
+    revision: 3
+    category: approval
+    state: superseded
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+    question:
+      text: Is the revised Cross-Client Engineering Skill Distribution draft, including explicit-only invocation and strict context budgets, approved as the implementation contract?
+      kind: single
+      options:
+        - id: approve
+          label: Approve specification
+          description: Set the revised draft to Approved and allow a separately invoked planning workflow to decompose implementation.
+        - id: request-changes
+          label: Request changes
+          description: Keep Draft status, reopen affected decisions, and revise the specification before planning.
+        - id: leave-draft
+          label: Leave as draft
+          description: Stop specification work without approval or implementation authorization.
+    answer:
+      selected_ids: []
+      text: >-
+        Let's also add a skill manual with requirements for implementation,
+        planning, and specification writing, including adherence to engineering
+        practices and a senior-engineer standard. List principles explicitly,
+        including SOLID, DRY, YAGNI, low coupling, and related principles. For
+        incremental implementation in planning mode, transform the current task
+        description into a plan that specifically describes classes and
+        functions, including their purpose, so the user can understand the
+        architecture before implementation.
+    rationale: Custom approval text requests changes and does not approve the draft.
+    last_tool_status: answered
+    supersedes_revision: 2
+    requirement_ids: [OUT-001]
+
+  - id: approval.spec
+    revision: 4
+    category: approval
+    state: answered
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+    question:
+      text: Is the revised Cross-Client Engineering Skill Distribution draft, including the engineering manual, strict context budgets, explicit-only invocation, and symbol-level planning, approved as the implementation contract?
+      kind: single
+      options:
+        - id: approve
+          label: Approve specification
+          description: Set the revised draft to Approved and allow a separately invoked planning workflow to decompose implementation.
+        - id: request-changes
+          label: Request changes
+          description: Keep Draft status, reopen affected decisions, and revise the specification before planning.
+        - id: leave-draft
+          label: Leave as draft
+          description: Stop specification work without approval or implementation authorization.
+    answer:
+      selected_ids: [approve]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: 3
+    requirement_ids: [OUT-001]
+
+  - id: architecture.lifecycle-client
+    revision: 2
+    category: architecture
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+      - https://skills.sh/docs
+    question:
+      text: Which existing tool should v1 use for global cross-agent skill lifecycle instead of creating a project-specific CLI?
+      kind: single
+      options:
+        - id: vercel-skills-npx
+          label: Vercel skills CLI through pinned npx (Recommended)
+          description: Use npx skills for global Codex and Claude installation, individual selection, symlinks, listing, explicit updates, and removal; document Node.js requirements and disable telemetry by default.
+        - id: native-host-tools
+          label: Codex and Claude native tools separately
+          description: Use each host's plugin or skill installer independently and maintain parallel installation instructions without a shared lifecycle command.
+        - id: documentation-only
+          label: Documentation without a required tool
+          description: Publish the repository and let users choose any compatible Agent Skills installer without a normative lifecycle workflow.
+    answer:
+      selected_ids: [vercel-skills-npx]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [TOOL-001, TOOL-002]
+
+  - id: operations.existing-copy-migration
+    revision: 2
+    category: operations
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Should this project inspect, modify, migrate, remove, or restore skills stored inside consuming projects?
+      kind: single
+      options:
+        - id: no-project-mutation
+          label: Never touch project-local skills
+    answer:
+      selected_ids: [no-project-mutation]
+      text: ""
+    rationale: The bundle must be installed and function as global personal skills; existing project copies remain outside this project's lifecycle scope.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [SCOPE-001, TOOL-002]
+
+  - id: interface.cli-name
+    revision: 2
+    category: interfaces
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: Should the project publish its own lifecycle executable?
+      kind: single
+      options:
+        - id: no-project-cli
+          label: Do not publish a project-specific CLI
+    answer:
+      selected_ids: [no-project-cli]
+      text: ""
+    rationale: Lifecycle commands are provided by the pinned npx skills tool.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [TOOL-001]
+
+  - id: operations.local-version-layout
+    revision: 2
+    category: operations
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: Who owns local installation layout and lifecycle state?
+      kind: single
+      options:
+        - id: distribution-tool-owned
+          label: The established skills distribution tool
+    answer:
+      selected_ids: [distribution-tool-owned]
+      text: ""
+    rationale: The project publishes portable skill sources and does not introduce a parallel local state store.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [TOOL-002]
+
+  - id: operations.rollback-support
+    revision: 1
+    category: operations
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: The stable npx skills CLI has add, list, update, and remove but no stable rollback command. What should v1 promise?
+      kind: single
+      options:
+        - id: defer-rollback
+          label: Defer managed rollback (Recommended)
+          description: Document rollback as a non-goal for v1 rather than wrapping experimental behavior or creating custom lifecycle code.
+        - id: documented-tag-reinstall
+          label: Document manual tagged reinstall
+          description: Treat removal followed by installation from a documented Git tag as the rollback procedure, after proving the pinned source syntax works.
+        - id: require-different-tool
+          label: Select another existing tool
+          description: Reject npx skills as normative unless another established cross-agent tool provides stable rollback without custom code.
+    answer:
+      selected_ids: [defer-rollback]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SCOPE-001, TOOL-002]
+
+  - id: operations.managed-lifecycle
+    revision: 2
+    category: operations
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: Which lifecycle operations are required in v1?
+      kind: multiple
+      options:
+        - id: install
+          label: Install
+        - id: update
+          label: Update
+        - id: uninstall
+          label: Uninstall
+        - id: list
+          label: List installed skills
+    answer:
+      selected_ids: [install, update, uninstall, list]
+      text: ""
+    rationale: These operations are provided by the selected stable npx skills CLI; managed rollback is deferred.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [TOOL-002]
+
+  - id: distribution.skill-dependencies
+    revision: 2
+    category: distribution
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: How should individually installed skills remain functional when the selected npx skills tool does not resolve a custom dependency graph?
+      kind: single
+      options:
+        - id: self-contained-skills
+          label: Make every skill independently installable (Recommended)
+          description: Package each skill with every required reference or script and treat related skills only as optional recommendations.
+        - id: full-bundle-for-dependent-skills
+          label: Require the full bundle for dependent workflows
+          description: Allow individual installation only for standalone skills and document that workflows with dependencies require installing all skills.
+        - id: external-dependency-manifest
+          label: Publish dependencies without automatic resolution
+          description: Keep a dependency manifest for documentation and CI while requiring users to select every dependency manually.
+    answer:
+      selected_ids: [full-bundle-for-dependent-skills]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [SKILL-004, TOOL-002]
+
+  - id: observed.skills-cli-contract
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://github.com/vercel-labs/skills
+      - https://skills.sh/docs
+      - https://www.npmjs.com/package/skills
+    question: null
+    answer: null
+    rationale: At specification time skills 1.5.20 supports global Codex and Claude targets, individual selection, symlink or copy installation, list, update, and remove; it requires Node.js 22.20.0 or newer and has no stable rollback command.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [TOOL-001, TOOL-002]
+
+  - id: security.skills-cli-telemetry
+    revision: 1
+    category: security
+    state: assumed
+    provenance: agent-default
+    evidence:
+      - https://skills.sh/docs
+      - https://github.com/vercel-labs/skills
+    question: null
+    answer:
+      selected_ids: [disable-in-normative-use]
+      text: ""
+    rationale: Upstream documents install telemetry and a DISABLE_TELEMETRY opt-out; normative project commands and CI should not transmit installation events or skill content.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [TOOL-003, SEC-003]
+
+  - id: compatibility.skills-cli-version
+    revision: 1
+    category: compatibility
+    state: assumed
+    provenance: agent-default
+    evidence:
+      - https://www.npmjs.com/package/skills
+    question: null
+    answer:
+      selected_ids: [pin-exact-tested-version]
+      text: ""
+    rationale: Pinning the exact reviewed skills package keeps installation semantics reproducible; dependency upgrades remain explicit reviewed changes.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [TOOL-001, HOST-004]
+
+  - id: interface.install-selection-default
+    revision: 2
+    category: interfaces
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills
+    question:
+      text: Which install-selection behavior applies?
+      kind: single
+      options:
+        - id: distribution-tool-native
+          label: Use the pinned skills CLI contract
+    answer:
+      selected_ids: [distribution-tool-native]
+      text: ""
+    rationale: The project documents explicit global Codex and Claude examples without wrapping or redefining upstream CLI semantics.
+    last_tool_status: answered
+    supersedes_revision: 1
+    requirement_ids: [TOOL-002]
+
+  - id: observed.skill-context-disclosure
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question: null
+    answer: null
+    rationale: >-
+      Codex and Claude use progressive disclosure: discovery metadata is
+      present before invocation, while the full skill body is loaded only when
+      selected. Both hosts expose host-specific controls that disable
+      model-initiated invocation while preserving explicit invocation.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [INV-001, TOK-001, TOK-002]
+
+  - id: observed.skills-cli-shared-directory
+    revision: 1
+    category: architecture
+    state: observed
+    provenance: authoritative-doc
+    evidence:
+      - https://github.com/vercel-labs/skills/tree/v1.5.20
+    question: null
+    answer: null
+    rationale: >-
+      skills 1.5.20 installs each selected skill directory to selected agents
+      by symlink or copy, does not include repository-root sibling assets, and
+      does not provide project-owned per-agent SKILL.md transformation.
+    last_tool_status: null
+    supersedes_revision: null
+    requirement_ids: [ARCH-001, ARCH-002, INV-001, MAN-001, ACC-002]
+
+  - id: invocation.explicit-only
+    revision: 1
+    category: interfaces
+    state: answered
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question:
+      text: How may the supported hosts invoke workflows from this collection?
+      kind: single
+      options:
+        - id: explicit-only
+          label: Explicit invocation only
+    answer:
+      selected_ids: [explicit-only]
+      text: ""
+    rationale: The requested refinement requires users to name a workflow explicitly so hosts do not automatically load its full instructions.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [INV-001, INV-002, ACC-004]
+
+  - id: quality.skill-refinement-budget
+    revision: 1
+    category: quality
+    state: answered
+    provenance: user
+    evidence:
+      - /home/dmitry-vasiliev/PycharmProjects/open-source/prompt-mcp/.agents/skills
+      - https://developers.openai.com/plugins/build/skills
+      - https://code.claude.com/docs/en/skills
+    question:
+      text: Which measurable token-efficiency standard should v1 enforce while refining all 15 explicit-only skills?
+      kind: single
+      options:
+        - id: strict-progressive-disclosure
+          label: Strict progressive disclosure
+          description: Cap each discovery description at 240 Unicode code points and each SKILL.md at 4 KiB, move conditional detail into targeted references, and require the complete catalog to fit both hosts' default discovery budgets without truncation or omission.
+        - id: host-budget-only
+          label: Host budgets only
+          description: Require the complete catalog to fit both hosts' default discovery budgets and prevent measured regressions, but set no fixed per-skill description or SKILL.md limit.
+        - id: review-only
+          label: Review without numeric limits
+          description: Require a qualitative concision review and progressive disclosure, without deterministic size or default-context acceptance gates.
+    answer:
+      selected_ids: [strict-progressive-disclosure]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SKILL-005, TOK-001, TOK-002, ACC-007]
+
+  - id: quality.engineering-standard
+    revision: 1
+    category: quality
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Which engineering quality standard should implementation, planning, and specification workflows enforce?
+      kind: single
+      options:
+        - id: senior-engineering-practices
+          label: Explicit senior-engineering quality standard
+    answer:
+      selected_ids: [senior-engineering-practices]
+      text: ""
+    rationale: The standard will make principles and expected artifacts objective without overriding repository-specific contracts or applying design patterns dogmatically.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [MAN-001, MAN-002, ACC-008]
+
+  - id: planning.symbol-level-architecture
+    revision: 1
+    category: quality
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: What architectural detail must planning-mode workflows expose before implementation?
+      kind: single
+      options:
+        - id: symbol-level-plan
+          label: Component and symbol-level plan
+    answer:
+      selected_ids: [symbol-level-plan]
+      text: ""
+    rationale: The plan must let the user review the proposed architecture and responsibilities before code is written.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [PLAN-001, ACC-009]
+
+  - id: architecture.engineering-manual-form
+    revision: 1
+    category: architecture
+    state: answered
+    provenance: user
+    evidence:
+      - docs/specs/cross-client-skill-distribution/spec.md
+    question:
+      text: How should the engineering-practices manual be packaged so relevant skills remain token-efficient and can still be installed individually?
+      kind: single
+      options:
+        - id: canonical-generated-copies
+          label: One manual with generated skill copies
+          description: Maintain one authoritative manual and generate an identical conditional reference into each relevant standalone skill, keeping it out of context until needed.
+        - id: bundle-shared-reference
+          label: Bundle-only shared reference
+          description: Store one shared manual only once and classify every skill that needs it as bundle-required, so individual installation is unsupported for those skills.
+        - id: embed-in-skill-bodies
+          label: Embed rules in each SKILL.md
+          description: Repeat a compact engineering checklist inside each relevant skill body, increasing selected-skill context and foregoing a separate manual.
+    answer:
+      selected_ids: [bundle-shared-reference]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [ARCH-001, MAN-001, TOK-002]
+
+  - id: architecture.engineering-manual-layout
+    revision: 1
+    category: architecture
+    state: answered
+    provenance: user
+    evidence:
+      - https://github.com/vercel-labs/skills/tree/v1.5.20
+    question:
+      text: Given that skills 1.5.20 installs only individual skill directories, where should the single bundle-only engineering manual live?
+      kind: single
+      options:
+        - id: planning-skill-owner
+          label: Planning skill owns the manual
+          description: Keep one manual inside planning-and-task-breakdown; implementation and specification skills read that sibling asset only from a complete bundle, with no extra discovery entry.
+        - id: support-skill
+          label: Add a support skill
+          description: Add a sixteenth non-workflow skill directory that carries the manual, increasing discovery metadata and the public installed catalog.
+        - id: generated-copies
+          label: Reconsider generated copies
+          description: Generate the canonical manual into each relevant skill so all three remain independently installable, reversing the previous bundle-only choice.
+    answer:
+      selected_ids: [planning-skill-owner]
+      text: ""
+    rationale: ""
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SKILL-004, MAN-001, DIST-005]
