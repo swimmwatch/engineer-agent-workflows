@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "states": [
+    {
+      "name": "current",
+      "requiresRepositoryEvidence": true,
+      "presentAsShipped": true
+    },
+    {
+      "name": "proposed",
+      "requiresRepositoryEvidence": false,
+      "presentAsShipped": false
+    },
+    {
+      "name": "experimental",
+      "requiresRepositoryEvidence": true,
+      "presentAsShipped": false
+    },
+    {
+      "name": "deprecated",
+      "requiresRepositoryEvidence": true,
+      "presentAsShipped": false
+    },
+    {
+      "name": "unknown",
+      "requiresRepositoryEvidence": false,
+      "presentAsShipped": false
+    }
+  ]
+}

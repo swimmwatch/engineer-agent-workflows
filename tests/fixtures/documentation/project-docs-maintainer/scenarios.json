@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "skill": "project-docs-maintainer",
+  "cases": [
+    {
+      "id": "readme-authority",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "documents": [
+        {
+          "path": "README.md",
+          "audience": "users",
+          "owner": "installation"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "audience": "contributors",
+          "owner": "contribution workflow"
+        }
+      ],
+      "claim": {
+        "topic": "installation",
+        "authoritativePath": "README.md"
+      },
+      "expected": {
+        "selectedPath": "README.md",
+        "inventedHierarchy": false
+      }
+    },
+    {
+      "id": "docs-site-links",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "documents": [
+        "docs/index.md",
+        "docs/guides/setup.md",
+        "docs/reference/configuration.md"
+      ],
+      "links": [
+        {
+          "from": "docs/index.md",
+          "to": "docs/guides/setup.md"
+        },
+        {
+          "from": "docs/guides/setup.md",
+          "to": "docs/reference/configuration.md"
+        }
+      ],
+      "expected": {
+        "allTargetsExist": true,
+        "inventedHierarchy": false
+      }
+    },
+    {
+      "id": "remove-contradictory-duplicate",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "authoritativePath": "docs/reference/configuration.md",
+      "duplicatePath": "README.md",
+      "beforeDigests": {
+        "README.md": "duplicate-stale-v1",
+        "docs/reference/configuration.md": "canonical-v2",
+        "src/config.mjs": "code-v1"
+      },
+      "afterDigests": {
+        "README.md": "duplicate-removed-v2",
+        "docs/reference/configuration.md": "canonical-v2",
+        "src/config.mjs": "code-v1"
+      },
+      "expected": {
+        "changedPaths": ["README.md"],
+        "authoritativeContentChanged": false,
+        "projectCodeChanged": false
+      }
+    },
+    {
+      "id": "preserve-labeled-history",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "historicalRecord": {
+        "path": "docs/history/old-format.md",
+        "state": "deprecated",
+        "labelVisible": true
+      },
+      "expected": {
+        "recordRemoved": false,
+        "recordRewrittenAsCurrent": false
+      }
+    },
+    {
+      "id": "localization-out-of-scope",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "establishedLocalizedPaths": ["docs/es/index.md"],
+      "requestedPaths": ["README.md"],
+      "expected": {
+        "changedPaths": ["README.md"],
+        "localizedPathsChanged": []
+      }
+    },
+    {
+      "id": "unverified-command",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "command": "workflow publish-preview",
+      "repositoryEvidence": [],
+      "commandRun": false,
+      "expected": {
+        "state": "unknown",
+        "verificationLabel": "unverified",
+        "presentedAsWorking": false
+      }
+    },
+    {
+      "id": "privacy",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "syntheticPrivateValue": "PROJECT_DOCS_PRIVATE_VALUE",
+      "expected": {
+        "boundedDiagnostics": true,
+        "outputContainsPrivateValue": false
+      }
+    }
+  ]
+}

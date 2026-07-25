@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sentinels": {
+    "documentationBody": "DOCUMENTATION_BODY_SENTINEL",
+    "projectDocsBody": "PROJECT_DOCS_BODY_SENTINEL",
+    "unrelatedBody": "UNRELATED_SKILL_BODY_SENTINEL"
+  },
+  "cases": [
+    {
+      "selectedSkill": "documentation-and-adrs",
+      "expectedLoaded": ["DOCUMENTATION_BODY_SENTINEL"]
+    },
+    {
+      "selectedSkill": "project-docs-maintainer",
+      "expectedLoaded": ["PROJECT_DOCS_BODY_SENTINEL"]
+    }
+  ]
+}

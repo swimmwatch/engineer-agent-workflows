@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceTerms": ["prompt-mcp", "Go", "GTK", "Zenity"],
+  "generalizedResponsibilities": [
+    "verify current behavior from repository evidence",
+    "separate current and proposed claims",
+    "update the nearest authoritative document",
+    "preserve established platform and support boundaries"
+  ],
+  "expected": {
+    "sourceTermsInProductionSkills": false,
+    "responsibilitiesPreserved": true
+  }
+}

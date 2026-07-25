@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "layouts": [
+    {
+      "id": "readme-centric",
+      "files": ["README.md", "CONTRIBUTING.md", "src/runtime.mjs"],
+      "establishedDocumentation": ["README.md", "CONTRIBUTING.md"],
+      "expected": {
+        "primaryEntry": "README.md",
+        "inventedDirectories": []
+      }
+    },
+    {
+      "id": "docs-site",
+      "files": [
+        "docs/index.md",
+        "docs/guides/setup.md",
+        "docs/reference/configuration.md",
+        "site.config.json"
+      ],
+      "establishedDocumentation": [
+        "docs/index.md",
+        "docs/guides/setup.md",
+        "docs/reference/configuration.md"
+      ],
+      "expected": {
+        "primaryEntry": "docs/index.md",
+        "inventedDirectories": []
+      }
+    },
+    {
+      "id": "established-adr",
+      "files": [
+        "README.md",
+        "docs/decisions/0001-storage-format.md",
+        "docs/decisions/0002-retry-policy.md"
+      ],
+      "establishedDocumentation": [
+        "README.md",
+        "docs/decisions/0001-storage-format.md",
+        "docs/decisions/0002-retry-policy.md"
+      ],
+      "adrConvention": "docs/decisions/NNNN-title.md",
+      "expected": {
+        "primaryEntry": "README.md",
+        "inventedDirectories": []
+      }
+    },
+    {
+      "id": "no-adr-convention",
+      "files": ["README.md", "docs/architecture.md"],
+      "establishedDocumentation": ["README.md", "docs/architecture.md"],
+      "adrConvention": null,
+      "expected": {
+        "adrCreated": false,
+        "choiceRequired": true,
+        "visibleLocalProposal": "docs/decisions/0001-title.md",
+        "inventedDirectories": []
+      }
+    }
+  ]
+}

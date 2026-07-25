@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "skill": "documentation-and-adrs",
+  "cases": [
+    {
+      "id": "technical-document-states",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "claims": [
+        {
+          "id": "runtime.current",
+          "state": "current",
+          "evidence": ["src/runtime.mjs", "tests/runtime.test.mjs"]
+        },
+        {
+          "id": "runtime.next",
+          "state": "proposed",
+          "evidence": ["docs/proposals/runtime-next.md"]
+        },
+        {
+          "id": "runtime.preview",
+          "state": "experimental",
+          "evidence": ["tests/fixtures/preview.json"]
+        },
+        {
+          "id": "runtime.legacy",
+          "state": "deprecated",
+          "evidence": ["docs/migration.md"]
+        },
+        {
+          "id": "runtime.unsupported",
+          "state": "unknown",
+          "evidence": []
+        }
+      ],
+      "expected": {
+        "statesRemainDistinct": true,
+        "plannedPresentedAsCurrent": false
+      }
+    },
+    {
+      "id": "complete-settled-adr",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "establishedConvention": "docs/decisions/NNNN-title.md",
+      "decisionState": "settled",
+      "adr": {
+        "status": "accepted",
+        "decisionDate": "2025-01-15",
+        "context": "Two durable formats create inconsistent recovery behavior.",
+        "forces": [
+          "backward compatibility",
+          "bounded maintenance cost"
+        ],
+        "decision": "Use one versioned durable format for new records.",
+        "scope": "New durable records and their readers.",
+        "alternatives": [
+          {
+            "name": "retain both formats",
+            "tradeoff": "lowest migration risk and highest maintenance cost"
+          },
+          {
+            "name": "replace all records immediately",
+            "tradeoff": "simplest end state and highest rollback risk"
+          }
+        ],
+        "positiveConsequences": ["one recovery contract"],
+        "negativeConsequences": ["migration work is required"],
+        "implications": {
+          "compatibility": "old records remain readable during migration",
+          "security": "validation remains fail closed",
+          "operations": "migration progress is observable",
+          "migration": "conversion is bounded and reversible"
+        },
+        "reversalConditions": ["recovery evidence disproves the format"],
+        "unresolvedFollowUp": []
+      },
+      "expected": {
+        "status": "completed",
+        "adrCreated": true
+      }
+    },
+    {
+      "id": "unresolved-decision",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "establishedConvention": "docs/adr/NNNN-title.md",
+      "decisionState": "unresolved",
+      "unresolvedChoices": ["compatibility policy", "rollback trigger"],
+      "expected": {
+        "status": "blocked",
+        "adrCreated": false,
+        "consensusFabricated": false
+      }
+    },
+    {
+      "id": "no-adr-convention",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "establishedConvention": null,
+      "proposal": "docs/decisions/0001-title.md",
+      "expected": {
+        "status": "blocked",
+        "adrCreated": false,
+        "choiceRequired": true,
+        "proposalVisible": true
+      }
+    },
+    {
+      "id": "stale-command",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "documentedCommand": "workflow check",
+      "repositoryCommand": "workflow verify",
+      "commandRun": false,
+      "expected": {
+        "documentedState": "deprecated",
+        "replacementState": "current",
+        "verificationLabel": "not run",
+        "presentedAsWorking": false
+      }
+    },
+    {
+      "id": "minimal-document-only-edit",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "beforeDigests": {
+        "docs/reference.md": "doc-v1",
+        "src/runtime.mjs": "code-v1",
+        "config/runtime.json": "config-v1",
+        "release/manifest.json": "release-v1"
+      },
+      "afterDigests": {
+        "docs/reference.md": "doc-v2",
+        "src/runtime.mjs": "code-v1",
+        "config/runtime.json": "config-v1",
+        "release/manifest.json": "release-v1"
+      },
+      "expected": {
+        "changedPaths": ["docs/reference.md"],
+        "unrelatedProseChanged": false
+      }
+    },
+    {
+      "id": "privacy",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "syntheticPrivateValue": "DOCUMENTATION_PRIVATE_VALUE",
+      "expected": {
+        "boundedDiagnostics": true,
+        "outputContainsPrivateValue": false
+      }
+    }
+  ]
+}
