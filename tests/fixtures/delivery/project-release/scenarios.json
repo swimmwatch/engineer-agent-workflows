@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "skill": "project-release",
+  "cases": [
+    {
+      "id": "confirmed-stable-preparation",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "repositoryId": "hosted-github",
+      "request": {
+        "explicit": true,
+        "mode": "prepare",
+        "version": "2.4.0",
+        "confirmed": true,
+        "classification": "stable"
+      },
+      "versionSources": {
+        "manifest.json": "2.4.0",
+        "docs/version.md": "2.4.0"
+      },
+      "authority": ["local-preparation"],
+      "expected": {
+        "status": "ready",
+        "versionAgreement": true,
+        "publishAuthorized": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "confirmed-prerelease",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "request": {
+        "explicit": true,
+        "mode": "prepare",
+        "version": "3.0.0-rc.2",
+        "confirmed": true,
+        "classification": "prerelease"
+      },
+      "expected": {
+        "status": "ready",
+        "stableRulesApplied": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "unconfirmed-and-invalid-versions",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "candidates": [
+        {
+          "version": "2.4.0",
+          "confirmed": false
+        },
+        {
+          "version": "2.4",
+          "confirmed": true
+        },
+        {
+          "version": "02.4.0",
+          "confirmed": true
+        },
+        {
+          "version": "2.4.0-01",
+          "confirmed": true
+        },
+        {
+          "version": "next",
+          "confirmed": true
+        }
+      ],
+      "expected": {
+        "status": "blocked",
+        "acceptedVersions": [],
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "version-source-disagreement",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "confirmedVersion": "2.4.0",
+      "versionSources": {
+        "manifest.json": "2.4.0",
+        "docs/version.md": "2.3.9"
+      },
+      "expected": {
+        "status": "blocked",
+        "versionAgreement": false,
+        "publishEligible": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "human-signed-stable-tag",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "confirmedVersion": "2.4.0",
+      "classification": "stable",
+      "tag": {
+        "name": "v2.4.0",
+        "createdBy": "human",
+        "signed": true,
+        "signatureVerified": true,
+        "sourceRevision": "8a1e3f67b70bf42ad47e1c885b2a65ab41aee0a4",
+        "immutable": true
+      },
+      "expected": {
+        "status": "ready",
+        "publishEligible": true,
+        "automationCreatedTag": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "unsigned-stable-tag",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "confirmedVersion": "2.4.0",
+      "classification": "stable",
+      "tag": {
+        "name": "release-2.4.0",
+        "createdBy": "automation",
+        "signed": false,
+        "signatureVerified": false,
+        "sourceRevision": "8a1e3f67b70bf42ad47e1c885b2a65ab41aee0a4"
+      },
+      "expected": {
+        "status": "blocked",
+        "publishEligible": false,
+        "unsignedReplacementCreated": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "floating-source-rejection",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "confirmedVersion": "2.4.0",
+      "sourceIdentity": {
+        "kind": "branch",
+        "value": "trunk"
+      },
+      "expected": {
+        "status": "blocked",
+        "publishEligible": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "artifact-checksums",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "artifacts": [
+        {
+          "name": "workflow-bundle.zip",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verified": true
+        },
+        {
+          "name": "workflow-bundle.tar.gz",
+          "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "verified": true
+        }
+      ],
+      "expected": {
+        "status": "ready",
+        "allChecksumsVerified": true,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "missing-checksum",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "artifacts": [
+        {
+          "name": "workflow-bundle.zip",
+          "sha256": null,
+          "verified": false
+        }
+      ],
+      "expected": {
+        "status": "blocked",
+        "publishEligible": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "separate-trust-statements",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "trustStatements": [
+        "package-registry-integrity",
+        "source-revision-identity",
+        "artifact-sha256",
+        "provenance",
+        "project-tag-signature"
+      ],
+      "expected": {
+        "allDistinct": true,
+        "substitutionsAllowed": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "publication-needs-separate-authority",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "request": {
+        "explicit": true,
+        "mode": "prepare",
+        "version": "2.4.0",
+        "confirmed": true
+      },
+      "authority": ["local-preparation", "commit", "push"],
+      "expected": {
+        "publishAuthorized": false,
+        "publishAttempted": false,
+        "authorizationInherited": false,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "insufficient-provider-evidence",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "repositoryId": "local-only",
+      "request": {
+        "explicit": true,
+        "mode": "publish",
+        "version": "2.4.0",
+        "confirmed": true
+      },
+      "expected": {
+        "status": "blocked",
+        "missingCapabilities": ["remote", "provider", "release policy"],
+        "fabricatedCommands": [],
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "published-recovery",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "published": {
+        "version": "2.4.0",
+        "tag": "v2.4.0",
+        "immutable": true
+      },
+      "authority": ["verify", "prepare-follow-up"],
+      "expected": {
+        "publishedEvidencePreserved": true,
+        "tagDeleted": false,
+        "tagRetargeted": false,
+        "releaseOverwritten": false,
+        "followUpPreferred": true,
+        "executedMutations": []
+      }
+    },
+    {
+      "id": "privacy",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "syntheticPrivateValue": "DELIVERY_RELEASE_PRIVATE_VALUE",
+      "expected": {
+        "boundedDiagnostics": true,
+        "outputContainsPrivateValue": false,
+        "executedMutations": []
+      }
+    }
+  ]
+}

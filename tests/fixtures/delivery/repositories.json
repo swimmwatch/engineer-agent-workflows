@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "repositories": [
+    {
+      "id": "hosted-github",
+      "guidance": "AGENTS.md",
+      "provider": "github",
+      "remote": "origin",
+      "defaultBranch": "trunk",
+      "headBranch": "feature/delivery-contract",
+      "template": ".github/PULL_REQUEST_TEMPLATE.md",
+      "requiredChecks": ["quality", "security-scan", "portable-tests"],
+      "commitConvention": "conventional-commits",
+      "releasePolicy": {
+        "versionSources": ["manifest.json", "docs/version.md"],
+        "tagFormat": "v{version}",
+        "stableTagMustBeHumanSigned": true
+      }
+    },
+    {
+      "id": "self-hosted-forge",
+      "guidance": "CLAUDE.md",
+      "provider": "self-hosted-forge",
+      "remote": "upstream",
+      "defaultBranch": "stable",
+      "headBranch": "change/portable-release",
+      "template": "docs/change-request-template.md",
+      "requiredChecks": ["policy", "cross-platform"],
+      "commitConvention": "ticket-prefix",
+      "releasePolicy": {
+        "versionSources": ["release/version.txt"],
+        "tagFormat": "release-{version}",
+        "stableTagMustBeHumanSigned": true
+      }
+    },
+    {
+      "id": "local-only",
+      "guidance": "AGENTS.md",
+      "provider": null,
+      "remote": null,
+      "defaultBranch": null,
+      "headBranch": "topic/local-review",
+      "template": null,
+      "requiredChecks": [],
+      "commitConvention": null,
+      "releasePolicy": null
+    }
+  ]
+}
