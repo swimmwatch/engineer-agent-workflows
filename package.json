@@ -10,6 +10,7 @@
   },
   "scripts": {
     "test": "node --test",
+    "test:lifecycle": "node --test tests/lifecycle/global-lifecycle.test.mjs tests/lifecycle/platform-paths.test.mjs tests/lifecycle/workflow-policy.test.mjs",
     "validate": "node scripts/validate.mjs",
     "validate:foundation": "node scripts/validate.mjs --allow-incomplete",
     "generate": "node scripts/generate.mjs",

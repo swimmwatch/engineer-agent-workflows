@@ -1,0 +1,32 @@
+Usage: skills <command> [options]
+
+Manage Skills:
+  add <package>        Add a skill package
+  remove [skills]      Remove installed skills
+  list, ls             List installed skills
+
+Updates:
+  update [skills...]   Update skills to latest versions
+
+Add Options:
+  -g, --global
+  -a, --agent <agents>
+  -s, --skill <skills>
+  -l, --list
+  -y, --yes
+
+Update Options:
+  -g, --global
+  -p, --project
+  -y, --yes
+
+Remove Options:
+  -g, --global
+  -a, --agent <agents>
+  -s, --skill <skills>
+  -y, --yes
+
+List Options:
+  -g, --global
+  -a, --agent <agents>
+  --json

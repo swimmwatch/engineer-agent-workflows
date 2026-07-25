@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "package": "skills",
+  "version": "1.5.20",
+  "nodeMinimum": "22.20.0",
+  "integrity": "sha512-lPl5KzMfTW+qwHFwc8t6R+wAqmdmSHw1+HWbGdJ/FZYbWLdB34bAZNFWiencM5DVoRaKAgXArmfTWMlNAbl9Gg==",
+  "unknownSkill": {
+    "name": "definitely-not-a-skill",
+    "exitCode": 1
+  }
+}
