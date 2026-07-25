@@ -6,10 +6,7 @@ import test from "node:test";
 import { main as generateMain } from "../scripts/generate.mjs";
 import { main as validateMain } from "../scripts/validate.mjs";
 import { snapshotTree } from "../scripts/lib/files.mjs";
-import {
-  copyFoundationCatalog,
-  makeTempTree,
-} from "./lib/fixtures.mjs";
+import { copyFoundationCatalog } from "./lib/fixtures.mjs";
 
 function capture() {
   let stdout = "";
@@ -103,10 +100,11 @@ test("premature packaging output fails without mutation", async (t) => {
 
 test("malformed input diagnostics do not echo sentinel content or paths", async (t) => {
   const sentinel = "PRIVATE_SENTINEL_DO_NOT_ECHO";
-  const root = await makeTempTree(t, {
-    "catalog/skills.json": `{${sentinel}`,
-    "catalog/release.json": "{}",
-  });
+  const root = await copyFoundationCatalog(t);
+  await fs.writeFile(
+    path.join(root, "catalog", "skills.json"),
+    `{${sentinel}`,
+  );
   const result = await run(validateMain, ["--allow-incomplete"], root);
   assert.equal(result.status, 1);
   assert.match(result.stderr, /^E_INVALID_JSON catalog\/skills\.json:/);
