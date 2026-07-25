@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "skill": "idea-refine",
+  "cases": [
+    {
+      "id": "explicit-refinement",
+      "host": "codex",
+      "request": {
+        "explicit": true,
+        "action": "compare-directions"
+      },
+      "evidence": {
+        "repositoryGuidance": "AGENTS.md",
+        "problem": "reduce recovery complexity",
+        "successSignal": "one verified recovery path"
+      },
+      "expected": {
+        "status": "ready",
+        "projectMutation": false
+      }
+    },
+    {
+      "id": "material-alternatives",
+      "host": "claude",
+      "request": {
+        "explicit": true,
+        "action": "stress-test-idea"
+      },
+      "evidence": {
+        "repositoryGuidance": "CLAUDE.md",
+        "verifiedFacts": ["current format is versioned"],
+        "unknowns": ["migration cost"]
+      },
+      "expected": {
+        "alternatives": [
+          "retain current design",
+          "run the smallest reversible experiment",
+          "adopt the new design after evidence"
+        ],
+        "recommendation": "run the smallest reversible experiment",
+        "status": "completed",
+        "projectMutation": false
+      }
+    },
+    {
+      "id": "schema-defined-user-choice",
+      "host": "codex",
+      "request": {
+        "explicit": true,
+        "action": "choose-direction"
+      },
+      "evidence": {
+        "repositoryGuidance": "AGENTS.md",
+        "callableTools": [
+          {
+            "name": "collect_product_choice",
+            "inputSchema": {
+              "maxQuestions": 2,
+              "stableIdPattern": "semantic-dot-id"
+            }
+          }
+        ]
+      },
+      "expected": {
+        "calledTool": "collect_product_choice",
+        "questionCount": 1,
+        "stableQuestionId": "recovery.direction",
+        "namespaceConstructed": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "unavailable-user-choice",
+      "host": "claude",
+      "request": {
+        "explicit": true,
+        "action": "choose-direction"
+      },
+      "evidence": {
+        "repositoryGuidance": "CLAUDE.md",
+        "callableTools": []
+      },
+      "expected": {
+        "calledTool": null,
+        "decisionState": "unresolved",
+        "fallbackQuestionnaire": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "downstream-stop",
+      "host": "codex",
+      "request": {
+        "explicit": true,
+        "action": "refine-idea"
+      },
+      "evidence": {
+        "repositoryGuidance": "AGENTS.md"
+      },
+      "expected": {
+        "specificationCreated": false,
+        "planCreated": false,
+        "implementationChanged": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "privacy",
+      "host": "claude",
+      "request": {
+        "explicit": true,
+        "action": "refine-idea"
+      },
+      "evidence": {
+        "repositoryGuidance": "CLAUDE.md",
+        "syntheticPrivateValue": "IDEA_PRIVATE_VALUE"
+      },
+      "expected": {
+        "boundedDiagnostics": true,
+        "outputContainsPrivateValue": false,
+        "status": "completed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "sentinels": {
+    "contextBody": "CONTEXT_BODY_SENTINEL",
+    "ideaBody": "IDEA_BODY_SENTINEL",
+    "interviewBody": "INTERVIEW_BODY_SENTINEL",
+    "interviewReference": "INTERVIEW_REFERENCE_SENTINEL"
+  },
+  "cases": [
+    {
+      "id": "context-only",
+      "selectedSkill": "context-engineering",
+      "callableInterviewTool": false,
+      "expectedLoaded": ["CONTEXT_BODY_SENTINEL"]
+    },
+    {
+      "id": "idea-only",
+      "selectedSkill": "idea-refine",
+      "callableInterviewTool": false,
+      "expectedLoaded": ["IDEA_BODY_SENTINEL"]
+    },
+    {
+      "id": "interview-without-tool",
+      "selectedSkill": "interview-me",
+      "callableInterviewTool": false,
+      "expectedLoaded": ["INTERVIEW_BODY_SENTINEL"]
+    },
+    {
+      "id": "interview-with-tool",
+      "selectedSkill": "interview-me",
+      "callableInterviewTool": true,
+      "expectedLoaded": [
+        "INTERVIEW_BODY_SENTINEL",
+        "INTERVIEW_REFERENCE_SENTINEL"
+      ]
+    }
+  ]
+}

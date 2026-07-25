@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "skill": "interview-me",
+  "cases": [
+    {
+      "id": "recoverable-callable-registry",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "callableTools": [
+        {
+          "name": "open_decision_session",
+          "inputSchema": {
+            "supportsPersistence": true
+          }
+        },
+        {
+          "name": "collect_decision_batch",
+          "inputSchema": {
+            "maxQuestions": 3,
+            "requiresStableIds": true
+          }
+        },
+        {
+          "name": "resume_decisions",
+          "inputSchema": {
+            "maxQuestions": 3
+          }
+        },
+        {
+          "name": "read_committed_decisions",
+          "inputSchema": {
+            "bounded": true
+          }
+        }
+      ],
+      "questions": [
+        "retention.policy",
+        "compatibility.mode",
+        "failure.recovery"
+      ],
+      "expected": {
+        "selectedMode": "recoverable",
+        "calledTools": [
+          "open_decision_session",
+          "collect_decision_batch"
+        ],
+        "batchSize": 3,
+        "namespaceConstructed": false,
+        "referenceLoaded": true
+      }
+    },
+    {
+      "id": "single-callable-registry",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "callableTools": [
+        {
+          "name": "collect_one_decision",
+          "inputSchema": {
+            "maxQuestions": 1,
+            "requiresStableIds": true
+          }
+        }
+      ],
+      "questions": ["retention.policy"],
+      "expected": {
+        "selectedMode": "single",
+        "calledTools": ["collect_one_decision"],
+        "batchSize": 1,
+        "namespaceConstructed": false,
+        "referenceLoaded": true
+      }
+    },
+    {
+      "id": "no-callable-interview",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "callableTools": [],
+      "questions": ["retention.policy"],
+      "expected": {
+        "selectedMode": null,
+        "calledTools": [],
+        "fallbackQuestionnaire": false,
+        "referenceLoaded": false,
+        "status": "unavailable"
+      }
+    },
+    {
+      "id": "settled-decisions-not-reasked",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "callableTools": [
+        {
+          "name": "collect_decision_batch",
+          "inputSchema": {
+            "maxQuestions": 2,
+            "requiresStableIds": true
+          }
+        }
+      ],
+      "settledQuestionIds": ["retention.policy"],
+      "candidateQuestionIds": ["retention.policy", "failure.recovery"],
+      "expected": {
+        "askedQuestionIds": ["failure.recovery"],
+        "referenceLoaded": true
+      }
+    },
+    {
+      "id": "committed-partial-results",
+      "host": "codex",
+      "repositoryGuidance": "AGENTS.md",
+      "callableTools": [
+        {
+          "name": "collect_decision_batch",
+          "inputSchema": {
+            "maxQuestions": 2,
+            "requiresStableIds": true
+          }
+        }
+      ],
+      "results": [
+        {
+          "questionId": "retention.policy",
+          "status": "answered",
+          "committed": true,
+          "durable": true
+        },
+        {
+          "questionId": "failure.recovery",
+          "status": "paused",
+          "committed": false,
+          "durable": false
+        }
+      ],
+      "expected": {
+        "checkpointedQuestionIds": ["retention.policy"],
+        "remainingQuestionIds": ["failure.recovery"],
+        "referenceLoaded": true
+      }
+    },
+    {
+      "id": "downstream-stop-and-privacy",
+      "host": "claude",
+      "repositoryGuidance": "CLAUDE.md",
+      "callableTools": [
+        {
+          "name": "collect_one_decision",
+          "inputSchema": {
+            "maxQuestions": 1,
+            "requiresStableIds": true
+          }
+        }
+      ],
+      "syntheticPrivateValue": "INTERVIEW_PRIVATE_VALUE",
+      "expected": {
+        "specificationCreated": false,
+        "planCreated": false,
+        "implementationChanged": false,
+        "outputContainsPrivateValue": false,
+        "boundedDiagnostics": true,
+        "referenceLoaded": true
+      }
+    }
+  ]
+}

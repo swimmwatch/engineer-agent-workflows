@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "skill": "context-engineering",
+  "cases": [
+    {
+      "id": "codex-nearest-guidance",
+      "host": "codex",
+      "target": "services/api",
+      "availableGuidance": ["AGENTS.md", "services/api/AGENTS.md"],
+      "expected": {
+        "selectedGuidance": "services/api/AGENTS.md",
+        "fabricatedGuidance": [],
+        "status": "ready"
+      }
+    },
+    {
+      "id": "claude-applicable-guidance",
+      "host": "claude",
+      "target": "packages/client",
+      "availableGuidance": ["CLAUDE.md"],
+      "expected": {
+        "selectedGuidance": "CLAUDE.md",
+        "fabricatedGuidance": [],
+        "status": "ready"
+      }
+    },
+    {
+      "id": "missing-guidance",
+      "host": "codex",
+      "target": "src",
+      "availableGuidance": [],
+      "expected": {
+        "selectedGuidance": null,
+        "fabricatedGuidance": [],
+        "unknown": ["repository agent guidance"],
+        "status": "ready"
+      }
+    },
+    {
+      "id": "current-evidence-beats-stale-handoff",
+      "host": "claude",
+      "target": "src/runtime",
+      "availableGuidance": ["CLAUDE.md"],
+      "evidence": {
+        "repository": "current runtime accepts structured input",
+        "handoff": "runtime accepts text input only",
+        "handoffState": "stale"
+      },
+      "expected": {
+        "selectedGuidance": "CLAUDE.md",
+        "precedenceWinner": "repository",
+        "status": "ready"
+      }
+    },
+    {
+      "id": "authorized-durable-repair",
+      "host": "codex",
+      "target": ".",
+      "availableGuidance": ["AGENTS.md"],
+      "authority": {
+        "mode": "mutation",
+        "selectedSurface": "AGENTS.md"
+      },
+      "evidence": {
+        "codeDigestBefore": "project-code-v1",
+        "codeDigestAfter": "project-code-v1"
+      },
+      "expected": {
+        "changedPaths": ["AGENTS.md"],
+        "projectCodeChanged": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "read-only-context-audit",
+      "host": "claude",
+      "target": ".",
+      "availableGuidance": ["CLAUDE.md"],
+      "authority": {
+        "mode": "read-only",
+        "selectedSurface": null
+      },
+      "expected": {
+        "changedPaths": [],
+        "projectCodeChanged": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "privacy",
+      "host": "codex",
+      "target": ".",
+      "availableGuidance": ["AGENTS.md"],
+      "evidence": {
+        "syntheticPrivateValue": "CONTEXT_PRIVATE_VALUE"
+      },
+      "expected": {
+        "boundedDiagnostics": true,
+        "outputContainsPrivateValue": false,
+        "status": "completed"
+      }
+    }
+  ]
+}
