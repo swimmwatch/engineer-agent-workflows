@@ -95,7 +95,7 @@ async function startGitServer(t, profile) {
   const server = http.createServer((request, response) => {
     const url = new URL(request.url, "http://127.0.0.1");
     if (
-      !url.pathname.startsWith("/fixture/source.git/") ||
+      !/^\/fixture\/(?:codex|claude-code)\.git\//.test(url.pathname) ||
       url.pathname.includes("\0") ||
       url.pathname.split("/").includes("..")
     ) {
@@ -164,88 +164,112 @@ async function startGitServer(t, profile) {
   if (!address || typeof address === "string") {
     throw new Error("E_FIXTURE_SERVER: loopback endpoint unavailable");
   }
-  return `http://127.0.0.1:${address.port}/fixture/source.git`;
+  return `http://127.0.0.1:${address.port}`;
 }
 
 export async function createSourceFixture(t, profile, projectRoot) {
-  const pluginRoot = path.join(
-    projectRoot,
-    "plugins",
-    "engineer-agent-workflows",
-  );
-  await fs.cp(pluginRoot, profile.source, {
-    recursive: true,
-    errorOnExist: true,
-  });
-  await runGit(
-    profile,
-    profile.source,
-    ["init", "--initial-branch=main"],
-    "2000-01-01T00:00:00Z",
-  );
-  await runGit(
-    profile,
-    profile.source,
-    ["add", "--all"],
-    "2000-01-01T00:00:00Z",
-  );
-  await runGit(
-    profile,
-    profile.source,
-    ["commit", "--no-gpg-sign", "-m", "fixture: initial release"],
-    "2000-01-01T00:00:00Z",
-  );
-  await runGit(
-    profile,
-    profile.root,
-    ["init", "--bare", "--initial-branch=main", profile.remote],
-    "2000-01-01T00:00:00Z",
-  );
-  await runGit(
-    profile,
-    profile.source,
-    ["remote", "add", "fixture", profile.remote],
-    "2000-01-01T00:00:00Z",
-  );
-  await runGit(
-    profile,
-    profile.source,
-    ["push", "fixture", "main"],
-    "2000-01-01T00:00:00Z",
-  );
-  return {
-    root: profile.source,
-    fileUrl: pathToFileURL(profile.source).href,
-    url: await startGitServer(t, profile),
-  };
+  const definitions = [
+    { key: "codex", directory: "codex", agent: "codex" },
+    {
+      key: "claudeCode",
+      directory: "claude-code",
+      agent: "claude-code",
+    },
+  ];
+  const sources = {};
+  for (const definition of definitions) {
+    const sourceRoot = path.join(profile.source, definition.directory);
+    const remoteRoot = path.join(
+      profile.root,
+      "fixture",
+      `${definition.directory}.git`,
+    );
+    const pluginRoot = path.join(
+      projectRoot,
+      "plugins",
+      definition.directory,
+      "engineer-agent-workflows",
+    );
+    await fs.cp(pluginRoot, sourceRoot, {
+      recursive: true,
+      errorOnExist: true,
+    });
+    await runGit(
+      profile,
+      sourceRoot,
+      ["init", "--initial-branch=main"],
+      "2000-01-01T00:00:00Z",
+    );
+    await runGit(
+      profile,
+      sourceRoot,
+      ["add", "--all"],
+      "2000-01-01T00:00:00Z",
+    );
+    await runGit(
+      profile,
+      sourceRoot,
+      ["commit", "--no-gpg-sign", "-m", "fixture: initial release"],
+      "2000-01-01T00:00:00Z",
+    );
+    await runGit(
+      profile,
+      profile.root,
+      ["init", "--bare", "--initial-branch=main", remoteRoot],
+      "2000-01-01T00:00:00Z",
+    );
+    await runGit(
+      profile,
+      sourceRoot,
+      ["remote", "add", "fixture", remoteRoot],
+      "2000-01-01T00:00:00Z",
+    );
+    await runGit(
+      profile,
+      sourceRoot,
+      ["push", "fixture", "main"],
+      "2000-01-01T00:00:00Z",
+    );
+    sources[definition.key] = {
+      agent: definition.agent,
+      root: sourceRoot,
+      fileUrl: pathToFileURL(sourceRoot).href,
+      remoteRoot,
+    };
+  }
+  const server = await startGitServer(t, profile);
+  for (const source of Object.values(sources)) {
+    source.url = `${server}/fixture/${path.basename(source.remoteRoot)}`;
+  }
+  return sources;
 }
 
-export async function commitFixtureUpdate(profile, skillName) {
+export async function commitFixtureUpdate(profile, source, skillName) {
   const relativeMarker = path.join(
     "skills",
     skillName,
     "references",
     "lifecycle-update.txt",
   );
-  const markerPath = path.join(profile.source, relativeMarker);
-  const marker = "isolated lifecycle update\n";
+  const markerPath = path.join(source.root, relativeMarker);
+  const marker = `isolated ${source.agent} lifecycle update\n`;
   await fs.mkdir(path.dirname(markerPath), { recursive: true });
   await fs.writeFile(markerPath, marker, "utf8");
   await runGit(
     profile,
-    profile.source,
+    source.root,
     ["add", relativeMarker],
     "2000-01-02T00:00:00Z",
   );
   await runGit(
     profile,
-    profile.source,
+    source.root,
     ["commit", "--no-gpg-sign", "-m", "fixture: compatible update"],
     "2000-01-02T00:00:00Z",
   );
   await runGit(
     profile,
-    profile.source,
+    source.root,
     ["push", "fixture", "main"],
     "2000-01-02T00:00:00Z",
   );

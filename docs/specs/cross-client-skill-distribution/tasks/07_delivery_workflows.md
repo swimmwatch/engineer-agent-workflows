@@ -49,9 +49,10 @@ human-created signed SemVer tag plus separate publishing authorization.
 
 ## Pull-Request Contract
 
-- Read applicable project guidance, current status/diff/history, remote
-  metadata, provider template, default branch, branch protection/checks, and
-  contribution policy before proposing operations.
+- Reuse project guidance already supplied by the host and read only additional
+  scoped guidance absent from active context or itself in scope. Inspect current
+  status/diff/history, remote metadata, provider template, default branch,
+  branch protection/checks, and contribution policy before proposing operations.
 - Distinguish review-only, local edit, commit, push, PR create, PR update, and
   review-comment actions. Each external mutation needs matching user authority.
 - Stage exact intended paths, preserve unrelated changes, show the staged diff,

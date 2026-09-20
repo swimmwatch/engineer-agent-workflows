@@ -1,7 +1,8 @@
 # Packet 10: Host And Context Acceptance
 
 Requirements: HOST-001, HOST-002, HOST-003, HOST-004, INV-001, INV-002,
-TOK-001, TOK-002, DIST-006, DIST-007, ACC-004, ACC-006, ACC-007.
+TOK-001, TOK-002, DIST-006, DIST-007, TEST-001, PLAN-002, INT-001, QUAL-001,
+ACC-004, ACC-006, ACC-007, ACC-008, ACC-009, ACC-010.
 
 ## Outcome
 
@@ -32,6 +33,11 @@ stop bundle-required workflows when the manual is missing or mismatched.
 - Verify selected-body and conditional-reference loading.
 - Verify plugin validation, namespaces, enable/disable behavior, and
   bundle-required manual failure.
+- Verify specification, planning, idea-refinement, and requirements-interview
+  questions use `request_user_input` in Codex and `AskUserQuestion` in Claude
+  Code without entering plan mode solely to ask.
+- Verify the test-first/PROVE sequence, conditional developer-documentation
+  decision, and fresh-context doubt reviewer through instrumented fixtures.
 - Record exact client versions and evidence.
 
 ## Non-Goals
@@ -41,8 +47,8 @@ stop bundle-required workflows when the manual is missing or mismatched.
 - Do not use real projects, real home directories, private conversations, or
   credentials in automated fixtures.
 - Do not submit to vendor public directories.
-- Do not install/configure Prompt MCP; simulated callable schemas cover workflow
-  routing and real Prompt MCP remains a documented owner limitation.
+- Do not install, configure, or invoke Prompt MCP; no collection workflow
+  depends on it.
 - Do not weaken a policy when an older host ignores it; raise the supported
   version floor instead.
 
@@ -90,11 +96,13 @@ stop bundle-required workflows when the manual is missing or mismatched.
 - The complete `SKILL.md` and description static limits are rechecked before
   every host run.
 
-## Bundle And Manual Contract
+## Bundle And Shared-Resource Contract
 
-- Planning resolves its contained manual.
-- Specification and incremental resolve the identical sibling manual in global
-  symlink/copy and plugin layouts.
+- Planning, specification, and incremental resolve identical generated local
+  copies of both authoritative root `shared/` references in global symlink/copy
+  and plugin layouts.
+- Each workflow runs its local generated verifier; bundle authentication still
+  requires the matching planning companion.
 - A deliberately isolated individual dependent skill stops before artifact
   production with the fixed complete-bundle install instruction.
 - Missing/mismatched/mixed-version bundle fixtures do not access the network,
@@ -111,6 +119,11 @@ stop bundle-required workflows when the manual is missing or mismatched.
 - Body/reference sentinel assertions pass exactly.
 - Global/plugin namespaces and enable/disable behavior match recorded docs.
 - Bundle-required failure occurs before artifact creation.
+- Both hosts exercise all four question-driven workflows with their standard
+  question tools in the current mode; missing/failed outcomes are not answers.
+- Planning and implementation fixtures prove test-first/PROVE ordering and the
+  documentation threshold; doubt fixtures prove fresh-context isolation and
+  evidence reconciliation.
 - Evidence files contain only normalized versions/results, no credentials,
   prompts, answers, personal paths, or unrelated environment.
 

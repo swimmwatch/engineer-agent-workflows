@@ -1,11 +1,15 @@
 {
   "schemaVersion": 1,
   "id": "transition-commit",
+  "evidenceKind": "synthetic-contract-examples",
   "cases": [
     {
       "previousComplete": true,
       "commitAuthorized": true,
       "stagedPathsExact": true,
+      "nextPacketAuthorized": true,
+      "prerequisitesPassed": true,
+      "reviewCompleted": true,
       "expectedCommit": true,
       "expectedStartNext": true
     },
@@ -13,13 +17,19 @@
       "previousComplete": true,
       "commitAuthorized": false,
       "stagedPathsExact": true,
+      "nextPacketAuthorized": true,
+      "prerequisitesPassed": true,
+      "reviewCompleted": false,
       "expectedCommit": false,
-      "expectedStartNext": false
+      "expectedStartNext": true
     },
     {
       "previousComplete": false,
       "commitAuthorized": true,
       "stagedPathsExact": true,
+      "nextPacketAuthorized": true,
+      "prerequisitesPassed": false,
+      "reviewCompleted": false,
       "expectedCommit": false,
       "expectedStartNext": false
     },
@@ -27,7 +37,20 @@
       "previousComplete": true,
       "commitAuthorized": true,
       "stagedPathsExact": false,
+      "nextPacketAuthorized": true,
+      "prerequisitesPassed": true,
+      "reviewCompleted": false,
       "expectedCommit": false,
+      "expectedStartNext": true
+    },
+    {
+      "previousComplete": true,
+      "commitAuthorized": true,
+      "stagedPathsExact": true,
+      "nextPacketAuthorized": false,
+      "prerequisitesPassed": true,
+      "reviewCompleted": true,
+      "expectedCommit": true,
       "expectedStartNext": false
     }
   ]

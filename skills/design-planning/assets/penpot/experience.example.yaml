@@ -1,0 +1,57 @@
+# Illustrative shape only; replace behavior and IDs from approved evidence.
+schema_version: 1
+specification: account-settings
+requirements_source: docs/specs/account-settings/spec.md
+system:
+  catalog: design/system/catalog.yaml
+  library_file_id: example-system-file
+  snapshot_sha256: null
+penpot:
+  file_id: example-settings-file
+snapshot:
+  path: design/specs/account-settings/screens.penpot
+  sha256: null
+  status: pending
+screens:
+  - id: settings
+    page_id: example-page
+    board_id: example-board
+    requirement_ids: [UI-001]
+    instances:
+      - id: save
+        element_id: example-save-instance
+        component: button.primary
+        variant: default
+        library_file_id: example-system-file
+        overrides:
+          label: Save
+    states:
+      - id: editing
+        visible: Editable fields and save action.
+      - id: saving
+        visible: Saving feedback; repeat submission disabled.
+      - id: saved
+        visible: Success confirmation.
+      - id: failed
+        visible: Error feedback; input preserved.
+    actions:
+      - id: save
+        from: editing
+        to: saving
+        trigger: Activate save with valid input.
+        requirement_ids: [UI-001]
+      - id: success
+        from: saving
+        to: saved
+        trigger: The save operation succeeds.
+        requirement_ids: [UI-001]
+      - id: failure
+        from: saving
+        to: failed
+        trigger: The save operation fails.
+        requirement_ids: [UI-001]
+      - id: retry
+        from: failed
+        to: saving
+        trigger: Activate retry.
+        requirement_ids: [UI-001]

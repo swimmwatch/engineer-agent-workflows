@@ -1,0 +1,49 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - The collection defines 16 workflows, generated artifacts for two hosts, and global lifecycle behavior across three operating systems.
+  - Public workflow, catalog, plugin, and lifecycle contracts require compatibility, rollback, security, privacy, and supply-chain evidence.
+profiles:
+  - id: core
+    state: active
+    reason: The project owns library, CLI, configuration, skill, and generated-artifact contracts.
+  - id: ui
+    state: not_applicable
+    reason: The project does not define an end-user graphical interface.
+  - id: backend
+    state: not_applicable
+    reason: The project does not expose an application service or network API.
+  - id: events
+    state: not_applicable
+    reason: No asynchronous application event contract is part of this workstream.
+  - id: data
+    state: not_applicable
+    reason: The project has deterministic repository files but no runtime domain-data lifecycle.
+  - id: operations
+    state: active
+    reason: Global installation, replacement, removal, validation, and release behavior are contractual.
+  - id: security
+    state: active
+    reason: Profile isolation, telemetry controls, integrity, permissions, and secret handling are contractual.
+  - id: cross-surface
+    state: active
+    reason: One canonical workflow contract must render equivalently into isolated Codex and Claude Code artifacts.
+planning_artifacts:
+  - tasks/plan.md
+  - tasks/todo.md
+  - tasks/handoff.md
+  - tasks/01_repository_foundation.md
+  - tasks/02_engineering_manual_and_planning.md
+  - tasks/03_specification_and_incremental.md
+  - tasks/04_code_quality_workflows.md
+  - tasks/05_context_and_discovery_workflows.md
+  - tasks/06_documentation_workflows.md
+  - tasks/07_delivery_workflows.md
+  - tasks/08_native_plugin_packaging.md
+  - tasks/09_global_lifecycle_isolation.md
+  - tasks/10_host_context_acceptance.md
+  - tasks/11_documentation_and_operations.md
+  - tasks/12_ci_release_readiness.md
+  - tasks/13_adaptive_specification_and_planning.md
+  - tasks/14_workflow_forward_testing.md

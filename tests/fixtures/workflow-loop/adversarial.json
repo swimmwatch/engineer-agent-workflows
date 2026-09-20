@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "scenarios": [
+    {
+      "id": "no-answer",
+      "prompt": "Continue the simulated specification after a required scope question receives no answer.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["The missing answer selects between materially different public behaviors."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["A missing, cancelled, or failed answer is not a decision."]
+      },
+      "acceptanceRequirements": [
+        "The unresolved decision remains explicit.",
+        "No specification is recorded as approved."
+      ],
+      "objectiveExpectedOutcome": "The run remains incomplete and cannot count as a pass."
+    },
+    {
+      "id": "stale-contract",
+      "prompt": "Continue simulated planning when its recorded specification digest no longer matches the approved contract.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["The approved specification changed after the planning context was captured."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["Only the current approved digest may authorize planning."]
+      },
+      "acceptanceRequirements": [
+        "Stale planning evidence is rejected.",
+        "Implementation does not start from the superseded contract."
+      ],
+      "objectiveExpectedOutcome": "Planning evidence is rejected before implementation evidence is credited."
+    },
+    {
+      "id": "contradictory-test",
+      "prompt": "Continue a simulated packet whose proposed test contradicts an objective acceptance requirement.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["The test expects an outcome that the approved requirement forbids."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["A contradictory assertion is not meaningful RED evidence."]
+      },
+      "acceptanceRequirements": [
+        "Contradictory test evidence is rejected.",
+        "No production write is credited to the invalid RED observation."
+      ],
+      "objectiveExpectedOutcome": "The test-first sequence is not meaningful evidence."
+    },
+    {
+      "id": "unavailable-environment",
+      "prompt": "Evaluate a simulated completed packet when one required acceptance environment is unavailable.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["The missing environment is required by an objective acceptance requirement."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["Unavailable and skipped checks are not passing checks."]
+      },
+      "acceptanceRequirements": [
+        "The unavailable check is reported with its exact status.",
+        "The packet and final acceptance remain incomplete."
+      ],
+      "objectiveExpectedOutcome": "The unavailable check is reported and cannot count as passing."
+    },
+    {
+      "id": "resume-incomplete-packet",
+      "prompt": "Resume a simulated workflow with one recorded incomplete packet and a request that mentions a different packet.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["The handoff identifies the only incomplete packet and its bounded paths."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["Resume authority remains limited to the recorded incomplete packet."]
+      },
+      "acceptanceRequirements": [
+        "The recorded incomplete packet remains the active write boundary.",
+        "Writes for another packet are rejected."
+      ],
+      "objectiveExpectedOutcome": "The cross-packet write is rejected."
+    },
+    {
+      "id": "next-packet-without-review-commit",
+      "prompt": "Start a simulated next packet after the prior packet passed its prerequisites and checks but has no review or commit record.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": ["Both packets have explicit authority and the prior packet is complete with passing checks."]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": ["Review and commit are not incremental packet prerequisites."]
+      },
+      "acceptanceRequirements": [
+        "The next authorized packet may start after prior packet completion.",
+        "Independent external evaluation remains a final evidence requirement."
+      ],
+      "objectiveExpectedOutcome": "The next packet proceeds without requiring review or commit evidence."
+    }
+  ]
+}

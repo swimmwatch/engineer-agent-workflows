@@ -16,7 +16,6 @@ import {
 
 const SKILLS = Object.freeze([
   "documentation-and-adrs",
-  "project-docs-maintainer",
 ]);
 const CLAIM_STATES = Object.freeze([
   "current",
@@ -50,7 +49,7 @@ function changedPaths(before, after) {
     .sort();
 }
 
-test("documentation and project docs skills are portable, explicit-only, and bounded", async () => {
+test("documentation skill is portable, explicit-only, and bounded", async () => {
   const catalog = await readCatalog(projectRoot);
   for (const name of SKILLS) {
     const entry = catalog.skills.find((candidate) => candidate.name === name);
@@ -69,8 +68,7 @@ test("documentation and project docs skills are portable, explicit-only, and bou
     assert.ok(validated.bytes <= 4096);
     for (const pattern of [
       /explicit request/,
-      /In Codex.*`AGENTS\.md`/s,
-      /in Claude Code.*`CLAUDE\.md`/s,
+      /`\{\{HOST_PROJECT_INSTRUCTIONS\}\}`/,
       /current/,
       /proposed/,
       /experimental/,
@@ -83,6 +81,7 @@ test("documentation and project docs skills are portable, explicit-only, and bou
       assert.match(validated.body, pattern, `${name} misses ${pattern}`);
     }
     assert.doesNotMatch(validated.body, SOURCE_ASSUMPTIONS);
+    assert.doesNotMatch(validated.body, /AGENTS\.md|CLAUDE\.md/);
     assert.deepEqual(
       await fs.readdir(path.join(projectRoot, "skills", name)),
       ["SKILL.md", "agents"],
@@ -220,74 +219,12 @@ test("documentation workflow labels stale commands and limits edits to documents
   assert.equal(minimal.expected.unrelatedProseChanged, false);
 });
 
-test("project docs maps authoritative ownership and stable link targets", async () => {
-  const fixture = await readScenarios("project-docs-maintainer");
-  const authority = findCase(fixture, "readme-authority");
-  assert.ok(
-    authority.documents.some(
-      (document) =>
-        document.path === authority.expected.selectedPath &&
-        document.owner === authority.claim.topic,
-    ),
-  );
-  assert.equal(authority.expected.inventedHierarchy, false);
-
-  const links = findCase(fixture, "docs-site-links");
-  const documents = new Set(links.documents);
-  assert.ok(
-    links.links.every(
-      (link) => documents.has(link.from) && documents.has(link.to),
-    ),
-  );
-  assert.equal(links.expected.allTargetsExist, true);
-  assert.equal(links.expected.inventedHierarchy, false);
-});
-
-test("project docs removes only in-scope duplicates and preserves history and localization", async () => {
-  const fixture = await readScenarios("project-docs-maintainer");
-  const duplicate = findCase(fixture, "remove-contradictory-duplicate");
-  assert.deepEqual(
-    changedPaths(duplicate.beforeDigests, duplicate.afterDigests),
-    duplicate.expected.changedPaths,
-  );
-  assert.deepEqual(duplicate.expected.changedPaths, [duplicate.duplicatePath]);
-  assert.equal(duplicate.expected.authoritativeContentChanged, false);
-  assert.equal(duplicate.expected.projectCodeChanged, false);
-
-  const history = findCase(fixture, "preserve-labeled-history");
-  assert.equal(history.historicalRecord.state, "deprecated");
-  assert.equal(history.historicalRecord.labelVisible, true);
-  assert.equal(history.expected.recordRemoved, false);
-  assert.equal(history.expected.recordRewrittenAsCurrent, false);
-
-  const localization = findCase(fixture, "localization-out-of-scope");
-  assert.deepEqual(localization.expected.changedPaths, localization.requestedPaths);
-  assert.deepEqual(localization.expected.localizedPathsChanged, []);
-  assert.ok(
-    localization.establishedLocalizedPaths.every(
-      (name) => !localization.expected.changedPaths.includes(name),
-    ),
-  );
-});
-
-test("project docs marks unsupported commands unknown rather than working", async () => {
-  const fixture = await readScenarios("project-docs-maintainer");
-  const command = findCase(fixture, "unverified-command");
-  assert.deepEqual(command.repositoryEvidence, []);
-  assert.equal(command.commandRun, false);
-  assert.equal(command.expected.state, "unknown");
-  assert.equal(command.expected.verificationLabel, "unverified");
-  assert.equal(command.expected.presentedAsWorking, false);
-});
-
-test("documentation and project docs use progressive disclosure", async () => {
+test("documentation uses progressive disclosure", async () => {
   const fixture = await readSharedFixture("progressive-disclosure");
   const allSentinels = Object.values(fixture.sentinels);
   for (const scenario of fixture.cases) {
-    const expected =
-      scenario.selectedSkill === "documentation-and-adrs"
-        ? fixture.sentinels.documentationBody
-        : fixture.sentinels.projectDocsBody;
+    assert.equal(scenario.selectedSkill, "documentation-and-adrs");
+    const expected = fixture.sentinels.documentationBody;
     assert.deepEqual(scenario.expectedLoaded, [expected]);
     assert.ok(
       allSentinels
@@ -297,7 +234,7 @@ test("documentation and project docs use progressive disclosure", async () => {
   }
 });
 
-test("documentation and project docs preserve source equivalence without source assumptions", async () => {
+test("documentation preserves source equivalence without source assumptions", async () => {
   const fixture = await readSharedFixture("source-equivalence");
   assert.ok(fixture.sourceTerms.length > 0);
   assert.ok(fixture.generalizedResponsibilities.length >= 4);
@@ -314,7 +251,7 @@ test("documentation and project docs preserve source equivalence without source 
   }
 });
 
-test("documentation and project docs redact, copy state, and leave skills unchanged", async () => {
+test("documentation redacts, copies state, and leaves skills unchanged", async () => {
   const before = await snapshotTree(path.join(projectRoot, "skills"));
   for (const name of SKILLS) {
     const fixture = await readScenarios(name);

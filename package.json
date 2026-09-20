@@ -8,12 +8,27 @@
   "engines": {
     "node": ">=22.20.0"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "node --test",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "pretest": "npm run build",
+    "test": "node scripts/run-tests.mjs",
+    "pretest:parallel": "npm run build",
+    "test:parallel": "node scripts/run-tests.mjs",
+    "pretest:serial": "npm run build",
+    "test:serial": "node scripts/run-tests.mjs --serial",
     "test:lifecycle": "node --test tests/lifecycle/global-lifecycle.test.mjs tests/lifecycle/platform-paths.test.mjs tests/lifecycle/workflow-policy.test.mjs",
     "validate": "node scripts/validate.mjs",
     "validate:foundation": "node scripts/validate.mjs --allow-incomplete",
     "generate": "node scripts/generate.mjs",
-    "generate:check": "node scripts/generate.mjs --check"
+    "generate:check": "node scripts/generate.mjs --check",
+    "build:dev": "node scripts/build-dev.mjs"
+  },
+  "devDependencies": {
+    "ajv": "6.15.0",
+    "yaml": "2.9.0"
   }
 }

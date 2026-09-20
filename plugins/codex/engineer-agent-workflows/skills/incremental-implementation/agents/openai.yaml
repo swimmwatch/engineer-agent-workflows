@@ -1,0 +1,5 @@
+interface:
+  display_name: "Incremental Implementation"
+  short_description: "Implement exactly one authorized task packet per explicit invocation using test-first RED/GREEN/PROVE, verify it, update checklist and handoff, then stop."
+policy:
+  allow_implicit_invocation: false

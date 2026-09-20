@@ -5,51 +5,44 @@
   "outcomes": [
     {
       "status": "answered",
-      "committed": true,
-      "durable": true,
+      "hasExplicitAnswer": true,
       "expectedState": "answered",
       "persistAnswer": true
     },
     {
+      "status": "dismissed",
+      "hasExplicitAnswer": false,
+      "expectedState": "needs_user",
+      "persistAnswer": false
+    },
+    {
       "status": "cancelled",
-      "committed": false,
-      "durable": false,
-      "expectedState": "blocked",
+      "hasExplicitAnswer": false,
+      "expectedState": "needs_user",
       "persistAnswer": false
     },
     {
       "status": "timed_out",
-      "committed": false,
-      "durable": false,
-      "expectedState": "blocked",
+      "hasExplicitAnswer": false,
+      "expectedState": "needs_user",
       "persistAnswer": false
     },
     {
       "status": "unavailable",
-      "committed": false,
-      "durable": false,
-      "expectedState": "blocked",
+      "hasExplicitAnswer": false,
+      "expectedState": "needs_user",
       "persistAnswer": false
     },
     {
-      "status": "conflict",
-      "committed": false,
-      "durable": false,
-      "expectedState": "blocked",
-      "persistAnswer": false
-    },
-    {
-      "status": "invalid_request",
-      "committed": false,
-      "durable": false,
+      "status": "invalid_response",
+      "hasExplicitAnswer": false,
       "expectedState": "needs_user",
       "persistAnswer": false
     },
     {
       "status": "failed",
-      "committed": false,
-      "durable": false,
-      "expectedState": "blocked",
+      "hasExplicitAnswer": false,
+      "expectedState": "needs_user",
       "persistAnswer": false
     }
   ],

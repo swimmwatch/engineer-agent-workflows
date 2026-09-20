@@ -24,6 +24,10 @@ import {
 const STANDALONE_SKILL = "code-review-and-quality";
 const BUNDLE_REQUIRED_SKILL = "incremental-implementation";
 const UNKNOWN_SKILL = "definitely-not-a-skill";
+const HOSTS = Object.freeze([
+  { sourceKey: "codex", agent: "codex" },
+  { sourceKey: "claudeCode", agent: "claude-code" },
+]);
 
 async function exists(candidate) {
   try {
@@ -65,13 +69,13 @@ async function resolvedSkillPath(profile, agent, skillName) {
   return await fs.realpath(path.join(root, skillName));
 }
 
-async function assertInstalledSkillEquals(profile, source, skillName) {
-  const expected = await snapshotTree(
-    path.join(source.root, "skills", skillName),
-  );
-  for (const agent of ["codex", "claude-code"]) {
-    const installed = await resolvedSkillPath(profile, agent, skillName);
-    assert.deepEqual(await snapshotTree(installed), expected, agent);
+async function assertInstalledSkillEquals(profile, sources, skillName) {
+  for (const host of HOSTS) {
+    const expected = await snapshotTree(
+      path.join(sources[host.sourceKey].root, "skills", skillName),
+    );
+    const installed = await resolvedSkillPath(profile, host.agent, skillName);
+    assert.deepEqual(await snapshotTree(installed), expected, host.agent);
   }
 }
 
@@ -114,7 +118,7 @@ test(
         size: 26,
       },
     });
-    const source = await createSourceFixture(t, profile, projectRoot);
+    const sources = await createSourceFixture(t, profile, projectRoot);
     const catalog = await readCatalog(projectRoot);
     const release = await readReleaseMetadata(projectRoot);
     const names = catalog.skills.map((skill) => skill.name);
@@ -154,46 +158,53 @@ test(
       return result;
     }
 
-    const discovery = await invoke(
-      [
-        "add",
-        source.url,
-        "--global",
-        "--agent",
-        "codex",
-        "--agent",
-        "claude-code",
-        "--skill",
-        "*",
-        "--list",
-        "--yes",
-      ],
-      "source discovery",
-    );
-    for (const name of names) {
-      assert.match(discovery.stdout, new RegExp(`\\b${name}\\b`));
+    async function addForHosts(skill, label, extra = []) {
+      for (const host of HOSTS) {
+        await invoke(
+          [
+            "add",
+            sources[host.sourceKey].url,
+            "--global",
+            "--agent",
+            host.agent,
+            "--skill",
+            skill,
+            "--copy",
+            ...extra,
+            "--yes",
+          ],
+          `${label} ${host.agent}`,
+        );
+      }
+    }
+
+    for (const host of HOSTS) {
+      const discovery = await invoke(
+        [
+          "add",
+          sources[host.sourceKey].url,
+          "--global",
+          "--agent",
+          host.agent,
+          "--skill",
+          "*",
+          "--copy",
+          "--list",
+          "--yes",
+        ],
+        `source discovery ${host.agent}`,
+      );
+      for (const name of names) {
+        assert.match(discovery.stdout, new RegExp(`\\b${name}\\b`));
+      }
     }
     assert.equal(
       await exists(path.join(profile.home, ".agents", "skills")),
       false,
     );
 
-    await invoke(
-      [
-        "add",
-        source.url,
-        "--global",
-        "--agent",
-        "codex",
-        "--agent",
-        "claude-code",
-        "--skill",
-        STANDALONE_SKILL,
-        "--yes",
-      ],
-      "standalone add",
-    );
-    await assertInstalledSkillEquals(profile, source, STANDALONE_SKILL);
+    await addForHosts(STANDALONE_SKILL, "standalone add");
+    await assertInstalledSkillEquals(profile, sources, STANDALONE_SKILL);
     const codexEntry = await fs.lstat(
       path.join(
         profile.home,
@@ -211,10 +222,7 @@ test(
       ),
     );
     assert.equal(codexEntry.isDirectory(), true);
-    assert.equal(
-      claudeEntry.isDirectory() || claudeEntry.isSymbolicLink(),
-      true,
-    );
+    assert.equal(claudeEntry.isDirectory(), true);
     assert.deepEqual(await globalNames(profile, environment, "codex"), [
       STANDALONE_SKILL,
     ]);
@@ -248,21 +256,7 @@ test(
       false,
     );
 
-    await invoke(
-      [
-        "add",
-        source.url,
-        "--global",
-        "--agent",
-        "codex",
-        "--agent",
-        "claude-code",
-        "--skill",
-        "*",
-        "--yes",
-      ],
-      "complete add",
-    );
+    await addForHosts("*", "complete add");
     const lockPaths = await findNamed(profile.root, ".skill-lock.json");
     assert.equal(lockPaths.length, 1, JSON.stringify(lockPaths));
     assert.equal(
@@ -272,7 +266,7 @@ test(
     const lock = JSON.parse(await fs.readFile(lockPaths[0], "utf8"));
     assert.deepEqual(Object.keys(lock.skills).sort(), [...names].sort());
     for (const name of names) {
-      await assertInstalledSkillEquals(profile, source, name);
+      await assertInstalledSkillEquals(profile, sources, name);
     }
     assert.deepEqual(await globalNames(profile, environment, "codex"), [
       ...names,
@@ -283,44 +277,46 @@ test(
     );
 
     const unchangedBefore = new Map();
-    for (const name of names.filter((name) => name !== STANDALONE_SKILL)) {
-      unchangedBefore.set(
-        name,
-        await snapshotTree(await resolvedSkillPath(profile, "codex", name)),
+    for (const host of HOSTS) {
+      for (const name of names.filter((name) => name !== STANDALONE_SKILL)) {
+        unchangedBefore.set(
+          `${host.agent}:${name}`,
+          await snapshotTree(
+            await resolvedSkillPath(profile, host.agent, name),
+          ),
+        );
+      }
+    }
+    const updates = {};
+    for (const host of HOSTS) {
+      updates[host.agent] = await commitFixtureUpdate(
+        profile,
+        sources[host.sourceKey],
+        STANDALONE_SKILL,
       );
     }
-    const update = await commitFixtureUpdate(profile, STANDALONE_SKILL);
-    const updated = await invoke(
-      [
-        "update",
-        STANDALONE_SKILL,
-        "--global",
-        "--yes",
-      ],
-      "explicit update",
-    );
-    assert.match(
-      updated.stdout,
-      /Updated [1-9][0-9]* skill/,
-      failureMessage("explicit update result", updated),
-    );
-    await assertInstalledSkillEquals(profile, source, STANDALONE_SKILL);
-    for (const agent of ["codex", "claude-code"]) {
+    await addForHosts(STANDALONE_SKILL, "host-specific repeat add");
+    await assertInstalledSkillEquals(profile, sources, STANDALONE_SKILL);
+    for (const host of HOSTS) {
       const installed = await resolvedSkillPath(
         profile,
-        agent,
+        host.agent,
         STANDALONE_SKILL,
       );
       assert.equal(
-        await fs.readFile(path.join(installed, update.relativeMarker), "utf8"),
-        update.marker,
+        await fs.readFile(
+          path.join(installed, updates[host.agent].relativeMarker),
+          "utf8",
+        ),
+        updates[host.agent].marker,
       );
     }
-    for (const [name, before] of unchangedBefore) {
+    for (const [identity, before] of unchangedBefore) {
+      const [agent, name] = identity.split(":");
       assert.deepEqual(
-        await snapshotTree(await resolvedSkillPath(profile, "codex", name)),
+        await snapshotTree(await resolvedSkillPath(profile, agent, name)),
         before,
-        name,
+        identity,
       );
     }
 
@@ -343,19 +339,8 @@ test(
       [],
     );
 
-    await invoke(
-      [
-        "add",
-        source.url,
-        "--global",
-        "--agent",
-        "codex",
-        "--agent",
-        "claude-code",
-        "--skill",
-        BUNDLE_REQUIRED_SKILL,
-        "--yes",
-      ],
+    await addForHosts(
+      BUNDLE_REQUIRED_SKILL,
       "bundle-required individual add",
     );
     assert.equal(
@@ -371,7 +356,7 @@ test(
     );
     await assertInstalledSkillEquals(
       profile,
-      source,
+      sources,
       BUNDLE_REQUIRED_SKILL,
     );
     await invoke(
@@ -392,14 +377,13 @@ test(
     const unknown = await invoke(
       [
         "add",
-        source.url,
+        sources.codex.url,
         "--global",
         "--agent",
         "codex",
-        "--agent",
-        "claude-code",
         "--skill",
         UNKNOWN_SKILL,
+        "--copy",
         "--yes",
       ],
       "unknown skill",

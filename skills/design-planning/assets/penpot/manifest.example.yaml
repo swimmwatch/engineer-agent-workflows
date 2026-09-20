@@ -1,0 +1,16 @@
+# Illustration: specification must obtain real confirmation before use.
+schema_version: 1
+depth: standard
+confirmed: false
+rationale:
+  - A settings screen reuses the shared Penpot component library.
+profiles:
+  - id: ui
+    state: active
+    reason: The task changes a user interface.
+planning_artifacts: []
+project_artifacts:
+  - design/system/catalog.yaml
+  - design/system/library.penpot
+  - design/specs/account-settings/experience.yaml
+  - design/specs/account-settings/screens.penpot

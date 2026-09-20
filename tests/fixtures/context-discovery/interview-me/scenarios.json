@@ -8,28 +8,10 @@
       "repositoryGuidance": "AGENTS.md",
       "callableTools": [
         {
-          "name": "open_decision_session",
-          "inputSchema": {
-            "supportsPersistence": true
-          }
-        },
-        {
-          "name": "collect_decision_batch",
+          "name": "request_user_input",
           "inputSchema": {
             "maxQuestions": 3,
             "requiresStableIds": true
-          }
-        },
-        {
-          "name": "resume_decisions",
-          "inputSchema": {
-            "maxQuestions": 3
-          }
-        },
-        {
-          "name": "read_committed_decisions",
-          "inputSchema": {
-            "bounded": true
           }
         }
       ],
@@ -39,12 +21,9 @@
         "failure.recovery"
       ],
       "expected": {
-        "selectedMode": "recoverable",
-        "calledTools": [
-          "open_decision_session",
-          "collect_decision_batch"
-        ],
-        "batchSize": 3,
+        "selectedMode": "host-native",
+        "calledTools": ["request_user_input"],
+        "batchSize": 1,
         "namespaceConstructed": false,
         "referenceLoaded": true
       }
@@ -55,17 +34,17 @@
       "repositoryGuidance": "CLAUDE.md",
       "callableTools": [
         {
-          "name": "collect_one_decision",
+          "name": "AskUserQuestion",
           "inputSchema": {
-            "maxQuestions": 1,
+            "maxQuestions": 4,
             "requiresStableIds": true
           }
         }
       ],
       "questions": ["retention.policy"],
       "expected": {
-        "selectedMode": "single",
-        "calledTools": ["collect_one_decision"],
+        "selectedMode": "host-native",
+        "calledTools": ["AskUserQuestion"],
         "batchSize": 1,
         "namespaceConstructed": false,
         "referenceLoaded": true
@@ -78,11 +57,11 @@
       "callableTools": [],
       "questions": ["retention.policy"],
       "expected": {
-        "selectedMode": null,
+        "selectedMode": "conversation",
         "calledTools": [],
-        "fallbackQuestionnaire": false,
-        "referenceLoaded": false,
-        "status": "unavailable"
+        "conversationalFallback": true,
+        "referenceLoaded": true,
+        "status": "awaiting-answer"
       }
     },
     {
@@ -91,9 +70,9 @@
       "repositoryGuidance": "CLAUDE.md",
       "callableTools": [
         {
-          "name": "collect_decision_batch",
+          "name": "AskUserQuestion",
           "inputSchema": {
-            "maxQuestions": 2,
+            "maxQuestions": 4,
             "requiresStableIds": true
           }
         }
@@ -106,14 +85,14 @@
       }
     },
     {
-      "id": "committed-partial-results",
+      "id": "explicit-partial-results",
       "host": "codex",
       "repositoryGuidance": "AGENTS.md",
       "callableTools": [
         {
-          "name": "collect_decision_batch",
+          "name": "request_user_input",
           "inputSchema": {
-            "maxQuestions": 2,
+            "maxQuestions": 3,
             "requiresStableIds": true
           }
         }
@@ -122,14 +101,12 @@
         {
           "questionId": "retention.policy",
           "status": "answered",
-          "committed": true,
-          "durable": true
+          "hasExplicitAnswer": true
         },
         {
           "questionId": "failure.recovery",
-          "status": "paused",
-          "committed": false,
-          "durable": false
+          "status": "dismissed",
+          "hasExplicitAnswer": false
         }
       ],
       "expected": {
@@ -144,9 +121,9 @@
       "repositoryGuidance": "CLAUDE.md",
       "callableTools": [
         {
-          "name": "collect_one_decision",
+          "name": "AskUserQuestion",
           "inputSchema": {
-            "maxQuestions": 1,
+            "maxQuestions": 4,
             "requiresStableIds": true
           }
         }

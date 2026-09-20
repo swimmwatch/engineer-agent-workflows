@@ -5,7 +5,7 @@ export const SKILLS_PACKAGE = "skills@1.5.20";
 export const DEFAULT_TIMEOUT_MS = 120_000;
 export const DEFAULT_OUTPUT_LIMIT = 256 * 1024;
 
-const ALLOWED_COMMANDS = new Set(["add", "list", "remove", "update"]);
+const ALLOWED_COMMANDS = new Set(["add", "list", "remove"]);
 // eslint-disable-next-line no-control-regex
 const ANSI_PATTERN = /\u001b(?:\[[0-?]*[ -/]*[@-~]|[@-_])/g;
 
@@ -38,24 +38,17 @@ function validateArguments(args) {
   }
 
   const command = args[0];
-  if (command === "update") {
-    if (hasFlag(args, "--agent", "-a")) {
-      throw new Error("E_SKILLS_UPDATE: upstream update has no agent option");
-    }
-    if (!hasFlag(args, "--yes", "-y")) {
-      throw new Error("E_SKILLS_ARGS: update must be non-interactive");
-    }
-    const names = args
-      .slice(1)
-      .filter((argument) => !argument.startsWith("-"));
-    if (names.length !== 1) {
-      throw new Error("E_SKILLS_ARGS: update requires one explicit skill");
-    }
-    return;
-  }
-
   if (countFlag(args, "--agent", "-a") === 0) {
     throw new Error("E_SKILLS_ARGS: explicit agent selection required");
+  }
+  if (
+    command === "add" &&
+    (countFlag(args, "--agent", "-a") !== 1 ||
+      !hasFlag(args, "--copy"))
+  ) {
+    throw new Error(
+      "E_SKILLS_ADD: add requires one agent and copy-isolated installation",
+    );
   }
   if (
     command !== "list" &&

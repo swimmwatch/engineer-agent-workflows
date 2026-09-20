@@ -65,8 +65,7 @@ test("code quality skills are standalone, explicit-only, bounded, and portable",
     assert.ok(validated.bytes <= 4096);
     for (const pattern of [
       /explicit request|explicitly asks|explicit audit/,
-      /`AGENTS\.md` in Codex/,
-      /`CLAUDE\.md` in Claude Code/,
+      /`\{\{HOST_PROJECT_INSTRUCTIONS\}\}`/,
       /repository\s+evidence/,
       /do not invent[^.]*tools[^.]*commands/,
       /bounded/,
@@ -77,6 +76,7 @@ test("code quality skills are standalone, explicit-only, bounded, and portable",
     }
     assert.doesNotMatch(validated.body, SOURCE_ASSUMPTIONS);
     assert.doesNotMatch(validated.body, EMBEDDED_COMMANDS);
+    assert.doesNotMatch(validated.body, /AGENTS\.md|CLAUDE\.md/);
 
     const entries = await fs.readdir(path.join(projectRoot, "skills", name));
     assert.deepEqual(entries.sort(), ["SKILL.md", "agents"]);
@@ -144,6 +144,32 @@ test("review and doubt stay read-only and report evidence-led outcomes", async (
     challenge.expected.recommendation,
   ));
   assert.equal(challenge.expected.conditionsPresent, true);
+  assert.equal(challenge.evidence.reviewer.hostNative, true);
+  assert.equal(challenge.evidence.reviewer.freshContext, true);
+  assert.deepEqual(challenge.evidence.reviewer.input, ["artifact", "contract"]);
+  assert.equal(challenge.evidence.reviewer.claimIncluded, false);
+  assert.equal(challenge.expected.reviewerInvoked, true);
+  assert.equal(challenge.expected.externalCliInvoked, false);
+
+  const unavailableReviewer = findCase(doubt, "incomplete-input");
+  assert.equal(unavailableReviewer.expected.status, "blocked");
+  assert.equal(unavailableReviewer.expected.reviewerInvoked, false);
+  assert.equal(unavailableReviewer.expected.selfReviewCalledIndependent, false);
+  assert.equal(unavailableReviewer.expected.externalCliInvoked, false);
+  assert.equal(unavailableReviewer.expected.mutation, false);
+
+  const doubtSkill = await fs.readFile(
+    path.join(projectRoot, "skills", "doubt-driven-development", "SKILL.md"),
+    "utf8",
+  );
+  for (const pattern of [
+    /fresh-context.*host-native.*subagent/is,
+    /artifact.*contract/is,
+    /do not pass.*claim/is,
+    /external CLI.*not.*required/is,
+  ]) {
+    assert.match(doubtSkill, pattern);
+  }
 
   for (const fixture of [review, doubt]) {
     const outcome = findCase(fixture, "outcome-equivalence");

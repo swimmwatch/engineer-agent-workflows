@@ -5,6 +5,7 @@ import test from "node:test";
 
 import { main as generateMain } from "../scripts/generate.mjs";
 import { main as validateMain } from "../scripts/validate.mjs";
+import { APPROVED_SKILL_NAMES } from "../scripts/lib/catalog.mjs";
 import { snapshotTree } from "../scripts/lib/files.mjs";
 import { copyFoundationCatalog } from "./lib/fixtures.mjs";
 
@@ -40,7 +41,10 @@ test("foundation validation succeeds and strict validation fails closed", async 
   const root = await copyFoundationCatalog(t);
   const foundation = await run(validateMain, ["--allow-incomplete"], root);
   assert.equal(foundation.status, 0);
-  assert.match(foundation.stdout, /0\/15 skills present/);
+  assert.match(
+    foundation.stdout,
+    new RegExp(`0/${APPROVED_SKILL_NAMES.length} skills present`),
+  );
   assert.equal(foundation.stderr, "");
 
   const strict = await run(validateMain, [], root);
@@ -75,7 +79,10 @@ test("incomplete generation check is read-only", async (t) => {
   );
   const after = await snapshotTree(root);
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /15 skills pending/);
+  assert.match(
+    result.stdout,
+    new RegExp(`${APPROVED_SKILL_NAMES.length} skills pending`),
+  );
   assert.equal(result.stderr, "");
   assert.deepEqual(after, before);
 });

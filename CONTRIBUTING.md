@@ -24,10 +24,15 @@ defaults. Do not invent client behavior, commands, paths, or release policy.
 
 ## Local checks
 
-Packet 01 uses Node.js built-ins only and requires Node.js 22.20.0 or newer.
-Do not run `npm install`; the project has no npm dependencies.
+Use Node.js 22.20.0 or newer. Maintenance scripts use Node.js built-ins; the
+separate MCP workspace has pinned dependencies recorded in the root lockfile.
+Use the lockfile for reproducible local setup; do not float versions or run
+global installation commands as part of development.
 
 ```bash
+npm ci --ignore-scripts --no-audit --no-fund
+npm run build
+npm run lint
 npm test
 npm run validate:foundation
 npm run generate:check -- --allow-incomplete

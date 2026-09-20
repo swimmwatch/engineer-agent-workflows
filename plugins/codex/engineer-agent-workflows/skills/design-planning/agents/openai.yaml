@@ -1,0 +1,5 @@
+interface:
+  display_name: "Design Planning"
+  short_description: "Prepare manifest-scoped UI design after an implementation plan, on explicit request. Use separately installed Penpot skills, save validated design contracts and snapshots, and update affected handoffs; do not implement."
+policy:
+  allow_implicit_invocation: false

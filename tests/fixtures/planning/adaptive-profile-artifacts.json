@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "prerequisites": {
+    "specStatus": "Approved",
+    "manifestConfirmed": true
+  },
+  "cases": [
+    {
+      "depth": "lite",
+      "profiles": [
+        "backend"
+      ],
+      "expectedLoadedProfileReferences": [
+        "references/backend-planning.md"
+      ],
+      "outputs": {
+        "core": [
+          "plan.md",
+          "todo.md",
+          "handoff.md"
+        ],
+        "numberedPackets": [
+          "01_implementation.md"
+        ],
+        "profileArtifacts": [],
+        "projectArtifacts": []
+      }
+    },
+    {
+      "depth": "standard",
+      "profiles": [
+        "core",
+        "ui"
+      ],
+      "expectedLoadedProfileReferences": [
+        "references/core-planning.md",
+        "references/ui-planning.md"
+      ],
+      "outputs": {
+        "core": [
+          "plan.md",
+          "todo.md",
+          "handoff.md"
+        ],
+        "numberedPackets": [
+          "01_profile-contracts.md",
+          "02_implementation.md",
+          "03_documentation.md"
+        ],
+        "profileArtifacts": [
+          "core/contracts.yaml"
+        ],
+        "projectArtifacts": [
+          "design/system/catalog.yaml",
+          "design/system/library.penpot",
+          "design/specs/example/experience.yaml",
+          "design/specs/example/screens.penpot",
+          "design/system/tokens.tokens.json"
+        ]
+      }
+    },
+    {
+      "depth": "deep",
+      "profiles": [
+        "ui",
+        "backend",
+        "events",
+        "data",
+        "operations"
+      ],
+      "expectedLoadedProfileReferences": [
+        "references/ui-planning.md",
+        "references/backend-planning.md",
+        "references/events-planning.md",
+        "references/data-planning.md",
+        "references/operations-planning.md"
+      ],
+      "outputs": {
+        "core": [
+          "plan.md",
+          "todo.md",
+          "handoff.md"
+        ],
+        "numberedPackets": [
+          "01_contracts.md",
+          "02_foundation.md",
+          "03_vertical-slice.md",
+          "04_rollout.md",
+          "05_documentation.md"
+        ],
+        "profileArtifacts": [
+          "contracts/openapi.yaml",
+          "contracts/asyncapi.yaml",
+          "contracts/schemas/domain.json",
+          "architecture/model.dsl",
+          "architecture/decisions/0001-boundaries.md",
+          "quality/scenarios.yaml"
+        ],
+        "projectArtifacts": [
+          "design/system/catalog.yaml",
+          "design/system/library.penpot",
+          "design/specs/example/experience.yaml",
+          "design/specs/example/screens.penpot"
+        ]
+      }
+    }
+  ]
+}

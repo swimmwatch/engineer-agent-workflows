@@ -9,6 +9,8 @@ import {
 import { isValidationError, ValidationError } from "./errors.mjs";
 import { validateRelativePath, walkFiles } from "./files.mjs";
 import {
+  CLAUDE_PLUGIN_SOURCE,
+  CODEX_PLUGIN_SOURCE,
   PLUGIN_NAME,
   renderClaudeMarketplace,
   renderClaudePluginManifest,
@@ -18,22 +20,101 @@ import {
   renderPluginCatalog,
 } from "./manifests.mjs";
 import {
+  decodeUTF8,
   renderRequiredFrontmatter,
+  splitSkillDocument,
   validateSkillDocument,
 } from "./skill-document.mjs";
+import {
+  PRODUCT_WORKFLOW_PROFILE_PATHS,
+  PRODUCT_WORKFLOW_SKILL_CHAIN,
+  productWorkflowDigest,
+} from "../../shared/scripts/verify-product-workflow.mjs";
 
 export const CODEX_MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
 export const CLAUDE_MARKETPLACE_PATH = ".claude-plugin/marketplace.json";
-export const PLUGIN_ROOT = `plugins/${PLUGIN_NAME}`;
+export const CODEX_PLUGIN_ROOT = CODEX_PLUGIN_SOURCE.slice(2);
+export const CLAUDE_PLUGIN_ROOT = CLAUDE_PLUGIN_SOURCE.slice(2);
+export const PLUGIN_ROOT = CODEX_PLUGIN_ROOT;
+export const SHARED_ROOT = "shared";
 
-const MANUAL_PATH =
-  "planning-and-task-breakdown/references/engineering-principles.md";
+const HOST_TEMPLATE_PATTERN = /\{\{HOST_[A-Z0-9_]+\}\}/g;
+const HOST_TEMPLATE_VALUES = Object.freeze({
+  codex: Object.freeze({
+    "{{HOST_DISPLAY_NAME}}": "Codex",
+    "{{HOST_PROJECT_INSTRUCTIONS}}": "AGENTS.md",
+    "{{HOST_QUESTION_TOOL}}": "request_user_input",
+    "{{HOST_AUTHOR_MODEL}}": "Sol; Astra for difficult or disputed cases",
+    "{{HOST_IMPLEMENTATION_MODEL}}": "Terra",
+    "{{HOST_REVIEW_MODEL}}": "Sol; Astra for difficult or disputed cases",
+  }),
+  "claude-code": Object.freeze({
+    "{{HOST_DISPLAY_NAME}}": "Claude Code",
+    "{{HOST_PROJECT_INSTRUCTIONS}}": "CLAUDE.md",
+    "{{HOST_QUESTION_TOOL}}": "AskUserQuestion",
+    "{{HOST_AUTHOR_MODEL}}": "Opus",
+    "{{HOST_IMPLEMENTATION_MODEL}}": "Sonnet",
+    "{{HOST_REVIEW_MODEL}}": "Opus",
+  }),
+});
+
+const MANUAL_REFERENCE = "references/engineering-principles.md";
+const TEST_DISCIPLINE_REFERENCE = "references/test-discipline.md";
+const PRODUCT_WORKFLOW_REFERENCE = "references/product-workflow.md";
+const PRODUCT_WORKFLOW_MARKER = "product-workflow.sha256";
+const PRODUCT_PROTOCOL_MARKER = "product-protocol.sha256";
+const PRODUCT_WORKFLOW_VERIFIER = "scripts/verify-product-workflow.mjs";
+const MANUAL_VERIFIER = "scripts/verify-engineering-manual.mjs";
 const MANUAL_MARKER = "engineering-manual.sha256";
+const TEST_DISCIPLINE_MARKER = "test-discipline.sha256";
+const CONTRACT_ASSETS = Object.freeze([
+  "references/yaml-contracts.md",
+  "schemas/catalog.schema.json",
+  "schemas/decisions.schema.json",
+  "schemas/experience.schema.json",
+  "schemas/manifest.schema.json",
+]);
+const MCP_ONLY_ASSETS = Object.freeze([
+  "schemas/product.schema.json",
+]);
 const MANUAL_SKILLS = Object.freeze([
+  "design-planning",
   "planning-and-task-breakdown",
   "incremental-implementation",
   "spec-driven-development",
 ]);
+const MANUAL_SKILL_ASSETS = Object.freeze([
+  `${SHARED_ROOT}/${MANUAL_MARKER}`,
+  `${SHARED_ROOT}/${MANUAL_REFERENCE}`,
+  `${SHARED_ROOT}/${TEST_DISCIPLINE_MARKER}`,
+  `${SHARED_ROOT}/${TEST_DISCIPLINE_REFERENCE}`,
+  `${SHARED_ROOT}/${MANUAL_VERIFIER}`,
+  ...CONTRACT_ASSETS.map(asset => `${SHARED_ROOT}/${asset}`),
+]);
+const PRODUCT_WORKFLOW_SKILL_ASSETS = Object.freeze([
+  `${SHARED_ROOT}/${PRODUCT_WORKFLOW_MARKER}`,
+  `${SHARED_ROOT}/${PRODUCT_WORKFLOW_REFERENCE}`,
+  `${SHARED_ROOT}/${PRODUCT_WORKFLOW_VERIFIER}`,
+]);
+const PRODUCT_TASK_SKILLS = Object.freeze([
+  "spec-driven-development",
+  "planning-and-task-breakdown",
+  "incremental-implementation",
+]);
+const PRODUCT_TASK_SKILL_ASSETS = Object.freeze([
+  `${SHARED_ROOT}/${PRODUCT_PROTOCOL_MARKER}`,
+  `${SHARED_ROOT}/${PRODUCT_WORKFLOW_REFERENCE}`,
+]);
+
+function sharedAssetsForSkill(name) {
+  return [
+    ...(MANUAL_SKILLS.includes(name) ? MANUAL_SKILL_ASSETS : []),
+    ...(PRODUCT_WORKFLOW_SKILL_CHAIN.includes(name)
+      ? PRODUCT_WORKFLOW_SKILL_ASSETS
+      : []),
+    ...(PRODUCT_TASK_SKILLS.includes(name) ? PRODUCT_TASK_SKILL_ASSETS : []),
+  ];
+}
 
 function absolutePath(root, relativePath) {
   validateRelativePath(relativePath);
@@ -98,9 +179,129 @@ function copyMap(input) {
   return output;
 }
 
+export function renderHostTemplate(input, host, relativePath) {
+  const values = HOST_TEMPLATE_VALUES[host];
+  if (values === undefined) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "host template target is unsupported",
+      { relativePath },
+    );
+  }
+  const bytes = Buffer.from(input);
+  if (!bytes.includes(Buffer.from("{{HOST_", "ascii"))) {
+    return bytes;
+  }
+  const text = decodeUTF8(bytes);
+  const tokens = text.match(HOST_TEMPLATE_PATTERN) ?? [];
+  for (const token of tokens) {
+    if (!Object.hasOwn(values, token)) {
+      throw new ValidationError(
+        "E_INVALID_SKILL",
+        "skill contains an unknown host template variable",
+        { relativePath },
+      );
+    }
+  }
+  let rendered = text;
+  for (const [token, value] of Object.entries(values)) {
+    rendered = rendered.replaceAll(token, value);
+  }
+  if (rendered.includes("{{HOST_")) {
+    throw new ValidationError(
+      "E_INVALID_SKILL",
+      "skill contains an unresolved host template variable",
+      { relativePath },
+    );
+  }
+  return Buffer.from(rendered, "utf8");
+}
+
+function renderCodexSkillDocument(entry, input, relativePath) {
+  const { body } = splitSkillDocument(input);
+  const document = [
+    "---",
+    `name: ${entry.name}`,
+    `description: ${JSON.stringify(entry.description)}`,
+    "---",
+    body,
+  ].join("\n");
+  return renderHostTemplate(
+    Buffer.from(document, "utf8"),
+    "codex",
+    relativePath,
+  );
+}
+
 export async function collectReleaseSource(root, catalogValue, releaseValue) {
   const catalog = validateCatalog(catalogValue);
   const release = validateReleaseMetadata(releaseValue);
+  const sharedDirectory = await requireRealDirectory(root, SHARED_ROOT);
+  const sharedFiles = await walkFiles(sharedDirectory);
+  if (
+    JSON.stringify(sharedFiles) !==
+JSON.stringify([
+        MANUAL_REFERENCE,
+        TEST_DISCIPLINE_REFERENCE,
+        PRODUCT_WORKFLOW_REFERENCE,
+        PRODUCT_WORKFLOW_VERIFIER,
+        MANUAL_VERIFIER,
+      ...CONTRACT_ASSETS,
+      ...MCP_ONLY_ASSETS,
+    ].sort((left, right) => left.localeCompare(right, "en")))
+  ) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "shared engineering resources contain an unexpected path",
+      { relativePath: SHARED_ROOT },
+    );
+  }
+  const [manual, testDiscipline, verifier] = await Promise.all([
+    readRegularFile(root, `${SHARED_ROOT}/${MANUAL_REFERENCE}`),
+    readRegularFile(root, `${SHARED_ROOT}/${TEST_DISCIPLINE_REFERENCE}`),
+    readRegularFile(root, `${SHARED_ROOT}/${MANUAL_VERIFIER}`),
+  ]);
+  if (
+    manual.length === 0 ||
+    manual.at(-1) !== 0x0a ||
+    testDiscipline.length === 0 ||
+    testDiscipline.at(-1) !== 0x0a ||
+    verifier.length === 0 ||
+    verifier.at(-1) !== 0x0a
+  ) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "shared engineering resources are unavailable or invalid",
+      { relativePath: SHARED_ROOT },
+    );
+  }
+  const manualDigest = crypto.createHash("sha256").update(manual).digest("hex");
+  const testDisciplineDigest = crypto
+    .createHash("sha256")
+    .update(testDiscipline)
+    .digest("hex");
+  const sharedManual = new Map([
+    [MANUAL_MARKER, Buffer.from(`${manualDigest}\n`, "ascii")],
+    [MANUAL_REFERENCE, Buffer.from(manual)],
+    [
+      TEST_DISCIPLINE_MARKER,
+      Buffer.from(`${testDisciplineDigest}\n`, "ascii"),
+    ],
+    [TEST_DISCIPLINE_REFERENCE, Buffer.from(testDiscipline)],
+    [MANUAL_VERIFIER, Buffer.from(verifier)],
+  ]);
+  for (const asset of CONTRACT_ASSETS) {
+    sharedManual.set(asset, await readRegularFile(root, `${SHARED_ROOT}/${asset}`));
+  }
+  for (const asset of [
+    PRODUCT_WORKFLOW_REFERENCE,
+    PRODUCT_WORKFLOW_VERIFIER,
+  ]) {
+    sharedManual.set(
+      asset,
+      await readRegularFile(root, `${SHARED_ROOT}/${asset}`),
+    );
+  }
   const skills = [];
 
   for (const entry of catalog.skills) {
@@ -147,6 +348,16 @@ export async function collectReleaseSource(root, catalogValue, releaseValue) {
           { relativePath: `${relativeDirectory}/${relativeAsset}` },
         );
       }
+      if (relativeAsset.startsWith(`${SHARED_ROOT}/`)) {
+        if (!sharedAssetsForSkill(entry.name).includes(relativeAsset)) {
+          throw new ValidationError(
+            "E_INVALID_SKILL",
+            "skill contains an unexpected generated shared resource",
+            { relativePath: `${relativeDirectory}/${relativeAsset}` },
+          );
+        }
+        continue;
+      }
       assets.set(
         relativeAsset,
         await readRegularFile(root, `${relativeDirectory}/${relativeAsset}`),
@@ -159,35 +370,6 @@ export async function collectReleaseSource(root, catalogValue, releaseValue) {
     });
   }
 
-  const planning = skills.find(
-    ({ entry }) => entry.name === "planning-and-task-breakdown",
-  );
-  const manual = planning?.assets.get(
-    "references/engineering-principles.md",
-  );
-  if (manual === undefined || manual.length === 0 || manual.at(-1) !== 0x0a) {
-    throw new ValidationError(
-      "E_INVALID_MANIFEST",
-      "engineering manual is unavailable or invalid",
-      { relativePath: `skills/${MANUAL_PATH}` },
-    );
-  }
-  const manualDigest = crypto.createHash("sha256").update(manual).digest("hex");
-  for (const name of MANUAL_SKILLS) {
-    const skill = skills.find(({ entry }) => entry.name === name);
-    const marker = skill?.assets.get(MANUAL_MARKER);
-    if (
-      marker === undefined ||
-      !marker.equals(Buffer.from(`${manualDigest}\n`, "ascii"))
-    ) {
-      throw new ValidationError(
-        "E_INVALID_MANIFEST",
-        "engineering manual marker does not match the bundle",
-        { relativePath: `skills/${name}/${MANUAL_MARKER}` },
-      );
-    }
-  }
-
   return {
     catalog: structuredClone(catalog),
     release: structuredClone(release),
@@ -196,8 +378,80 @@ export async function collectReleaseSource(root, catalogValue, releaseValue) {
       document: Buffer.from(skill.document),
       assets: copyMap(skill.assets),
     })),
+    sharedManual: copyMap(sharedManual),
     manualDigest,
+    testDisciplineDigest,
   };
+}
+
+function productWorkflowMarker(source, catalog, sharedManual, callerName, host) {
+  const callerIndex = PRODUCT_WORKFLOW_SKILL_CHAIN.indexOf(callerName);
+  const protocol = sharedManual.get(PRODUCT_WORKFLOW_REFERENCE);
+  const skillByName = name => {
+    const index = catalog.skills.findIndex(entry => entry.name === name);
+    return index < 0 ? undefined : source.skills[index];
+  };
+  const idea = skillByName("idea-refine");
+  if (callerIndex < 0 || protocol === undefined || idea === undefined) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "product workflow bundle source is incomplete",
+    );
+  }
+  const render = (bytes, relativePath) => {
+    if (host === null) return Buffer.from(bytes);
+    return renderHostTemplate(bytes, host, relativePath);
+  };
+  const profiles = PRODUCT_WORKFLOW_PROFILE_PATHS.map(relativePath => {
+    const bytes = idea.assets.get(relativePath);
+    if (bytes === undefined) {
+      throw new ValidationError(
+        "E_INVALID_MANIFEST",
+        "product workflow profile is unavailable",
+        { relativePath: `skills/idea-refine/${relativePath}` },
+      );
+    }
+    return {
+      relativePath,
+      bytes: render(bytes, `skills/idea-refine/${relativePath}`),
+    };
+  });
+  const skillDocuments = PRODUCT_WORKFLOW_SKILL_CHAIN
+    .slice(0, callerIndex + 1)
+    .map(name => {
+      const skill = skillByName(name);
+      const entry = catalog.skills.find(current => current.name === name);
+      if (skill === undefined || entry === undefined) {
+        throw new ValidationError(
+          "E_INVALID_MANIFEST",
+          "product workflow dependency is unavailable",
+          { relativePath: `skills/${name}` },
+        );
+      }
+      const relativePath = `skills/${name}/SKILL.md`;
+      const bytes = host === "codex"
+        ? renderCodexSkillDocument(entry, skill.document, relativePath)
+        : render(skill.document, relativePath);
+      return { name, bytes };
+    });
+  const digest = productWorkflowDigest(protocol, profiles, skillDocuments);
+  return Buffer.from(`${digest}\n`, "ascii");
+}
+
+function productProtocolMarker(sharedManual, host, relativePath) {
+  const protocol = sharedManual.get(PRODUCT_WORKFLOW_REFERENCE);
+  if (protocol === undefined) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "product protocol source unavailable",
+      { relativePath },
+    );
+  }
+  const rendered = host === null
+    ? Buffer.from(protocol)
+    : renderHostTemplate(protocol, host, relativePath);
+  const digest = crypto.createHash("sha256").update(rendered).digest("hex");
+  return Buffer.from(`${digest}\n`, "ascii");
 }
 
 export function buildGeneratedFiles(source) {
@@ -214,6 +468,61 @@ export function buildGeneratedFiles(source) {
   }
   const catalog = validateCatalog(source.catalog);
   const release = validateReleaseMetadata(source.release);
+  if (
+    !(source.sharedManual instanceof Map) ||
+    source.sharedManual.size !== 7 + CONTRACT_ASSETS.length ||
+    [...source.sharedManual].some(
+      ([relativePath, bytes]) =>
+        ![
+          MANUAL_MARKER,
+          MANUAL_REFERENCE,
+          TEST_DISCIPLINE_MARKER,
+          TEST_DISCIPLINE_REFERENCE,
+        MANUAL_VERIFIER,
+          PRODUCT_WORKFLOW_REFERENCE,
+          PRODUCT_WORKFLOW_VERIFIER,
+        ...CONTRACT_ASSETS,
+        ].includes(relativePath) || !(bytes instanceof Uint8Array),
+    )
+  ) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "release shared resources are invalid",
+    );
+  }
+  const sharedManual = copyMap(source.sharedManual);
+  const manual = sharedManual.get(MANUAL_REFERENCE);
+  const testDiscipline = sharedManual.get(TEST_DISCIPLINE_REFERENCE);
+  const verifier = sharedManual.get(MANUAL_VERIFIER);
+  const manualDigest = crypto
+    .createHash("sha256")
+    .update(manual)
+    .digest("hex");
+  const testDisciplineDigest = crypto
+    .createHash("sha256")
+    .update(testDiscipline)
+    .digest("hex");
+  if (
+    manual.length === 0 ||
+    manual.at(-1) !== 0x0a ||
+    testDiscipline.length === 0 ||
+    testDiscipline.at(-1) !== 0x0a ||
+    verifier.length === 0 ||
+    verifier.at(-1) !== 0x0a ||
+    manualDigest !== source.manualDigest ||
+    testDisciplineDigest !== source.testDisciplineDigest ||
+    !sharedManual.get(MANUAL_MARKER).equals(
+      Buffer.from(`${manualDigest}\n`, "ascii"),
+    ) ||
+    !sharedManual.get(TEST_DISCIPLINE_MARKER).equals(
+      Buffer.from(`${testDisciplineDigest}\n`, "ascii"),
+    )
+  ) {
+    throw new ValidationError(
+      "E_INVALID_MANIFEST",
+      "release shared resources do not match the manual digest",
+    );
+  }
   const files = new Map();
   for (const [index, skill] of source.skills.entries()) {
     const entry = catalog.skills[index];
@@ -245,33 +554,157 @@ export function buildGeneratedFiles(source) {
     }
     const name = entry.name;
     const rootDirectory = `skills/${name}`;
-    const pluginDirectory = `${PLUGIN_ROOT}/skills/${name}`;
+    const codexPluginDirectory = `${CODEX_PLUGIN_ROOT}/skills/${name}`;
+    const claudePluginDirectory = `${CLAUDE_PLUGIN_ROOT}/skills/${name}`;
     const sidecar = Buffer.from(
       renderCodexSkillMetadata(entry),
       "utf8",
     );
     files.set(`${rootDirectory}/SKILL.md`, Buffer.from(skill.document));
     files.set(`${rootDirectory}/agents/openai.yaml`, sidecar);
-    files.set(`${pluginDirectory}/SKILL.md`, Buffer.from(skill.document));
     files.set(
-      `${pluginDirectory}/agents/openai.yaml`,
+      `${codexPluginDirectory}/SKILL.md`,
+      renderCodexSkillDocument(
+        entry,
+        skill.document,
+        `${rootDirectory}/SKILL.md`,
+      ),
+    );
+    files.set(
+      `${codexPluginDirectory}/agents/openai.yaml`,
       Buffer.from(sidecar),
     );
+    files.set(
+      `${claudePluginDirectory}/SKILL.md`,
+      renderHostTemplate(
+        skill.document,
+        "claude-code",
+        `${rootDirectory}/SKILL.md`,
+      ),
+    );
     for (const [relativeAsset, bytes] of skill.assets) {
-      files.set(`${pluginDirectory}/${relativeAsset}`, Buffer.from(bytes));
+      files.set(
+        `${codexPluginDirectory}/${relativeAsset}`,
+        renderHostTemplate(
+          bytes,
+          "codex",
+          `${rootDirectory}/${relativeAsset}`,
+        ),
+      );
+      files.set(
+        `${claudePluginDirectory}/${relativeAsset}`,
+        renderHostTemplate(
+          bytes,
+          "claude-code",
+          `${rootDirectory}/${relativeAsset}`,
+        ),
+      );
+    }
+    for (const relativeAsset of sharedAssetsForSkill(name)) {
+      const sharedRelativeAsset = relativeAsset.slice(`${SHARED_ROOT}/`.length);
+      if (sharedRelativeAsset === PRODUCT_PROTOCOL_MARKER) {
+        files.set(
+          `${rootDirectory}/${relativeAsset}`,
+          productProtocolMarker(
+            sharedManual,
+            null,
+            `${rootDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
+          ),
+        );
+        files.set(
+          `${codexPluginDirectory}/${relativeAsset}`,
+          productProtocolMarker(
+            sharedManual,
+            "codex",
+            `${codexPluginDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
+          ),
+        );
+        files.set(
+          `${claudePluginDirectory}/${relativeAsset}`,
+          productProtocolMarker(
+            sharedManual,
+            "claude-code",
+            `${claudePluginDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
+          ),
+        );
+        continue;
+      }
+      if (sharedRelativeAsset === PRODUCT_WORKFLOW_MARKER) {
+        files.set(
+          `${rootDirectory}/${relativeAsset}`,
+          productWorkflowMarker(source, catalog, sharedManual, name, null),
+        );
+        files.set(
+          `${codexPluginDirectory}/${relativeAsset}`,
+          productWorkflowMarker(source, catalog, sharedManual, name, "codex"),
+        );
+        files.set(
+          `${claudePluginDirectory}/${relativeAsset}`,
+          productWorkflowMarker(
+            source,
+            catalog,
+            sharedManual,
+            name,
+            "claude-code",
+          ),
+        );
+        continue;
+      }
+      const bytes = sharedManual.get(sharedRelativeAsset);
+      if (bytes === undefined) {
+        throw new ValidationError(
+          "E_INVALID_MANIFEST",
+          "release shared skill resource unavailable",
+          { relativePath: relativeAsset },
+        );
+      }
+        files.set(
+          `${rootDirectory}/${relativeAsset}`,
+          Buffer.from(bytes),
+        );
+        files.set(
+          `${codexPluginDirectory}/${relativeAsset}`,
+          Buffer.from(bytes),
+        );
+        files.set(
+          `${claudePluginDirectory}/${relativeAsset}`,
+          Buffer.from(bytes),
+        );
     }
   }
 
+  for (const [relativeAsset, bytes] of sharedManual) {
+    files.set(
+      `${CODEX_PLUGIN_ROOT}/${SHARED_ROOT}/${relativeAsset}`,
+      Buffer.from(bytes),
+    );
+    files.set(
+      `${CLAUDE_PLUGIN_ROOT}/${SHARED_ROOT}/${relativeAsset}`,
+      Buffer.from(bytes),
+    );
+  }
+
   files.set(
-    `${PLUGIN_ROOT}/.codex-plugin/plugin.json`,
+    `${CODEX_PLUGIN_ROOT}/.codex-plugin/plugin.json`,
     Buffer.from(renderCodexPluginManifest(release), "utf8"),
   );
   files.set(
-    `${PLUGIN_ROOT}/.claude-plugin/plugin.json`,
+    `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`,
     Buffer.from(renderClaudePluginManifest(release), "utf8"),
   );
   files.set(
-    `${PLUGIN_ROOT}/catalog.json`,
+    `${CODEX_PLUGIN_ROOT}/catalog.json`,
+    Buffer.from(
+      renderPluginCatalog(
+        catalog,
+        release,
+        source.manualDigest,
+      ),
+      "utf8",
+    ),
+  );
+  files.set(
+    `${CLAUDE_PLUGIN_ROOT}/catalog.json`,
     Buffer.from(
       renderPluginCatalog(
         catalog,
@@ -321,6 +754,14 @@ async function collectManagedActualPaths(root, catalog) {
       paths.push(document);
     }
     paths.push(...(await walkOptional(root, `skills/${skill.name}/agents`)));
+    if (sharedAssetsForSkill(skill.name).length > 0) {
+      paths.push(
+        ...(await walkOptional(
+          root,
+          `skills/${skill.name}/${SHARED_ROOT}`,
+        )),
+      );
+    }
   }
   paths.push(...(await walkOptional(root, "plugins")));
   paths.push(...(await walkOptional(root, ".agents/plugins")));
@@ -331,11 +772,19 @@ async function collectManagedActualPaths(root, catalog) {
 export async function hasGeneratedArtifacts(root, catalogValue) {
   const catalog = validateCatalog(catalogValue);
   for (const skill of catalog.skills) {
-    const sidecar = `skills/${skill.name}/agents`;
-    if (
-      (await lstatOptional(absolutePath(root, sidecar), sidecar)) !== undefined
-    ) {
-      return true;
+    const generatedRoots = [`skills/${skill.name}/agents`];
+    if (sharedAssetsForSkill(skill.name).length > 0) {
+      generatedRoots.push(`skills/${skill.name}/${SHARED_ROOT}`);
+    }
+    for (const generatedRoot of generatedRoots) {
+      if (
+        (await lstatOptional(
+          absolutePath(root, generatedRoot),
+          generatedRoot,
+        )) !== undefined
+      ) {
+        return true;
+      }
     }
   }
   for (const relativePath of [
@@ -425,8 +874,11 @@ function managedTargets(catalog) {
     ...catalog.skills.flatMap((skill) => [
       `skills/${skill.name}/SKILL.md`,
       `skills/${skill.name}/agents`,
+      ...(sharedAssetsForSkill(skill.name).length > 0
+        ? [`skills/${skill.name}/${SHARED_ROOT}`]
+        : []),
     ]),
-    PLUGIN_ROOT,
+    "plugins",
     ".agents/plugins",
     ".claude-plugin",
   ];

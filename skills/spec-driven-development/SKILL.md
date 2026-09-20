@@ -1,6 +1,6 @@
 ---
 name: spec-driven-development
-description: "Define or revise an implementation-ready specification when the user explicitly requests substantial specification work. Use recoverable Prompt MCP decisions, persist non-sensitive answers, require draft approval, and stop before planning."
+description: "Define or revise an adaptive-depth implementation-ready specification when explicitly requested. Confirm scope and profiles, persist decisions and manifest, mark the complete specification Approved, and stop before planning."
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -8,34 +8,58 @@ user-invocable: true
 # Spec-Driven Development
 
 Keep this workflow specification-only.
+Model suggestion: {{HOST_AUTHOR_MODEL}}. Never switch or gate on model.
 
-1. Locate the sibling `planning-and-task-breakdown` skill. Run its
-   `scripts/verify-engineering-manual.mjs` through Node with this skill
-   directory as the only argument before writing any artifact. If verification
-   fails, return exactly: `Install or update the complete matching
-   engineer-agent-workflows bundle for Codex and Claude Code using the
-   documented pinned global command, then retry.` Stop without fetching,
-   copying, approximating, or ignoring the manual.
-2. Read the verified sibling `references/engineering-principles.md`. Read
-   applicable `AGENTS.md` in Codex or `CLAUDE.md` in Claude Code, then inspect
-   task-scoped code, tests, interfaces, configuration, and stable
-   documentation. Repository evidence and approved requirements outrank
-   generic guidance.
-3. Read `references/specification-interview.md`. Create or reload the
-   repository-owned `decisions.yaml`; treat it, not chat history, as recovery
-   state. Record stated choices and observed facts without asking again.
-4. Use only callable Prompt MCP tools and their advertised schemas for material
-   user decisions. Do not construct a tool namespace. Checkpoint each
-   non-sensitive committed answer immediately; treat every non-answer status as
-   unresolved and stop when it blocks the contract.
-5. Resolve outcomes, interfaces, data and state contracts, validation, limits,
-   failure and recovery, security and privacy, compatibility, non-goals, and
-   objective acceptance. Keep implementation-local structure out of the
-   specification.
-6. Map active decisions to numbered requirements and write `spec.md` with
-   `Status: Draft`. Run the reference's gap review, then request a separate
-   Prompt MCP approval. Mark `Approved` only for a committed positive approval;
-   otherwise revise or leave the draft open.
-7. Update the decision ledger and specification handoff, then stop. Never
-   create an implementation plan, execute work, invoke another workflow,
-   install tools, or treat interview completion as draft approval.
+1. Set `skill_dir` to the absolute path of this `spec-driven-development` directory.
+   Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`
+   The sole argument is the skill directory. If it fails, return exactly: `Install or
+   update the complete matching engineer-agent-workflows bundle for
+   {{HOST_DISPLAY_NAME}} using the documented pinned global command, then
+   retry.` Stop without fetching, copying, approximating, or ignoring the
+   manual.
+2. Read verified `shared/references/engineering-principles.md` and
+   `shared/references/test-discipline.md`. Use host-supplied project instructions;
+   do not reread them solely to recover context. Read
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from
+   active context or itself in scope. Approved requirements and
+   repository evidence outrank generic guidance.
+3. Read `references/adaptive-scope.md` and
+   `references/specification-interview.md`. Use workflow MCP for decisions and
+   manifest state; never read workflow YAML directly.
+   Mark evidence verified, assumed, or superseded; do not repeat settled choices.
+   For valid product-linked task, read `shared/references/product-workflow.md`
+   follow its Specification role; otherwise keep the standalone path and do
+   not call product task tools.
+4. Infer known scope, then ask only missing high-level questions. Propose and
+   confirm the Lite, Standard, or Deep depth and active profiles through the
+   callable `{{HOST_QUESTION_TOOL}}` in the current mode. Follow its exposed
+   schema and do not enter plan mode solely to ask. Checkpoint the proposal and
+   explicit answer in `decisions.yaml`; write only the confirmed scope
+   to `manifest.yaml`. If the tool gives no answer, use the saved conversational
+   fallback and stop when confirmation is missing.
+5. Persist the scope answer and confirmed manifest in `decisions.yaml` and
+   `manifest.yaml` before any profile read, including on resume. Load only each
+   active profile's `references/<profile>-requirements.md`. Never load
+   a reference for an inactive, not-applicable, or unresolved profile. Depth
+   controls useful detail, not correctness or mandatory safety coverage.
+   Planning owns profile artifacts; record their required names in the manifest
+   but do not create them.
+6. Ask material decisions plainly with one example. Checkpoint each non-sensitive answer immediately. Resolve
+   outcomes, rules, interfaces, data and state contracts, validation, limits,
+   alternate flows, failure and recovery, security and privacy, compatibility,
+   non-goals, quality scenarios, and objective acceptance applicable to the
+   confirmed scope.
+7. Give requirements stable `### <ID>: <title>` headings. Each criterion records
+   an observation and excluded outcome.
+   For absence claims, name an observable signal.
+   Map active decisions and planned profile contracts to requirements. Keep
+   `spec.md` behavioral: do not invent implementation-local files, symbols,
+   frameworks, dependency injection, task order, or estimates.
+8. Follow the interview's persisted cycle: Draft, links, mechanical checks and
+   separate-context review via `references/completeness-review.md`.
+   Only a fresh recorded pass permits `Status: Approved` without a separate
+   approval question or `approval.spec`. Treat user edits as authoritative;
+   reconcile changes and repeat the cycle before renewed approval.
+9. Save specification state, summarize the next step, and stop. Planning owns
+   `handoff.md`. Do not plan, implement, install, commit,
+   publish, or treat `Approved` as planning or implementation authorization.

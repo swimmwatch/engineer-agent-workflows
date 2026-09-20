@@ -7,11 +7,16 @@ user-invocable: true
 
 # Code Review And Quality
 
+Model suggestion: {{HOST_REVIEW_MODEL}}. Never switch or gate on model.
+
 Use this workflow only for an explicit request to review an identified change,
 diff, branch, or completed implementation. Review is read-only: do not edit,
 commit, publish, or turn findings into fixes without a separate request.
 
-1. Read applicable `AGENTS.md` in Codex or `CLAUDE.md` in Claude Code. Establish
+1. Use project instructions already supplied by the host; do not reread their
+   source files solely to recover context. Read an additional task-scoped
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only when it is not already in the active
+   context or the file itself is in scope. Establish
    the requested comparison range and inspect only its diff, affected
    interfaces, tests, configuration, stable documentation, and one relevant
    repository precedent. Treat repository evidence and approved requirements as

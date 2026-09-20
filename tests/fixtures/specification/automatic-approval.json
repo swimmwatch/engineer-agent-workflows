@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "automatic-approval",
+  "generationPreconditions": {
+    "materialDecisionsResolved": true,
+    "gapReviewPassed": true,
+    "specificationWritten": true
+  },
+  "expectedStatus": "Approved",
+  "separateApprovalQuestion": false,
+  "approvalDecisionCreated": false,
+  "userEdits": {
+    "authoritative": true,
+    "statusAfterEdit": "Approved",
+    "reconcileOnNextInvocation": true
+  }
+}

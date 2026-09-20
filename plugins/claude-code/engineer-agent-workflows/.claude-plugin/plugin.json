@@ -1,0 +1,13 @@
+{
+  "name": "engineer-agent-workflows",
+  "version": "0.0.0-development",
+  "description": "Reusable, explicit-only engineering workflows for Claude Code.",
+  "author": {
+    "name": "Dmitry Vasiliev",
+    "email": "contact.vasiliev.dmitry@gmail.com",
+    "url": "https://github.com/swimmwatch"
+  },
+  "homepage": "https://github.com/swimmwatch/engineer-agent-workflows",
+  "repository": "https://github.com/swimmwatch/engineer-agent-workflows",
+  "license": "MIT"
+}

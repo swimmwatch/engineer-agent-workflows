@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "policy": {
+    "hostModelRoles": {
+      "codex": {
+        "specification": ["gpt-5.6-sol", "gpt-6-astra"],
+        "planning": ["gpt-5.6-sol", "gpt-6-astra"],
+        "implementation": ["gpt-5.6-terra"],
+        "review": ["gpt-5.6-sol", "gpt-6-astra"]
+      },
+      "claude-code": {
+        "specification": ["claude-opus-5"],
+        "planning": ["claude-opus-5"],
+        "implementation": ["claude-sonnet-5"],
+        "review": ["claude-opus-5"]
+      }
+    },
+    "stablePasses": 2,
+    "holdoutPasses": 1,
+    "fullMatrix": {
+      "codex": [
+        "lite-cli-core",
+        "standard-ui",
+        "standard-backend-api-data-security",
+        "standard-ui-api-cross-surface",
+        "deep-events-data-operations-security"
+      ],
+      "claude-code": [
+        "lite-cli-core",
+        "standard-ui-api-cross-surface"
+      ]
+    },
+    "holdoutMatrix": {
+      "codex": ["holdout-lite-config-check", "holdout-ui-api-session-expiry"]
+    }
+  },
+  "scenarios": [
+    {
+      "id": "lite-cli-core",
+      "set": "full",
+      "depth": "Lite",
+      "profiles": ["core"],
+      "answerMode": "inline-confirmed",
+      "prompt": "Specify, plan, and incrementally implement whitespace normalization for an existing command-line status report.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The command already emits a line-oriented text report.",
+          "Repeated internal whitespace should normalize to one space.",
+          "Empty input behavior and every existing option remain compatible."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "No option or output field is added.",
+          "Only repeated internal spaces and tabs are normalized.",
+          "Empty input and failure exit behavior do not change."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Existing options and line-oriented output fields remain unchanged.",
+        "Runs of internal spaces and tabs render as one space.",
+        "Empty input and failure exit statuses preserve current behavior."
+      ]
+    },
+    {
+      "id": "standard-ui",
+      "set": "full",
+      "depth": "Standard",
+      "profiles": ["ui"],
+      "prompt": "Specify, plan, and incrementally implement an accessible filter panel for a simulated issue list.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The list already supports status and owner filters.",
+          "Keyboard and screen-reader use are required.",
+          "The current mobile list layout must remain usable."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "Apply and Clear are explicit actions.",
+          "Focus returns to the control that opened the panel.",
+          "Applied filters are announced and survive viewport changes."
+        ]
+      },
+      "acceptanceRequirements": [
+        "The panel is fully operable by keyboard with visible focus.",
+        "Applied filters are announced through an accessible status message.",
+        "Desktop and mobile layouts expose the same filter outcome."
+      ]
+    },
+    {
+      "id": "standard-backend-api-data-security",
+      "set": "full",
+      "depth": "Standard",
+      "profiles": ["backend", "data", "security"],
+      "prompt": "Specify, plan, and incrementally implement a simulated idempotent API for creating export jobs.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "Authenticated tenant users may create exports for their own tenant.",
+          "Clients retry requests after timeouts.",
+          "Job metadata is retained for thirty days."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "An idempotency key is scoped to tenant and request identity.",
+          "Authorization is checked before job lookup or creation.",
+          "Retention applies to job metadata and idempotency records."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Equivalent authorized retries create at most one export job.",
+        "Cross-tenant access returns no export metadata.",
+        "Expired job and idempotency records are removed after the retention window."
+      ]
+    },
+    {
+      "id": "standard-ui-api-cross-surface",
+      "set": "full",
+      "depth": "Standard",
+      "profiles": ["ui", "backend", "cross-surface"],
+      "prompt": "Specify, plan, and incrementally implement simulated notification preferences shared by web UI and API clients.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The web UI and API edit the same preference record.",
+          "Concurrent edits can occur.",
+          "A rejected save must not leave the UI showing an unpersisted value."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "Both surfaces use one versioned preference contract.",
+          "A stale write receives an explicit conflict response.",
+          "The UI restores the persisted state and explains a failed save."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Web and API reads return the same preference value and version.",
+        "A stale update cannot overwrite a newer accepted update.",
+        "After rejection, the UI displays persisted state and an accessible error."
+      ]
+    },
+    {
+      "id": "deep-events-data-operations-security",
+      "set": "full",
+      "depth": "Deep",
+      "profiles": ["events", "data", "operations", "security"],
+      "prompt": "Specify, plan, and incrementally implement a simulated order-event ingestion boundary with replay and operational recovery.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "Delivery is at least once and events may arrive out of order.",
+          "Operators need bounded replay without exposing payloads in logs.",
+          "Tenant separation applies to storage, replay, and metrics."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "Deduplication identity and ordering scope are explicit.",
+          "Replay is authorized, bounded, observable, and resumable.",
+          "Logs and metrics exclude sensitive payload content and cross-tenant dimensions."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Duplicate delivery has no duplicate business effect.",
+        "Out-of-order events produce the documented deterministic state.",
+        "Authorized replay can resume after interruption within a bounded tenant scope.",
+        "Operational evidence contains no event payload or cross-tenant data."
+      ]
+    },
+    {
+      "id": "holdout-lite-config-check",
+      "set": "holdout",
+      "depth": "Lite",
+      "profiles": ["core"],
+      "answerMode": "inline-confirmed",
+      "prompt": "Specify, plan, and incrementally implement a read-only command that validates a simulated service configuration.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "Validation must not rewrite configuration.",
+          "Operators need distinct valid, invalid, and unreadable outcomes."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "The command is side-effect free.",
+          "Each outcome has an objective exit status and diagnostic category."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Validation leaves configuration bytes unchanged.",
+        "Valid, invalid, and unreadable inputs have distinct documented outcomes."
+      ]
+    },
+    {
+      "id": "holdout-ui-api-session-expiry",
+      "set": "holdout",
+      "depth": "Standard",
+      "profiles": ["ui", "backend", "cross-surface"],
+      "prompt": "Specify, plan, and incrementally implement consistent simulated session-expiry handling across a web form and API.",
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "A session may expire while a form is being edited.",
+          "The API must not accept an expired credential.",
+          "The UI must preserve non-sensitive edits through reauthentication."
+        ]
+      },
+      "answerRubric": {
+        "classification": "SIMULATION",
+        "materialAnswers": [
+          "The API returns one documented authentication outcome.",
+          "The UI prompts for reauthentication without implying the save succeeded.",
+          "Only non-sensitive draft fields are restored."
+        ]
+      },
+      "acceptanceRequirements": [
+        "Expired credentials cannot mutate server state.",
+        "The UI clearly distinguishes an expired session from a saved form.",
+        "Reauthentication restores only the permitted non-sensitive draft fields."
+      ]
+    }
+  ]
+}

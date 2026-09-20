@@ -12,7 +12,10 @@ measured performance problem, or when the user supplies reproducible regression
 evidence. Determine whether the request authorizes diagnosis only or a bounded
 mutation; do not widen that authority.
 
-1. Read applicable `AGENTS.md` in Codex or `CLAUDE.md` in Claude Code. Inspect
+1. Use project instructions already supplied by the host; do not reread their
+   source files solely to recover context. Read an additional task-scoped
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only when it is not already in the active
+   context or the file itself is in scope. Inspect
    task-scoped code, tests, interfaces, configuration, stable documentation, and
    available measurement tooling. Treat repository evidence as authoritative;
    do not invent tools, commands, benchmarks, or results.

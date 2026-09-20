@@ -26,6 +26,14 @@
       "dependencies": []
     },
     {
+      "name": "design-planning",
+      "description": "Prepare manifest-scoped UI design after an implementation plan, on explicit request. Use separately installed Penpot skills, save validated design contracts and snapshots, and update affected handoffs; do not implement.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "planning-and-task-breakdown"
+      ]
+    },
+    {
       "name": "documentation-and-adrs",
       "description": "Write or revise technical documentation or an architecture decision record when the user explicitly requests it. Ground claims in repository evidence, distinguish current from proposed behavior, and record settled trade-offs.",
       "classification": "standalone",
@@ -33,19 +41,19 @@
     },
     {
       "name": "doubt-driven-development",
-      "description": "Adversarially challenge a named high-risk product or technical decision when the user explicitly requests it. Compare evidence, assumptions, failure modes, reversibility, and safe experiments; do not use for routine uncertainty.",
+      "description": "Adversarially challenge a named high-risk product or technical decision with a fresh host-native reviewer when explicitly requested. Reconcile evidence, assumptions, failure modes, reversibility, and safe experiments.",
       "classification": "standalone",
       "dependencies": []
     },
     {
       "name": "idea-refine",
-      "description": "Refine a product, architecture, tooling, or workflow idea when the user explicitly asks to ideate, compare directions, or stress-test it before commitment. Frame goals, alternatives, trade-offs, risks, and unresolved decisions.",
+      "description": "Refine an idea explicitly in standalone mode or save a durable product Idea through workflow MCP. Compare evidence, alternatives, risks, and unresolved decisions; stop before Product Definition.",
       "classification": "standalone",
       "dependencies": []
     },
     {
       "name": "incremental-implementation",
-      "description": "Implement exactly one authorized, self-contained task packet per explicit invocation, verify it, update its checklist and handoff, then stop for review. Commit the completed previous packet only with explicit commit authorization.",
+      "description": "Implement exactly one authorized task packet per explicit invocation using test-first RED/GREEN/PROVE, verify it, update checklist and handoff, then stop.",
       "classification": "bundle-required",
       "dependencies": [
         "planning-and-task-breakdown"
@@ -53,7 +61,7 @@
     },
     {
       "name": "interview-me",
-      "description": "Run a structured requirements interview when the user explicitly asks to be interviewed, grilled, or guided through unresolved decisions. Use available Prompt MCP tools, checkpoint committed answers, and stop before downstream work.",
+      "description": "Run a structured requirements interview when the user explicitly asks to be interviewed, grilled, or guided through unresolved decisions. Use host-native questions, checkpoint explicit answers, and stop before downstream work.",
       "classification": "standalone",
       "dependencies": []
     },
@@ -65,27 +73,28 @@
     },
     {
       "name": "planning-and-task-breakdown",
-      "description": "Create an implementation plan or review-gated task breakdown when the user explicitly requests planning, decomposition, milestones, or execution packets. Ground architecture and verification in repository evidence; do not implement.",
-      "classification": "standalone",
-      "dependencies": []
+      "description": "Create adaptive-depth implementation plans from Approved specifications and confirmed scope when explicitly requested. Produce profile contracts, architecture, test-first tasks, and documentation; do not implement.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "spec-driven-development"
+      ]
     },
     {
-      "name": "project-docs-maintainer",
-      "description": "Maintain a project documentation set when the user explicitly asks to organize, update, consolidate, or audit project knowledge. Preserve authoritative ownership, verified behavior, links, history, and audience boundaries.",
-      "classification": "standalone",
-      "dependencies": []
+      "name": "product-definition",
+      "description": "Create or revise a PRD from a ready product Idea through workflow MCP. Confirm depth and profiles, capture product meaning and use cases, require review evidence, then stop before Technical Design.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "idea-refine"
+      ]
     },
     {
-      "name": "project-pull-request",
-      "description": "Create, update, or review a pull request when the user explicitly requests PR work. Discover repository policy, base/head, templates, checks, and provider state; preserve unrelated changes and require authority for external mutations.",
-      "classification": "standalone",
-      "dependencies": []
-    },
-    {
-      "name": "project-release",
-      "description": "Prepare, publish, verify, or recover a release when the user explicitly requests release work. Require a confirmed SemVer, discover repository policy, verify artifacts and trust evidence, and separate preparation from publication.",
-      "classification": "standalone",
-      "dependencies": []
+      "name": "product-roadmap",
+      "description": "Create or revise a staged product roadmap from exact ready PRD and Technical Design pins. Keep distant stages coarse, define independent tasks without creating specifications, review, then stop.",
+      "classification": "bundle-required",
+      "dependencies": [
+        "product-definition",
+        "technical-design"
+      ]
     },
     {
       "name": "security-and-hardening",
@@ -95,10 +104,16 @@
     },
     {
       "name": "spec-driven-development",
-      "description": "Define or revise an implementation-ready specification when the user explicitly requests substantial specification work. Use recoverable Prompt MCP decisions, persist non-sensitive answers, require draft approval, and stop before planning.",
+      "description": "Define or revise an adaptive-depth implementation-ready specification when explicitly requested. Confirm scope and profiles, persist decisions and manifest, mark the complete specification Approved, and stop before planning.",
+      "classification": "standalone",
+      "dependencies": []
+    },
+    {
+      "name": "technical-design",
+      "description": "Create or revise shared Technical Design from an exact ready PRD pin. Capture boundaries, evidence-grounded technology choices and policies, require review evidence, then stop before Product Roadmap.",
       "classification": "bundle-required",
       "dependencies": [
-        "planning-and-task-breakdown"
+        "product-definition"
       ]
     }
   ]

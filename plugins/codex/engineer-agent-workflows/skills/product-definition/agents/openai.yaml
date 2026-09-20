@@ -1,0 +1,5 @@
+interface:
+  display_name: "Product Definition"
+  short_description: "Create or revise a PRD from a ready product Idea through workflow MCP. Confirm depth and profiles, capture product meaning and use cases, require review evidence, then stop before Technical Design."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,39 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - Implement the explicitly approved specification-completeness plan within the existing local stdio MCP and generated skills.
+profiles:
+  - id: core
+    reason: Workflow skills and deterministic specification contracts.
+    state: active
+  - id: backend
+    reason: Public stdio MCP scenario interfaces.
+    state: active
+  - id: data
+    reason: Backward-compatible decision journal and persistent review metadata.
+    state: active
+  - id: ui
+    reason: No UI or Penpot changes.
+    state: not_applicable
+  - id: events
+    reason: No event transport.
+    state: not_applicable
+  - id: operations
+    reason: No deployment or global configuration changes.
+    state: not_applicable
+  - id: security
+    reason: Preserve existing trust boundaries and safety checks; no new access surface.
+    state: not_applicable
+  - id: cross-surface
+    reason: Reuse existing isolated host generation.
+    state: not_applicable
+planning_artifacts:
+  - contracts/mcp.md
+extensions:
+  workflow_mcp_receipts:
+    - id: 4e483d1c8a7ee35c3dba31c62b32f5938e69c5dd3ed487cfc70dcc0b97630fab
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.

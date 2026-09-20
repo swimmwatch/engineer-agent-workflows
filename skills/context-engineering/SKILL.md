@@ -12,8 +12,11 @@ guidance, routing, task context, stale facts, or handoff continuity. Establish
 whether the user authorized assessment or mutation and which durable surface
 may change.
 
-1. In Codex, read the nearest applicable `AGENTS.md`; in Claude Code, read
-   applicable `CLAUDE.md`. Do not fabricate the other host's file. Inspect only
+1. Use project instructions already supplied by the host; do not reread their
+   source files solely to recover context. Read an additional task-scoped
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only when it is not already in the active
+   context or the file itself is in scope. Do not fabricate
+   another host's file. Inspect only
    task-relevant code, tests, interfaces, configuration, stable documentation,
    and existing handoffs. Treat current repository evidence and approved rules
    as authoritative over generic defaults or stale notes.

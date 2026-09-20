@@ -1,5 +1,0 @@
-interface:
-  display_name: "Project Release"
-  short_description: "Prepare, publish, verify, or recover a release when the user explicitly requests release work. Require a confirmed SemVer, discover repository policy, verify artifacts and trust evidence, and separate preparation from publication."
-policy:
-  allow_implicit_invocation: false

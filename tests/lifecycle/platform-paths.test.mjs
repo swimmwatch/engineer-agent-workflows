@@ -73,10 +73,9 @@ test("lifecycle invocation is pinned, global, explicit, and copy-isolated", () =
     "--global",
     "--agent",
     "codex",
-    "--agent",
-    "claude-code",
     "--skill",
     "*",
+    "--copy",
     "--yes",
   ];
   const invocation = buildSkillsInvocation(addArgs, { platform: "linux" });
@@ -92,26 +91,32 @@ test("lifecycle invocation is pinned, global, explicit, and copy-isolated", () =
     "npx.cmd",
   );
 
-  assert.deepEqual(
-    buildSkillsInvocation([
-      "update",
-      "code-review-and-quality",
-      "--global",
-      "--yes",
-    ]).args.slice(-4),
-    ["update", "code-review-and-quality", "--global", "--yes"],
-  );
   assert.throws(
     () =>
       buildSkillsInvocation([
         "update",
         "code-review-and-quality",
         "--global",
-        "--agent",
-        "codex",
         "--yes",
       ]),
-    /upstream update has no agent option/,
+    /unsupported lifecycle command/,
+  );
+  assert.throws(
+    () =>
+      buildSkillsInvocation([
+        "add",
+        "file:///fixture",
+        "--global",
+        "--agent",
+        "codex",
+        "--agent",
+        "claude-code",
+        "--skill",
+        "*",
+        "--copy",
+        "--yes",
+      ]),
+    /one agent/,
   );
   assert.throws(
     () => buildSkillsInvocation(["list", "--project", "--agent", "codex"]),
@@ -134,7 +139,17 @@ test("lifecycle output is bounded and temporary paths are redacted", async (t) =
     );
 
   const result = await runSkills(
-    ["update", "code-review-and-quality", "--global", "--yes"],
+    [
+      "add",
+      "file:///fixture",
+      "--global",
+      "--agent",
+      "codex",
+      "--skill",
+      "code-review-and-quality",
+      "--copy",
+      "--yes",
+    ],
     {
       cwd: profile.project,
       env: environment,
@@ -170,9 +185,14 @@ test("timeout and cancellation terminate and reap the command", async (t) => {
       options,
     );
   const args = [
-    "update",
-    "code-review-and-quality",
+    "add",
+    "file:///fixture",
     "--global",
+    "--agent",
+    "codex",
+    "--skill",
+    "code-review-and-quality",
+    "--copy",
     "--yes",
   ];
 

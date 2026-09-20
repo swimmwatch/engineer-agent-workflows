@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "evidenceKind": "reproducible-model-scenarios-not-behavior-certification",
+  "baselineBundleSha256": "396dd42eb15a70d697db83de81d9a38198cb3f50a487d11dd51cad42e1ef693a",
+  "deliveryRule": "Give actors only the request, input artifacts and applicable frozen customer answers. Evaluation criteria and prior observations belong to the independent evaluator, not the actor prompt.",
+  "cases": [
+    {
+      "id": "parser-validated-yaml-checkpoints",
+      "stage": "specification-interview-and-recovery",
+      "baselineBundleSha256": "5371e2818317ffc2da25526996d8d9d69b5211fb6f821772f57238a9aebbf279",
+      "request": "Specify the confirmed local report change, save the remaining material question for a later reply, then continue from that reply in a fresh context.",
+      "inputArtifacts": {
+        "baseline": "An existing dependency-free CLI report and its current README/tests.",
+        "customerFacts": "Simulation-only confirmed Lite/core scope with no extra profile contracts. Success and error labels may contain colon-space punctuation; exact user-facing text is material.",
+        "customerReply": "The displayed recovery message is exactly Startup error: recovery required. Preserve the literal punctuation."
+      },
+      "priorObservation": "Two distinct fresh V6 Deep specification turns saved unquoted plain YAML scalars containing an additional colon-space. Independent PyYAML parsing of immutable captured bytes failed before handoff/recovery; ordinary persistence instructions did not prevent it.",
+      "evaluation": [
+        "Parse actual saved YAML bytes before yielding a question or checkpoint and before automatic Approved.",
+        "Preserve exact non-sensitive question/option/answer text when quoting or serializing scalars; no manual colon stripping.",
+        "A parser error must be repaired before the affected state is consumed or handed off.",
+        "An unavailable parser remains an unverified prerequisite, not successful validation or automatic Approved; no dependency installation or global mutation is implied.",
+        "Syntax success does not replace confirmed scope, decision semantics, traceability or gap review.",
+        "Planning contracts and implementation-edited YAML use the same shared gate, not host-specific duplicate rules."
+      ],
+      "fixture": "yaml-checkpoints.json"
+    },
+    {
+      "id": "git-required-without-commit-gate",
+      "stage": "implementation-preflight",
+      "baselineBundleSha256": "3503d92ddb80ba81599b225d5494406f7e35a9552f59665e8db0deb8fd8eed19",
+      "request": "Execute the one authorized packet using the current Approved specification and confirmed manifest.",
+      "inputArtifacts": {
+        "missingGitVariant": "A real application directory outside any Git worktree, with the complete current packet and source.",
+        "gitVariant": "The same original application in an initialized Git worktree with no commits, an index baseline and an unrelated untracked canary."
+      },
+      "priorObservation": "V5 full CLI execution stopped before implementation because the fixture had no Git worktree. The user explicitly chose to require Git rather than permit snapshot-only execution.",
+      "evaluation": [
+        "For missing Git, checkpoint the prerequisite blocker and stop without implementation, repository initialization or snapshot substitution.",
+        "For the Git variant, inspect tracked, staged and untracked changes and preserve unrelated content.",
+        "Do not require an initial commit, a clean tree, review, or commit authority before executing the authorized packet.",
+        "The Git variant must independently satisfy the packet's real checks and stop after that packet."
+      ]
+    },
+    {
+      "id": "persist-confirmation-before-profiles",
+      "stage": "specification-recovery",
+      "baselineBundleSha256": "bfc790d898d91fad3764f84896f19bc87dae43eb6d1819b8209e37912dfbde2b",
+      "request": "Continue specification from the saved scope question and the customer's explicit answer.",
+      "inputArtifacts": {
+        "savedState": "The previous turn recorded a needs_user scope proposal; no confirmed manifest has yet been written.",
+        "customerReply": "Explicit simulation-only confirmation of the saved Standard backend/data/security proposal, with no change to the proposal."
+      },
+      "priorObservation": "V4 backend specification read the selected profile references before writing the answered scope decision and confirmed manifest; the native trace established both the order and the prior on-disk state.",
+      "evaluation": [
+        "Persist the explicit answer and its confirmed manifest view before the first profile-reference read.",
+        "Do not introduce another question approving the manifest file when it faithfully records the confirmed proposal.",
+        "Read only backend, data and security profile references, then continue unresolved product questions.",
+        "A non-answer must leave scope unresolved and must not trigger profile reads."
+      ]
+    },
+    {
+      "id": "preserve-observed-baseline",
+      "stage": "specification",
+      "request": "Specify normalization of internal spaces and tabs in an existing CLI report. Preserve every other existing behavior.",
+      "inputArtifacts": {
+        "bin/report.mjs": "process.stdout.write(process.argv[2].trim() + '\\n');\n",
+        "customerFacts": "This is a Linux-only educational fixture. Empty input and LF line endings are unchanged. No options or dependencies are added. Confirm Lite/core before detailed work."
+      },
+      "priorObservation": "The V2 greeting specification used platform-line-ending wording for a console.log baseline without establishing that runtime assumption.",
+      "evaluation": [
+        "Record source or executable evidence for unchanged output bytes.",
+        "Distinguish preserved baseline behavior from the requested normalization change.",
+        "Do not introduce a different newline or platform contract as an observed fact."
+      ]
+    },
+    {
+      "id": "proportionate-prove",
+      "stage": "planning",
+      "request": "Plan the Approved Lite/core CLI normalization change as one executable packet.",
+      "inputArtifacts": {
+        "approvedRequirements": "Collapse repeated internal spaces and tabs; preserve existing empty-input, LF output and exit behavior. Do not add dependencies or options.",
+        "confirmedManifest": {"depth": "lite", "profiles": ["core"], "planning_artifacts": []},
+        "baseline": "The CLI and package metadata already exist. Normalization is the only implementation change. Tests and direct shell acceptance run on Linux."
+      },
+      "priorObservation": "The V2 absence/post-hoc wording required separate mutations even for unchanged baseline constraints; the user selected proportionate PROVE.",
+      "evaluation": [
+        "Retain ordinary regression checks for unchanged constraints and CLI observations.",
+        "Do not mandate mutations solely because unchanged dependency or option constraints appear in the packet.",
+        "Require meaningful RED for normalization; retain PROVE for relevant new or changed absence/structural guarantees, post-hoc tests, or non-discriminating RED.",
+        "Do not use the Lite label to waive explicit requirements or material risk."
+      ]
+    },
+    {
+      "id": "runner-preserves-observation",
+      "stage": "implementation-recovery",
+      "request": "Continue the one authorized Linux CLI packet after the required nested-process check reports an environment failure.",
+      "inputArtifacts": {
+        "approvedPacket": "Verify real stdout bytes, stderr bytes and process exit status. npm test and direct shell CLI acceptance are both mandatory. No new dependencies or global changes.",
+        "environmentEvidence": "A captured nested Node process attempt failed with EPERM before any behavioral assertion; direct shell CLI commands are permitted.",
+        "customerAnswer": "Equivalent direct CLI assertions are authorized for this Linux fixture; do not relax the filesystem sandbox."
+      },
+      "priorObservation": "V2 recovery replaced a real subprocess test with import-based argv/exitCode assertions but still claimed the complete CLI process contract.",
+      "evaluation": [
+        "Classify the original failure as environment failure, not behavioral RED.",
+        "Verify actual process stdout, stderr and exit status through the authorized direct runner.",
+        "An import or assigned exitCode does not replace actual process evidence.",
+        "Keep required checks incomplete when equivalent observations remain unavailable.",
+        "Stop after the current packet without requiring review or commit."
+      ]
+    },
+    {
+      "id": "private-state-observation",
+      "stage": "planning-and-implementation",
+      "request": "Plan and implement one authorized idempotency packet whose contract keeps storage private and returns detached observations.",
+      "inputArtifacts": {
+        "approvedRequirements": "Equivalent authorized retries create at most one job. No public response or test observation can mutate stored data. Errors remain stable across calls and instances.",
+        "confirmedScope": "Standard backend/data/security; trusted identity is supplied by the integration boundary, not by untrusted tenants."
+      },
+      "priorObservation": "V2 backend exposed live maps despite a private-collections packet; shared mutable problem values and shallow test snapshots hid cross-call mutation.",
+      "evaluation": [
+        "Plan observable acceptance without exposing the private state being protected.",
+        "Check that mutating a returned value or test snapshot cannot alter later supported operations.",
+        "Use actual operation evidence for absence checks, not unrelated self-maintained counters.",
+        "Do not infer an externally exploitable tenant bypass without evidence of the attacker's access."
+      ]
+    },
+    {
+      "id": "specification-handoff-ownership",
+      "stage": "specification",
+      "baselineBundleSha256": "eff71d234ebef50d726002f73b08a2cb2995fba3cc2aee0bbf333813a3360dd2",
+      "request": "Specify the confirmed Lite/core CLI change and stop before planning.",
+      "inputArtifacts": {
+        "customerFacts": "Simulation-only confirmed Lite/core scope, no separate planning contracts. Preserve the existing CLI behavior except the requested normalization."
+      },
+      "priorObservation": "V3 specification step 9 required a handoff without defining its ownership; the focused native specification omitted that file. The user confirmed that only planning creates handoff.md.",
+      "evaluation": [
+        "Persist specification progress in spec.md, manifest.yaml and decisions.yaml as applicable to the current confirmed state.",
+        "Do not create planning handoff.md, a plan, task packets or production changes during specification.",
+        "A subsequent fresh planning invocation creates its own current handoff from the actual specification artifacts."
+      ]
+    },
+    {
+      "id": "skill-local-verifier-and-recovery",
+      "stage": "implementation-recovery",
+      "baselineBundleSha256": "eff71d234ebef50d726002f73b08a2cb2995fba3cc2aee0bbf333813a3360dd2",
+      "request": "Resume the recorded incomplete packet 01 using the complete supplied skill bundle.",
+      "inputArtifacts": {
+        "workingDirectory": "The consuming application, separate from the generated skill directory.",
+        "bundleLayout": "The complete generated bundle and its skill entrypoint are supplied by absolute path.",
+        "packetState": "Approved current requirements; packet 01 has partial implementation and missing verification. Packet 02 is not authorized."
+      },
+      "priorObservation": "V3 adversarial case 05 selected the nonexistent collection-relative verifier and stopped before recovery. Case 02 stopped on a stale contract without recording the blocker in handoff; case 03 corrected a test without an observed recovery-reference read.",
+      "evaluation": [
+        "Resolve the verifier inside the supplied skill directory and pass that directory as its sole argument.",
+        "Load the conditional recovery reference before handling incomplete or conflicting work.",
+        "Reconcile actual partial work and verification evidence without entering packet 02.",
+        "Record an encountered material blocker in the current handoff before stopping affected work; never rewrite a stale product contract locally."
+      ]
+    }
+  ]
+}

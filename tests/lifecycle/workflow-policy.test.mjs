@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
+import { parse } from "yaml";
 
 import { projectRoot, readFixture } from "../lib/fixtures.mjs";
 
@@ -23,22 +24,34 @@ test("manual lifecycle workflow is pinned, read-only, and cross-platform", async
   assert.match(workflow, /timeout-minutes: 20/);
   assert.match(workflow, /fail-fast: false/);
 
-  for (const runner of ["ubuntu-24.04", "macos-15", "windows-2025"]) {
-    assert.equal(workflow.split(runner).length - 1, 1, runner);
-  }
-  assert.match(workflow, /node-version: 24\.14\.0/);
+  const parsed = parse(workflow);
+  const lifecycle = parsed.jobs.lifecycle;
+  const qualification = parsed.jobs["product-qualification"];
+  const runners = ["ubuntu-24.04", "macos-15", "windows-2025"];
+
+  assert.deepEqual(lifecycle.strategy.matrix.os, runners);
+  assert.equal(lifecycle.steps.find((step) => step.uses?.startsWith("actions/setup-node@")).with["node-version"], "24.14.0");
+  assert.deepEqual(qualification.strategy.matrix, {
+    os: runners,
+    node: ["22.20.0", "24.14.0"],
+  });
+  assert.equal(qualification.steps.at(-1).run, "node scripts/qualify-product-workflows.mjs --run --skip-model-trials");
   assert.match(workflow, /DISABLE_TELEMETRY: "1"/);
   assert.match(workflow, /persist-credentials: false/);
   assert.equal(
     workflow.split("run: npm run test:lifecycle").length - 1,
     1,
   );
-  assert.doesNotMatch(workflow, /\bnpm (install|ci)\b|\bcache:/);
+  assert.equal(lifecycle.steps.some((step) => /\bnpm (?:install|ci)\b/u.test(step.run ?? "")), false);
+  assert.equal(qualification.steps.filter((step) => step.run === "npm ci").length, 1);
+  assert.doesNotMatch(workflow, /\bnpm install\b|\bcache:/);
 
   const uses = [...workflow.matchAll(/^\s+uses:\s+([^#\s]+).*$/gm)].map(
     (match) => match[1],
   );
   assert.deepEqual(uses, [
+    "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+    "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
     "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
     "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
   ]);

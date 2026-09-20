@@ -1,5 +1,0 @@
-interface:
-  display_name: "Doubt Driven Development"
-  short_description: "Adversarially challenge a named high-risk product or technical decision when the user explicitly requests it. Compare evidence, assumptions, failure modes, reversibility, and safe experiments; do not use for routine uncertainty."
-policy:
-  allow_implicit_invocation: false

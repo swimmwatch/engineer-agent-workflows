@@ -1,0 +1,903 @@
+schema_version: 1
+spec_slug: specification-completeness
+decisions:
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: prepared
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - Implement the explicitly approved specification-completeness plan within the existing local stdio MCP and generated skills.
+      profiles:
+        - id: core
+          reason: Workflow skills and deterministic specification contracts.
+          state: active
+        - id: backend
+          reason: Public stdio MCP scenario interfaces.
+          state: active
+        - id: data
+          reason: Backward-compatible decision journal and persistent review metadata.
+          state: active
+        - id: ui
+          reason: No UI or Penpot changes.
+          state: not_applicable
+        - id: events
+          reason: No event transport.
+          state: not_applicable
+        - id: operations
+          reason: No deployment or global configuration changes.
+          state: not_applicable
+        - id: security
+          reason: Preserve existing trust boundaries and safety checks; no new access surface.
+          state: not_applicable
+        - id: cross-surface
+          reason: Reuse existing isolated host generation.
+          state: not_applicable
+      planning_artifacts:
+        - contracts/mcp.md
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: invalid_response
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - Implement the explicitly approved specification-completeness plan within the existing local stdio MCP and generated skills.
+      profiles:
+        - id: core
+          reason: Workflow skills and deterministic specification contracts.
+          state: active
+        - id: backend
+          reason: Public stdio MCP scenario interfaces.
+          state: active
+        - id: data
+          reason: Backward-compatible decision journal and persistent review metadata.
+          state: active
+        - id: ui
+          reason: No UI or Penpot changes.
+          state: not_applicable
+        - id: events
+          reason: No event transport.
+          state: not_applicable
+        - id: operations
+          reason: No deployment or global configuration changes.
+          state: not_applicable
+        - id: security
+          reason: Preserve existing trust boundaries and safety checks; no new access surface.
+          state: not_applicable
+        - id: cross-surface
+          reason: Reuse existing isolated host generation.
+          state: not_applicable
+      planning_artifacts:
+        - contracts/mcp.md
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: answered
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer:
+      text: Да, всё верно
+      selected_ids:
+        - confirm
+    status: answered
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - Implement the explicitly approved specification-completeness plan within the existing local stdio MCP and generated skills.
+      profiles:
+        - id: core
+          reason: Workflow skills and deterministic specification contracts.
+          state: active
+        - id: backend
+          reason: Public stdio MCP scenario interfaces.
+          state: active
+        - id: data
+          reason: Backward-compatible decision journal and persistent review metadata.
+          state: active
+        - id: ui
+          reason: No UI or Penpot changes.
+          state: not_applicable
+        - id: events
+          reason: No event transport.
+          state: not_applicable
+        - id: operations
+          reason: No deployment or global configuration changes.
+          state: not_applicable
+        - id: security
+          reason: Preserve existing trust boundaries and safety checks; no new access surface.
+          state: not_applicable
+        - id: cross-surface
+          reason: Reuse existing isolated host generation.
+          state: not_applicable
+      planning_artifacts:
+        - contracts/mcp.md
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: scope.manifest
+      revision: 1
+    answer_source: native-question:confirm_plain_scope
+    answered_question:
+      id: scope.manifest
+      revision: 1
+  - category: implementation-contract
+    state: observed
+    provenance: repository
+    fact: The approved implementation request is captured as twelve observable requirements in the specification bundle.
+    evidence:
+      - docs/specs/specification-completeness/spec.md
+    question: null
+    answer: null
+    id: eab9b8dd-cf17-479f-b31c-876f2280a6f0
+    revision: 1
+    supersedes_revision: null
+  - category: implementation-contract
+    state: observed
+    provenance: repository
+    fact: The approved implementation request is captured as twelve observable requirements in the specification bundle.
+    evidence:
+      - docs/specs/specification-completeness/spec.md
+    question: null
+    answer: null
+    id: eab9b8dd-cf17-479f-b31c-876f2280a6f0
+    revision: 2
+    supersedes_revision: 1
+    requirement_ids:
+      - SRC-001
+      - SRC-002
+      - REQ-001
+      - REQ-002
+      - COV-001
+      - REV-001
+      - REV-002
+      - SKL-001
+      - SKL-002
+      - USE-001
+      - LEG-001
+      - VAL-001
+  - category: review-status-observation
+    state: instructed
+    provenance: user
+    instruction:
+      text: Да, фиксировать наблюдённый Approved (рекомендуется)
+      source: "Native question reply: MCP must remember an observed Draft-to-Approved transition to detect a later downgrade; edits made and reverted between calls cannot be observed."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids:
+      - REV-001
+    question: null
+    answer: null
+    id: 6e6129ab-f66f-41e9-9929-ac233960a65a
+    revision: 1
+    supersedes_revision: null
+  - category: implementation-request
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        PLEASE IMPLEMENT THIS PLAN:
+        # Контроль полноты спецификации: MCP и скиллы
+
+        ## 1. Результат и зафиксированные границы
+
+        Реализовать три взаимодополняющих проверки:
+
+        - **Механическое покрытие:** все актуальные источники учтены, ссылки корректны.
+        - **Сохранность смысла:** отдельный проверяющий сопоставляет исходные указания и требования, обнаруживает потерянные условия.
+        - **Профильная полнота:** проверяются существенные сценарии активных профилей, которые могли вообще не обсуждаться.
+
+        Согласованные решения:
+
+        - Охватываем исходный запрос, последующие указания, ответы и известные пользовательские правки.
+        - Требования остаются в редактируемом Markdown; каждое получает отдельный заголовок с ID.
+        - Проверяющий работает в отдельном контексте на любой глубине; Lite получает короткую проверку.
+        - Результаты проверки хранятся через MCP в существующем `decisions.yaml`, без отдельного обязательного файла.
+        - Planning и incremental проверяют актуальность спецификации и используют точные ссылки. Реестр исполнения пакетов и тестов в MCP не добавляем.
+        - Старые спецификации остаются явно непроверенными по новому правилу, но не блокируются автоматически. Новый порядок обязателен при их создании или изменении.
+
+        Новый скилл не создаём. Автоматический `Approved`, отдельные вызовы planning/design-planning/incremental и отсутствие обязательного код-ревью в incremental сохраняются.
+
+        ## 2. Чекпоинт 1 — источники, определения требований и механическое покрытие в MCP
+
+        **Сначала проверки:** зафиксировать существующий сбой и добавить тесты на непокрытое решение и ложную ссылку, когда ID встречается только в примере или обычном тексте.
+
+        ### Источники и связи
+
+        - Сохранить существующие decision ID, историю ревизий и `decision_link_requirements` как авторитетное место связи решений с требованиями.
+        - Добавить `decision_record_instruction` для дословной фиксации несекретного пользовательского запроса или последующего указания с указанием источника. Не подменять его фактом из репозитория и не задавать пользователю повторный вопрос ради сохранения.
+        - Известные пользовательские правки фиксировать новой записью со ссылками на затронутые требования и предшествующие решения. Частичная правка не отменяет весь широкий ответ.
+        - При неизвестном происхождении изменения не приписывать его пользователю автоматически; существенное расхождение требует уточнения.
+        - Добавить `decision_mark_context` для разрешённого решения, которое не задаёт поведение приложения. Требовать объяснение; исключения из функциональности, ограничения и запреты не считать автоматически «просто контекстом».
+        - Не вводить обязательные вложенные decision ID. Одно решение может поддерживать несколько отдельно проверяемых требований.
+
+        ### Разметка и чтение требований
+
+        - Для новых и изменяемых спецификаций закрепить блок `### <ID>: <title>`. Блок включает вложенные подразделы и заканчивается следующим заголовком того же или более высокого уровня. Существующие ID не переименовывать.
+        - Разбирать Markdown через закреплённый `mdast-util-from-markdown@2.0.3`, а не искать определения регулярным выражением по всему файлу. [Документация парсера](https://github.com/syntax-tree/mdast-util-from-markdown).
+        - Добавить `requirement_list` и `requirement_get`: ограниченная выдача ID, точного текста, положения в документе, связанных decision refs и версии источника. Большие блоки выдавать полностью через продолжения, без пересказа.
+        - Отклонять повторные определения, пустые блоки и ссылки на отсутствующие определения. Упоминание ID в коде, цитате или обычном предложении не является определением.
+        - Обратные связи и отчёты вычислять из журнала. Не создавать вторую вручную поддерживаемую таблицу связей в спецификации.
+
+        **Выход чекпоинта:** unit- и stdio E2E-тесты подтверждают определения, ссылки, контекстные решения и совместимость прежних операций.
+
+        ## 3. Чекпоинт 2 — сохраняемый протокол проверки полноты в MCP
+
+        Добавить типизированную версионируемую служебную секцию в контракт `decisions.yaml`. Она хранит историю проверок, ссылки и выводы, но не вторую копию спецификации. Служебные записи не должны попадать в поиск продуктовых решений.
+
+        ### Сценарные инструменты
+
+        | Инструмент | Ответственность |
+        |---|---|
+        | `specification_review_start` | Начать проверку, включить новый порядок для спецификации и зафиксировать версии входов |
+        | `specification_review_get` | Выдать очередную ограниченную порцию первоисточников, связанных требований и необходимого контекста |
+        | `specification_review_record` | Сохранить структурированные выводы проверяющего по источникам, требованиям и активным профилям |
+        | `specification_review_complete` | Проверить полноту зарегистрированных результатов и актуальность входов; завершить запись проверки |
+        | `specification_check_state` | Дополнительно вернуть состояние покрытия и проверки: legacy, незавершена, есть замечания, устарела либо зарегистрирована успешно |
+
+        Контракты инструментов описать через существующие Zod-определения и генерацию публичных схем. Не добавлять YAML-пейлоады, произвольные пути полей или универсальные операции редактирования.
+
+        ### Инварианты
+
+        - Перечень проверяемых источников составляет MCP из текущего состояния, а не автор спецификации из выбранного подмножества.
+        - Проверяющий получает полный исходный запрос/ответ с контекстом вопроса, а не только авторскую разбивку на условия. Дополнительные требования доступны адресно через MCP.
+        - Результат содержит подтверждающие ссылки либо конкретный пропуск/противоречие. Проверяются также требования без обоснованного источника и спорные исключения `context`.
+        - Частичная замена условия учитывается вместе с исходным решением и новым указанием; остальные обязательства исходного решения сохраняются.
+        - Незавершённые порции, непроверенные источники, незакрытые замечания и устаревшие результаты запрещают успешное завершение новой проверки.
+        - Версия проверки зависит от содержания спецификации, подтверждённого scope и актуальных источников. Запись самого отчёта её не инвалидирует. Единственное исключение для текста спецификации — переход строки статуса `Draft → Approved`.
+        - В первой версии любое другое изменение входов требует новой проверки. Инкрементальное переиспользование отдельных вердиктов откладываем.
+        - Сохранить ограничения размеров, атомарность одиночных записей, защиту путей и восстановление после потерянного ответа. Превышение лимита не приводит к усечению и ложному успеху.
+        - MCP регистрирует вывод агента, но не удостоверяет его независимость или смысловую правильность. Он не запускает модели и не присваивает `Approved`.
+
+        **Выход чекпоинта:** E2E проходит через перезапуск MCP, повтор запроса, изменение входов и попытку завершить неполную проверку.
+
+        ## 4. Чекпоинт 3 — доработка скиллов и потребителей
+
+        ### Specification
+
+        - Сохранять исходные пользовательские указания до их преобразования в требования.
+        - Писать требования в согласованном формате, связывать с источниками через MCP и устранять механические пробелы.
+        - После готовности Draft запускать отдельного проверяющего. Его инструкции вынести в адресный reference; не копировать туда весь основной скилл.
+        - Проверяющему передавать первоисточники, текущую спецификацию и только активные профили. Не передавать ожидаемый ответ, подозрения автора или готовое заключение о полноте.
+        - Проверять сохранность условий, исключений, ограничений, приоритетов и разрешённых альтернатив. Для замечания требовать конкретный пример поведения, которое неполная спецификация ошибочно разрешает или запрещает.
+        - Использовать существующие профильные правила для поиска необсуждённых существенных сценариев. Не добавлять одинаковые большие опросники во все профили.
+        - Проверяющий не исправляет спецификацию. Автор устраняет однозначные пропуски по источникам; новые материальные решения уточняет у пользователя.
+        - Если отдельный контекст недоступен, оставлять проверку незавершённой и сообщать необходимый следующий шаг. Не заменять её молча самопроверкой.
+        - Только после успешного нового цикла и проверки состояния устанавливать `Approved`, без дополнительного вопроса об одобрении.
+
+        ### Planning и incremental
+
+        - Planning проверяет актуальность зарегистрированной проверки, читает точные требования через MCP и фиксирует ссылку на проверенную версию в плановых артефактах.
+        - Incremental сверяет версию перед работой и завершением пакета; загружает только связанные требования и контракты.
+        - Если новая проверка устарела или незавершена, возвращать затронутую работу владельцу спецификации. Самостоятельно менять продуктовый контракт нельзя.
+        - Для legacy-спецификаций сохранять прежние проверки и явно отмечать отсутствие нового подтверждения полноты; не запускать миграцию автоматически.
+        - Сохранить test-first, ровно один разрешённый пакет, обновление checklist/handoff и отсутствие обязательного ревью или коммита.
+
+        Обновлять авторитетные исходники и общие reference-файлы, затем генерировать оба клиентских набора. Рекомендации моделей остаются консультативными через существующие host-шаблоны.
+
+        ## 5. Чекпоинт 4 — испытания, генерация и критерии завершения
+
+        После каждого чекпоинта: наблюдаемый RED → минимальная реализация → GREEN → соответствующий stdio E2E. При найденном дефекте сначала закреплять различающую проверку.
+
+        ### Детерминированные сценарии
+
+        - Решение потеряно целиком; ID есть только в примере; дублированное или удалённое определение.
+        - Многострочные требования, вложенные заголовки, кодовые блоки, Unicode и продолжения больших ответов.
+        - Требование без источника; ошибочное исключение из покрытия; неотвеченный вопрос.
+        - Исходный запрос без интервью; добавочное указание; частичная правка широкого решения.
+        - Перезапуск, повтор записи, чужой контекст, устаревшая версия, незавершённый отчёт.
+        - Изменение спецификации после проверки; переход статуса; legacy-потребитель и включение нового порядка.
+        - Большой журнал: ограниченные ответы, полный обход без скрытого усечения.
+
+        ### Модельные сценарии
+
+        Запускать отдельно от `npm test` и CI, в свежих изолированных контекстах:
+
+        - Три известных пропуска: идентификация участника, счётчики повторной обработки, необязательный charset.
+        - Намеренно удалить условие, сохранив все ID: механические ссылки могут пройти, содержательная проверка должна обнаружить потерю.
+        - Корректная переформулировка: проверяющий не должен требовать дословного совпадения.
+        - Новые контрольные примеры Lite и UI/API, включая профильный пробел и корректное `not_applicable`.
+        - Частичная пользовательская правка сохраняет остальные обязательства; восстановление продолжает работу без повторного опроса.
+
+        Для принятия изменения нужны два последовательных успешных прохода этого ограниченного набора без изменения скиллов между ними. После двух неудачных исправлений одной причины — разбор причины и согласование дальнейшего подхода. Полную прежнюю матрицу приложений этим не объявляем пройденной.
+
+        Финальные проверки: полный `npm test`, lint, foundation validation, генерация обоих наборов и `generate:check`, ограничения размеров, проверка затронутых Codex-артефактов и `git diff --check`. Обновить документацию MCP, правила скиллов и журнал доказательств; недоступные проверки отметить непроверенными.
+
+        Глобальные установки, конфигурация клиентов, публикация, коммиты и живые Claude/Penpot-прогоны не входят. Для ведения реального specification bundle требуется доступный workflow MCP; его отсутствие нельзя обходить прямым редактированием защищённых YAML.
+      source: "User message: explicitly approved implementation plan in this conversation"
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - SRC-001
+      - SRC-002
+      - REQ-001
+      - REQ-002
+      - COV-001
+      - REV-001
+      - REV-002
+      - SKL-001
+      - SKL-002
+      - USE-001
+      - LEG-001
+      - VAL-001
+    question: null
+    answer: null
+    id: 954bbd73-9d90-4632-966f-870867f23a9c
+    revision: 1
+    supersedes_revision: null
+  - category: implementation-contract
+    state: observed
+    provenance: repository
+    fact: The approved implementation request is captured as twelve observable requirements in the specification bundle.
+    evidence:
+      - docs/specs/specification-completeness/spec.md
+    question: null
+    answer: null
+    id: eab9b8dd-cf17-479f-b31c-876f2280a6f0
+    revision: 3
+    supersedes_revision: 2
+    requirement_ids: []
+    context_reason: Bootstrap observation that the bundle existed, not an independent source of product behavior. The preserved original implementation request is authoritative.
+  - category: qualification
+    state: needs_user
+    provenance: user
+    question:
+      text: "В историческом стенде ожидаемые пропуски оказались спорными: например, требование уже велит учитывать всю обработанную работу, хотя отдельного примера для промежуточного шага нет. Предлагаю сохранить этот результат и сделать контролируемый негативный вариант: действительно удалить выбранные условия, сохранив все ID и исходные ответы. Проверяющий получит только обычные входные файлы, без подсказок об удалениях. Так мы проверим потерю смысла, не требуя дословного повторения. Подходит?"
+      kind: single_choice
+      options:
+        - id: controlled
+          label: Да, контролируемые удаления условий (рекомендуется)
+        - id: discuss
+          label: Сначала отдельно обсудить критерии полноты
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+      revision: 1
+  - category: qualification
+    state: answered
+    provenance: user
+    question:
+      text: "В историческом стенде ожидаемые пропуски оказались спорными: например, требование уже велит учитывать всю обработанную работу, хотя отдельного примера для промежуточного шага нет. Предлагаю сохранить этот результат и сделать контролируемый негативный вариант: действительно удалить выбранные условия, сохранив все ID и исходные ответы. Проверяющий получит только обычные входные файлы, без подсказок об удалениях. Так мы проверим потерю смысла, не требуя дословного повторения. Подходит?"
+      kind: single_choice
+      options:
+        - id: controlled
+          label: Да, контролируемые удаления условий (рекомендуется)
+        - id: discuss
+          label: Сначала отдельно обсудить критерии полноты
+    answer:
+      text: Да, контролируемые удаления условий (рекомендуется)
+      selected_ids:
+        - controlled
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+      revision: 1
+    answer_source: conversation:call_41ExdnhOOSqha7rNoztmeb3J:explicit-user-reply
+    answered_question:
+      id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+      revision: 1
+  - category: qualification
+    state: answered
+    provenance: user
+    question:
+      text: "В историческом стенде ожидаемые пропуски оказались спорными: например, требование уже велит учитывать всю обработанную работу, хотя отдельного примера для промежуточного шага нет. Предлагаю сохранить этот результат и сделать контролируемый негативный вариант: действительно удалить выбранные условия, сохранив все ID и исходные ответы. Проверяющий получит только обычные входные файлы, без подсказок об удалениях. Так мы проверим потерю смысла, не требуя дословного повторения. Подходит?"
+      kind: single_choice
+      options:
+        - id: controlled
+          label: Да, контролируемые удаления условий (рекомендуется)
+        - id: discuss
+          label: Сначала отдельно обсудить критерии полноты
+    answer:
+      text: Да, контролируемые удаления условий (рекомендуется)
+      selected_ids:
+        - controlled
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - VAL-001
+    id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+      revision: 1
+    answer_source: conversation:call_41ExdnhOOSqha7rNoztmeb3J:explicit-user-reply
+    answered_question:
+      id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+      revision: 1
+extensions:
+  workflow_mcp_receipts:
+    - id: 4d82775b35bd5bce6a6c65b81f739c9242d1115675c2b1d2bb27bb9d746fb846
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 7
+        verdict: covered
+        recorded_items: 8
+    - id: 173b338f1da0c55ccb8722e843803469307853f71f8c550997817ce11c375ec6
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 8
+        verdict: covered
+        recorded_items: 9
+    - id: 751e9b94b7356f316bc699f7bc43eaf7c02487d7ec8d56c90de717d3287136ba
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 9
+        verdict: covered
+        recorded_items: 10
+    - id: aa9e6feaf88d9b56285c4b9a05f3017bd8d0a1f73740d45ec5b773f74a8e3300
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 10
+        verdict: covered
+        recorded_items: 11
+    - id: e9082ec3558fbf64de5f605134d22e567d9ff2412c0b868e3c81aaba979d2038
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 11
+        verdict: covered
+        recorded_items: 12
+    - id: 628d7e1df20a753684255178f3253cb7789107b29d6b01a72782d76b9965747b
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 12
+        verdict: covered
+        recorded_items: 13
+    - id: 28911b91c1b779f3c03cd2e888ff83d647f9367ad7ce5fb025483b7b7a83efe1
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 13
+        verdict: covered
+        recorded_items: 14
+    - id: 51acbebbb5ca410ccf6be564f9e0ab684a3f6d29f83edf5ed6ca6d92221ac8dd
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 14
+        verdict: covered
+        recorded_items: 15
+    - id: 4ac5c182959aa88a0bca238f69d7490480f4fc5ab61852fe6e5d405e232eea4b
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 15
+        verdict: gap
+        recorded_items: 16
+    - id: c3871ed0af55aaf8ba9cedd301bc3e24ef67797ce19c7caf00c037301dbe3e4c
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 16
+        verdict: gap
+        recorded_items: 17
+    - id: 6b1096670b18dbc588a6a426796256de8a3944c27f121d5d8e526ca43a3684f2
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 17
+        verdict: covered
+        recorded_items: 18
+    - id: a0a986d0309d7ea59a4fe1b4f0f543dc553dd7a8957b2193dabe3a85b78d6961
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 18
+        verdict: covered
+        recorded_items: 19
+    - id: 9203862bbf59a67cb9c5ca74a2e4f71901205aa3437c8cb5461eba19e91b92ad
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        item_index: 19
+        verdict: covered
+        recorded_items: 20
+    - id: 4d2feb1ac5e3bc7d91a221b36da9515641fc457c991965fe45d8d97d0c302da4
+      result:
+        review_ref: 035bab1c-180d-48a6-9dce-3646398aac45
+        coverage_status: gaps
+        source_version: 5792c24305da05eae9edf6ca893e1f57f64a5854c61fa5f6bae02b40e1412c7b
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: c80ed80e58491bc4268c21221a47f110ae0420960fcfcd867f19626a0b9ef682
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        source_version: 3751f1bb97963a6fea8654beec1cff735d164052bf3654ece77eb16c3f1d660f
+        total_items: 20
+        recorded_items: 0
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 36a00f8eaa23ff9cfa0a95f7a6738c0a12aa833f4f3a40860d328c9dc75cd48e
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 0
+        verdict: covered
+        recorded_items: 1
+    - id: 983c8de986e69dfa87589bd204b0f17bec99758314822b9d36e1651022536b25
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 1
+        verdict: not_applicable
+        recorded_items: 2
+    - id: 8ae53f9798da936179ee2d0a4f0ac68c0424018c388e19881ab214af73b11723
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 2
+        verdict: covered
+        recorded_items: 3
+    - id: 5107c7eec02a04a0f6761720488a90a8050f040b72d0330aee222868499be291
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 3
+        verdict: covered
+        recorded_items: 4
+    - id: 3b158da4dfd40c51ce4b8d1c0c765a417384916c7874d2f6ffce837737dffb38
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 4
+        verdict: covered
+        recorded_items: 5
+    - id: 2f35469ba5a2b993176ba693c9012b66c38a3e62b2a005e24246801bc01f9068
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 5
+        verdict: covered
+        recorded_items: 6
+    - id: 5cba6a1f127862ad35e8273c9b934809c8563e139d3cdead30de826138daab63
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 6
+        verdict: covered
+        recorded_items: 7
+    - id: 6580b14755d2d007fe9166c7317a96d12ae9c40b5082bca9f4818e75c594a38f
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 7
+        verdict: covered
+        recorded_items: 8
+    - id: 8ca660572e7c006ebdf8a7dd8d6bbdde3b9daf3a78ed2d28acb6bd8b707444d6
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 8
+        verdict: covered
+        recorded_items: 9
+    - id: 0154ef23fc0635bfddbe10b96cae058b73ba76c13b7768dbe27c896a70bad398
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 9
+        verdict: covered
+        recorded_items: 10
+    - id: d738a5b37f20d4cb27c238eccf8a46a025033cf0f7f97a1e1c6737618ad633c0
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 10
+        verdict: covered
+        recorded_items: 11
+    - id: 07caf04fd75da7583c1e3d540c76612565ca24aad314313efe2b8c4e9f6c4c11
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 11
+        verdict: covered
+        recorded_items: 12
+    - id: 8eba04507f53a0b6f619bdc7feaef1751ad78a81a93bf48e2c066daddddd2191
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 12
+        verdict: covered
+        recorded_items: 13
+    - id: 340ed6d5dd07b55787c3ec3f2c7d86f9acfa81dc08a826648074d2bd32b31103
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 13
+        verdict: covered
+        recorded_items: 14
+    - id: 7c5e343910de31142037eb3614e70d96bb03d5e96de2a2b0670abb99b645defb
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 14
+        verdict: covered
+        recorded_items: 15
+    - id: 53f8f417544c81363d8ea5c86d237992dbf645c7ffdf938a28e1871075a8e04b
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 15
+        verdict: covered
+        recorded_items: 16
+    - id: f08d4aa253a95acadf0ca9243f2bf252475faff70984710d3508de71f5f050e3
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 16
+        verdict: covered
+        recorded_items: 17
+    - id: c206a69d94cc057b2872406fd5bb563516782c6730f33d464ca2a8f68ad172ad
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 17
+        verdict: covered
+        recorded_items: 18
+    - id: 0db8bdaacd24766314d3635d300fa90eec07508e5751cd70d584fae31a7cbfbd
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 18
+        verdict: covered
+        recorded_items: 19
+    - id: 7167f6f1135878f985f89e23160ac70668fe941de07a7e5244523dc4a34bbf6e
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        item_index: 19
+        verdict: covered
+        recorded_items: 20
+    - id: 05921ad23318241f7885311786111644c221c34480710665b0e569b0641f68fb
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        coverage_status: reviewed
+        source_version: 3751f1bb97963a6fea8654beec1cff735d164052bf3654ece77eb16c3f1d660f
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: d9022a93cfd7158666da0b6f36577bdafc94bef76b5021d40323ead1d0e398e3
+      result:
+        review_ref: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+        approval_observed: true
+    - id: ded62073c31821322d460a3059b571f204329f01678646a89a0b7860b185a2ea
+      result:
+        question_ref:
+          id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+          revision: 1
+        question:
+          text: "В историческом стенде ожидаемые пропуски оказались спорными: например, требование уже велит учитывать всю обработанную работу, хотя отдельного примера для промежуточного шага нет. Предлагаю сохранить этот результат и сделать контролируемый негативный вариант: действительно удалить выбранные условия, сохранив все ID и исходные ответы. Проверяющий получит только обычные входные файлы, без подсказок об удалениях. Так мы проверим потерю смысла, не требуя дословного повторения. Подходит?"
+          kind: single_choice
+          options:
+            - id: controlled
+              label: Да, контролируемые удаления условий (рекомендуется)
+            - id: discuss
+              label: Сначала отдельно обсудить критерии полноты
+        next: Ask the saved question with the callable host-native question tool.
+    - id: c9dc85b4c923891e4f9f865d5dfb50653a7c3f473cf0901040887f0840089969
+      result:
+        decision_ref:
+          id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+          revision: 2
+        state: answered
+    - id: 025effbb21cd621c7d0dab0030e719b329092dce1f2d902ab4b25eb0155196b8
+      result:
+        decision_ref:
+          id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2
+          revision: 3
+        requirement_ids:
+          - VAL-001
+    - id: 9a02413d567efedb5ff89868829fb10f8f41dfb23beeb0897be1063285d78874
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        source_version: cd5364431722ee80015969c951676c8c5890cdb8c5c9b38aee008f1eb4cc600d
+        total_items: 21
+        recorded_items: 0
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 3e0a00f7aea3bc012cf723b8749c69daa2fead30cb125bd90d9395e46c8572cd
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 0
+        verdict: covered
+        recorded_items: 1
+    - id: 0c2a47ae82e50b86d6fbf7b8138c40b75d361133fc89f67b4dcf800a8cf0922f
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 1
+        verdict: not_applicable
+        recorded_items: 2
+    - id: 939bf7b949f476bc4cc1a1e6643f1d2711b33037de8dc999a5c037231e487ff5
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 2
+        verdict: covered
+        recorded_items: 3
+    - id: 4ec25a111138cc2847b5f9f7b4753588db25516fef33c8a8d40f0b5af7f32e35
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 3
+        verdict: covered
+        recorded_items: 4
+    - id: 24eac9adb53449fa5d0922f7749d88af06f9bb30b6690b998e3a9ef1fc23ad24
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 4
+        verdict: covered
+        recorded_items: 5
+    - id: 55daf296dd825fd7d475ee420949e7ec710acbec1a0ff4214b7aec94917013c8
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 5
+        verdict: covered
+        recorded_items: 6
+    - id: 1d26990f6d3676f32cac32fd6854f682640f353c362ec9e009f25e0b0fc45c4b
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 6
+        verdict: covered
+        recorded_items: 7
+    - id: c602bdc8a044103cc3d27db255b20de36868125f6b0a8920992fa9bb404a575b
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 7
+        verdict: covered
+        recorded_items: 8
+    - id: 86aa61cbb973a4904ffb5e73e18d367a1ed8b4d27ca4d07dd5713707d6f983b2
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 8
+        verdict: covered
+        recorded_items: 9
+    - id: 7713ab400e577e5881389864e5189d86ae6afe1892c64a8e0f1084232f0d3f9b
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 9
+        verdict: covered
+        recorded_items: 10
+    - id: c593871d37ad94cc9efbfa8478d7fea6c3c63a2819317b5920e814b8cf76cee7
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 10
+        verdict: covered
+        recorded_items: 11
+    - id: e6895f6f0f28a41e96cc7e9022c3ae9eb91af26f03ed159e9fce4b1ac1baf232
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 11
+        verdict: covered
+        recorded_items: 12
+    - id: 40920f4a64c1da89415e4d0aa83d2ce0aa173a3062be9566310cd0cd77eca7ec
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 12
+        verdict: covered
+        recorded_items: 13
+    - id: 17eca8ff8c08a4102dbf2b36e937dcf06ffe4f1fc0658f868ec94ff0617d291d
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 13
+        verdict: covered
+        recorded_items: 14
+    - id: f4986eb62ee5a5dfd37b0d1fdbff6ab77ebba9864bcb88384a832a47268f541f
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 14
+        verdict: covered
+        recorded_items: 15
+    - id: 654c3523bf4bbba32dfc4ae51942a37d6ee93c5baa89dbc36c01624716515644
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 15
+        verdict: covered
+        recorded_items: 16
+    - id: e439d5040b6a027da00c71604d4358ffbc0e71d58a808dc4f0c3379758782a4d
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 16
+        verdict: covered
+        recorded_items: 17
+    - id: 2b78284ba63e3b68bf2b837793ba03637450599972374a6aa1251bbecc0ce7c0
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 17
+        verdict: covered
+        recorded_items: 18
+    - id: 51b74fe4bd62ad6e18223d3432f8761e195329e45e7c4d7186b30349e4be073f
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 18
+        verdict: covered
+        recorded_items: 19
+    - id: ef4921cafdf81886ffc186760fad8ffbfe34a3578e72ac272c679d4b9bf5a637
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 19
+        verdict: covered
+        recorded_items: 20
+    - id: 7b8545126e522379a719837eb66c074eb300a9cbd40903d62ff2a66206707cab
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        item_index: 20
+        verdict: covered
+        recorded_items: 21
+    - id: 602a5b73821ac429d97f5448cc7c41dfbb55bb6c6e02f5c9fe154c271a2d1d4d
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        coverage_status: reviewed
+        source_version: cd5364431722ee80015969c951676c8c5890cdb8c5c9b38aee008f1eb4cc600d
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: f60d6f36fe813f1ba63a24cf0d648c8a2cdeca03aa39818e2b442feb8a259238
+      result:
+        review_ref: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+        approval_observed: true
+specification_reviews:
+  version: 1
+  runs:
+    - id: 953fb4ae-ffe1-47ef-bade-41615d36b664
+      source_version: 272a97a79f1bf93f04ba5f2ed335e95f8e66e00ff17191e0eb422566d5e62e58
+      specification_version: 643028e47fd54fa14ce1c55d67d8938aff45b3ee7946c02aa38a91deea873e19
+      status_at_start: Draft
+      created_at: 2026-09-06T21:50:30.393Z
+      completed: true
+      outcome: gaps
+      results: [ { item_index: 0, item_key: source:scope.manifest, verdict: covered, explanation: "The confirmed Standard proposal selects core workflow behavior, local stdio MCP interfaces, and durable journal metadata. SRC-001/SRC-002, REQ-001/REQ-002, COV-001, and REV-001/REV-002 provide those behaviors; SKL-002 preserves host generation and explicit workflow stages. The specification scope keeps UI, Penpot, global configuration, publication, and commits excluded. Scope revisions 1 and 2 contain the same proposal with no accepted replacement scope; revision 3 records its explicit confirmation.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-002 ], source_refs: [] }, { item_index: 1, item_key: source:eab9b8dd-cf17-479f-b31c-876f2280a6f0, verdict: not_applicable, explanation: Revision 3 explicitly classifies this as the bootstrap observation that a specification bundle existed. Its fact and prior revisions do not contain an independent requested product behavior. The source appropriately removes the old circular requirement links and points to the separately preserved original implementation request as the behavioral authority., requirement_ids: [], source_refs: [] }, { item_index: 2, item_key: source:6e6129ab-f66f-41e9-9929-ac233960a65a, verdict: covered, explanation: "REV-001 explicitly requires check-state to remember an observed author-made Approved status, invalidate a later return to Draft across restarts, never assign approval itself, and acknowledge that edits reverted entirely between calls cannot be observed. This preserves the recorded question context and the selected answer.", requirement_ids: [ REV-001 ], source_refs: [] }, { item_index: 3, item_key: source:954bbd73-9d90-4632-966f-870867f23a9c, verdict: gap, explanation: "Several explicit conditions in the complete approved plan are absent from the current requirements and non-requirement prose. (1) SRC-002 omits the prohibition on mandatory nested decision IDs and the allowed one-decision-to-many-requirements relation. (2) REQ-001 reduces the mandated mdast-util-from-markdown@2.0.3 parser to any structural parser. (3) The exact public operations decision_record_instruction, decision_mark_context, requirement_list/get, specification_review_start/get/record/complete and specification_check_state are not specified; neither is review_start enrollment/version pinning, check_state's legacy/pending/findings/stale/success output contract, existing Zod/public-schema generation, the prohibition on YAML payloads/arbitrary field paths/generic editing, or the explicit prohibition on MCP launching models. (4) The targeted reviewer reference must not copy the whole author workflow; the current generic short-entrypoint/selective-reference wording does not preserve this explicit packaging constraint. (5) VAL-001 omits the actual three known cases (participant identity, reprocessing counters, optional charset), fresh isolated contexts, the profile-gap and valid not_applicable controls, and the partial-amendment/resume-without-reinterview model controls. (6) The final full npm test, lint, foundation validation, generation of both bundles, generate:check, size checks, affected Codex-artifact checks, git diff --check, and MCP/skill documentation updates are not required. (7) The explicit exclusions of global installations, client configuration and live Claude runs, and the prohibition on bypassing an unavailable workflow MCP by editing protected YAML, are not all retained. These are lost agreed conditions, not proposed new scope.", counterexample: "A conforming implementation under the current wording could require child decision IDs, use a different structural parser version, rename the public scenario tools, expose generic YAML editing, launch a model from the MCP, and omit check_state coverage states. A reviewer reference could contain the copied complete author workflow. Qualification could use arbitrary three omission examples in reused model contexts, skip valid not_applicable and resume controls, and finish after focused tests without lint, full suite, generated-bundle checks or documentation updates. The original plan explicitly rejects these alternatives.", requirement_ids: [ SRC-002, REQ-001, REQ-002, REV-002, SKL-001, SKL-002, VAL-001 ], source_refs: [] }, { item_index: 4, item_key: requirement:SRC-001, verdict: covered, explanation: "The initial plan explicitly requires exact non-sensitive initial/follow-up instructions with provenance, known user edits, no redundant interview merely to save them, and no relabeling as repository facts; its preservation and size-limit invariants justify explicit input rejection without truncation. The consent limitation accurately preserves the existing native-question/MCP ownership boundary.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 5, item_key: requirement:SRC-002, verdict: gap, explanation: "The requirement faithfully preserves stable IDs, append-only revisions, predecessor/affected-requirement references, narrow amendment semantics, uncertain authorship, clarification, and justified context classification. However, the original Sources and links section additionally forbids mandatory nested decision IDs and explicitly permits one decision to support multiple separately verifiable requirements; neither condition is preserved elsewhere.", counterexample: "An implementation can retain stable append-only parent decisions yet require a separate child decision ID for every linked requirement, rejecting one broad decision linked to two requirements. SRC-002 does not prohibit this, while the approved source explicitly does.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 6, item_key: requirement:REQ-001, verdict: gap, explanation: "The heading/block boundaries, duplicate/empty/missing-definition failures, negative ID-match cases and stable identifiers faithfully derive from the source. The approved plan also explicitly pins mdast-util-from-markdown@2.0.3; 'Parse Markdown structurally' omits this authorized compatibility constraint.", counterexample: "A different structural parser or an unpinned later parser release satisfies REQ-001 as written, although the approved plan requires mdast-util-from-markdown@2.0.3.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 7, item_key: requirement:REQ-002, verdict: covered, explanation: "The plan requires bounded exact requirement listing/reading with positions, decision refs, source version and continuations, and derives reverse links from the decision journal without a second hand-maintained table. Its stale/cross-context tests justify the explicit rejection rules. This requirement faithfully expresses that behavior; the omitted exact public operation names are recorded against the original source and REV-002 interface contract.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 8, item_key: requirement:COV-001, verdict: covered, explanation: "The source makes MCP, not the author, enumerate current inputs and explicitly requires detecting uncovered sources, unsupported requirements, false links, unanswered questions and disputed context exclusions. COV-001 preserves those conditions without treating mechanical links as semantic proof.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 9, item_key: requirement:REV-001, verdict: covered, explanation: "The approved plan requires typed versioned service metadata in existing decisions.yaml, review history/references/findings without another spec copy, exclusion from product-decision search, version binding, self-write stability, and only the designated Draft-to-Approved exception. Reading historical source revisions is needed for its partial-amendment rule. The separate observed-status answer expressly supports checkpointing Approved and detecting a later downgrade across restart, with the stated observability limit.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 10, item_key: requirement:REV-002, verdict: gap, explanation: "The requirement covers complete evidence, unfinished/stale/gap failure, bounded atomic retry-safe operations and path protections. It omits the approved public review tool names/responsibilities, review_start enrollment/version capture, the five check_state coverage/review states, the existing Zod-to-public-schema contract, and the prohibitions on YAML payloads/arbitrary field paths/generic editing and MCP-launched models. Generic 'dedicated scenario tools' and 'does not prove independence' do not preserve those interfaces and negative obligations.", counterexample: "A server can expose differently named review operations, fail to enroll policy at review_start, return only a boolean from check_state, accept generic YAML mutations, and launch a reviewer model while disclaiming semantic proof. Such behavior can satisfy REV-002 but contradicts the original approved MCP contract.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 11, item_key: requirement:SKL-001, verdict: covered, explanation: "The source requires a separate context at every depth, a short Lite review, neutral complete original inputs, comparison against active-profile requirements, concrete behavioral counterexamples, no reviewer spec edits, author-owned corrections/new questions and an incomplete result when separate review is unavailable. SKL-001 preserves these semantic responsibilities. 'Active profile requirements' is reasonably read as the existing confirmed profile guidance, which includes undisclosed material scenarios; equivalent wording does not require copying that checklist into the specification. The explicit targeted-reference packaging omission is recorded against the original source.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 12, item_key: requirement:SKL-002, verdict: covered, explanation: "The source explicitly preserves automatic Approved after successful review and state checks, separate explicit specification/planning/design/incremental invocations, no new skill, canonical-source generation for both hosts, selectively loaded references and advisory host-model recommendations. SKL-002 preserves these product boundaries; detailed omitted validation and reviewer-reference constraints are recorded under their specific items.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 13, item_key: requirement:USE-001, verdict: covered, explanation: "The approved consumer section requires planning to check the registered review, read exact requirements and save a version reference; incremental checks before work/completion and loads linked requirements/contracts. It returns stale/incomplete product contracts to specification ownership and preserves test-first, one authorized packet, checklist/handoff, no mandatory review/commit, and no MCP execution registry. USE-001 corresponds to each behavior.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 14, item_key: requirement:LEG-001, verdict: covered, explanation: "The approved plan expressly retains existing checks for old specifications, labels their new completeness assurance unavailable, forbids automatic migration/blocking, and enrolls newly created or changed specifications in the new workflow. LEG-001 preserves that compatibility distinction and does not claim unavailable checks passed.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 15, item_key: requirement:VAL-001, verdict: gap, explanation: "The requirement preserves test-first checkpoints, broad deterministic cases, two unchanged-skill focused passes, the repeated-cause discussion threshold, and the limit on claims about the old matrix. It omits material mandated qualification details: the actual participant-identity/reprocessing-counter/optional-charset omissions; fresh isolated model contexts; profile-gap and correct not_applicable controls; partial-edit preservation and resume without repeated interview; and the final full npm test, lint, foundation validation, both bundle generation, generate:check, size checks, affected Codex-artifact checks, git diff --check and MCP/skill documentation updates. The source also explicitly lists uncovered-source, incorrect-context exclusion, duplicate/deleted definition and unfinished-report deterministic controls, which are not all retained in the acceptance text.", counterexample: "Two focused passes could use any three generic omissions in a reused context, omit profile-gap/not_applicable and amendment/resume scenarios, then declare completion without full suite, lint, foundation validation, generation consistency, size/artifact checks, whitespace checks or documentation updates. VAL-001 and the remaining prose permit this reduced qualification, while the approved plan does not.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 16, item_key: profile:core, verdict: gap, explanation: "Core relevance is the existing explicit skill invocations, Markdown requirement contract, generated host artifacts and completion checks, not a new CLI/configuration product. SRC/REQ/COV/SKL/USE/LEG cover actors, normal/invalid/repeated reads, output identity and consumer freshness. The material remaining core gaps are the explicit parser pin, decision-link cardinality, final generated-artifact/validation gates already identified in the original source. No unrelated CLI flags, new platform or extra artifact is required by this review.", counterexample: "The current core contract allows using another parser, requiring nested decisions and declaring completion without required generated-output checks. These violate agreed behavior of this existing workflow product.", requirement_ids: [ SRC-002, REQ-001, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 17, item_key: profile:backend, verdict: gap, explanation: "Backend relevance is the local stdio scenario API. REQ-002/REV-001/REV-002 cover paging, stale/cross-context rejection, durable retries, atomic writes and review completion failures; no HTTP authentication, rate limit or new remote service is in scope. The material gap is the loss of the expressly selected public tool interfaces, enrollment and check_state states, public schema generation and restricted typed mutation surface. These are existing agreed operation contracts, not new speculative backend requirements.", counterexample: "A local provider with generic YAML-editing tools, renamed review operations and a boolean check_state can satisfy the generic specification while breaking the approved consumer-facing stdio contract.", requirement_ids: [ REQ-002, REV-001, REV-002, LEG-001 ], source_refs: [] }, { item_index: 18, item_key: profile:data, verdict: covered, explanation: "The durable-state change is confined to the existing decision journal and review metadata. SRC-001/SRC-002 preserve non-sensitive exact sources, stable identities and append-only amendment history. REV-001 defines version binding, metadata separation, status-transition invalidation and restart behavior; REV-002 preserves atomic writes, retry recovery and stale rejection. LEG-001 covers unchanged legacy behavior and explicit enrollment instead of implicit migration; VAL-001 requires restart/retry/stale controls. Existing storage/path protections remain in scope, with no new datastore, export/retention or irreversible-deletion workflow requiring a new product decision.", requirement_ids: [ SRC-001, SRC-002, REV-001, REV-002, LEG-001, VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 19, item_key: context:specification, verdict: gap, explanation: "The non-requirement prose correctly states Draft, the confirmed Standard core/backend/data scope and existing host/runtime boundaries, and its bootstrap statement concerns the new deliverable tools rather than dispensing with the existing workflow MCP. However, its exclusions retain only part of the original final paragraph: global installations and live Claude runs are not explicitly excluded, and the explicit prohibition on bypassing unavailable workflow MCP with direct protected-YAML edits is absent. The selected source is behavioral, so these negative obligations should survive in scope/requirements rather than remain solely in source history.", counterexample: "The specification text alone permits adding global skill installation or live Claude qualification to completion and leaves open direct protected-YAML authoring when MCP is unavailable, while the original plan expressly excludes those actions.", requirement_ids: [ SRC-001, REV-002, SKL-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] } ]
+    - id: 035bab1c-180d-48a6-9dce-3646398aac45
+      source_version: 5792c24305da05eae9edf6ca893e1f57f64a5854c61fa5f6bae02b40e1412c7b
+      specification_version: 4eb9733482f27cd966ccc5990a50a5622bb6788238ef862ec46f718ee292e7d6
+      status_at_start: Draft
+      created_at: 2026-09-06T22:01:29.620Z
+      completed: true
+      outcome: gaps
+      results: [ { item_index: 0, item_key: source:scope.manifest, verdict: covered, explanation: "The complete scope question, invalid-response predecessor and explicit answered revision confirm Standard with core/backend/data only and contracts/mcp.md as the planning artifact. COV-001 and SKL-001 use active profiles; SKL-002 preserves separate workflows and host artifacts. The specification context preserves the local stdio, existing runtime and exclusion boundaries. This confirmation adds no new product interface.", requirement_ids: [ COV-001, SKL-001, SKL-002, REV-002 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 1, item_key: source:eab9b8dd-cf17-479f-b31c-876f2280a6f0, verdict: not_applicable, explanation: "This source is explicitly classified as non-behavioral bootstrap context. It observes that a bundle existed and does not establish any feature, exception or prohibition. Its earlier circular links are removed in the current revision; original user instruction 954bbd73-9d90-4632-966f-870867f23a9c@1 supplies the behavioral authority.", requirement_ids: [], source_refs: [ { id: eab9b8dd-cf17-479f-b31c-876f2280a6f0, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 2, item_key: source:6e6129ab-f66f-41e9-9929-ac233960a65a, verdict: covered, explanation: "REV-001 preserves the actual follow-up and its question context: check-state remembers observed author-made Approved across restarts, a later return to Draft invalidates the run, MCP never assigns approval, and changes reverted entirely between observations are explicitly unobservable.", requirement_ids: [ REV-001 ], source_refs: [ { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 3, item_key: source:954bbd73-9d90-4632-966f-870867f23a9c, verdict: gap, explanation: "The original Specification section requires preserving original user instructions before transforming them into requirements. SRC-001 requires exact capture, provenance and no repeat question, but does not preserve this explicit ordering; neither SKL-001 nor the remaining text adds it. The original acceptance rule requires cause analysis and agreement on the further approach after two failed repairs of the same cause. VAL-001 requires discussion of the cause and next approach, but does not require agreement before further attempts. Other material source conditions are represented across the twelve requirements and scope prose: exact tools/parser pin, partial amendments, context exclusions, bounded review/versioning, independent active-profile checking, consumer and legacy boundaries, model scenarios and final gates.", counterexample: "An author first derives and writes requirement blocks from the conversation, then records the original message afterwards. Exact wording and links can still satisfy SRC-001, although the source expressly requires source capture before transformation. After a second failed repair, the agent discusses its proposed next approach and immediately starts a third repair without obtaining agreement. VAL-001 permits discussion-only continuation, while the original requires agreement on that further approach.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 4, item_key: requirement:SRC-001, verdict: gap, explanation: "The original Specification section requires preserving original user instructions before transforming them into requirements. SRC-001 requires exact capture, provenance and no repeat question, but does not preserve this explicit ordering; neither SKL-001 nor the remaining text adds it. This is a lost source-supported temporal condition, not a new product question.", counterexample: "An author first derives and writes requirement blocks from the conversation, then records the original message afterwards. Exact wording and links can still satisfy SRC-001, although the source expressly requires source capture before transformation.", requirement_ids: [ SRC-001, SKL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 5, item_key: requirement:SRC-002, verdict: covered, explanation: "The source explicitly preserves stable IDs and history, authoritative decision_link_requirements, predecessor/affected-requirement links for edits and surviving unrelated clauses. It also requires uncertainty about authorship to be clarified, contextual classification only for resolved non-behavioral sources with reasons, and no automatic exclusion of limits/prohibitions. SRC-002 faithfully retains each condition and does not require nested IDs.", requirement_ids: [ SRC-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 6, item_key: requirement:REQ-001, verdict: covered, explanation: "The original requires structural Markdown parsing with exactly mdast-util-from-markdown@2.0.3, a ### ID: title definition including nested sections until the next same/higher heading, preserving existing IDs and rejecting duplicate/empty/missing definitions and incidental mentions. REQ-001 matches these boundaries without broadening them.", requirement_ids: [ REQ-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 7, item_key: requirement:REQ-002, verdict: covered, explanation: "The source calls for requirement_list/get with bounded IDs, exact text, positions, decision references and versions, complete continuation of large blocks, and derived reverse links rather than a manual second table. REQ-002 preserves these outputs and continuation fidelity; stale/cross-context rejection is supported by the original deterministic scenarios and path/version safeguards.", requirement_ids: [ REQ-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 8, item_key: requirement:COV-001, verdict: covered, explanation: "COV-001 implements the source's mechanical layer and server-enumerated inventory, preserving detection of omitted sources, unsupported definitions, false/missing links, unanswered questions and disputed context exclusions. The author cannot satisfy coverage by choosing a convenient subset, as expressly required by the source invariants.", requirement_ids: [ COV-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 9, item_key: requirement:REV-001, verdict: covered, explanation: "REV-001 follows the original versioned review section in decisions.yaml, separation from product search, reference/finding storage without a second specification, binding to specification/scope/source inputs and report-write exemption. The source history and partial-amendment invariants justify binding historical inputs too. The only status exemption and observed downgrade checkpoint exactly preserve the follow-up; MCP does not approve.", requirement_ids: [ REV-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 10, item_key: requirement:REV-002, verdict: covered, explanation: "The source names all four review scenario operations and check-state outcomes, full originals/question context, evidence or concrete findings, no successful incomplete/stale/gapped run, typed generated contracts, no universal YAML editing, bounded atomic/path-safe retry behavior and no MCP model launch/approval. REV-002 retains these. Resuming an unchanged partial run is consistent with restart/retry recovery; no per-item reuse after changed inputs preserves the explicit first-version boundary.", requirement_ids: [ REV-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 11, item_key: requirement:SKL-001, verdict: covered, explanation: "SKL-001 matches the original separate checker at every depth, short Lite review, targeted reference, full unprimed original evidence, only active-profile rules, counterexamples, unsupported requirements and disputed context exclusions. It preserves author/checker ownership, restoration of unambiguous omissions, genuinely new user questions and incomplete status when an independent context is unavailable.", requirement_ids: [ SKL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 12, item_key: requirement:SKL-002, verdict: covered, explanation: "The source retains automatic Approved after successful checks without another approval question, separate explicit specification/planning/design/incremental invocations, no new skill, concise entrypoints with selective references, generated matching host templates and advisory model choice. SKL-002 preserves these boundaries.", requirement_ids: [ SKL-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 13, item_key: requirement:USE-001, verdict: covered, explanation: "USE-001 retains the source's planning review freshness/read/reference handoff, incremental version checks before work and completion, only linked requirements/contracts, and return of stale/incomplete work to the specification owner. It preserves test-first, one authorized packet, checklist/handoff, optional review/commit and the explicit ban on adding packet/test execution bookkeeping to MCP.", requirement_ids: [ USE-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 14, item_key: requirement:LEG-001, verdict: covered, explanation: "LEG-001 preserves the source's explicit unverified legacy state without automatic migration or blocking, continued legacy checks/public operations, and mandatory new cycle when specification is created or changed through the new workflow. It does not mislabel legacy or unavailable evidence as new assurance.", requirement_ids: [ LEG-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 15, item_key: requirement:VAL-001, verdict: gap, explanation: "The original acceptance rule requires cause analysis and agreement on the further approach after two failed repairs of the same cause. VAL-001 requires discussion of the cause and next approach, but does not require agreement before further attempts. The remaining specified qualification scenarios, two successive focused passes without skill changes, isolation from normal tests/CI, final gates and explicit unavailable evidence are source-supported. The lost agreement requirement is material because it determines whether another repair may begin.", counterexample: "After a second failed repair, the agent discusses its proposed next approach and immediately starts a third repair without obtaining agreement. VAL-001 permits discussion-only continuation, while the original requires agreement on that further approach.", requirement_ids: [ VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 16, item_key: profile:core, verdict: gap, explanation: "The active core reference requires relevant invocation/lifecycle ordering and failure behavior. Interfaces, generation, exact source/requirement handling and legacy/freshness boundaries are otherwise covered. Two already-agreed workflow conditions remain missing: source capture before requirement transformation, and agreement on the next approach after two failed repairs. These are source-derived gaps rather than additional profile features.", counterexample: "An author first derives and writes requirement blocks from the conversation, then records the original message afterwards. Exact wording and links can still satisfy SRC-001, although the source expressly requires source capture before transformation. After a second failed repair, the agent discusses its proposed next approach and immediately starts a third repair without obtaining agreement. VAL-001 permits discussion-only continuation, while the original requires agreement on that further approach.", requirement_ids: [ SRC-001, VAL-001, SKL-001, SKL-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 17, item_key: profile:backend, verdict: covered, explanation: "For the existing local stdio MCP boundary, SRC-001/002 and REQ-001/002 define source/definition inputs, validation, exact bounded outputs and continuations. REV-001/002 define state effects, errors preventing completion, version binding, atomic/path-safe writes, retries and restart recovery; LEG-001 covers existing consumers. The context preserves current transport/runtime and trust boundaries. No network authentication, deployment, rate-limited service or new asynchronous transport is in confirmed scope, so these profile lenses create no further material question.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, REV-001, REV-002, LEG-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: scope.manifest, revision: 3 } ] }, { item_index: 18, item_key: profile:data, verdict: covered, explanation: "The durable-data scope is existing decisions.yaml with stable source identity, append-only revisions and typed review metadata. SRC-001/002 protect exact non-sensitive provenance and partial amendments; REV-001/002 define version/currentness invariants, atomic writes, retries and restart/partial-run recovery without a second specification copy. LEG-001 prevents automatic legacy migration and preserves compatibility. No new retention/deletion/export or destructive migration is introduced; existing protections remain in force. No additional material data scenario follows from the confirmed scope.", requirement_ids: [ SRC-001, SRC-002, REV-001, REV-002, LEG-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: scope.manifest, revision: 3 } ] }, { item_index: 19, item_key: context:specification, verdict: covered, explanation: "Non-requirement prose matches confirmed Standard core/backend/data scope and the original local implementation boundaries. It preserves runtime/host contracts and explicitly excludes global installation/configuration, publication, commit and live Claude/Penpot work, and requires usable workflow MCP for protected YAML. Bootstrap adoption and evidence locations describe this bundle's authoring context, not an additional product feature or permission. Draft status makes no unsupported approval claim. The prose does not repair the two separately recorded requirement gaps or add a conflicting promise.", requirement_ids: [ REV-002, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: scope.manifest, revision: 3 } ] } ]
+    - id: 6a3a6b61-4e1b-4091-8865-cf376c40209d
+      source_version: 3751f1bb97963a6fea8654beec1cff735d164052bf3654ece77eb16c3f1d660f
+      specification_version: d032355a6993a8ea5057c1ae841efaab8c9bbe8d23e8b172c0e57dca0ff560a5
+      status_at_start: Draft
+      created_at: 2026-09-06T22:11:37.569Z
+      completed: true
+      outcome: reviewed
+      results: [ { item_index: 0, item_key: source:scope.manifest, verdict: covered, explanation: "The answered revision explicitly confirms Standard with core/backend/data and contracts/mcp.md; its prepared and invalid-response predecessors contain no competing approved scope. The specification context repeats those boundaries. SRC/REQ/COV/REV implement the journal and local MCP contracts, SKL/USE preserve host generation and separate workflow ownership, and LEG/VAL preserve compatibility and validation. No UI, event transport, deployment, new access surface or global mutation is added.", requirement_ids: [ SRC-001, REQ-002, COV-001, REV-001, REV-002, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 } ] }, { item_index: 1, item_key: source:eab9b8dd-cf17-479f-b31c-876f2280a6f0, verdict: not_applicable, explanation: "This revision explicitly classifies the prior bootstrap observation as context. All three revisions merely state that the implementation request was captured in twelve requirements; that fact neither prescribes product behavior nor independently authorizes those requirements. The complete original user instruction is now present as a separate source, so this exclusion does not discard an agreed functional restriction.", requirement_ids: [], source_refs: [ { id: eab9b8dd-cf17-479f-b31c-876f2280a6f0, revision: 3 } ] }, { item_index: 2, item_key: source:6e6129ab-f66f-41e9-9929-ac233960a65a, verdict: covered, explanation: "REV-001 explicitly requires check-state to persist an observed author-made Approved status across restart and invalidate a later return to Draft. It also preserves the stated observation limit: edits made and reverted entirely between calls cannot be observed, and MCP itself does not assign approval.", requirement_ids: [ REV-001 ], source_refs: [ { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 3, item_key: source:954bbd73-9d90-4632-966f-870867f23a9c, verdict: covered, explanation: "The full original plan is preserved by the complete requirement set. SRC-001/002 cover exact non-sensitive initial/follow-up/edit sources, provenance, predecessor obligations, stable IDs, authoritative links and justified context exclusions. REQ-001/002 retain structural Markdown boundaries, the exact pinned parser, invalid definitions and complete bounded reads. COV-001 and REV-001/002 require server-enumerated coverage, source/question/amendment context, durable version-bound evidence, five scenario operations, generated Zod contracts, incomplete/stale/gap rejection, retries and the limits on MCP authority. SKL-001/002 preserve an independent context at every depth, original evidence without expected conclusions, active-profile checking, concrete counterexamples, author-only corrections, automatic approval after checks and separate explicit invocations. USE-001/LEG-001 preserve consumer freshness, one-packet/test-first discipline, no execution registry and explicit legacy treatment. VAL-001 includes the deterministic and focused model scenarios, fresh isolation, two consecutive passes, the two-failed-repair escalation and all final gates. The context preserves excluded global/client/publication/commit/live-run actions and the required real MCP boundary.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 4, item_key: requirement:SRC-001, verdict: covered, explanation: "The original Sources and links section explicitly requests verbatim non-sensitive initial/follow-up capture, source provenance, no repeat question or repository-fact substitution, and known-edit links to requirements/predecessors. SRC-001 states these operations and preserves the existing size/privacy boundary; explicit rejection follows the original prohibition on truncation or false success.", requirement_ids: [ SRC-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 5, item_key: requirement:SRC-002, verdict: covered, explanation: "SRC-002 corresponds to the original stable decision IDs/revision history and authoritative decision_link_requirements, one decision supporting multiple requirements without nested IDs, partial amendments preserving the broad answer, unknown authorship requiring clarification, and reasoned resolved non-behavioral context classification. It retains exclusions, constraints and prohibitions as behavioral conditions.", requirement_ids: [ SRC-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 6, item_key: requirement:REQ-001, verdict: covered, explanation: "The original Markdown section specifies the exact heading shape, block ending at the next equal-or-higher heading, unchanged IDs and mdast-util-from-markdown@2.0.3. REQ-001 preserves all of these and rejects duplicate/empty/missing definitions while excluding prose, quoted, example and code mentions.", requirement_ids: [ REQ-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 7, item_key: requirement:REQ-002, verdict: covered, explanation: "REQ-002 implements the original requirement_list/get contract: bounded IDs/read portions, exact text, source positions/version and decision references, with all continuations and no summary/truncation. It preserves journal-derived reverse links and no second manual table; stale/cross-context rejection is supported by the explicit deterministic scenarios and version/path safeguards.", requirement_ids: [ REQ-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 8, item_key: requirement:COV-001, verdict: covered, explanation: "COV-001 makes the MCP derive current sources, requirements and active profiles, so an author-selected subset cannot produce full coverage. Its missing links, unsupported requirements, missing definitions, unanswered questions and disputed context cases correspond to the original mechanics, invariants and deterministic scenarios.", requirement_ids: [ COV-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 9, item_key: requirement:REV-001, verdict: covered, explanation: "REV-001 preserves the requested typed versioned review history in decisions, exclusion from product decision search, references/findings rather than a copied specification, binding to specification/scope/sources, report-write stability and the sole Draft-to-Approved exception. Historical source revisions are part of the supplied source context. The separately recorded status answer specifically supports durable observation of Approved and the unobservable-between-calls limit.", requirement_ids: [ REV-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 10, item_key: requirement:REV-002, verdict: covered, explanation: "REV-002 retains each named review operation and extended check-state statuses, bounded complete source/question/amendment evidence, completeness/freshness gating, explicit Zod/generated schemas and the prohibition on YAML payloads/arbitrary editors. Atomicity, path protection, lost-response retry and partial-run resume implement the plan's invariants and tests. No new input may reuse old per-item verdicts; MCP may record findings but neither launch models nor assign or authenticate approval/reviewer correctness.", requirement_ids: [ REV-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 11, item_key: requirement:SKL-001, verdict: covered, explanation: "SKL-001 faithfully states the separate checker after Draft on every depth, short Lite review, original evidence without expected answer/suspicions, only active profiles, targeted reference, all material condition lenses and concrete wrongly allowed/prohibited behavior. The checker cannot edit; the author restores source-supported omissions and asks only new material questions. Missing independent capability remains incomplete, consistent with the original failure boundary.", requirement_ids: [ SKL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 12, item_key: requirement:SKL-002, verdict: covered, explanation: "SKL-002 preserves the original automatic Approved only after required successful checks/corrections, no extra approval interview or new skill, and separate specification/planning/design-planning/implementation invocations. Canonical sources generate isolated host bundles with selective references and advisory model recommendations, retaining the original host and profile boundaries.", requirement_ids: [ SKL-002 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 13, item_key: requirement:USE-001, verdict: covered, explanation: "USE-001 preserves the exact original consumer behavior: planning checks current review and records a source reference; incremental checks before execution/completion and reads only linked contracts. Changed/incomplete inputs return to specification ownership. Test-first, one authorized packet, checklist/handoff, no mandatory review/commit and no MCP packet/test ledger are expressly retained.", requirement_ids: [ USE-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 14, item_key: requirement:LEG-001, verdict: covered, explanation: "LEG-001 directly preserves existing specifications as explicitly unverified under the new review, without automatic migration or blocking. Creation/change through the new workflow requires the new cycle, unavailable/legacy evidence is not labelled verified, and old public operations retain compatible legacy behavior.", requirement_ids: [ LEG-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 15, item_key: requirement:VAL-001, verdict: covered, explanation: "VAL-001 preserves checkpoint test-first unit/stdio evidence and the original false-ID, multiline/nested/Unicode, source/edit/question, retry/restart/context/version/status/legacy/large-record scenarios. Its focused fresh model suite includes all three named omission cases, unchanged-ID deletion, paraphrase, Lite/UI-API profile and context controls, partial edits and resume. It explicitly requires two consecutive passes without skill edits, user agreement after two same-cause failed repairs, no claim of the old full application matrix, every listed final gate and truthful unavailable-evidence reporting.", requirement_ids: [ VAL-001 ], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 16, item_key: profile:core, verdict: covered, explanation: "For the active core profile, the changed public surfaces are the existing workflow skills, generated host bundles and addressed requirement/review operations. REQ-001/002 specify deterministic definition and continuation behavior, REV-002 covers invalid/incomplete/repeated/interrupted recovery, SKL-001/002 and USE-001 specify invocation/ownership boundaries, and LEG-001 preserves existing consumers. The context retains the existing Node/host contract and excludes global installation/configuration. This local extension adds no independent CLI/options/reload/deployment surface requiring a new contract; the applicable core success, failure, replay and compatibility cases are required by VAL-001.", requirement_ids: [ REQ-001, REQ-002, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 17, item_key: profile:backend, verdict: covered, explanation: "For backend, the relevant boundary is the existing local stdio MCP. SRC/REQ/REV name the new operations and observable capture/read/review state effects; existing Zod inputs and generated schemas remain authoritative. Bounded complete pagination, invalid definitions, cross-context/stale inputs, incomplete reviews, restart, exact lost-response retries and atomic writes are covered by REQ-002/REV-002/VAL-001. Existing path and trust protections and legacy compatibility remain in scope; no new network authentication, deployment, transport, rate-limit or remote provider boundary is introduced that would warrant unrelated requirements.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, REV-001, REV-002, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 18, item_key: profile:data, verdict: covered, explanation: "For data, the state remains the existing decision journal. SRC-001/002 define provenance, non-sensitive text, stable IDs, append-only revisions and partial-edit predecessor identity. REV-001/002 require typed versioned review history separated from product search, exact input binding, no self-staleness on report writes, the one status exception, full re-review on other changes, atomic persistence and restart/retry recovery. LEG-001 forbids silent migration and false verification. These cover the new durable invariants and conflict/recovery paths without introducing a second source store, destructive cleanup, export or migration work outside the confirmed scope.", requirement_ids: [ SRC-001, SRC-002, REV-001, REV-002, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 19, item_key: context:specification, verdict: covered, explanation: "The non-requirement context consistently states Draft, the explicit four-checkpoint authority, confirmed Standard core/backend/data, preservation of existing Node/host contracts and the exact exclusions for global/client/publication/commit/live runs. Its bootstrap distinction says the new review tools are the deliverable while a usable existing MCP is still required, so it does not authorize protected-YAML fallback. The state-before-approval and checkpoint/evidence storage prose agrees with SKL-002/VAL-001 and existing repository workflow ownership. The confirmed manifest and planned contracts/mcp.md add no conflicting active profile or unapproved behavior.", requirement_ids: [ REV-002, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] } ]
+      approval_observed: true
+    - id: 47aff8ca-cbc6-44dd-af27-90a40ff8c104
+      source_version: cd5364431722ee80015969c951676c8c5890cdb8c5c9b38aee008f1eb4cc600d
+      specification_version: d032355a6993a8ea5057c1ae841efaab8c9bbe8d23e8b172c0e57dca0ff560a5
+      status_at_start: Draft
+      created_at: 2026-09-06T22:46:23.670Z
+      completed: true
+      outcome: reviewed
+      results: [ { item_index: 0, item_key: source:scope.manifest, verdict: covered, explanation: "The confirmed Standard scope keeps core workflow behavior, local stdio MCP interfaces and durable journal data active; the specification authority section preserves the existing Node/host boundaries and excludes global configuration/publication. SRC/REQ/COV define the workflow, REV defines the service and durable review state, and SKL/USE/LEG preserve host and consumer boundaries. The single declared MCP contract is appropriate; no inactive profile deliverable is introduced.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 1, item_key: source:eab9b8dd-cf17-479f-b31c-876f2280a6f0, verdict: not_applicable, explanation: This source explicitly classifies the earlier repository observation as bootstrap context. Its fact only says the bundle existed and contained twelve requirements; it does not independently justify their behavior. The preserved original implementation request supplies the actual behavioral provenance. The predecessor links do not turn this self-reference into a user requirement., requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 2, item_key: source:6e6129ab-f66f-41e9-9929-ac233960a65a, verdict: covered, explanation: "REV-001 expressly requires check-state to remember an observed author-made Approved transition, invalidate a later return to Draft across restarts, and never assign approval. It also retains the stated observation limit: edits made and reverted entirely between calls cannot be observed. This matches both the affirmative reply and its recorded question context.", requirement_ids: [ REV-001 ], source_refs: [] }, { item_index: 3, item_key: source:954bbd73-9d90-4632-966f-870867f23a9c, verdict: covered, explanation: "SRC-001/002 preserve verbatim initial/follow-up/edit sources, provenance, stable IDs, partial-amendment obligations and critical context exclusions. REQ-001/002 retain the exact heading contract, pinned structural parser, complete bounded reads and journal-owned links. COV/REV require server-owned inventory, source/question/history evidence, durable versioned results, complete unchanged-input reviews, visible bounds/retry failures and no MCP model launching or approval. SKL-001/002 retain a separate unbiased reviewer at every depth, active-profile relevance, concrete findings, author-owned corrections and automatic approval only after checks. USE/LEG preserve freshness ownership, packet boundaries and honest legacy behavior. VAL-001 retains the named deterministic/model cases, two unchanged successful passes, repair-stop rule and final validation/evidence gates. Authority prose preserves the expressly excluded global/live/publication actions.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 4, item_key: source:2f77d5a9-05bd-4394-9500-2d17ba7671d2, verdict: covered, explanation: "The follow-up permits controlled removal of conditions at unchanged IDs after a disputed historical scenario, without coaching the reviewer or requiring literal wording. VAL-001 requires unchanged-ID deletion and equivalent-paraphrase controls, independent fresh contexts and the evidence journal; SKL-001 supplies original evidence and excludes expected answers or suspected defects. The specification context retains private baseline archives and checkpoint evidence, so the prior historical result remains evidence rather than becoming an invented semantic failure. These obligations preserve the unchanged original-source basis and the purpose of the approved negative control.", requirement_ids: [ VAL-001, SKL-001, SRC-001 ], source_refs: [] }, { item_index: 5, item_key: requirement:SRC-001, verdict: covered, explanation: "The original request explicitly requires verbatim non-sensitive initial/follow-up instruction capture, known user-edit provenance, preservation before transformation, no repeated customer question and no substitution by repository facts. SRC-001 states those observable obligations, the named capture operation and related requirement/predecessor references. Its visible overflow failure and consent limitation preserve the original bounded-input and MCP trust boundaries.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 6, item_key: requirement:SRC-002, verdict: covered, explanation: "The source requires stable decision identities and revision history, authoritative decision_link_requirements, no mandatory nested IDs, partial edits retaining unrelated obligations, clarification of materially unknown provenance, and justified non-behavioral context classification. SRC-002 retains each condition and expressly excludes automatic treatment of functional limits/prohibitions as context.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 7, item_key: requirement:REQ-001, verdict: covered, explanation: "REQ-001 faithfully restates the source's level-three ID/title definition, equal-or-higher heading termination including nested content, duplicate/empty/missing-definition rejection, false-positive exclusion for prose/quotes/code/examples, preservation of IDs and exact mdast-util-from-markdown@2.0.3 pin. Structural parsing is explicitly required instead of whole-file regex matching.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 8, item_key: requirement:REQ-002, verdict: covered, explanation: "The original requirement-list/get contract calls for bounded IDs, exact text, document positions, source versions and derived decision refs, with complete continuations and no second manual mapping. REQ-002 preserves those fields and limits, and stale/cross-context rejection follows the original stale/foreign-context and unchanged-boundary requirements.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 9, item_key: requirement:COV-001, verdict: covered, explanation: "The source's mechanical-coverage layer requires all current sources and valid links, while the review layer also checks unsupported requirements, unanswered questions, active profiles and disputed context exclusions. COV-001 assigns inventory to MCP and prevents the author from making coverage complete by choosing a subset. This is supported by the original coverage and invariant sections.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 10, item_key: requirement:REV-001, verdict: covered, explanation: "The original plan requires typed versioned review metadata in decisions.yaml, outside product search and without copied specification text; versions bind specification, confirmed scope and sources while report writes remain stable and only Draft-to-Approved is exempt. REV-001 retains those rules, including source history needed for amendment review. The later explicit status-observation reply supports persistent detection of an observed downgrade and the limit for unseen edit/revert cycles.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 6e6129ab-f66f-41e9-9929-ac233960a65a, revision: 1 } ] }, { item_index: 11, item_key: requirement:REV-002, verdict: covered, explanation: "REV-002 maps to all four named review scenario operations plus expanded check-state, original question/amendment portions, evidence-bearing verdicts and completion rejection for missing portions/results/findings/staleness. It preserves existing atomic/path/bounds/retry behavior, exact retries and unchanged-run resume, requires fresh review without verdict reuse after input changes, uses existing Zod/public-schema generation, and excludes generic YAML editing, model launching and MCP approval/semantic proof.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 12, item_key: requirement:SKL-001, verdict: covered, explanation: "SKL-001 follows the source's independent separate-context review after Draft at every depth, targeted reviewer reference, original evidence without expected answers, only active profile references and explicit condition/exception/alternative checks. It retains concrete counterexamples, reviewer non-editing, restoration of unambiguous source-supported omissions, questions only for new material decisions and incomplete status when an independent reviewer is unavailable.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 13, item_key: requirement:SKL-002, verdict: covered, explanation: "SKL-002 preserves the original automatic author-made Approved transition only after required checks/corrections, without a second approval question; specification/planning/design/implementation remain separate explicit invocations. No new skill is added, canonical shared sources generate isolated hosts, inactive profiles are not loaded, and model recommendations remain advisory through existing host templates.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 14, item_key: requirement:USE-001, verdict: covered, explanation: "USE-001 is directly supported by the original consumer section: planning checks the registered review and pins a source reference, incremental checks freshness before execution and completion and reads packet-linked requirements/contracts, stale or incomplete work returns to specification ownership, and no packet/test ledger is added to MCP. Test-first, one authorized packet, current checklist/handoff and optional reviews/commits remain intact.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 15, item_key: requirement:LEG-001, verdict: covered, explanation: "The source explicitly leaves old specifications unverified by the new process without automatic blocking or migration, activates the new process on creation/change and preserves former consumer checks. LEG-001 keeps those distinctions and compatible existing public operations where new policy is not active; it does not relabel unavailable checks as verified.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] }, { item_index: 16, item_key: requirement:VAL-001, verdict: covered, explanation: "VAL-001 preserves the original checkpoint RED/GREEN plus stdio discipline, complete deterministic failure/recovery matrix, isolated model scenarios outside npm test/CI, all named semantic controls, two consecutive unchanged-skill passes, stop-and-agree rule after two same-cause failed repairs, complete final validation gates and honest evidence limitations. The later answer supports controlled deletion with unchanged IDs; equivalent-paraphrase and original-evidence reviewer obligations prevent turning disputed wording into a mandatory false finding.", requirement_ids: [], source_refs: [ { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 }, { id: 2f77d5a9-05bd-4394-9500-2d17ba7671d2, revision: 3 } ] }, { item_index: 17, item_key: profile:core, verdict: covered, explanation: "The active core profile concerns an extension of existing workflow tooling, not a new CLI or installation surface. SRC/REQ/COV define sources, structural Markdown and deterministic bounded reads; REV defines repeat/interrupted/stale behavior; SKL/USE define invocation and consumer ownership; LEG preserves old input compatibility. Existing Node/host contracts and canonical generation remain explicit. The declared MCP contract describes context, continuations, retry bounds and errors. Within this confirmed local scope I found no further material core scenario requiring a new requirement or artifact.", requirement_ids: [ SRC-001, SRC-002, REQ-001, REQ-002, COV-001, REV-001, REV-002, SKL-001, SKL-002, USE-001, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 18, item_key: profile:backend, verdict: covered, explanation: "The backend profile applies to local stdio MCP operations with the existing process-permission boundary. REQ-002 and REV-002 cover addressed inputs/outputs, bounded continuations, stale/cross-context rejection, evidence-dependent completion, atomic writes and exact retry/resume; REV-001 binds freshness and status observation; LEG-001 preserves legacy consumers. The declared contracts/mcp.md preserves dependency rechecks and overflow errors. No new network identity, transport, rate-limit or independently deployed service is introduced, so those would be speculative additions rather than missing scoped behavior.", requirement_ids: [ REQ-002, REV-001, REV-002, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 19, item_key: profile:data, verdict: covered, explanation: "The data profile's material risks are lost provenance/history, duplicated mappings, corrupted or partial review state, stale snapshots and forced legacy migration. SRC-001/002 preserve exact source identity and append-only amendments; REQ-002 derives reverse links; REV-001/002 define typed versioned metadata, non-self-invalidating writes, complete evidence, retry/restart recovery and new runs after changes; LEG-001 makes enrollment explicit. Existing per-file atomic writes, dependency checks and visible bounds are preserved. No deletion/backfill or new retention domain is introduced; I found no additional material data decision in confirmed scope.", requirement_ids: [ SRC-001, SRC-002, REQ-002, REV-001, REV-002, LEG-001, VAL-001 ], source_refs: [] }, { item_index: 20, item_key: context:specification, verdict: covered, explanation: "The complete non-requirement prose keeps Draft status, the confirmed Standard core/backend/data scope, existing Node/host contracts and excluded global/live/publication actions consistent with the requirements and original request. Bootstrap prose distinguishes implementing the new scenario capabilities from the existing requirement to use an available workflow MCP for protected state; it requires adoption/current-state evidence rather than declaring checks passed. Checkpoint/handoff and repository evidence plus private baseline archives complement VAL-001. I found no contradictory product promise hidden outside the twelve requirement blocks.", requirement_ids: [ SRC-001, REV-001, REV-002, SKL-002, LEG-001, VAL-001 ], source_refs: [ { id: scope.manifest, revision: 3 }, { id: 954bbd73-9d90-4632-966f-870867f23a9c, revision: 1 } ] } ]
+      approval_observed: true

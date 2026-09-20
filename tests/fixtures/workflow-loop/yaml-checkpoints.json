@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "evidenceKind": "captured-invalid-yaml-and-reproducible-model-scenario",
+  "baselineBundleSha256": "5371e2818317ffc2da25526996d8d9d69b5211fb6f821772f57238a9aebbf279",
+  "observedMalformedScalars": [
+    {
+      "sourceStage": "specification-02",
+      "sourceLedgerSha256": "a9fcc7b2fa00c95c6a25a37651705e20594336e83e8605e068f856e1ea2a6e7a",
+      "yaml": "prompt: Confirm the revised complete specification scope: Deep depth; events, data, operations, and security active; core, ui, backend, and cross-surface excluded; AsyncAPI, data schemas, and quality scenarios planned.\n",
+      "key": "prompt",
+      "expectedText": "Confirm the revised complete specification scope: Deep depth; events, data, operations, and security active; core, ui, backend, and cross-surface excluded; AsyncAPI, data schemas, and quality scenarios planned."
+    },
+    {
+      "sourceStage": "specification-06",
+      "sourceLedgerSha256": "3822045f0c01e4bdb1bfdcbb4017627732317454c1dfeb4451b0f238715b0897",
+      "yaml": "description: Return exactly ten nonnegative integer fields initialized to zero: applied, buffered, duplicate, eventIdConflict, sequenceConflict, replayStarted, replayAdvanced, replayCompleted, replayFailed, and ordersExpired; the tenant is selected only by the route and is not a response field or metric dimension.\n",
+      "key": "description",
+      "expectedText": "Return exactly ten nonnegative integer fields initialized to zero: applied, buffered, duplicate, eventIdConflict, sequenceConflict, replayStarted, replayAdvanced, replayCompleted, replayFailed, and ordersExpired; the tenant is selected only by the route and is not a response field or metric dimension."
+    }
+  ],
+  "deliveryRule": "Malformed samples and evaluation expectations remain private evaluator inputs. Give actors the realistic request, current raw artifacts and only relevant frozen answers.",
+  "evaluation": [
+    "Parse actual saved YAML bytes before yielding a question or checkpoint and before automatic Approved.",
+    "Preserve exact non-sensitive question/option/answer text when quoting or serializing scalars; no manual colon stripping.",
+    "A parser error must be repaired before the affected state is consumed or handed off.",
+    "An unavailable parser remains an unverified prerequisite, not successful validation or automatic Approved; no dependency installation or global mutation is implied.",
+    "Syntax success does not replace confirmed scope, decision semantics, traceability or gap review.",
+    "Planning contracts and implementation-edited YAML use the same shared gate, not host-specific duplicate rules."
+  ]
+}

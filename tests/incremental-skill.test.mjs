@@ -67,10 +67,19 @@ test("incremental skill is explicit, bounded, bundle-required, and catalog-align
     /explicitly authorized commits/,
     /Inspect every\s+staged diff/is,
     /host planning mode/,
-    /language-appropriate architecture/,
+    /existing plan/,
     /keep production unchanged/,
+    /references\/test-discipline\.md/,
+    /test.*before.*implementation/is,
+    /RED.*GREEN.*PROVE/is,
+    /correct.*check.*implementation/is,
+    /do not weaken.*test/is,
     /mark only the current checklist item/,
-    /Stop for review/,
+    /Approved/,
+    /confirmed.*manifest/is,
+    /\{\{HOST_QUESTION_TOOL\}\}/,
+    /references\/packet-recovery\.md/,
+    /review.*not.*prerequisite/is,
   ]) {
     assert.match(validated.body, pattern);
   }
@@ -89,23 +98,38 @@ test("incremental execution fixture changes one packet and preserves unrelated p
   assert.deepEqual(fixture.expected.checkedItems, [fixture.authorizedPacket]);
   assert.equal(fixture.expected.completedPacket, fixture.authorizedPacket);
   assert.equal(fixture.expected.handoffReplaced, true);
-  assert.equal(fixture.expected.stoppedForReview, true);
+  assert.equal(fixture.expected.stoppedAfterPacket, true);
+  assert.equal(fixture.expected.reviewRequired, false);
   assert.equal(fixture.expected.currentPacketCommitted, false);
   assert.ok(
     fixture.verification.every((check) => check.status === "passed"),
   );
+  assert.deepEqual(fixture.executionOrder, [
+    "write-check",
+    "observe-red",
+    "implement",
+    "prove-when-required",
+    "verify",
+  ]);
+  assert.equal(fixture.expected.weakenedChecks, false);
 });
 
-test("incremental transition commits require completion, authority, and exact staging", async () => {
+test("synthetic transition examples separate execution authority from optional review and commits", async () => {
   const fixture = await incrementalFixture("transition-commit");
+  assert.equal(fixture.evidenceKind, "synthetic-contract-examples");
   for (const transition of fixture.cases) {
-    const allowed =
+    const commitAllowed =
       transition.previousComplete === true &&
       transition.commitAuthorized === true &&
       transition.stagedPathsExact === true;
-    assert.equal(transition.expectedCommit, allowed);
-    assert.equal(transition.expectedStartNext, allowed);
+    const executionAllowed =
+      transition.nextPacketAuthorized === true &&
+      transition.prerequisitesPassed === true;
+    assert.equal(transition.expectedCommit, commitAllowed);
+    assert.equal(transition.expectedStartNext, executionAllowed);
   }
+  assert.ok(fixture.cases.some((entry) => entry.expectedStartNext &&
+    !entry.commitAuthorized && !entry.reviewCompleted));
 });
 
 test("incremental planning mode exposes complete non-object-oriented architecture", async () => {
@@ -128,7 +152,10 @@ test("incremental verification failure leaves the packet incomplete", async () =
   assert.equal(fixture.expected.checklistCompleted, false);
   assert.equal(fixture.expected.handoffRecordsFailure, true);
   assert.equal(fixture.expected.nextPacketStarted, false);
-  assert.equal(fixture.expected.stoppedForReview, true);
+  assert.equal(fixture.expected.stoppedIncomplete, true);
+  assert.equal(fixture.expected.correctImplementation, true);
+  assert.equal(fixture.expected.weakenChecks, false);
+  assert.equal(fixture.expected.repeatUntilChecksPass, true);
 });
 
 test("incremental fixtures and validation do not mutate production", async () => {

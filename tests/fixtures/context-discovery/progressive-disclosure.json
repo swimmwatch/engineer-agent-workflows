@@ -10,25 +10,28 @@
     {
       "id": "context-only",
       "selectedSkill": "context-engineering",
-      "callableInterviewTool": false,
+      "materialQuestion": false,
       "expectedLoaded": ["CONTEXT_BODY_SENTINEL"]
     },
     {
       "id": "idea-only",
       "selectedSkill": "idea-refine",
-      "callableInterviewTool": false,
+      "materialQuestion": false,
       "expectedLoaded": ["IDEA_BODY_SENTINEL"]
     },
     {
       "id": "interview-without-tool",
       "selectedSkill": "interview-me",
-      "callableInterviewTool": false,
-      "expectedLoaded": ["INTERVIEW_BODY_SENTINEL"]
+      "materialQuestion": true,
+      "expectedLoaded": [
+        "INTERVIEW_BODY_SENTINEL",
+        "INTERVIEW_REFERENCE_SENTINEL"
+      ]
     },
     {
       "id": "interview-with-tool",
       "selectedSkill": "interview-me",
-      "callableInterviewTool": true,
+      "materialQuestion": true,
       "expectedLoaded": [
         "INTERVIEW_BODY_SENTINEL",
         "INTERVIEW_REFERENCE_SENTINEL"

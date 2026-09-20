@@ -12,8 +12,11 @@ documentation or an architecture decision record. Establish the requested
 audience, artifact, authority, and boundaries before editing; do not turn
 routine implementation notes into durable documentation.
 
-1. In Codex, read the nearest applicable `AGENTS.md`; in Claude Code, read
-   applicable `CLAUDE.md`. Inspect the target, established documentation
+1. Use project instructions already supplied by the host; do not reread their
+   source files solely to recover context. Read an additional task-scoped
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only when it is not already in the active
+   context or the file itself is in scope. Inspect the
+   target, established documentation
    structure, task-relevant code, public interfaces, configuration, tests,
    release evidence, and settled decisions. Reuse repository terminology,
    ownership, links, and command syntax; do not invent project facts or tools.

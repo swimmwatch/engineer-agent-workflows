@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "depths": [
+    { "id": "lite", "meaning": "One bounded behavior with no material external contract or migration." },
+    { "id": "standard", "meaning": "Several interacting states, components, or one material profile contract." },
+    { "id": "deep", "meaning": "Cross-system, irreversible, security-critical, distributed, or migration-heavy work." }
+  ],
+  "scenarios": [
+    {
+      "id": "reusable-cli-contract",
+      "signals": ["public library interface", "CLI command", "configuration schema"],
+      "expectedDepth": "standard",
+      "expectedProfiles": ["core"],
+      "expectedLoadedProfileReferences": ["references/core-requirements.md"],
+      "scopeProposed": true,
+      "scopeConfirmed": true
+    },
+    {
+      "id": "bounded-service-change",
+      "signals": ["one established service", "no public contract change", "no migration"],
+      "expectedDepth": "lite",
+      "expectedProfiles": ["backend"],
+      "expectedLoadedProfileReferences": ["references/backend-requirements.md"],
+      "scopeProposed": true,
+      "scopeConfirmed": true
+    },
+    {
+      "id": "interactive-feature",
+      "signals": ["multiple UI states", "existing HTTP operation"],
+      "expectedDepth": "standard",
+      "expectedProfiles": ["ui", "backend", "cross-surface"],
+      "expectedLoadedProfileReferences": ["references/ui-requirements.md", "references/backend-requirements.md", "references/cross-surface-requirements.md"],
+      "scopeProposed": true,
+      "scopeConfirmed": true
+    },
+    {
+      "id": "distributed-migration",
+      "signals": ["public HTTP contract", "events", "persistent migration", "rollback"],
+      "expectedDepth": "deep",
+      "expectedProfiles": ["backend", "events", "data", "operations"],
+      "expectedLoadedProfileReferences": ["references/backend-requirements.md", "references/events-requirements.md", "references/data-requirements.md", "references/operations-requirements.md"],
+      "scopeProposed": true,
+      "scopeConfirmed": true
+    },
+    {
+      "id": "unconfirmed-ui-scope",
+      "signals": ["possible visual UI", "interaction surface not yet confirmed"],
+      "expectedDepth": "standard",
+      "expectedProfiles": ["ui"],
+      "expectedLoadedProfileReferences": [],
+      "scopeProposed": true,
+      "scopeConfirmed": false
+    }
+  ],
+  "manifest": {
+    "schema_version": 1,
+    "depth": "standard",
+    "confirmed": true,
+    "rationale": ["A reusable CLI invokes an HTTP operation with compatibility requirements."],
+    "profiles": [
+      { "id": "core", "state": "active", "reason": "The change exposes command and configuration behavior." },
+      { "id": "backend", "state": "active", "reason": "The command invokes a service operation." }
+    ],
+    "planning_artifacts": ["core/contracts.yaml", "contracts/openapi.yaml"]
+  }
+}

@@ -23,7 +23,7 @@ test("canonical catalog contains the approved ordered inventory", async () => {
     catalog.skills.map((entry) => entry.name),
     APPROVED_SKILL_NAMES,
   );
-  assert.equal(catalog.skills.length, 15);
+  assert.equal(catalog.skills.length, 16);
   for (const entry of catalog.skills) {
     assert.ok([...entry.description].length <= 240);
     assert.equal(entry.policies.codex.allowImplicitInvocation, false);
@@ -38,8 +38,12 @@ test("catalog classification and dependency contract is exact", async () => {
     .filter((entry) => entry.classification === "bundle-required")
     .map((entry) => [entry.name, entry.dependencies]);
   assert.deepEqual(bundleRequired, [
+    ["design-planning", ["planning-and-task-breakdown"]],
     ["incremental-implementation", ["planning-and-task-breakdown"]],
-    ["spec-driven-development", ["planning-and-task-breakdown"]],
+    ["planning-and-task-breakdown", ["spec-driven-development"]],
+    ["product-definition", ["idea-refine"]],
+    ["product-roadmap", ["product-definition", "technical-design"]],
+    ["technical-design", ["product-definition"]],
   ]);
   assert.ok(
     catalog.skills
@@ -85,8 +89,8 @@ test("dependency ordering is deterministic and rejects cycles", async () => {
       first.indexOf("incremental-implementation"),
   );
   assert.ok(
-    first.indexOf("planning-and-task-breakdown") <
-      first.indexOf("spec-driven-development"),
+    first.indexOf("spec-driven-development") <
+      first.indexOf("planning-and-task-breakdown"),
   );
 
   const cycle = JSON.parse(

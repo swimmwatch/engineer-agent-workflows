@@ -1,5 +1,5 @@
 interface:
   display_name: "Planning And Task Breakdown"
-  short_description: "Create an implementation plan or review-gated task breakdown when the user explicitly requests planning, decomposition, milestones, or execution packets. Ground architecture and verification in repository evidence; do not implement."
+  short_description: "Create adaptive-depth implementation plans from Approved specifications and confirmed scope when explicitly requested. Produce profile contracts, architecture, test-first tasks, and documentation; do not implement."
 policy:
   allow_implicit_invocation: false

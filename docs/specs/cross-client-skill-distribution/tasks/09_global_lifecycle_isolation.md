@@ -1,175 +1,149 @@
-# Packet 09: Global Lifecycle Isolation
+# Packet 09: Host-Specific Global Lifecycle Isolation
 
 Requirements: HOST-003, HOST-004, TOOL-001, TOOL-002, TOOL-003, DIST-001,
 DIST-002, DIST-003, DIST-004, DIST-005, SEC-001, SEC-003, ACC-002, ACC-003.
 
 ## Outcome
 
-Build an automated, test-only harness that proves the pinned upstream
-`skills@1.5.20` global `add`, `list`, `update`, and `remove` lifecycle on Linux,
-macOS, and Windows without changing a consuming project or any real Codex,
-Claude, npm, Git, or user-home state.
+Prove with an automated test-only harness that the pinned
+`skills@1.5.20` CLI can install, inspect, replace, and remove the distinct
+Codex and Claude Code global artifacts without changing a consuming project or
+any real user, client, npm, Git, or MCP state.
 
 ## Prerequisites
 
-- Packet 08 is complete and the repository is a valid Agent Skills source with
-  generated explicit-only host metadata.
-- The selected public repository identity is known. For pre-publish tests, use
-  an isolated local Git fixture or immutable archive supported by the pinned
-  CLI; do not invent a remote.
-- Node.js 22.20.0 or newer and network/package-cache access to exactly
-  `skills@1.5.20` are available in the test environment.
-- Read the pinned CLI's stable `--help` for `add`, `list`/`ls`, `update`, and
-  `remove`; capture sanitized fixtures before encoding command assumptions.
+- Packet 08 generated both host-specific plugin roots.
+- Node.js 22.20.0 or newer and the exact reviewed `skills@1.5.20` package are
+  available.
+- Sanitized `--help`, package integrity, and unknown-skill evidence are
+  captured before command assumptions are encoded.
+- All lifecycle sources, homes, caches, repositories, remotes, and consumer
+  projects used by tests remain under one temporary test-owned root.
 
 ## Scope
 
-- Add a cross-platform test harness that spawns pinned `npx` commands directly.
-- Isolate home, config, cache, npm, Codex, Claude, MCP, and consuming-project
-  paths.
-- Test one standalone skill, the complete bundle, and an upstream-allowed
-  individual bundle-required skill.
-- Prove listing, explicit update, removal, shared canonical release content,
-  and no project writes.
-- Record the pinned package integrity and actual unknown-skill behavior.
+- Create one isolated Git source from the generated Codex bundle and a second
+  source from the generated Claude Code bundle.
+- Exercise one standalone skill, the complete bundle, and the upstream-allowed
+  individual installation of one bundle-required skill.
+- Install with one `add --copy` command per source and agent.
+- Inspect with agent-specific global list commands.
+- Replace an installed skill by repeating each matching host-specific
+  `add --copy` command after a compatible source update.
+- Remove selected or complete global installations.
+- Prove project and profile containment after every operation.
 
 ## Non-Goals
 
-- Do not ship the harness as a CLI, installer, wrapper, package binary, or
-  lifecycle API.
-- Do not touch the operator's actual global skills, profiles, MCP config,
-  project `.agents/skills`, or project `.claude/skills`.
-- Do not use project scope, `skills init`, experimental lock restore, managed
-  rollback, background update, or custom dependency resolution.
-- Do not claim host discovery/invocation; packet 10 owns host behavior.
-- Do not publish or create a remote.
+- Do not use `skills update`: the pinned command has no `--agent` option and
+  cannot preserve two host-specific artifacts with the same skill name.
+- Do not add a project lifecycle wrapper, dependency resolver, rollback store,
+  direct writes to `.agents/skills` or `.claude/skills`, or a runtime
+  executable.
+- Do not test real Codex or Claude discovery in this packet; packet 10 owns host
+  acceptance.
+- Do not install into a real profile or create an external repository.
 
-## File And Symbol Boundaries
+## Architecture And Ownership
 
-| File/unit | State | Contract |
-| --- | --- | --- |
-| `tests/lifecycle/isolated-profile.mjs` | Proposed | `createIsolatedProfile(t, platform)`, `environmentFor(profile)`, `assertProfileContained(profile)`; models POSIX/Windows homes and caches under one temp root. |
-| `tests/lifecycle/project-snapshot.mjs` | Proposed | `snapshotProject(root)`, `assertProjectUnchanged(before, after)` using packet-01 deterministic file hashing. |
-| `tests/lifecycle/skills-command.mjs` | Proposed | Test-only `runSkills(args, {cwd, env, timeout})`; always expands to `npx --yes skills@1.5.20`, disables telemetry, bounds output/time, and redacts temp roots. |
-| `tests/lifecycle/source-fixture.mjs` | Proposed | Creates an isolated local source/release identity without editing canonical or consuming projects. |
-| `tests/lifecycle/global-lifecycle.test.mjs` | Proposed | Shared add/list/update/remove and classification scenarios. |
-| `tests/lifecycle/platform-paths.test.mjs` | Proposed | Linux/macOS/Windows environment/path behavior independent of runner OS. |
-| `tests/fixtures/skills-cli-1.5.20/` | Proposed | Sanitized package identity/help/observed unknown-skill behavior; no npm token, cache, or personal path. |
-| `docs/evidence/skills-cli-1.5.20.md` | Proposed | Reviewed version, Node engine, integrity, stable commands, observed link/copy layout, and limitations. |
-| `package.json` | Existing | Add test scripts only; no binary, installer, dependency, lifecycle state, or floating package version. |
+| File or unit | Responsibility and boundary |
+| --- | --- |
+| `tests/lifecycle/isolated-profile.mjs` | Creates contained POSIX and Windows-style homes, config, cache, temp, consumer, and Git paths; strips inherited secrets and risky environment state. |
+| `tests/lifecycle/project-snapshot.mjs` | Hashes the complete consumer tree and proves byte identity before and after each command. |
+| `tests/lifecycle/skills-command.mjs` | Allows only pinned, global, shell-free add/list/remove invocations; requires one agent plus `--copy` for every add; bounds and redacts output. |
+| `tests/lifecycle/source-fixture.mjs` | Creates separate Codex and Claude Code Git repositories and loopback-only smart-Git endpoints under the temporary root. |
+| `tests/lifecycle/global-lifecycle.test.mjs` | Exercises both sources and verifies each agent receives only its matching bytes. |
+| `tests/lifecycle/platform-paths.test.mjs` | Verifies command policy, modeled platform paths, containment, cancellation, timeout, and process reaping. |
+| `docs/evidence/skills-cli-1.5.20.md` | Records the reviewed command contract and observed limitations. |
 
 ## Command Contract
 
-Every spawned lifecycle command:
-
-- uses `DISABLE_TELEMETRY=1`;
-- invokes exactly `npx --yes skills@1.5.20`;
-- passes `--global`;
-- names `--agent codex` and/or `--agent claude-code`;
-- selects one explicit standalone name, the observed individual
-  bundle-required name, or `--skill '*'`;
-- uses only stable add/list/update/remove syntax confirmed by pinned `--help`;
-- runs from an isolated sentinel consuming project;
-- receives bounded stdin/stdout/stderr and timeout/cancellation;
-- never inherits credentials, npm auth, real home/config/cache variables, MCP
-  variables, or unrelated environment.
-
-Normative complete install:
+Every add or replacement is one of these shapes:
 
 ```text
-DISABLE_TELEMETRY=1 npx --yes skills@1.5.20 add <source> --global \
-  --agent codex --agent claude-code --skill '*' --yes
+DISABLE_TELEMETRY=1 npx --yes skills@1.5.20 add <codex-source> \
+  --global --agent codex --skill <name-or-*> --copy --yes
+
+DISABLE_TELEMETRY=1 npx --yes skills@1.5.20 add <claude-source> \
+  --global --agent claude-code --skill <name-or-*> --copy --yes
 ```
 
-Normative standalone install substitutes the exact standalone skill after
-`--skill`. Update/list/remove commands must use the pinned stable global syntax
-observed from `skills@1.5.20`; never rely on current-directory default scope.
-
-## Isolation Contract
-
-- Create all test homes, XDG/AppData directories, npm cache/config, Git config,
-  host state, source fixture, and consuming project under one test-owned
-  temporary directory.
-- Set `HOME`, `USERPROFILE`, `APPDATA`, `LOCALAPPDATA`, XDG variables, npm
-  cache/config, and Git config to those paths as appropriate.
-- Clear proxy/auth/token/signing/MCP/client state unless the test explicitly
-  provides a safe fixture.
-- Snapshot the consuming project before and after source discovery, add, list,
-  update, remove, failure, and cancellation.
-- Fail if `.agents/skills`, `.claude/skills`, a project skill lock/manifest, or
-  any unrelated project byte appears or changes.
-- Fail if any resolved write escapes the temporary root or if output contains
-  a private sentinel.
-- Never recursively search development roots for copies.
+Every list command names exactly one agent and uses `--global --json`. Removal
+uses explicit global agent and skill selection, or explicit global agents with
+`--all`. No normative command selects project scope, targets both agents from
+one source, floats the package version, or invokes `update`.
 
 ## Lifecycle Scenarios
 
-1. List the repository source without installation and observe all 15 skills.
-2. Install one standalone skill globally for both agents and verify only that
-   selection plus its contained assets.
-3. Remove it globally and verify absence.
-4. Install `'*'` for both agents and verify all 15 identities.
-5. Prove both agent targets reference byte-identical canonical release content;
-   record whether the pinned CLI uses links or copies without asserting an
-   undocumented storage path.
-6. List global installations and match the complete identity set.
-7. Change only the isolated source fixture compatibly, run explicit global
-   update, and verify new bytes with no project writes.
-8. Remove the complete global installation and verify only isolated global
-   state changed.
-9. Individually install a bundle-required skill as upstream permits; leave its
-   invocation failure to packet 10 and document that the project provides no
-   custom dependency resolver.
-10. Run an unknown skill name, record exact pinned upstream behavior, and avoid
-    inventing a project-owned error.
-11. Cancel/timeout a command and verify cleanup and project invariance.
+1. Discover all 15 identities in each source without installation.
+2. Install one standalone skill into Codex from the Codex source and into
+   Claude Code from the Claude source.
+3. Prove both installed entries are copies and byte-identical to their own
+   source, while their host-specific substitutions remain different.
+4. List each agent's global installation.
+5. Remove the standalone skill.
+6. Install all 15 skills with two host-specific complete-bundle commands.
+7. Prove every installed skill equals its matching source and no selected skill
+   resolves through the other host's content.
+8. Change only the isolated Codex and Claude source fixtures, repeat the two
+   standalone `add --copy` commands, and verify both markers without changing
+   any unrelated installed skill.
+9. Remove the complete installation.
+10. Install one bundle-required skill alone as upstream permits and leave its
+    invocation-time complete-bundle failure to packet 10.
+11. Record the exact pinned unknown-skill behavior.
+12. Cancel and time out representative allowed commands; verify cleanup,
+    containment, bounded output, and project invariance.
+
+## Safety Contract
+
+- Each child receives only test-owned `HOME`, `USERPROFILE`, AppData, XDG,
+  npm, Git, and temporary locations.
+- Credentials, proxy settings, signing configuration, client state, MCP
+  variables, and user runtime options are not inherited.
+- Commands run without a shell. Output is size-bounded, ANSI-normalized, and
+  temporary roots are redacted.
+- Timeout or cancellation terminates the process tree, escalates if necessary,
+  and waits for reaping.
+- Every symbolic link or junction encountered while auditing the test profile
+  must resolve inside the temporary root.
+- No recursive search may inspect development roots or real profiles.
 
 ## Acceptance Criteria
 
-- Shared lifecycle scenarios pass on Linux, macOS, and Windows CI runners.
-- The source lists exactly the 15 stable identities.
-- Standalone and complete selections install globally for both explicit agent
-  targets.
-- List/update/remove work only in isolated global state.
-- Consuming project snapshots are byte-for-byte identical after every case.
-- No real profile path, credential, telemetry, or MCP state is read or written.
-- The integrity fixture exactly matches the approved npm integrity identity.
-- `package.json` still exposes no binary or lifecycle dependency and normative
-  commands never float the package version.
-- Failures are bounded, redacted, and clean temporary processes/files.
+- Both sources list exactly the 15 stable identities.
+- Separate `add --copy` commands install the standalone and complete
+  selections globally for the matching agents.
+- Codex and Claude Code installed trees differ where host values differ and
+  otherwise match their corresponding generated sources.
+- Repeated host-specific adds replace selected copies; `skills update` is not
+  used.
+- List and remove operate only on isolated global state.
+- The consumer project snapshot remains byte-for-byte identical after every
+  command.
+- No real profile path, credential, telemetry, MCP state, or unrelated
+  environment value is read or written.
+- The reviewed package version and integrity match release metadata.
+- Shared scenarios pass on Linux, macOS, and Windows runners, or missing runner
+  evidence is recorded as an explicit manual gate.
 
 ## Verification
 
-On the current platform:
-
 ```bash
-npm test -- --test-name-pattern='global lifecycle|isolated profile'
+node --test tests/lifecycle/platform-paths.test.mjs
+node --test tests/lifecycle/global-lifecycle.test.mjs
 npm run test:lifecycle
 npm run validate
 npm run generate:check
+git diff --check
 ```
 
-In clean Linux, macOS, and Windows CI or separately authorized local runners,
-run `npm run test:lifecycle` with network/cache access limited to the pinned npm
-package. Verify temp directories are removed. Review:
-
-```bash
-grep -RInE 'skills@(latest|next)|skills init|--project' \
-  docs package.json scripts tests
-```
-
-## References
-
-- [Approved specification](../spec.md): platform/version, upstream tool,
-  global/plugin distribution, isolation, supply-chain, and lifecycle
-  acceptance contracts.
-- Pinned upstream package: `skills@1.5.20`; use its captured stable help and
-  reviewed npm integrity, never a floating version.
+The cross-platform GitHub Actions workflow remains manual, least-privilege, and
+secret-free. Do not describe unrun macOS or Windows jobs as passing.
 
 ## Completion And Handoff
 
-- Mark only packet 09 complete after current-platform tests and the configured
-  cross-platform jobs pass; otherwise record the missing platform gate.
-- Record exact upstream help/version/integrity, commands, link/copy behavior,
-  project hashes, platform results, and packet 10 next.
-- Stop. Do not install into a real profile, commit, publish, or start packet 10.
+Record the exact package identity, the two source shapes, command vectors,
+project snapshot result, platform evidence, and packet 10 as the next owner.
+Stop without real-profile installation, commit, publication, tag, push, or
+packet-10 execution.

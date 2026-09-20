@@ -20,16 +20,15 @@ const SKILLS = Object.freeze([
   "interview-me",
 ]);
 const NON_ANSWERS = Object.freeze([
-  "paused",
+  "dismissed",
   "cancelled",
   "timed_out",
   "unavailable",
-  "invalid_request",
-  "conflict",
+  "invalid_response",
   "failed",
 ]);
 const SOURCE_ASSUMPTIONS =
-  /mcp__|prompt-mcp\/\.agents|\binternal\/|\bgo test\b|\bGTK\b|\bZenity\b/i;
+  /Prompt MCP|prompt-mcp|mcp__|\binternal\/|\bgo test\b|\bGTK\b|\bZenity\b/i;
 
 async function readScenarios(skill) {
   return JSON.parse(
@@ -70,9 +69,8 @@ test("context engineering, idea refine, and interview skills are portable and ex
     assert.ok(validated.bytes <= 4096);
     for (const pattern of [
       /explicit request|explicitly asks/,
-      /In Codex.*`AGENTS\.md`/s,
-      /in Claude Code.*`CLAUDE\.md`/s,
-      /Do not fabricate the other host's file/,
+      /`\{\{HOST_PROJECT_INSTRUCTIONS\}\}`/,
+      /Do not fabricate\s+(?:the other|another) host's file/,
       /Current repository evidence|current repository evidence/,
       /unknown/,
       /bounded/,
@@ -81,6 +79,7 @@ test("context engineering, idea refine, and interview skills are portable and ex
       assert.match(validated.body, pattern, `${name} misses ${pattern}`);
     }
     assert.doesNotMatch(validated.body, SOURCE_ASSUMPTIONS);
+    assert.doesNotMatch(validated.body, /AGENTS\.md|CLAUDE\.md/);
   }
 
   assert.deepEqual(
@@ -89,12 +88,22 @@ test("context engineering, idea refine, and interview skills are portable and ex
   );
   assert.deepEqual(
     (await fs.readdir(path.join(projectRoot, "skills", "idea-refine"))).sort(),
-    ["SKILL.md", "agents"],
+    ["SKILL.md", "agents", "references", "shared"],
   );
   assert.deepEqual(
     (await fs.readdir(path.join(projectRoot, "skills", "interview-me"))).sort(),
     ["SKILL.md", "agents", "references"],
   );
+
+  for (const name of ["idea-refine", "interview-me"]) {
+    const body = await fs.readFile(
+      path.join(projectRoot, "skills", name, "SKILL.md"),
+      "utf8",
+    );
+    assert.match(body, /`\{\{HOST_QUESTION_TOOL\}\}`/);
+    assert.doesNotMatch(body, /request_user_input|AskUserQuestion/);
+    assert.match(body, /do not enter\s+plan mode solely\s+to ask/is);
+  }
 });
 
 test("context engineering applies host guidance and current-evidence precedence", async () => {
@@ -183,17 +192,16 @@ test("idea refine follows a callable schema and leaves unavailable choices unres
   assert.deepEqual(unavailable.evidence.callableTools, []);
   assert.equal(unavailable.expected.calledTool, null);
   assert.equal(unavailable.expected.decisionState, "unresolved");
-  assert.equal(unavailable.expected.fallbackQuestionnaire, false);
+  assert.equal(unavailable.expected.conversationalFallback, true);
 });
 
-test("interview uses only callable schema-defined modes and limits", async () => {
+test("interview uses one host-native question at a time with fallback", async () => {
   const fixture = await readScenarios("interview-me");
   const recoverable = findCase(fixture, "recoverable-callable-registry");
-  for (const name of recoverable.expected.calledTools) {
-    assert.ok(callableByName(recoverable, name));
-  }
-  const batchTool = callableByName(recoverable, "collect_decision_batch");
-  assert.ok(recoverable.expected.batchSize <= batchTool.inputSchema.maxQuestions);
+  assert.deepEqual(recoverable.expected.calledTools, ["request_user_input"]);
+  const codexTool = callableByName(recoverable, "request_user_input");
+  assert.equal(recoverable.expected.batchSize, 1);
+  assert.ok(recoverable.expected.batchSize <= codexTool.inputSchema.maxQuestions);
   assert.equal(recoverable.expected.namespaceConstructed, false);
   assert.equal(recoverable.expected.referenceLoaded, true);
   assert.ok(
@@ -201,22 +209,22 @@ test("interview uses only callable schema-defined modes and limits", async () =>
   );
 
   const single = findCase(fixture, "single-callable-registry");
-  assert.deepEqual(single.expected.calledTools, ["collect_one_decision"]);
+  assert.deepEqual(single.expected.calledTools, ["AskUserQuestion"]);
   assert.equal(single.expected.batchSize, 1);
-  assert.equal(
-    single.expected.batchSize,
-    callableByName(single, "collect_one_decision").inputSchema.maxQuestions,
+  assert.ok(
+    single.expected.batchSize <=
+      callableByName(single, "AskUserQuestion").inputSchema.maxQuestions,
   );
 
   const missing = findCase(fixture, "no-callable-interview");
   assert.deepEqual(missing.callableTools, []);
   assert.deepEqual(missing.expected.calledTools, []);
-  assert.equal(missing.expected.fallbackQuestionnaire, false);
-  assert.equal(missing.expected.referenceLoaded, false);
-  assert.equal(missing.expected.status, "unavailable");
+  assert.equal(missing.expected.conversationalFallback, true);
+  assert.equal(missing.expected.referenceLoaded, true);
+  assert.equal(missing.expected.status, "awaiting-answer");
 });
 
-test("interview excludes settled and non-committed decisions from new checkpoints", async () => {
+test("interview checkpoints explicit answers and excludes non-answers", async () => {
   const fixture = await readScenarios("interview-me");
   const settled = findCase(fixture, "settled-decisions-not-reasked");
   assert.ok(
@@ -226,16 +234,16 @@ test("interview excludes settled and non-committed decisions from new checkpoint
   );
   assert.deepEqual(settled.expected.askedQuestionIds, ["failure.recovery"]);
 
-  const partial = findCase(fixture, "committed-partial-results");
+  const partial = findCase(fixture, "explicit-partial-results");
   assert.deepEqual(partial.expected.checkpointedQuestionIds, [
     "retention.policy",
   ]);
   assert.deepEqual(partial.expected.remainingQuestionIds, ["failure.recovery"]);
-  assert.equal(partial.results[0].committed, true);
-  assert.equal(partial.results[1].status, "paused");
-  assert.equal(partial.results[1].committed, false);
+  assert.equal(partial.results[0].hasExplicitAnswer, true);
+  assert.equal(partial.results[1].status, "dismissed");
+  assert.equal(partial.results[1].hasExplicitAnswer, false);
 
-  const outcomes = await readSharedFixture("prompt-mcp-outcomes");
+  const outcomes = await readSharedFixture("question-tool-outcomes");
   assert.deepEqual(
     outcomes.outcomes
       .filter((outcome) => outcome.checkpoint)
@@ -251,36 +259,45 @@ test("interview excludes settled and non-committed decisions from new checkpoint
   assert.ok(
     outcomes.outcomes
       .filter((outcome) => outcome.checkpoint)
-      .every((outcome) => outcome.committed && outcome.durable),
+      .every((outcome) => outcome.hasExplicitAnswer),
+  );
+  assert.ok(
+    outcomes.outcomes.every(
+      (outcome) =>
+        !Object.hasOwn(outcome, "committed") &&
+        !Object.hasOwn(outcome, "durable"),
+    ),
   );
 });
 
-test("interview reference is conditional and defines bounded recovery and privacy", async () => {
+test("interview reference defines host-native questions, recovery, and privacy", async () => {
   const reference = await fs.readFile(
     path.join(
       projectRoot,
       "skills",
       "interview-me",
       "references",
-      "prompt-mcp-interview.md",
+      "host-native-questions.md",
     ),
     "utf8",
   );
   for (const pattern of [
-    /only after `interview-me` has found a suitable Prompt MCP/,
-    /callable tool names, descriptions, and input\/output schemas/,
-    /Never hard-code or construct a\s+server namespace/is,
-    /stable semantic question IDs/,
-    /advertised item and payload limit/,
-    /paused.*cancelled.*timed_out.*unavailable.*invalid_request.*conflict.*failed/is,
-    /Checkpoint each committed non-sensitive answer immediately/,
-    /Preserve committed partial results/,
+    /`\{\{HOST_QUESTION_TOOL\}\}`/,
+    /one question at a time/i,
+    /conversational fallback/i,
+    /stable semantic IDs?/,
+    /dismissed.*cancelled.*timed_out.*unavailable.*invalid_response.*failed/is,
+    /Checkpoint each explicit non-sensitive answer immediately/,
+    /Preserve explicit partial results/,
     /Never place them in logs, diagnostics, generated host\s+metadata/is,
     /Stop before specification, planning, implementation/,
   ]) {
     assert.match(reference, pattern);
   }
-  assert.doesNotMatch(reference, /mcp__[a-z0-9_]+/);
+  assert.doesNotMatch(
+    reference,
+    /request_user_input|AskUserQuestion|mcp__[a-z0-9_]+/,
+  );
 });
 
 test("context engineering, idea refine, and interview use progressive disclosure", async () => {
@@ -294,10 +311,7 @@ test("context engineering, idea refine, and interview use progressive disclosure
           ? fixture.sentinels.ideaBody
           : fixture.sentinels.interviewBody;
     const loaded = [expectedBody];
-    if (
-      scenario.selectedSkill === "interview-me" &&
-      scenario.callableInterviewTool
-    ) {
+    if (scenario.selectedSkill === "interview-me") {
       loaded.push(fixture.sentinels.interviewReference);
     }
     assert.deepEqual(loaded, scenario.expectedLoaded);
@@ -331,7 +345,7 @@ test("context engineering, idea refine, and interview redact and copy fixture st
     assert.notEqual(reloaded.cases[0].id, "caller-mutated");
   }
 
-  const outcomes = await readSharedFixture("prompt-mcp-outcomes");
+  const outcomes = await readSharedFixture("question-tool-outcomes");
   assert.equal(outcomes.expected.outputContainsPrivateValue, false);
   assert.doesNotMatch(
     JSON.stringify(outcomes.expected),
@@ -344,7 +358,7 @@ test("context engineering, idea refine, and interview fixtures leave skills unch
   for (const name of SKILLS) {
     await readScenarios(name);
   }
-  await readSharedFixture("prompt-mcp-outcomes");
+  await readSharedFixture("question-tool-outcomes");
   await readSharedFixture("progressive-disclosure");
   assert.deepEqual(await snapshotTree(path.join(projectRoot, "skills")), before);
 });

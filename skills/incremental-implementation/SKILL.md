@@ -1,6 +1,6 @@
 ---
 name: incremental-implementation
-description: "Implement exactly one authorized, self-contained task packet per explicit invocation, verify it, update its checklist and handoff, then stop for review. Commit the completed previous packet only with explicit commit authorization."
+description: "Implement exactly one authorized task packet per explicit invocation using test-first RED/GREEN/PROVE, verify it, update checklist and handoff, then stop."
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -8,38 +8,57 @@ user-invocable: true
 # Incremental Implementation
 
 Implement exactly one explicitly authorized packet.
+Model suggestion: {{HOST_IMPLEMENTATION_MODEL}}. Never switch or gate on model.
 
-1. Locate the sibling `planning-and-task-breakdown` skill. Run its
-   `scripts/verify-engineering-manual.mjs` through Node with this skill
-   directory as the only argument before writing a plan, code, documentation,
-   checklist, handoff, or commit. If verification fails, return exactly:
+1. Set `skill_dir` to the absolute directory containing this `SKILL.md`.
+   Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`
+   before any write or commit. If verification fails,
+   return exactly:
    `Install or update the complete matching engineer-agent-workflows bundle
-   for Codex and Claude Code using the documented pinned global command, then
+   for {{HOST_DISPLAY_NAME}} using the documented pinned global command, then
    retry.` Stop without fetching, copying, approximating, or ignoring the
    manual.
-2. Read the verified sibling `references/engineering-principles.md` and
-   `references/task-packets.md`. Read applicable `AGENTS.md` in Codex or
-   `CLAUDE.md` in Claude Code, the current checklist and packet, and only
-   task-scoped code, tests, interfaces, configuration, and references. Read the
-   current handoff when continuing.
-3. Confirm that prerequisites and authorization are complete. If the previous
-   packet remains uncommitted, verify it against the handoff and commit only
-   its exact paths when the user explicitly authorized commits. Inspect every
-   staged diff. Never infer commit, push, publication, or external-action
-   authority.
-4. In host planning mode, expose the complete language-appropriate architecture
-   before implementation: ownership boundaries, existing/proposed symbols,
-   responsibilities, inputs and outputs, state and lifecycle, errors and
-   invariants, dependency direction, requirement mapping, and verification.
-   Revise disproved boundaries and keep production unchanged.
-5. In implementation mode, implement only the current packet. Preserve
-   unrelated changes, public contracts, and repository-specific rules. Choose
-   the simplest adequate design; make ownership, cleanup, errors, concurrency,
-   compatibility, and security behavior explicit where material.
-6. Run the packet's focused checks and repository-proportional verification.
-   Do not weaken checks. A failed or unavailable required check leaves the
-   packet incomplete with exact evidence.
-7. After all applicable checks pass, mark only the current checklist item and
+   Run `git rev-parse --is-inside-work-tree` separately in the packet directory;
+   require visible `true`. Otherwise read only the packet/handoff needed to
+   checkpoint the blocker and stop; do not initialize Git or substitute snapshots.
+2. Read `shared/references/yaml-contracts.md` fully in a separate call, not a batch.
+   Read `shared/references/engineering-principles.md`,
+   `shared/references/test-discipline.md`, and the sibling planning skill's
+   `references/task-packets.md`. Use host-supplied project instructions;
+   do not reread them solely to recover context. Read
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from active context or itself in scope.
+   For a valid product-linked task, read `shared/references/product-workflow.md`
+   and follow its Implementation role; otherwise keep the standalone path and
+   do not call product task tools.
+   Use only scenario MCP to check the confirmed manifest or read decisions,
+   catalog and experience YAML; never shell/file readers.
+   Read the current checklist, packet and handoff when continuing. Check the
+   Approved specification, linked requirements and contracts, code and tests.
+   Re-verify packet evidence; do not reload every profile or the entire spec.
+   For conflicts, failed checks or resume, read
+   `references/packet-recovery.md`.
+3. Inspect tracked, staged and untracked changes; no clean tree or commit is required.
+   Confirm prerequisites and authorization. Verify an uncommitted prior packet
+   against its handoff.
+   Inspect every staged diff. Missing review or commit is not a gate.
+   Never infer commit, push, publication or external-action authority.
+4. In host planning mode, validate the existing plan and keep production unchanged.
+   Do not redesign architecture. If a material boundary or contract needs revision,
+   checkpoint the blocker and stop for separately authorized specification or planning.
+5. In implementation mode, write the test or discriminating check before
+   implementation, observe relevant RED, implement minimal correct GREEN, and
+   apply PROVE when shared discipline requires it. Preserve unrelated changes,
+   public contracts and repository rules before broader verification.
+6. Run focused checks after each material change and repository-proportional
+   verification when the slice is coherent. When a correct check fails, correct
+   the implementation and repeat until it passes. Do not weaken tests or checks
+   to obtain green. A failed or unavailable required check leaves the packet
+   incomplete with exact evidence.
+   Ask unresolved material decisions with callable `{{HOST_QUESTION_TOOL}}`
+   in the current mode, following its schema; do not enter plan mode solely to
+   ask. If unavailable, ask directly. Never invent the required answer.
+7. Only after every required check passes, mark only the current checklist item and
    replace the current handoff with changes, evidence, limitations, and the
-   next packet. Stop for review and leave the completed packet uncommitted
-   unless earlier commit authority explicitly covers it.
+   next packet. Stop after this packet; never launch another packet or review.
+   Independent review is optional and separately invoked, not a prerequisite
+   for completion or the next invocation. Make only explicitly authorized commits.

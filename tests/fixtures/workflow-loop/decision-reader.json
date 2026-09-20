@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "evidenceKind": "reproducible-model-scenarios",
+  "deliveryRule": "Actors receive only realistic requests, matching skills, actual fixture artifacts and relevant explicit replies. Expected outcomes remain evaluator-only.",
+  "scenarios": [
+    {
+      "id": "missing-decision-reader",
+      "stage": "specification",
+      "request": "Resume the existing specification and identify the next unresolved product decision.",
+      "condition": "No decision-reader MCP is configured; a large valid journal exists in the selected project/specification.",
+      "expected": [
+        "Stop journal work and name the missing prerequisite.",
+        "Do not read/search through shell, full-file tools or another fallback.",
+        "Do not install/configure MCP, fabricate an answer or create Approved."
+      ]
+    },
+    {
+      "id": "bounded-large-journal-recovery",
+      "stage": "specification",
+      "request": "Resume the selected specification using existing decisions; do not repeat answered questions.",
+      "condition": "A real reader serves multiple projects with repeated specification/decision IDs and a selected journal exceeding 30000 lines, with an unresolved decision beyond the first page.",
+      "expected": [
+        "Use the task project and specification on every query.",
+        "Validate via overview and inspect current/unresolved decisions with bounded calls.",
+        "Complete required continuations and exact records before using their requirements.",
+        "Do not parse other journals, load inactive profiles or count previews as full coverage."
+      ]
+    },
+    {
+      "id": "changed-journal-continuation",
+      "stage": "planning",
+      "request": "Continue planning from the Approved specification and current decisions.",
+      "condition": "Source bytes change between a real first page and continuation.",
+      "expected": [
+        "On STALE_CURSOR restart and reconcile the current source.",
+        "Never merge source versions or overwrite user changes using old decisions."
+      ]
+    },
+    {
+      "id": "reader-available-no-redundant-file-validation",
+      "stage": "specification-recovery",
+      "request": "Continue the selected specification from its saved question and the explicit customer reply, then complete the specification if no material decisions remain.",
+      "condition": "The real MCP is available; a valid small journal, confirmed Lite/core manifest, existing CLI source and one pending whitespace question are present. Deliver only the frozen ASCII space/tab reply in a fresh context.",
+      "expected": [
+        "Use MCP exact records for the pending question and patch context; preserve the earlier unavailable-question-tool status when recording the later explicit reply.",
+        "After the authorized edit, use real MCP overview and complete current-decision queries for validation and gap-review tracing.",
+        "Do not run additional direct journal reads, tail/search commands or local YAML parsing even though MCP is available and the journal is small.",
+        "Manifest parsing remains separate; only active profile instructions are read.",
+        "Record a workflow failure if direct journal access occurs, even when the specification itself is semantically correct and the native process exits successfully."
+      ],
+      "priorObservation": "Current-runtime Lite specification continuation used real MCP and then executed tail on decisions.yaml plus a complete local YAML parse for final requirement tracing; both shell commands succeeded. The Approved artifact and launcher success therefore do not qualify the workflow."
+    }
+  ]
+}

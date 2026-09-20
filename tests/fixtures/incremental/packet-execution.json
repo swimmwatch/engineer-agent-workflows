@@ -19,6 +19,13 @@
     "src/storage.mjs",
     "docs/specs/example/tasks/04_storage.md"
   ],
+  "executionOrder": [
+    "write-check",
+    "observe-red",
+    "implement",
+    "prove-when-required",
+    "verify"
+  ],
   "verification": [
     {
       "command": "repository-defined focused check",
@@ -29,7 +36,9 @@
     "completedPacket": "03_api-contract",
     "checkedItems": ["03_api-contract"],
     "handoffReplaced": true,
-    "stoppedForReview": true,
-    "currentPacketCommitted": false
+    "stoppedAfterPacket": true,
+    "reviewRequired": false,
+    "currentPacketCommitted": false,
+    "weakenedChecks": false
   }
 }

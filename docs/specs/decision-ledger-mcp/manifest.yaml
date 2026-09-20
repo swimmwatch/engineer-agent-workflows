@@ -1,0 +1,39 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - A local read-only MCP package exposes bounded queries over versioned YAML journals.
+  - Multiple projects and multiple specifications require explicit query identity and safe source selection.
+profiles:
+  - id: core
+    state: active
+    reason: TypeScript package, startup arguments, build and artifact contracts.
+  - id: ui
+    state: not_applicable
+    reason: No user interface is introduced.
+  - id: backend
+    state: active
+    reason: MCP operations expose structured request, response and failure contracts over stdio, not HTTP.
+  - id: events
+    state: not_applicable
+    reason: No application event processing is introduced.
+  - id: data
+    state: active
+    reason: Journal identity, revision selection, integrity and snapshot consistency are observable.
+  - id: operations
+    state: active
+    reason: Package startup, shutdown, limits and dependency availability are observable.
+  - id: security
+    state: active
+    reason: Filesystem selection, read-only behavior and bounded disclosure require verification.
+  - id: cross-surface
+    state: active
+    reason: The same MCP contract is consumed by separately generated Codex and Claude skills.
+planning_artifacts:
+  - contracts/mcp.md
+  - tasks/plan.md
+  - tasks/todo.md
+  - tasks/handoff.md
+  - tasks/01_reader.md
+  - tasks/02_transport_and_artifact.md
+  - tasks/03_skill_integration.md

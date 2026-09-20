@@ -7,7 +7,7 @@
     "Repository guidance requires bounded diagnostics."
   ],
   "expectedSpecification": {
-    "status": "Draft",
+    "status": "Approved",
     "sections": [
       "outcomes",
       "interfaces",
@@ -19,6 +19,22 @@
       "acceptance"
     ],
     "requirementIds": ["API-001", "SAFE-002", "ACC-003"],
+    "acceptanceCriteria": [
+      {
+        "id": "AC-001",
+        "kind": "value",
+        "observation": "The response status is read from the public API result.",
+        "excludedOutcome": "The public API returns a success status for rejected input.",
+        "observable": "HTTP response status"
+      },
+      {
+        "id": "AC-002",
+        "kind": "absence",
+        "observation": "The repository query counter remains unchanged for rejected input.",
+        "excludedOutcome": "A repository query is issued before validation rejects the input.",
+        "observable": "Repository query counter"
+      }
+    ],
     "forbiddenImplementationUnits": [
       "class",
       "function",

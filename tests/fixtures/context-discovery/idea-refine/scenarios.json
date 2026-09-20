@@ -53,7 +53,7 @@
         "repositoryGuidance": "AGENTS.md",
         "callableTools": [
           {
-            "name": "collect_product_choice",
+            "name": "request_user_input",
             "inputSchema": {
               "maxQuestions": 2,
               "stableIdPattern": "semantic-dot-id"
@@ -62,7 +62,7 @@
         ]
       },
       "expected": {
-        "calledTool": "collect_product_choice",
+        "calledTool": "request_user_input",
         "questionCount": 1,
         "stableQuestionId": "recovery.direction",
         "namespaceConstructed": false,
@@ -83,7 +83,7 @@
       "expected": {
         "calledTool": null,
         "decisionState": "unresolved",
-        "fallbackQuestionnaire": false,
+        "conversationalFallback": true,
         "status": "completed"
       }
     },

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "stage": "specification-scope-confirmation",
+  "request": "Use spec-driven-development to specify the requested change, starting from the current application and frozen customer facts.",
+  "inputArtifacts": [
+    "Original application and frozen scenario scope, without a completed specification or planning artifacts",
+    "Complete generated skill bundle and callable scenario MCP",
+    "Actual host-native reply to the saved scope proposal"
+  ],
+  "baselineBundleSha256": "fe13ed5704fbfab264238fe858b2688bce50b24303b084a2800ea44847757495",
+  "priorObservation": "Deep recovery 07 preserved the actual custom reply verbatim but recorded selected_ids as empty. scope_confirm correctly returned ANSWER_REQUIRED. The actor then asked the same scope question again and prohibited custom answers instead of mapping the explicit choice to the saved option.",
+  "variants": [
+    {
+      "id": "unambiguous-custom-confirmation",
+      "nativeReply": "Confirm this scope proposal for the simulation.",
+      "expected": "Preserve the exact text and its actual free-text source; select the saved confirm option, confirm the exact proposal, and only then load active profiles. Do not ask again solely to obtain a button click."
+    },
+    {
+      "id": "conditional-correction",
+      "nativeReply": "Confirm only after adding the backend profile and its API contract.",
+      "expected": "Preserve the full correction without confirming the old proposal. Revise the proposal and obtain a separate explicit answer before profile loading."
+    },
+    {
+      "id": "no-answer",
+      "nativeReply": null,
+      "expected": "Record the actual non-answer outcome without a selected confirm option; keep scope unresolved and load no profiles."
+    }
+  ],
+  "evaluation": [
+    "Run each variant in a fresh native author context. Give the actor only the request, application, frozen customer facts and actual native response; withhold this evaluation and prior observation.",
+    "Inspect actual host responses, MCP call arguments and results, and profile-read ordering, not instruction wording.",
+    "Compare the full saved answer text and source with the native response. A normalized option ID must not be reported as a button selection that did not occur.",
+    "Read workflow state through scenario MCP. Do not weaken scope_confirm or add automatic text-based consent inference inside the server.",
+    "A corrected or unanswered proposal remains unconfirmed regardless of a later successful positive variant."
+  ]
+}

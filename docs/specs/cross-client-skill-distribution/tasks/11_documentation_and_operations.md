@@ -1,14 +1,16 @@
 # Packet 11: Documentation And Operations
 
 Requirements: DIST-002, DIST-003, DIST-004, DIST-005, DIST-006, DIST-007,
-MCP-001, SEC-001, SEC-002, SEC-003, REL-001, REL-003, DOC-001.
+TEST-001, PLAN-002, INT-001, MCP-001, SEC-001, SEC-002, SEC-003, REL-001,
+REL-003, DOC-001.
 
 ## Outcome
 
 Write evidence-bound public documentation for the complete inventory,
 explicit-only usage, global pinned lifecycle, native plugins, platform/client
-prerequisites, context limits, engineering manual, Prompt MCP limitations,
-privacy, release trust, and troubleshooting.
+prerequisites, context limits, engineering manual, host-native question tools,
+test-first planning, the retired Prompt MCP non-goal, privacy, release trust,
+and troubleshooting.
 
 ## Prerequisites
 
@@ -26,6 +28,8 @@ privacy, release trust, and troubleshooting.
 - Document standalone versus bundle-required use and missing-manual recovery.
 - Document plugin/marketplace usage, duplicate activation, hosted/organization
   scope, privacy, integrity layers, and troubleshooting.
+- Document host-native questions for all four interactive workflows,
+  test-first/PROVE ordering, and the conditional developer-documentation rule.
 - Add documentation tests for command safety, links, inventory/version
   agreement, and current/proposed state labels.
 
@@ -33,7 +37,7 @@ privacy, release trust, and troubleshooting.
 
 - Do not publish, install, update, remove, enable, tag, or release.
 - Do not add a custom CLI/wrapper/rollback mechanism or project-local examples.
-- Do not claim vendor-directory listing, universal Prompt MCP, unsupported
+- Do not claim vendor-directory listing, Prompt MCP integration, unsupported
   client versions, or unexecuted manual acceptance.
 - Do not embed private account/organization names, personal paths, or secrets.
 - Do not create translations without an established localization decision.
@@ -42,31 +46,38 @@ privacy, release trust, and troubleshooting.
 
 | File/unit | State | Required sections |
 | --- | --- | --- |
-| `README.md` | Existing/expand | Replace the packet-01 pre-release overview with verified purpose, 15-skill inventory/classification, explicit-only invocation, prerequisites, global install/list/update/remove, plugin modes, context behavior, quick verification, limitations, security/privacy, contributing/license. |
+| `README.md` | Existing/expand | Replace the packet-01 pre-release overview with verified purpose, inventory/classification, explicit-only invocation, prerequisites, separate host-specific add/list/repeat-add/remove, plugin modes, context behavior, verification, limitations, security/privacy, contributing, and license. |
 | `docs/installation.md` | Proposed | Linux/macOS/Windows prerequisites; exact POSIX/PowerShell commands; standalone and complete selection; global-only scope; no project mutation. |
 | `docs/plugins.md` | Proposed | Codex/Claude plugin and marketplace layout, immutable release source, namespaces, enable/disable, hosted/account/organization scope, duplicate activation warning. |
-| `docs/engineering-principles.md` | Proposed | Short public orientation and link to the one authoritative manual; must not copy the manual. |
-| `docs/security-and-privacy.md` | Proposed | Telemetry distinction, project isolation, secrets, supply chain, signed tag/checksums, npm integrity versus Git trust, Prompt MCP data boundary. |
-| `docs/troubleshooting.md` | Proposed | Discovery, client floor, permissions, symlink/copy layouts, bundle mismatch, update/remove, plugin namespace, duplicate activation, context warnings, telemetry. |
+| `docs/engineering-principles.md` | Proposed | Short public orientation and links to the authoritative engineering and test-discipline references; must not copy either reference. |
+| `docs/security-and-privacy.md` | Proposed | Telemetry distinction, project isolation, secrets, host-native question and decision persistence, supply chain, signed tag/checksums, npm integrity versus Git trust, and the explicit absence of a Prompt MCP data boundary. |
+| `docs/troubleshooting.md` | Proposed | Discovery, client floor, permissions, copy isolation, source mismatch, repeat-add replacement/remove, plugin namespace, duplicate activation, context warnings, and telemetry. |
 | `docs/compatibility.md` | Proposed | Exact verified clients/platforms/surfaces and clearly marked unavailable/manual gates. |
 | `tests/documentation.test.mjs` | Proposed | Inventory, command AST/text rules, links, versions, classifications, placeholders, state claims, and forbidden project scope. |
 
 ## Normative Command Contract
 
-Every lifecycle example:
+Every host-specific add or replacement example:
 
-- begins by setting `DISABLE_TELEMETRY=1` using correct POSIX or PowerShell
+- begins by setting `DISABLE_TELEMETRY=1` with correct POSIX or PowerShell
   syntax;
-- invokes exact `npx --yes skills@1.5.20`;
+- invokes exactly `npx --yes skills@1.5.20`;
 - uses `--global`;
-- names `--agent codex`, `--agent claude-code`, or both as intended;
+- uses the matching host-specific source;
+- names exactly one `--agent codex` or `--agent claude-code`;
+- includes `--copy`;
 - selects an explicit standalone skill or `--skill '*'`;
-- uses the verified pinned global form for list/update/remove;
-- never uses consuming-project scope, `skills init`, floating `latest`, or
-  unqualified update.
+- is presented as one of two commands when both hosts are intended.
 
-Do not offer individual install examples for `incremental-implementation` or
-`spec-driven-development`. Their supported path is the complete bundle.
+List examples name one agent and use global JSON output. Removal examples name
+explicit agents and selection. Replacement repeats the matching host-specific
+`add --copy` command. Documentation shall never use consuming-project scope,
+`skills init`, a floating package version, one mixed-source add for both
+agents, or `skills update`.
+
+Do not offer individual installation examples for
+`incremental-implementation` or `spec-driven-development`; their supported
+path is the matching complete bundle.
 
 ## Required Guidance
 
@@ -76,18 +87,23 @@ Do not offer individual install examples for `incremental-implementation` or
 - State the 240-code-point description and 4,096-byte `SKILL.md` limits and
   selective reference routing.
 - Explain the single engineering manual, contextual senior-engineering
-  principles, three artifact contracts, symbol-level planning output, and
-  fixed complete-bundle failure.
+  principles, test-first/RED/GREEN/PROVE discipline, three artifact contracts,
+  symbol-level planning output, conditional developer documentation, and fixed
+  complete-bundle failure.
 - State Node.js 22.20.0+, exact pinned CLI/integrity, verified client floors and
   current versions, supported OS/architectures, and no platform binaries.
 - Distinguish global personal mode (recommended local) from native plugin mode
   (recommended hosted/marketplace/managed) and warn against simultaneous
   activation.
-- Explain stable add/list/update/remove, no managed rollback, no automatic
-  updates, unknown-skill upstream behavior, and no custom lifecycle state.
-- Document Prompt MCP as an optional globally configured callable dependency
-  for interview-driven workflows, current owner Linux/GTK limitation, and no
-  installation/configuration by this bundle.
+- Explain separate host-specific add/list/repeat-add/remove, mandatory
+  `--copy`, absence of `skills update` and managed rollback, individual versus
+  complete selection, and unknown-skill behavior.
+- Document `request_user_input` for Codex and `AskUserQuestion` for Claude Code
+  as the standard tools for specification, planning, idea refinement, and
+  requirements interviews. State that they run in the current interaction mode
+  and do not require entering plan mode solely to ask.
+- State that Prompt MCP is not required or invoked by any collection workflow
+  and is neither installed nor configured by this bundle.
 - Separate npm package integrity, immutable Git source, signed project tag,
   artifact checksums, and host/plugin trust.
 - Distinguish verified, proposed, unsupported, manual-gate, and future behavior.
@@ -105,6 +121,8 @@ Do not offer individual install examples for `incremental-implementation` or
 - All relative links and named files resolve.
 - No manual content is duplicated; the public overview links to the canonical
   manual.
+- No shared test-discipline content is duplicated, and no documentation claims
+  a Prompt MCP dependency for a collection workflow.
 - Hosted/organization claims match packet-10 evidence and label missing gates.
 - Privacy/release docs do not claim `npx` verifies Git signatures.
 - README contains no source-project assumptions or claim of vendor-directory
@@ -131,8 +149,9 @@ exist.
 
 ## References
 
-- [Approved specification](../spec.md): lifecycle/distribution, Prompt MCP,
-  security, version/license, and required documentation contracts.
+- [Approved specification](../spec.md): lifecycle/distribution, host-native
+  questions, retired Prompt MCP integration, test-first planning, security,
+  version/license, and required documentation contracts.
 - Packet-09 CLI evidence and packet-10 host compatibility evidence; these
   artifacts outrank unverified upstream assumptions.
 

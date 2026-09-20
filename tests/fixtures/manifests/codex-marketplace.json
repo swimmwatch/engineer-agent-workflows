@@ -8,7 +8,7 @@
       "name": "engineer-agent-workflows",
       "source": {
         "source": "local",
-        "path": "./plugins/engineer-agent-workflows"
+        "path": "./plugins/codex/engineer-agent-workflows"
       },
       "policy": {
         "installation": "AVAILABLE",

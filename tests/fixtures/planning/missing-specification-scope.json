@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "missing-specification",
+      "input": { "specStatus": null, "manifestConfirmed": false },
+      "expected": {
+        "status": "blocked",
+        "productionMutation": false,
+        "nextAction": "Run spec-driven-development to create an Approved specification and confirmed manifest."
+      }
+    },
+    {
+      "id": "unconfirmed-manifest",
+      "input": { "specStatus": "Approved", "manifestConfirmed": false },
+      "expected": {
+        "status": "blocked",
+        "productionMutation": false,
+        "nextAction": "Resume spec-driven-development and confirm the proposed depth and profiles."
+      }
+    }
+  ]
+}

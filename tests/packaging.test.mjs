@@ -10,11 +10,15 @@ import {
 } from "../scripts/lib/catalog.mjs";
 import {
   buildGeneratedFiles,
+  CLAUDE_PLUGIN_ROOT,
   CLAUDE_MARKETPLACE_PATH,
+  CODEX_PLUGIN_ROOT,
   CODEX_MARKETPLACE_PATH,
   collectReleaseSource,
   compareGeneratedOutputs,
   PLUGIN_ROOT,
+  renderHostTemplate,
+  SHARED_ROOT,
 } from "../scripts/lib/distribution.mjs";
 import { snapshotTree, walkFiles } from "../scripts/lib/files.mjs";
 import {
@@ -64,6 +68,148 @@ async function releaseInputs(root = projectRoot) {
   const source = await collectReleaseSource(root, catalog, release);
   return { catalog, release, source };
 }
+
+test("generation renders isolated host-specific skill bundles", async () => {
+  const { source } = await releaseInputs();
+  const generated = buildGeneratedFiles(source);
+  const skillName = "spec-driven-development";
+  const relativeSkill = `skills/${skillName}/SKILL.md`;
+  const codexDocument = generated.get(`${CODEX_PLUGIN_ROOT}/${relativeSkill}`);
+  const claudeDocument = generated.get(`${CLAUDE_PLUGIN_ROOT}/${relativeSkill}`);
+
+  assert.ok(codexDocument instanceof Uint8Array);
+  assert.ok(claudeDocument instanceof Uint8Array);
+
+  const codexText = Buffer.from(codexDocument).toString("utf8");
+  const claudeText = Buffer.from(claudeDocument).toString("utf8");
+  assert.match(codexText, /`request_user_input`/);
+  assert.doesNotMatch(codexText, /AskUserQuestion|CLAUDE\.md|\{\{HOST_/);
+  assert.doesNotMatch(
+    codexText,
+    /disable-model-invocation|user-invocable/,
+  );
+  assert.match(claudeText, /`AskUserQuestion`/);
+  assert.doesNotMatch(claudeText, /request_user_input|AGENTS\.md|\{\{HOST_/);
+  assert.match(claudeText, /disable-model-invocation: true/);
+  assert.match(claudeText, /user-invocable: true/);
+
+  assert.ok(
+    generated.has(
+      `${CODEX_PLUGIN_ROOT}/skills/${skillName}/agents/openai.yaml`,
+    ),
+  );
+  assert.equal(
+    generated.has(
+      `${CLAUDE_PLUGIN_ROOT}/skills/${skillName}/agents/openai.yaml`,
+    ),
+    false,
+  );
+  assert.ok(generated.has(`${CODEX_PLUGIN_ROOT}/.codex-plugin/plugin.json`));
+  assert.doesNotMatch(
+    Buffer.from(
+      generated.get(`${CODEX_PLUGIN_ROOT}/.codex-plugin/plugin.json`),
+    ).toString("utf8"),
+    /Claude Code/,
+  );
+  assert.equal(
+    generated.has(`${CODEX_PLUGIN_ROOT}/.claude-plugin/plugin.json`),
+    false,
+  );
+  assert.ok(
+    generated.has(`${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`),
+  );
+  assert.doesNotMatch(
+    Buffer.from(
+      generated.get(`${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`),
+    ).toString("utf8"),
+    /\bCodex\b/,
+  );
+  assert.equal(
+    generated.has(`${CLAUDE_PLUGIN_ROOT}/.codex-plugin/plugin.json`),
+    false,
+  );
+
+  const codexMarketplace = JSON.parse(
+    Buffer.from(generated.get(CODEX_MARKETPLACE_PATH)).toString("utf8"),
+  );
+  const claudeMarketplace = JSON.parse(
+    Buffer.from(generated.get(CLAUDE_MARKETPLACE_PATH)).toString("utf8"),
+  );
+  assert.equal(
+    codexMarketplace.plugins[0].source.path,
+    `./${CODEX_PLUGIN_ROOT}`,
+  );
+  assert.equal(
+    claudeMarketplace.plugins[0].source,
+    `./${CLAUDE_PLUGIN_ROOT}`,
+  );
+
+  for (const [relativePath, bytes] of generated) {
+    if (!relativePath.endsWith(".md")) {
+      continue;
+    }
+    const text = Buffer.from(bytes).toString("utf8");
+    if (relativePath.startsWith(`${CODEX_PLUGIN_ROOT}/`)) {
+      assert.doesNotMatch(
+        text,
+        /AskUserQuestion|CLAUDE\.md|Claude Code|\{\{HOST_/,
+        relativePath,
+      );
+    }
+    if (relativePath.startsWith(`${CLAUDE_PLUGIN_ROOT}/`)) {
+      assert.doesNotMatch(
+        text,
+        /request_user_input|AGENTS\.md|\bCodex\b|\{\{HOST_/,
+        relativePath,
+      );
+    }
+  }
+});
+
+test("host template rendering fails closed", () => {
+  assert.equal(
+    renderHostTemplate(
+      Buffer.from("Use {{HOST_QUESTION_TOOL}}.\n"),
+      "codex",
+      "skills/example/SKILL.md",
+    ).toString("utf8"),
+    "Use request_user_input.\n",
+  );
+  assert.throws(
+    () =>
+      renderHostTemplate(
+        Buffer.from("{{HOST_UNKNOWN}}\n"),
+        "codex",
+        "skills/example/SKILL.md",
+      ),
+    /unknown host template variable/,
+  );
+  for (const malformed of [
+    "{{HOST_question_tool}}\n",
+    "{{HOST_QUESTION_TOOL\n",
+    "{{HOST_}}\n",
+  ]) {
+    assert.throws(
+      () =>
+        renderHostTemplate(
+          Buffer.from(malformed),
+          "codex",
+          "skills/example/SKILL.md",
+        ),
+      /unresolved host template variable/,
+    );
+  }
+
+  assert.throws(
+    () =>
+      renderHostTemplate(
+        Buffer.from("{{HOST_QUESTION_TOOL}}\n"),
+        "unsupported-host",
+        "skills/example/SKILL.md",
+      ),
+    /host template target is unsupported/,
+  );
+});
 
 function mutateAtPath(value, segments, replacement) {
   const copy = structuredClone(value);
@@ -240,45 +386,75 @@ test("manifest validators reject unknown fields, drift, and unsafe paths", async
 
 test("generation creates the complete deterministic explicit-only bundle", async (t) => {
   const root = await copyReleaseSource(t);
+  const catalog = await readCatalog(root);
   const generated = await generateRepository(root);
   assert.equal(generated.complete, true);
-  assert.equal(generated.sidecarCount, 15);
-  assert.equal(generated.pluginSkillCount, 15);
+  assert.equal(generated.sidecarCount, catalog.skills.length);
+  assert.equal(generated.pluginSkillCount, catalog.skills.length);
   assert.match(generated.manualDigest, /^[a-f0-9]{64}$/);
 
   const validated = await validateRepository(root);
   assert.equal(validated.complete, true);
-  assert.equal(validated.sidecarCount, 15);
-  assert.equal(validated.pluginSkillCount, 15);
+  assert.equal(validated.sidecarCount, catalog.skills.length);
+  assert.equal(validated.pluginSkillCount, catalog.skills.length);
   assert.equal(validated.manualDigest, generated.manualDigest);
 
-  const catalog = await readCatalog(root);
-  assert.deepEqual(
-    await fs.readdir(path.join(root, PLUGIN_ROOT, "skills")),
-    catalog.skills.map((skill) => skill.name),
-  );
+  for (const pluginRoot of [CODEX_PLUGIN_ROOT, CLAUDE_PLUGIN_ROOT]) {
+    assert.deepEqual(
+      await fs.readdir(path.join(root, pluginRoot, "skills")),
+      catalog.skills.map((skill) => skill.name),
+    );
+  }
   for (const skill of catalog.skills) {
     const rootSkill = path.join(root, "skills", skill.name);
-    const pluginSkill = path.join(root, PLUGIN_ROOT, "skills", skill.name);
-    assert.deepEqual(
-      await snapshotTree(pluginSkill),
-      await snapshotTree(rootSkill),
+    const codexSkill = path.join(
+      root,
+      CODEX_PLUGIN_ROOT,
+      "skills",
+      skill.name,
     );
-    const document = await fs.readFile(path.join(rootSkill, "SKILL.md"));
-    assert.ok(validateSkillDocument(skill, document).bytes <= 4096);
+    const claudeSkill = path.join(
+      root,
+      CLAUDE_PLUGIN_ROOT,
+      "skills",
+      skill.name,
+    );
+    for (const skillDirectory of [rootSkill, claudeSkill]) {
+      const document = await fs.readFile(
+        path.join(skillDirectory, "SKILL.md"),
+      );
+      assert.ok(validateSkillDocument(skill, document).bytes <= 4096);
+    }
+    const codexDocument = await fs.readFile(
+      path.join(codexSkill, "SKILL.md"),
+    );
+    assert.ok(codexDocument.byteLength <= 4096);
+    assert.ok(
+      codexDocument.toString("utf8").startsWith(
+        [
+          "---",
+          `name: ${skill.name}`,
+          `description: ${JSON.stringify(skill.description)}`,
+          "---",
+          "",
+        ].join("\n"),
+      ),
+    );
     validateCodexSkillMetadata(
       skill,
-      await fs.readFile(path.join(rootSkill, "agents", "openai.yaml")),
-      `skills/${skill.name}/agents/openai.yaml`,
+      await fs.readFile(path.join(codexSkill, "agents", "openai.yaml")),
+      `${CODEX_PLUGIN_ROOT}/skills/${skill.name}/agents/openai.yaml`,
     );
+    await assert.rejects(fs.lstat(path.join(claudeSkill, "agents")), {
+      code: "ENOENT",
+    });
   }
 
   const manual = await fs.readFile(
     path.join(
       root,
       PLUGIN_ROOT,
-      "skills",
-      "planning-and-task-breakdown",
+      SHARED_ROOT,
       "references",
       "engineering-principles.md",
     ),
@@ -286,13 +462,31 @@ test("generation creates the complete deterministic explicit-only bundle", async
   const rootManual = await fs.readFile(
     path.join(
       root,
-      "skills",
-      "planning-and-task-breakdown",
+      SHARED_ROOT,
       "references",
       "engineering-principles.md",
     ),
   );
   assert.deepEqual(manual, rootManual);
+  for (const skill of [
+    "planning-and-task-breakdown",
+    "incremental-implementation",
+    "spec-driven-development",
+  ]) {
+    assert.deepEqual(
+      await fs.readFile(
+        path.join(
+          root,
+          "skills",
+          skill,
+          SHARED_ROOT,
+          "references",
+          "engineering-principles.md",
+        ),
+      ),
+      rootManual,
+    );
+  }
   assert.equal(
     JSON.parse(
       await fs.readFile(path.join(root, PLUGIN_ROOT, "catalog.json"), "utf8"),
@@ -388,6 +582,16 @@ test("source and generated symlinks or case collisions fail closed", async (t) =
   await assert.rejects(
     () => generateRepository(collisionRoot),
     /collide by case/,
+  );
+
+  const unexpectedSharedRoot = await copyReleaseSource(t);
+  await fs.writeFile(
+    path.join(unexpectedSharedRoot, SHARED_ROOT, "unexpected.txt"),
+    "unexpected\n",
+  );
+  await assert.rejects(
+    () => generateRepository(unexpectedSharedRoot),
+    /shared engineering resources contain an unexpected path/,
   );
 
   const generatedRoot = await copyReleaseSource(t);

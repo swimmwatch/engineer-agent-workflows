@@ -30,15 +30,19 @@
         "authority": "read-only"
       },
       "evidence": {
-        "decision": null,
-        "decisionDeadline": null,
+        "decision": "replace the compatibility layer before release",
+        "decisionDeadline": "before release approval",
         "repositoryGuidance": "CLAUDE.md",
-        "availableTools": []
+        "availableTools": [],
+        "hostNativeReviewerAvailable": false
       },
       "expected": {
         "status": "blocked",
         "recommendation": null,
         "inventedCommand": false,
+        "reviewerInvoked": false,
+        "selfReviewCalledIndependent": false,
+        "externalCliInvoked": false,
         "mutation": false
       }
     },
@@ -75,12 +79,20 @@
         "steelman": "one format reduces long-term maintenance",
         "alternative": "dual-read migration with a rollback window",
         "disconfirmingEvidence": "existing clients require the old format",
-        "safeExperiment": "exercise both readers against copied fixtures"
+        "safeExperiment": "exercise both readers against copied fixtures",
+        "reviewer": {
+          "hostNative": true,
+          "freshContext": true,
+          "input": ["artifact", "contract"],
+          "claimIncluded": false
+        }
       },
       "expected": {
         "status": "completed",
         "recommendation": "revise",
         "conditionsPresent": true,
+        "reviewerInvoked": true,
+        "externalCliInvoked": false,
         "mutation": false
       }
     },

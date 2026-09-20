@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "developer-documentation-warranted",
+  "signals": {
+    "crossesThreeLayers": true,
+    "expensiveRuleToRediscover": true,
+    "constraintLooksLikeDefect": true,
+    "silentOperatorMisconfiguration": false,
+    "newVocabulary": false
+  },
+  "expected": {
+    "packetPlanned": true,
+    "decisionRecorded": true,
+    "finalPacket": true,
+    "afterImplementation": true,
+    "afterEndToEndVerification": true,
+    "languageSource": "repository-guidance",
+    "readerAcceptance": "A reader who did not implement the feature can explain the runtime flow and validate the documented example."
+  }
+}

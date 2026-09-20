@@ -46,6 +46,9 @@ export async function copyReleaseSource(t) {
   await fs.cp(path.join(projectRoot, "skills"), path.join(root, "skills"), {
     recursive: true,
   });
+  await fs.cp(path.join(projectRoot, "shared"), path.join(root, "shared"), {
+    recursive: true,
+  });
   for (const entry of await fs.readdir(path.join(root, "skills"), {
     withFileTypes: true,
   })) {

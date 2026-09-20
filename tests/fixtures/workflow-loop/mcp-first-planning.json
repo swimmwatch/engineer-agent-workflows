@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "stage": "planning",
+  "request": "Use planning-and-task-breakdown to plan the existing Approved report-whitespace specification and its confirmed manifest. Produce only planning outputs and stop.",
+  "inputArtifacts": [
+    "Unchanged dependency-free Linux report application and its README/tests",
+    "Actual Approved Lite/core specification bundle produced by a prior fresh specification actor",
+    "Complete current generated skill bundle and callable scenario MCP"
+  ],
+  "priorObservation": "Native planning read decisions.yaml and manifest.yaml through cat before loading the mandatory state-access contract, then switched to MCP. A later correct read did not undo the earlier violation.",
+  "evaluation": [
+    "Capture actual native tool calls in a fresh context without supplying this evaluation or prior observation to the actor.",
+    "All manifest and decision content access uses scenario MCP from the first read; no direct file read or parser fallback.",
+    "Read only the confirmed active core planning profile after scope_get confirms that scope.",
+    "Produce plan, checklist, current handoff and one independently executable packet without modifying production behavior."
+  ]
+}

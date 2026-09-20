@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "developer-documentation-not-warranted",
+  "signals": {
+    "crossesThreeLayers": false,
+    "expensiveRuleToRediscover": false,
+    "constraintLooksLikeDefect": false,
+    "silentOperatorMisconfiguration": false,
+    "newVocabulary": false
+  },
+  "expected": {
+    "packetPlanned": false,
+    "decisionRecorded": true,
+    "reason": "The change stays within one layer and existing documentation remains sufficient."
+  }
+}

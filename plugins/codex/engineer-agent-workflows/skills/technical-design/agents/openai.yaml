@@ -1,0 +1,5 @@
+interface:
+  display_name: "Technical Design"
+  short_description: "Create or revise shared Technical Design from an exact ready PRD pin. Capture boundaries, evidence-grounded technology choices and policies, require review evidence, then stop before Product Roadmap."
+policy:
+  allow_implicit_invocation: false

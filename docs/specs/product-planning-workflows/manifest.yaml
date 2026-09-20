@@ -1,0 +1,55 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - "Scope: the complete product workflow Idea Refine -> Product Definition -> Technical Design -> Product Roadmap -> one task/one specification, using scenario MCP tools."
+  - "Confirmed amendment: one shared local directory outside working repositories stores the whole product layer (Idea, multi-file PRD, multi-file Technical Design, Roadmap and product decisions); product documents are not synchronized through Git branches."
+  - Multiple local workspaces/branches use the same logical product; task specifications and plans remain in their working repositories and reference product versions.
+  - The shared external-directory decision supersedes the earlier tentative use of Git for product-document history; no automatic Git commits or separate network service are in scope.
+  - "Confirmed support: MCP on Linux, macOS and Windows, retaining Node.js >=22.20.0; shared skill sources generate distinct Codex and Claude bundles."
+  - Deep is justified by public tool contracts, shared multi-writer state, bounded context, cross-file recovery and backwards compatibility; independent review applies to all four product artifacts.
+  - Research before product readiness remains inside the interview; no independently executable pre-design research task. Existing task specifications are not enrolled or migrated.
+  - Started tasks may finish against pinned earlier product requirements, except dangerous or incompatible changes require a question and pause; recovery guarantee covers process interruption, not sudden power loss.
+  - "Planning artifacts: MCP contract, data schemas and quality/recovery scenarios. No implementation, global installation, package publication, tracker synchronization, UI/Penpot work or automatic migration."
+  - "Recommendation: confirm this amended local shared-store scope; cost: the MCP must manage product revisions and concurrent amendments independently of Git, while cross-computer collaboration remains unsupported."
+profiles:
+  - id: core
+    reason: Product skills, host-specific generation, task context and multiple workspace bindings.
+    state: active
+  - id: backend
+    reason: Scenario MCP contracts, results, errors, retries and shared-state concurrency.
+    state: active
+  - id: data
+    reason: Shared external multi-file product state, stable references, version pinning, task bindings and recoverable updates.
+    state: active
+  - id: security
+    reason: Local shared-store permissions, safe paths, untrusted input, provenance and preservation of unrelated user data.
+    state: active
+  - id: ui
+    reason: No new visual UI or Penpot design; existing optional design-planning boundary is preserved.
+    state: not_applicable
+  - id: events
+    reason: No broker or external event contract.
+    state: not_applicable
+  - id: operations
+    reason: Local stdio only, with no network service, deployment or SLO; process recovery belongs to MCP/data.
+    state: not_applicable
+  - id: cross-surface
+    reason: No new end-user UI/API journey; Codex/Claude consistency is covered by core/MCP.
+    state: not_applicable
+planning_artifacts:
+  - contracts/mcp.md
+  - contracts/schemas/data.schema.json
+  - quality/scenarios.yaml
+extensions:
+  workflow_mcp_receipts:
+    - id: dac5589004145876650b459b9e1069f264f7aa4b11592d095640e5ba18f5e6b9
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.
+    - id: 0d2cd08a2637af9aea9afa07a9496300612b1eb6885a0be62950dc898f2b3001
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.

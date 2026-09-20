@@ -1,5 +1,0 @@
-interface:
-  display_name: "Project Docs Maintainer"
-  short_description: "Maintain a project documentation set when the user explicitly asks to organize, update, consolidate, or audit project knowledge. Preserve authoritative ownership, verified behavior, links, history, and audience boundaries."
-policy:
-  allow_implicit_invocation: false

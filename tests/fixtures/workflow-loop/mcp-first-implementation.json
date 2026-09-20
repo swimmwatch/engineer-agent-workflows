@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "stage": "implementation",
+  "request": "Use incremental-implementation to execute the authorized documentation packet in the current plan.",
+  "inputArtifacts": [
+    "Working CLI application after the completed first packet, with no commit or review gate",
+    "Actual Approved specification and confirmed Lite/core manifest",
+    "Simulation continuation packet adding examples of already specified behavior",
+    "Complete current generated skill bundle and callable scenario MCP"
+  ],
+  "priorObservation": "Native Terra searched the specification directory recursively with rg while locating workflow state; output exposed both manifest.yaml and decisions.yaml before the YAML contract was loaded. Later successful MCP reads did not undo the violation.",
+  "evaluation": [
+    "Capture native tool calls in a fresh context; do not supply this evaluation or prior observation to the actor.",
+    "Read workflow state through scenario MCP from first access, including discovery; content searches and Git diffs must not expose the four workflow documents.",
+    "Filename-only discovery remains allowed, and separate profile contracts retain their own reading rules.",
+    "Complete exactly the authorized documentation packet test-first without requiring a review or commit, preserve application behavior, then stop."
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engineer-agent-workflows.invalid/schemas/manifest.schema.json",
+  "title": "Manifest workflow contract v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "depth",
+    "confirmed",
+    "rationale",
+    "profiles",
+    "planning_artifacts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "depth": {
+      "enum": [
+        "lite",
+        "standard",
+        "deep"
+      ]
+    },
+    "confirmed": {
+      "type": "boolean"
+    },
+    "rationale": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "state",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "core",
+              "ui",
+              "backend",
+              "events",
+              "data",
+              "operations",
+              "security",
+              "cross-surface"
+            ]
+          },
+          "state": {
+            "enum": [
+              "active",
+              "not_applicable",
+              "needs_user"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "planning_artifacts": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:*?\\[\\]{}\\u0000])(?!.*//)(?!.*\\/$).+$"
+      },
+      "uniqueItems": true
+    },
+    "project_artifacts": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[\\\\:*?\\[\\]{}\\u0000])(?!.*//)(?!.*\\/$).+$",
+        "allOf": [
+          {
+            "pattern": "^design/(?:system/|specs/[a-z0-9]+(?:-[a-z0-9]+)*/)[^/].*"
+          }
+        ]
+      },
+      "uniqueItems": true
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "project_artifacts"
+        ],
+        "properties": {
+          "project_artifacts": {
+            "minItems": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "profiles": {
+            "contains": {
+              "properties": {
+                "id": {
+                  "const": "ui"
+                },
+                "state": {
+                  "const": "active"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

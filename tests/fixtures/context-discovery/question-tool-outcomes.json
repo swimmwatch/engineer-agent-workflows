@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "syntheticPrivateValue": "OUTCOME_PRIVATE_VALUE",
+  "outcomes": [
+    {
+      "status": "answered",
+      "hasExplicitAnswer": true,
+      "checkpoint": true
+    },
+    {
+      "status": "dismissed",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    },
+    {
+      "status": "cancelled",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    },
+    {
+      "status": "timed_out",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    },
+    {
+      "status": "unavailable",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    },
+    {
+      "status": "invalid_response",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    },
+    {
+      "status": "failed",
+      "hasExplicitAnswer": false,
+      "checkpoint": false
+    }
+  ],
+  "expected": {
+    "checkpointedStatuses": ["answered"],
+    "outputContainsPrivateValue": false
+  }
+}

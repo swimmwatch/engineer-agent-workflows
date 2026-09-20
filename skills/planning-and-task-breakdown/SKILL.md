@@ -1,42 +1,63 @@
 ---
 name: planning-and-task-breakdown
-description: "Create an implementation plan or review-gated task breakdown when the user explicitly requests planning, decomposition, milestones, or execution packets. Ground architecture and verification in repository evidence; do not implement."
+description: "Create adaptive-depth implementation plans from Approved specifications and confirmed scope when explicitly requested. Produce profile contracts, architecture, test-first tasks, and documentation; do not implement."
 disable-model-invocation: true
 user-invocable: true
 ---
 
 # Planning And Task Breakdown
 
-Use this workflow only for an explicit request to plan, decompose, or create
-review-gated execution packets. Produce a reviewable architecture; do not
-implement it.
+On explicit request, create planning artifacts, not production behavior.
+Model suggestion: {{HOST_AUTHOR_MODEL}}. Never switch or gate on model.
 
-1. Read the applicable project instructions: `AGENTS.md` in Codex or
-   `CLAUDE.md` in Claude Code. Inspect only task-scoped code, tests, interfaces,
-   configuration, approved requirements, and stable documentation. Treat
-   repository evidence and approved product requirements as authoritative.
-2. Run the contained `scripts/verify-engineering-manual.mjs` through Node,
-   passing this skill directory as its only argument. Then read
-   `references/engineering-principles.md` once. Stop without a plan if
-   verification fails. Apply only principles material to the task and record
-   meaningful deviations or trade-offs.
-3. State the goal, success criteria, audience, current state, constraints,
-   non-goals, decisions, risks, compatibility needs, and manual gates. Mark
-   unresolved claims as uncertainty instead of inventing facts.
-4. Describe every affected or proposed architectural unit. For each, give its
-   file and ownership boundary, existing or proposed state, language-appropriate
-   symbols, responsibility, inputs and outputs, relevant state or lifecycle,
-   errors or invariants, dependencies and why they point that way, requirement
-   mapping, and verification evidence. Do not invent classes for functional,
-   procedural, declarative, documentation, or configuration work.
-5. Revise any proposed symbol or boundary contradicted by repository evidence
-   before presenting the plan. Prefer the smallest adequate design and scoped
-   verification over speculative structure.
-6. For substantial multi-step work, read
-   `references/task-packets.md`. Create a compact `plan.md`, linked `todo.md`,
-   current-only `handoff.md`, and self-contained numbered packets only when the
-   user authorized planning artifacts. Keep each packet independently
-   verifiable and review-gated.
-7. Present the complete plan and stop for review. Never mutate production
-   artifacts, execute a packet, invoke another workflow, install anything, or
-   treat plan approval as implementation authorization.
+1. Set `skill_dir` to the absolute `planning-and-task-breakdown` directory.
+   Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`
+   with that sole argument. Stop without a plan if verification fails; return exactly:
+   `Install or update the complete matching engineer-agent-workflows bundle for
+   {{HOST_DISPLAY_NAME}} using the documented pinned global command, then retry.`
+2. Read `shared/references/yaml-contracts.md` before any workflow-state access.
+   Use scenario MCP tools for manifest and decisions, never direct YAML reads.
+   Require `spec.md` with `Status: Approved` and MCP-confirmed
+   `manifest.yaml` from `spec-driven-development`. If missing or inconsistent,
+   stop and resume specification. Never infer confirmation or reduce scope.
+   For a valid product-linked task, read `shared/references/product-workflow.md`
+   and follow its Planning role; otherwise keep the standalone path and do not
+   call product task tools.
+3. Read verified `shared/references/engineering-principles.md`,
+   `shared/references/test-discipline.md`, and `references/adaptive-planning.md`.
+   Use host-supplied project instructions; do not reread them solely to recover
+   context. Read `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from
+   active context or itself in scope.
+   Inspect code, tests, interfaces and configuration.
+4. Respect confirmed Lite, Standard, or Deep depth. Load only active profile
+   references selected by the manifest: map each active profile to exactly
+   `references/<profile>-planning.md`. Never load a reference for an inactive,
+   not-applicable, or unresolved
+   profile. Return new scope evidence to specification instead of changing the
+   manifest here.
+5. Resolve only implementation choices not settled by approved behavior or
+   repository evidence. Use callable `{{HOST_QUESTION_TOOL}}` in the current
+   mode and do not enter plan mode solely to ask. Ask plainly with an example;
+   If the tool is unavailable, ask the question directly and stop when required.
+6. Describe each affected existing or proposed architectural unit: its
+   language-appropriate boundary or symbol, purpose, inputs, outputs, lifecycle,
+   errors and invariants, dependency direction, requirement IDs, and verification.
+   Do not invent classes for non-object-oriented work. Revise boundaries
+   contradicted by repository evidence.
+7. Create only non-design manifest-listed planning contracts, not production
+   artifacts. Keep facts authoritative with stable IDs and exact references.
+   For declared root design outputs, record a separate `design-planning`
+   invocation after this plan; keep affected packets pending its evidence.
+8. Read `references/task-packets.md`. For substantial multi-step work,
+   expose dependencies, manual gates, rollout, and recovery. Lite creates
+   `plan.md`, `todo.md`, current-only `handoff.md`, and one compact
+   implementation packet. Standard and Deep add only profile artifacts and
+   verifiable packets justified by risk. Every behavior
+   packet creates and runs discriminating tests or checks before implementation,
+   then corrects implementation until correct checks pass; never weaken a
+   correct check to obtain green.
+9. Read `references/developer-documentation.md`; record whether durable
+   documentation is warranted and add its packet only when that reference's
+   threshold is met. Present the plan and stop. Never mutate production
+   artifacts, execute a packet, install, commit, publish, invoke another workflow,
+   or treat plan approval as implementation authorization.

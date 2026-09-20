@@ -11,7 +11,10 @@ Use this workflow only for an explicit request to make existing code clearer
 without changing behavior. The request authorizes only the bounded refactor it
 names, not new features, migrations, dependencies, or public contract changes.
 
-1. Read applicable `AGENTS.md` in Codex or `CLAUDE.md` in Claude Code. Inspect
+1. Use project instructions already supplied by the host; do not reread their
+   source files solely to recover context. Read an additional task-scoped
+   `{{HOST_PROJECT_INSTRUCTIONS}}` only when it is not already in the active
+   context or the file itself is in scope. Inspect
    the target, callers, tests, interfaces, configuration, and stable
    documentation needed to establish current behavior. Treat repository
    evidence and approved requirements as authoritative; do not invent tools or

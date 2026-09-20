@@ -1,0 +1,1531 @@
+# Planning fixtures and acceptance scenarios, not runtime workflow state.
+schema_version: 1
+kind: product_workflow_quality
+status: planned_not_executed
+scenarios:
+  - id: Q01
+    packet: "P01"
+    requirements:
+      ["PWF-003", "PWF-011", "PWF-015", "PWF-018", "PWF-028", "PWF-030"]
+    name: "Root defaults and legacy isolation"
+    setup: "Unset/default, explicit absolute override, malformed override; untouched isolated home and legacy project."
+    action: "Call capabilities/open; then explicitly initialize."
+    expected: "Default/override resolves correctly; only initialize creates the dedicated store."
+    excluded: "No startup argument support, implicit root creation, fallback after invalid override or legacy file change."
+    prove: "Disable the lazy boundary and require the old-tool/no-create assertion to fail."
+    suite: "product-foundation"
+    implemented: true
+  - id: Q02
+    packet: "P01"
+    requirements:
+      ["PWF-003", "PWF-011", "PWF-015", "PWF-018", "PWF-028", "PWF-030"]
+    name: "Cross-platform guarded paths"
+    setup: "Unicode/spaced fixture roots; links, hardlinks/junctions, case collisions, traversal and wrong owner."
+    action: "Try safe and rejected product/document access on each target OS."
+    expected: "Safe ordinary paths work; rejected calls preserve fixture and unrelated-file digests."
+    excluded: "No POSIX-only flag equivalence or elevated fallback."
+    prove: "Bypass one link/owner check and observe protected-file assertion fail."
+    suite: "product-foundation"
+    implemented: true
+  - id: Q03
+    packet: "P01"
+    requirements:
+      ["PWF-003", "PWF-011", "PWF-015", "PWF-018", "PWF-028", "PWF-030"]
+    name: "Strict contract records"
+    setup: "Every schema_case below and actual published product input/output schemas."
+    action: "Validate records and call tools with unknown fields, bad IDs and wrong type refs."
+    expected: "Valid records parse; structural/semantic invalid records fail before writes."
+    excluded: "No generic YAML, JSON Patch, arbitrary path or unreturnable mutation."
+    prove: "Allow an unknown field once and prove its rejection test fails."
+    suite: "product-foundation"
+    implemented: false
+  - id: Q04
+    packet: "P02"
+    requirements:
+      [
+        "PWF-011",
+        "PWF-013",
+        "PWF-014",
+        "PWF-015",
+        "PWF-020",
+        "PWF-023",
+        "PWF-026",
+        "PWF-030",
+      ]
+    name: "Shared versions, reused objects"
+    setup: "Two documents, repeated decision revisions and a ready generation."
+    action: "Change only one document twice; reopen previous generation."
+    expected: "One immutable object per distinct body; prior versions and unchanged objects retained."
+    excluded: "No journal copy per task or entire product body copy per scenario."
+    prove: "Force a duplicate unchanged-body copy and catch the inventory change."
+    suite: "product-storage"
+    implemented: false
+  - id: Q05
+    packet: "P02"
+    requirements:
+      [
+        "PWF-011",
+        "PWF-013",
+        "PWF-014",
+        "PWF-015",
+        "PWF-020",
+        "PWF-023",
+        "PWF-026",
+        "PWF-030",
+      ]
+    name: "Missing and drifted historical evidence"
+    setup: "A pinned source, edited draft and deliberately missing/corrupt saved object."
+    action: "Read ready, draft and old pin after restart."
+    expected: "Draft is isolated; corrupt/missing pin returns explicit evidence error."
+    excluded: "Never replace historical content with current draft or claim a complete read."
+    prove: "Substitute latest text and prove historical-read assertion fails."
+    suite: "product-storage"
+    implemented: false
+  - id: Q06
+    packet: "P03"
+    requirements:
+      [
+        "PWF-018",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-028",
+        "PWF-030",
+      ]
+    name: "Two-writer concurrency"
+    setup: "Two stdio clients hold one base; observer performs repeated reads."
+    action: "A writes, observer reads, B writes old base; A continues with returned context."
+    expected: "A continues; B conflicts; observer changes no bytes/versions/receipts."
+    excluded: "No automatic refresh-and-write or false stale conflict after own success."
+    prove: "Write an observer receipt and detect the changed-version/no-write violation."
+    suite: "product-recovery"
+    implemented: false
+  - id: Q07
+    packet: "P03"
+    requirements:
+      [
+        "PWF-018",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-028",
+        "PWF-030",
+      ]
+    name: "Crash checkpoint matrix"
+    setup: "Named operation, separate worker process, injected internal checkpoint pauses."
+    action: "Terminate before/after intent, object save, local binding, head swap and receipt; restart and inspect/resume."
+    expected: "Each boundary reports actual effects; prior ready stays coherent; ambiguous owner/edit blocks."
+    excluded: "No multi-file atomicity claim, blind lock deletion, guessed resume or duplicate effect."
+    prove: "Skip one checkpoint write and require crash recovery assertions to fail."
+    suite: "product-recovery"
+    implemented: false
+  - id: Q08
+    packet: "P03"
+    requirements:
+      [
+        "PWF-018",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-028",
+        "PWF-030",
+      ]
+    name: "Replay and response budgets"
+    setup: "Exact original mutation plus escaped/oversized response candidates."
+    action: "Lose reply, retry identically, restart and retry; exceed source/result/transport bounds."
+    expected: "One effect and recoverable result; limit error precedes any new authoritative effect."
+    excluded: "No arbitrary retry with new key/context, truncation-as-success or leaking error payload."
+    prove: "Move response preflight after publication and detect a forbidden changed head."
+    suite: "product-recovery"
+    implemented: false
+  - id: Q09
+    packet: "P04"
+    requirements:
+      ["PWF-011", "PWF-012", "PWF-015", "PWF-016", "PWF-027", "PWF-028"]
+    name: "Known worktrees and unknown clones"
+    setup: "Actual Git repo with linked worktree, separate clone and same-title unrelated repo."
+    action: "Bind original, open worktree read-only; explicitly bind clone."
+    expected: "Known common-dir resolves shared product; clone/unknown remain unbound until selected."
+    excluded: "No remote URL/name heuristic, Git index/checkout/commit mutation or disk-wide scan."
+    prove: "Return a same-title product and catch identity mismatch."
+    suite: "product-bindings"
+    implemented: false
+  - id: Q10
+    packet: "P04"
+    requirements:
+      ["PWF-011", "PWF-012", "PWF-015", "PWF-016", "PWF-027", "PWF-028"]
+    name: "Initial adoption and root/binding recovery"
+    setup: "Existing unbound standalone specs plus an interrupted product initialization."
+    action: "Initialize product, query pending operations from unbound workspace, resume safely."
+    expected: "Existing workflow bytes remain identical; pending init can be found without lost response IDs."
+    excluded: "No implicit enrollment, silently overwritten binding or requiring inaccessible context."
+    prove: "Write a legacy sidecar and prove no-enrollment assertion fails."
+    suite: "product-bindings"
+    implemented: false
+  - id: Q11
+    packet: "P05"
+    requirements:
+      ["PWF-013", "PWF-014", "PWF-015", "PWF-017", "PWF-026", "PWF-028"]
+    name: "Lite and large document sets"
+    setup: "PRD and Technical Design start small; add one needed subject."
+    action: "Create semantic blocks and navigation, split/move/rename addressed content."
+    expected: "Each set has index plus semantic member; IDs, refs and unrelated spans survive moves."
+    excluded: "No empty template explosion, Markdown in YAML mirror or navigation-owned requirements."
+    prove: "Write a requirement into the index and require authority checks to fail."
+    suite: "product-documents"
+    implemented: false
+  - id: Q12
+    packet: "P05"
+    requirements:
+      ["PWF-013", "PWF-014", "PWF-015", "PWF-017", "PWF-026", "PWF-028"]
+    name: "Ambiguous members and identifiers"
+    setup: "Duplicate heading ID in another member, unregistered Markdown, stale offsets."
+    action: "Attempt addressed scenario edit and candidate readiness check."
+    expected: "Explicit invalid/ambiguous result; all original bytes retained."
+    excluded: "No filename guessing, partial members treated ready or stale offset patch."
+    prove: "Remove whole-set duplicate detection and catch redirected edit."
+    suite: "product-documents"
+    implemented: false
+  - id: Q13
+    packet: "P05"
+    requirements:
+      ["PWF-013", "PWF-014", "PWF-015", "PWF-017", "PWF-026", "PWF-028"]
+    name: "Direct edit provenance"
+    setup: "Begin-edit from ready; user edits one draft block; separately inject unknown-source edit."
+    action: "Inspect and accept only the observed digest with a real instruction source."
+    expected: "Supported edit keeps original pinned text; unknown/changed provenance blocks adoption."
+    excluded: "No overwriting user text or upgrading raw filesystem changes to consent."
+    prove: "Accept drift without observed digest and require the rejection check to fail."
+    suite: "product-documents"
+    implemented: false
+  - id: Q14
+    packet: "P06"
+    requirements:
+      [
+        "PWF-004",
+        "PWF-006",
+        "PWF-010",
+        "PWF-017",
+        "PWF-021",
+        "PWF-029",
+        "PWF-030",
+      ]
+    name: "Scope and unanswered interviews"
+    setup: "All four product stages, unconfirmed profiles and real-shaped fixture answers/non-answers."
+    action: "Propose scope, answer or dismiss, confirm, interrupt, resume."
+    expected: "Only exact explicit answers confirm; resume targets unresolved question; current history remains intact."
+    excluded: "No inactive profile fetch before/after confirmation or treating a default as answer."
+    prove: "Treat dismissal as yes and require readiness assertion to fail."
+    suite: "product-interview"
+    implemented: false
+  - id: Q15
+    packet: "P06"
+    requirements:
+      [
+        "PWF-004",
+        "PWF-006",
+        "PWF-010",
+        "PWF-017",
+        "PWF-021",
+        "PWF-029",
+        "PWF-030",
+      ]
+    name: "Partial source amendments"
+    setup: "Broad answered condition followed by a narrow amendment and unrelated stage note."
+    action: "Record/query/review predecessor evidence and selected scope."
+    expected: "Unchanged obligations remain; unrelated stage history does not stale selected consumer pins."
+    excluded: "No all-history fingerprint for every consumer or loss of predecessor conditions."
+    prove: "Drop predecessor source and catch the missing exact evidence."
+    suite: "product-interview"
+    implemented: false
+  - id: Q16
+    packet: "P06"
+    requirements:
+      [
+        "PWF-004",
+        "PWF-006",
+        "PWF-010",
+        "PWF-017",
+        "PWF-021",
+        "PWF-029",
+        "PWF-030",
+      ]
+    name: "Non-sensitive provenance and injection"
+    setup: "Synthetic sentinel secret fields and document text requesting command/network execution."
+    action: "Validate inputs/errors; record observations, assumptions and research findings."
+    expected: "Protected data is rejected/redacted at documented boundaries; text remains non-executable data."
+    excluded: "No command/network action, raw stack/environment leakage or authenticated-consent claim."
+    prove: "Reflect a sentinel error string and require the leak assertion to fail."
+    suite: "product-interview"
+    implemented: false
+  - id: Q17
+    packet: "P07"
+    requirements:
+      ["PWF-002", "PWF-006", "PWF-007", "PWF-010", "PWF-013", "PWF-017"]
+    name: "Durable known idea"
+    setup: "Fixture already establishes problem, actors, workarounds, direction and evidence."
+    action: "Save through idea scenarios and retrieve in a fresh author context."
+    expected: "Exact chosen result is reusable without chat or redundant questioning."
+    excluded: "No fabricated stack, backlog, ready PRD or automatic workflow invocation."
+    prove: "Remove an agreed alternate outcome and catch exact source coverage failure."
+    suite: "product-definition"
+    implemented: false
+  - id: Q18
+    packet: "P07"
+    requirements:
+      ["PWF-002", "PWF-006", "PWF-007", "PWF-010", "PWF-013", "PWF-017"]
+    name: "PRD meaning and research boundary"
+    setup: "Ready idea; unknown metric baseline; success/alternative/error use cases; stack uncertainty."
+    action: "Write PRD scenarios and research conclusion; check upstream readiness."
+    expected: "Addressed goals, rules and cases survive; unknown values stay null; analytical research has sources."
+    excluded: "No invented targets, competing roadmap or pre-readiness executable spike."
+    prove: "Replace unknown with zero or issue an execution action; checks must fail."
+    suite: "product-definition"
+    implemented: false
+  - id: Q19
+    packet: "P08"
+    requirements: ["PWF-002", "PWF-008", "PWF-013", "PWF-017", "PWF-029"]
+    name: "Technical Design applicability"
+    setup: "Ready PRD and current/target/hypothetical technical options."
+    action: "Write boundaries, choices and policies; query from two task contexts."
+    expected: "Same justified policy/contract refs and exact applicability reach both consumers."
+    excluded: "No duplicated exact API text, speculative infrastructure or future treated implemented."
+    prove: "Mark a hypothesis current and require applicability assertions to fail."
+    suite: "product-technical"
+    implemented: false
+  - id: Q20
+    packet: "P09"
+    requirements: ["PWF-009", "PWF-015", "PWF-016", "PWF-017"]
+    name: "Roadmap evolution"
+    setup: "MVP-1/MVP-2/custom stages, one cross-stage epic and a technical task."
+    action: "Rename/reorder stages and query epic/story/task relationships."
+    expected: "IDs persist, near work is detailed, future work remains coarse/spec-pending."
+    excluded: "No mandatory fixed stage enum, fake story, dates or eager specs."
+    prove: "Regenerate IDs on rename and prove dependent refs break the test."
+    suite: "product-roadmap"
+    implemented: false
+  - id: Q21
+    packet: "P09"
+    requirements: ["PWF-009", "PWF-015", "PWF-016", "PWF-017"]
+    name: "Cardinality, cycles and splitting"
+    setup: "Tasks with dependencies and one logical spec reservation."
+    action: "Try double binding, cyclic dependency, task split and incomplete stage completion."
+    expected: "Invalid cardinality/cycles rejected; new task IDs on split; stage outcome needs integrated evidence."
+    excluded: "No repurposed approved spec or task-count-only stage success."
+    prove: "Permit the second spec owner and require the identity test to fail."
+    suite: "product-roadmap"
+    implemented: false
+  - id: Q22
+    packet: "P10"
+    requirements:
+      ["PWF-002", "PWF-015", "PWF-019", "PWF-020", "PWF-021", "PWF-030"]
+    name: "Purpose-based context closure"
+    setup: "Backend-only and multi-profile tasks with global constraints and transitive refs."
+    action: "Prepare/read all required pages under a small budget."
+    expected: "Only required closure plus explicit optional refs; exact pins and blockers included."
+    excluded: "No unrelated UI profile/history, lost global rule or premature complete flag."
+    prove: "Omit a required global rule and prove consumer observation fails."
+    suite: "product-context"
+    implemented: false
+  - id: Q23
+    packet: "P10"
+    requirements:
+      ["PWF-002", "PWF-015", "PWF-019", "PWF-020", "PWF-021", "PWF-030"]
+    name: "Bounded large history and continuations"
+    setup: "At least 10,000 lines of decision-history text, many members, long Unicode fields."
+    action: "Get selected evidence and an exact non-current DecisionRef across pages; restart; reuse a cursor with different scope/version."
+    expected: "Exact source reconstruction, stable order, measured limits; invalid cursor rejected."
+    excluded: "No whole journal in one reply, mixed-version pages or performance claim without measurement."
+    prove: "Change ordering/source identity and require cursor/read reconstruction failure."
+    suite: "product-context"
+    implemented: false
+  - id: Q24
+    packet: "P11"
+    requirements:
+      [
+        "PWF-002",
+        "PWF-005",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-025",
+      ]
+    name: "Readiness of four artifact kinds"
+    setup: "Unanswered, stale, incomplete and structurally valid-but-unreviewed candidates."
+    action: "Try readiness/activation, then complete actual synthetic review records and retry."
+    expected: "Only fresh complete passes qualify; drafts never start a review."
+    excluded: "No self-reported ready boolean, implicit review or automatic author approval."
+    prove: "Skip review prerequisite and detect forbidden activation."
+    suite: "product-review"
+    implemented: false
+  - id: Q25
+    packet: "P11"
+    requirements:
+      [
+        "PWF-002",
+        "PWF-005",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-025",
+      ]
+    name: "Review observation and sequential writes"
+    setup: "Independent author/reviewer/observer contexts with partially completed inventory."
+    action: "Observer reads status and repeats unchanged start between two reviewer verdicts."
+    expected: "No observer mutation; reviewer uses response contexts and continues successfully."
+    excluded: "No restart clearing results, fabricated partial-read verdict or wrong count."
+    prove: "Write a start receipt and prove second verdict/byte checks fail."
+    suite: "product-review"
+    implemented: false
+  - id: Q26
+    packet: "P11"
+    requirements:
+      [
+        "PWF-002",
+        "PWF-005",
+        "PWF-020",
+        "PWF-021",
+        "PWF-022",
+        "PWF-023",
+        "PWF-025",
+      ]
+    name: "Followup and joint activation"
+    setup: "Completed gaps review with scoped correction; second candidate depends on changed parent."
+    action: "Review impacted items plus all-current-artifact consistency; activate checked joint set."
+    expected: "Only proven unchanged results inherited; one coherent head or no publication."
+    excluded: "No inheritance on new scope/unknown impact or individually exposed incompatible candidates."
+    prove: "Skip final consistency or publish one half and require assertions to fail."
+    suite: "product-review"
+    implemented: false
+  - id: Q27
+    packet: "P12"
+    requirements:
+      ["PWF-012", "PWF-016", "PWF-020", "PWF-024", "PWF-027", "PWF-031"]
+    name: "New branch-local task reservation"
+    setup: "New task/spec target, existing legacy target and second registered working copy."
+    action: "Reserve, create normal spec, register matching copy, attempt foreign/colliding reservation."
+    expected: "Exactly one logical task/spec binding; sidecar remains branch-local and recoverable."
+    excluded: "No old spec enrollment or automatic spec creation/approval from roadmap."
+    prove: "Accept legacy target and catch protected-file changes."
+    suite: "product-task-pins"
+    implemented: false
+  - id: Q28
+    packet: "P12"
+    requirements:
+      ["PWF-012", "PWF-016", "PWF-020", "PWF-024", "PWF-027", "PWF-031"]
+    name: "Start pins and single ownership"
+    setup: "Approved spec/plan, two workspaces and multi-packet task."
+    action: "Plan without starting; start first packet; contend owner; complete one packet."
+    expected: "Pin at first actual start; reject second owner; explicit next invocation remains required."
+    excluded: "No task start from planning marker, commit/review gate or two completions."
+    prove: "Allow another owner and require state/identity test to fail."
+    suite: "product-task-pins"
+    implemented: false
+  - id: Q29
+    packet: "P13"
+    requirements: ["PWF-023", "PWF-024", "PWF-025", "PWF-026", "PWF-032"]
+    name: "Ordinary amendment and unstarted tasks"
+    setup: "One started task, one planned task, a compatible product amendment."
+    action: "Activate new ready version; check/resume/finish both task paths."
+    expected: "Started task may finish its exact old scope; planned task reconciles current rules."
+    excluded: "No forced ordinary upgrade, invented start marker or old pins for new scope."
+    prove: "Return latest acceptance to old task and catch the pin mismatch."
+    suite: "product-amendments"
+    implemented: false
+  - id: Q30
+    packet: "P13"
+    requirements: ["PWF-023", "PWF-024", "PWF-025", "PWF-026", "PWF-032"]
+    name: "Safety exception and finding classification"
+    setup: "Revoked authorization rule, breaking interface, uncertain impact; separate environment/check defect."
+    action: "Record block; check next packet/completion; collect real disposition and owning amendment."
+    expected: "Affected work pauses until valid resolution; unrelated work continues; defects do not rewrite product meaning."
+    excluded: "No boolean safety waiver, environment failure as pass or softened correct check."
+    prove: "Bypass block at completion and require negative test to fail."
+    suite: "product-amendments"
+    implemented: false
+  - id: Q31
+    packet: "P14"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-003",
+        "PWF-004",
+        "PWF-006",
+        "PWF-007",
+        "PWF-010",
+        "PWF-019",
+      ]
+    name: "Product skill explicit ownership"
+    setup: "Fresh generated Codex/Claude bundles with product tools available."
+    action: "Invoke idea/product-definition explicitly using fixture customer answers."
+    expected: "Saved draft/ready handoff only; source chain and host-native question routing observed."
+    excluded: "No implementation/install/publication or next skill invocation."
+    prove: "Add automatic downstream action and detect it in the invocation trace."
+    suite: "product-authoring-skills"
+    implemented: true
+  - id: Q32
+    packet: "P14"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-003",
+        "PWF-004",
+        "PWF-006",
+        "PWF-007",
+        "PWF-010",
+        "PWF-019",
+      ]
+    name: "Lazy profile reads and no-answer resume"
+    setup: "Lite known idea and profile-specific product definition; interrupted native question."
+    action: "Record actual reference reads and calls; resume in fresh context."
+    expected: "No inactive or pre-confirmation profile reads; original explicit response reused."
+    excluded: "No full reference import or guessed missing response."
+    prove: "Force eager UI reference read and require the trace assertion to fail."
+    suite: "product-authoring-skills"
+    implemented: true
+  - id: Q33
+    packet: "P15"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-002",
+        "PWF-003",
+        "PWF-004",
+        "PWF-008",
+        "PWF-009",
+        "PWF-019",
+      ]
+    name: "New Technical Design/Roadmap bundles"
+    setup: "Ready upstream artifacts and generated 16-skill catalog."
+    action: "Invoke each workflow in fresh contexts and run existing generation/manual checks."
+    expected: "Typed tools, linked inputs, scoped profiles, size/host isolation and dependency assets pass."
+    excluded: "No hand-edited generated artifacts, automatic task specs or model switching."
+    prove: "Remove one required copied resource or cross-host substitute and require verifier failure."
+    suite: "product-planning-skills"
+    implemented: false
+  - id: Q34
+    packet: "P16"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-002",
+        "PWF-004",
+        "PWF-019",
+        "PWF-024",
+        "PWF-025",
+        "PWF-027",
+        "PWF-031",
+        "PWF-032",
+      ]
+    name: "Task workflow selected input integration"
+    setup: "Valid product-linked task plus standalone legacy task."
+    action: "Run task spec, planning and exactly one authorized implementation packet separately."
+    expected: "Product task receives exact pins; own manifest controls profile reads; legacy unchanged."
+    excluded: "No entire product history, automatic design invocation or product rewrite for local defect."
+    prove: "Feed an inactive profile or auto-next packet and catch actual trace differences."
+    suite: "product-task-integration"
+    implemented: false
+  - id: Q35
+    packet: "P16"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-002",
+        "PWF-004",
+        "PWF-019",
+        "PWF-024",
+        "PWF-025",
+        "PWF-027",
+        "PWF-031",
+        "PWF-032",
+      ]
+    name: "Test discipline and completion gates"
+    setup: "Fixture implementation failure, incorrect test, stale contract and unavailable environment."
+    action: "Execute one packet with RED/GREEN/PROVE and classify each failure."
+    expected: "Correct tests stay intact; failed/unavailable required checks leave packet incomplete."
+    excluded: "No review/commit prerequisite, green-by-weakening or unrestricted replanning."
+    prove: "Loosen one correct assertion and require mutation evidence to expose it."
+    suite: "product-task-integration"
+    implemented: false
+  - id: Q36
+    packet: "P17"
+    requirements:
+      [
+        "PWF-003",
+        "PWF-005",
+        "PWF-012",
+        "PWF-019",
+        "PWF-021",
+        "PWF-022",
+        "PWF-024",
+        "PWF-025",
+        "PWF-028",
+        "PWF-029",
+        "PWF-030",
+        "PWF-033",
+      ]
+    name: "Two-workspace full lifecycle"
+    setup: "Two stdio processes, two real isolated workspaces, complete preceding artifact outputs."
+    action: "Run Idea→PRD→TD→Roadmap→two independent specs; compatible amendment then safety amendment."
+    expected: "Independent saved reviews and pinned task outcomes agree across all boundaries."
+    excluded: "No shortcuts via injected ready state, real user projects or global config changes."
+    prove: "Use the owning regression mutations rather than invent a second fake E2E observer."
+    suite: "product-e2e"
+    implemented: false
+  - id: Q37
+    packet: "P17"
+    requirements:
+      [
+        "PWF-003",
+        "PWF-005",
+        "PWF-012",
+        "PWF-019",
+        "PWF-021",
+        "PWF-022",
+        "PWF-024",
+        "PWF-025",
+        "PWF-028",
+        "PWF-029",
+        "PWF-030",
+        "PWF-033",
+      ]
+    name: "Portable behavior qualification"
+    setup: "Identical safe, rejected, concurrent, interrupted and Unicode/newline fixtures."
+    action: "Run required suites in one Linux environment with a supported Node.js version."
+    expected: "Actual Linux results include restoration/rights behavior, size measurements and deterministic portability cases."
+    excluded: "No unexecuted environment presented as pass or .pathname-based executable paths."
+    prove: "Require ordinary regression and all changed absence guarantees to have mutation evidence."
+    suite: "product-e2e"
+    implemented: false
+  - id: Q38
+    packet: "P17"
+    requirements:
+      [
+        "PWF-003",
+        "PWF-005",
+        "PWF-012",
+        "PWF-019",
+        "PWF-021",
+        "PWF-022",
+        "PWF-024",
+        "PWF-025",
+        "PWF-028",
+        "PWF-029",
+        "PWF-030",
+        "PWF-033",
+      ]
+    name: "Explicit fresh-context model trial"
+    setup: "Predeclared fixture answers, Lite CLI and multi-profile UI/API product documentation."
+    action: "Separate author, reviewer, planner and Terra packet executor; supply actual upstream artifacts only."
+    expected: "Capture real calls, selected reads, output versions and independent acceptance results."
+    excluded: "No hidden expected verdicts, simulated consent treated real, or model trials in npm test/CI."
+    prove: "Have an external checker classify trace evidence; don't claim regex-only behavioral pass."
+    suite: "product-e2e"
+    implemented: false
+  - id: Q39
+    packet: "P18"
+    requirements:
+      [
+        "PWF-001",
+        "PWF-002",
+        "PWF-011",
+        "PWF-012",
+        "PWF-020",
+        "PWF-022",
+        "PWF-024",
+        "PWF-025",
+        "PWF-027",
+        "PWF-031",
+        "PWF-033",
+      ]
+    name: "Developer documentation handoff"
+    setup: "Implemented and qualified runtime; documentation reader without feature-author history."
+    action: "Reader follows fixture-only examples and answers store/pins/recovery/legacy questions."
+    expected: "Examples match actual typed schemas and documented safeguards; limitations explicit."
+    excluded: "No undocumented backup boundary, unsafe real-home commands or claims of unrun platform checks."
+    prove: "Introduce one incorrect example in isolated review copy and ensure the check rejects it."
+    suite: "product-documentation"
+    implemented: false
+  - id: Q40
+    packet: "P20"
+    requirements: ["PWF-035"]
+    name: "Bounded non-reflecting workflow diagnostics"
+    setup: "Invalid known fields, unknown malicious keys, Unicode values and enough issues to exceed count and byte budgets."
+    action: "Call existing Zod-backed workflow scenarios and inspect protocol-2 errors."
+    expected: "At most 20 closed issues and 8192 UTF-8 bytes retain kind, safe path/index, truncation and fixed recovery."
+    excluded: "No answer, explanation, token, absolute path, stack, arbitrary key/value or product-schema contract rewrite."
+    prove: "Temporarily reflect one sentinel input value and require the leak assertion to fail."
+    suite: "workflow-diagnostics"
+    implemented: false
+  - id: Q41
+    packet: "P20"
+    requirements: ["PWF-035", "PWF-038"]
+    name: "Saved option and indexed link recovery"
+    setup: "One saved single-choice question and 20 current decisions plus duplicate, unknown, stale and foreign variants."
+    action: "Submit an invalid option and 1/20/21-member link calls with a failing final member."
+    expected: "Errors identify only saved options or the safe failing index/reference; rejected calls preserve bytes, versions and receipts."
+    excluded: "No inferred answer, partial prefix write, skipped member or automatic refresh/retry."
+    prove: "Temporarily commit one prefix member and require the atomicity assertion to fail."
+    suite: "workflow-diagnostics"
+    implemented: false
+  - id: Q42
+    packet: "P20"
+    requirements: ["PWF-036"]
+    name: "Supersession-aware warning compatibility"
+    setup: "Linear revisions, two independent heads, two branches, two ambiguous IDs and explicit superseded rows."
+    action: "Parse/query the same journals before and after warning correction."
+    expected: "Linear or explicit supersession warns zero; each ambiguous ID warns once; selected current records stay compatible."
+    excluded: "No predecessor rewrite, changed current-selection rule or acceptance of invalid supersedes links."
+    prove: "Restore predecessor counting and require the linear-chain assertion to fail."
+    suite: "workflow-diagnostics"
+    implemented: false
+  - id: Q43
+    packet: "P20"
+    requirements: ["PWF-037", "PWF-038"]
+    name: "Document checkpoint and review lifecycle matrix"
+    setup: "Missing/Draft/Approved status; full/followup pending, consistency, completed and stale review states; two clients."
+    action: "Call check-state, read-only status and intentionally invalid lifecycle writes."
+    expected: "Independent status/checkpoint fields and fixed recovery are accurate; only one eligible observation writes; stale writes conflict."
+    excluded: "No MCP approval, semantic/authentication claim, status edit, blind retry or read-only receipt."
+    prove: "Make read-only status record a receipt and require byte/version assertions to fail."
+    suite: "workflow-diagnostics"
+    implemented: false
+  - id: Q44
+    packet: "P21"
+    requirements: ["PWF-039", "PWF-041"]
+    name: "Single and batch verdict parity"
+    setup: "Equal fully read full and eligible-followup inventories with covered, gap, conflict and non-behavioral verdicts."
+    action: "Record one inventory with singles and one with 1/20-item batches."
+    expected: "Saved semantic results, evidence enforcement and coverage agree; consistency remains separate."
+    excluded: "No blanket verdict, inherited-item resubmission, premature completion or authenticated-reading claim."
+    prove: "Bypass one shared evidence check in the batch path and require parity assertions to fail."
+    suite: "review-batch"
+    implemented: true
+  - id: Q45
+    packet: "P21"
+    requirements: ["PWF-035", "PWF-039", "PWF-040"]
+    name: "Batch bounds and atomic rejection"
+    setup: "1/20/21 items, duplicate indexes, multibyte requests around 131072 compact-JSON bytes and a failing final member."
+    action: "Submit each request and compare journal bytes, versions, verdicts and receipt counts."
+    expected: "Only valid bounded batches commit once; every invalid batch is a no-write with safe zero-based diagnostics."
+    excluded: "No partial prefix, skipped overlap, response-after-commit overflow or transport-limit change."
+    prove: "Temporarily append a validated prefix and require unchanged-state assertions to fail."
+    suite: "review-batch"
+    implemented: true
+  - id: Q46
+    packet: "P21"
+    requirements: ["PWF-038", "PWF-040"]
+    name: "Exact replay restart and concurrency"
+    setup: "Two stdio clients, one committed batch with lost response, server restart, overlap/reorder/contradictory retries."
+    action: "Replay the exact original request, then use status and the returned context for subsequent writes."
+    expected: "Exact replay returns one stored result; non-exact retries reject; observer reads are harmless and stale writes conflict."
+    excluded: "No automatic rebase, overwrite, mixed existing/new success or replay beyond retained evidence."
+    prove: "Disable stored-result replay and require duplicate-write or stale-recovery assertions to fail."
+    suite: "review-batch"
+    implemented: true
+  - id: Q47
+    packet: "P21"
+    requirements: ["PWF-039", "PWF-040", "PWF-041"]
+    name: "Measured write reduction and exact delivery"
+    setup: "Equal 60-item inventories, synthetic 1000/10000-row histories and a display-compression adapter."
+    action: "Compare 60 singles with three 20-item batches; measure commits, bytes, final size, receipts and elapsed time."
+    expected: "Semantic outcomes agree and verdict commits are 60 versus 3; residual storage costs and unavailable exact text stay explicit."
+    excluded: "No claimed fewer reads, authenticated understanding, universal latency target, compaction or real customer ledger."
+    prove: "Substitute a display marker for exact text and require delivery evidence to remain unverified."
+    suite: "review-batch"
+    implemented: true
+  - id: Q48
+    packet: "P22"
+    requirements: ["PWF-042"]
+    name: "Enhanced final consistency gate"
+    setup: "Enhanced and legacy full runs with detailed results, long complete specification and a later detailed-verdict change."
+    action: "Attempt early completion/recording, consume final exact context, record conflict or consistency, then complete."
+    expected: "Enhanced mode requires fresh whole-spec/verdict evidence; conflict yields gaps; legacy evidence remains readable."
+    excluded: "No legacy migration, early receipt reuse, consistency in detailed batch or semantic-proof claim."
+    prove: "Bypass final receipt/completion gate and require premature-completion assertion to fail."
+    suite: "review-full-consistency"
+    implemented: true
+  - id: Q49
+    packet: "P22"
+    requirements: ["PWF-042", "PWF-041"]
+    name: "Bounded reviewer progress and normative prose"
+    setup: "Neutral synthetic source with public interface prose, conflicting lifecycle order and an illustrative example."
+    action: "Use updated author/reviewer references in the existing P17 fresh-context trial; inspect all source portions and acknowledged writes."
+    expected: "Saved progress advances per bounded group; final assessment considers cross-section obligations and does not invent a requirement from an example."
+    excluded: "No hidden expected verdict hints, read-all backlog requirement, one-write-only restriction or regex semantic proof."
+    prove: "Deterministic receipt/ordering checks distinguish early final recording; actual semantic trial absence stays unverified."
+    suite: "review-full-consistency"
+    implemented: false
+  - id: Q50
+    packet: "P23"
+    requirements: ["PWF-043"]
+    name: "Safe context-only correction"
+    setup: "Latest completed Draft gaps review; one finding-linked baseline phrase changes while requirement/source meanings and scope stay unchanged."
+    action: "Read changes exactly, start followup, recheck required closure and profiles, assess final consistency."
+    expected: "Unaffected detailed verdicts retain parent attribution; fresh context assessment is mandatory."
+    excluded: "No blanket inheritance, new scope via prose, removed obligation, source change or uncertain-impact pass."
+    prove: "Bypass source-meaning guard or final consistency and require unsafe-inheritance test to fail."
+    suite: "review-structured-changes"
+    implemented: true
+  - id: Q51
+    packet: "P23"
+    requirements: ["PWF-044"]
+    name: "Structured navigation and exact evidence"
+    setup: "Large synthetic report with long Unicode finding and before/after fields, many required/candidate keys."
+    action: "Traverse summary and evidence cursors; compare reconstructed records to legacy text output."
+    expected: "Typed finding keys and fixed reasons permit fix mapping; terminal exact read yields valid equivalent changes receipt within budgets."
+    excluded: "No summary receipt, silent truncation, parsing partial JSON or mandatory server-code inspection."
+    prove: "Issue receipt on summary/incomplete evidence and require followup authorization assertion to fail."
+    suite: "review-structured-changes"
+    implemented: true
+  - id: Q52
+    packet: "P23"
+    requirements: ["PWF-043", "PWF-044"]
+    name: "Change-report identity and fail-closed recovery"
+    setup: "Foreign parent/project cursor, current source mutation, missing snapshot and incomplete fix mapping."
+    action: "Continue reads or request inheritance while recording before/after durable digests and receipt counts."
+    expected: "Stale/foreign/incomplete evidence rejects without writes; source uncertainty falls back to full independent review."
+    excluded: "No mixed report versions, invented original content or successful accelerated semantic judgment from hashes."
+    prove: "Bypass report/source identity comparison and require mixed-version assertion to fail."
+    suite: "review-structured-changes"
+    implemented: true
+  - id: Q53
+    packet: "P24"
+    requirements: ["PWF-045", "PWF-021"]
+    name: "Journal race versus semantic drift"
+    setup: "Two independent stdio clients with a deterministic barrier around guarded dependency verification."
+    action: "Record a verdict during an observer read; separately submit a stale mutation and change a real requirement/source."
+    expected: "Classified failures distinguish read race/context from positively established semantic drift; saved verdict survives reopen."
+    excluded: "No inconsistent read success, observer mutation, waived stale-write check or automatic write replay."
+    prove: "Bypass read guard or mislabel byte-only drift as semantic and require assertion to fail."
+    suite: "review-conflict-causes"
+    implemented: true
+  - id: Q54
+    packet: "P24"
+    requirements: ["PWF-045", "PWF-035"]
+    name: "Safe unknown conflict classification"
+    setup: "Unavailable coherent comparison plus malicious values, absolute paths and over-budget diagnostics."
+    action: "Trigger enrichment and capture actual wire errors."
+    expected: "Original failure persists with safe unknown cause when needed; closed diagnostics remain bounded and redacted."
+    excluded: "No guessed semantic drift, leaked source/token/path or falsely reported successful recovery."
+    prove: "Reflect one protected sentinel into cause/details and require leak test to fail."
+    suite: "review-conflict-causes"
+    implemented: true
+
+schema_cases:
+  - id: Store-valid
+    selector: "#/definitions/Store"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "store",
+        "store_id": "00000000-0000-4000-8000-000000000001",
+        "products": [],
+        "workspaces": [],
+      }
+  - id: Store-unknown-field
+    selector: "#/definitions/Store"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "store",
+        "store_id": "00000000-0000-4000-8000-000000000001",
+        "products": [],
+        "workspaces": [],
+        "unexpected": "rejected",
+      }
+  - id: Store-missing-version
+    selector: "#/definitions/Store"
+    valid: false
+    value:
+      {
+        "kind": "store",
+        "store_id": "00000000-0000-4000-8000-000000000001",
+        "products": [],
+        "workspaces": [],
+      }
+  - id: Registry-valid
+    selector: "#/definitions/Registry"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "registry",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "documents": [],
+        "element_metadata": [],
+      }
+  - id: Registry-unknown-field
+    selector: "#/definitions/Registry"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "registry",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "documents": [],
+        "element_metadata": [],
+        "unexpected": "rejected",
+      }
+  - id: Registry-missing-version
+    selector: "#/definitions/Registry"
+    valid: false
+    value:
+      {
+        "kind": "registry",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "documents": [],
+        "element_metadata": [],
+      }
+  - id: Generation-valid
+    selector: "#/definitions/Generation"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "generation",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "parent": null,
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "ready_artifacts": [],
+        "decision_heads": [],
+        "relations": [],
+      }
+  - id: Generation-unknown-field
+    selector: "#/definitions/Generation"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "generation",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "parent": null,
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "ready_artifacts": [],
+        "decision_heads": [],
+        "relations": [],
+        "unexpected": "rejected",
+      }
+  - id: Generation-missing-version
+    selector: "#/definitions/Generation"
+    valid: false
+    value:
+      {
+        "kind": "generation",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "parent": null,
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "ready_artifacts": [],
+        "decision_heads": [],
+        "relations": [],
+      }
+  - id: Candidate-valid
+    selector: "#/definitions/Candidate"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "candidate",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+        "artifact": "idea",
+        "base_generation": null,
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "state": "draft",
+        "scope":
+          {
+            "depth": "lite",
+            "profiles": [],
+            "rationale": [],
+            "confirmed_answer": null,
+          },
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "upstream_pins": [],
+        "decision_heads": [],
+        "relations": [],
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+      }
+  - id: Candidate-unknown-field
+    selector: "#/definitions/Candidate"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "candidate",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+        "artifact": "idea",
+        "base_generation": null,
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "state": "draft",
+        "scope":
+          {
+            "depth": "lite",
+            "profiles": [],
+            "rationale": [],
+            "confirmed_answer": null,
+          },
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "upstream_pins": [],
+        "decision_heads": [],
+        "relations": [],
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "unexpected": "rejected",
+      }
+  - id: Candidate-missing-version
+    selector: "#/definitions/Candidate"
+    valid: false
+    value:
+      {
+        "kind": "candidate",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+        "artifact": "idea",
+        "base_generation": null,
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "state": "draft",
+        "scope":
+          {
+            "depth": "lite",
+            "profiles": [],
+            "rationale": [],
+            "confirmed_answer": null,
+          },
+        "registry":
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "object_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          },
+        "upstream_pins": [],
+        "decision_heads": [],
+        "relations": [],
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+      }
+  - id: Operation-valid
+    selector: "#/definitions/Operation"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "operation",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": null,
+        "request_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "base_revision": null,
+        "phase": "prepared",
+        "owner":
+          { "session_id": "00000000-0000-4000-8000-000000000001", "pid": 1 },
+        "targets": [],
+        "result_sha256": null,
+        "blocker": null,
+        "scenario": "product_initialize",
+        "intent_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      }
+  - id: Operation-unknown-field
+    selector: "#/definitions/Operation"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "operation",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": null,
+        "request_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "base_revision": null,
+        "phase": "prepared",
+        "owner":
+          { "session_id": "00000000-0000-4000-8000-000000000001", "pid": 1 },
+        "targets": [],
+        "result_sha256": null,
+        "blocker": null,
+        "unexpected": "rejected",
+        "scenario": "product_initialize",
+        "intent_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      }
+  - id: Operation-missing-version
+    selector: "#/definitions/Operation"
+    valid: false
+    value:
+      {
+        "kind": "operation",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": null,
+        "request_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "base_revision": null,
+        "phase": "prepared",
+        "owner":
+          { "session_id": "00000000-0000-4000-8000-000000000001", "pid": 1 },
+        "targets": [],
+        "result_sha256": null,
+        "blocker": null,
+        "scenario": "product_initialize",
+        "intent_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      }
+  - id: WorkspaceBinding-valid
+    selector: "#/definitions/WorkspaceBinding"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "workspace_binding",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "canonical_workspace": "fixture",
+        "canonical_git_common_dir": null,
+        "location_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+        "confirmed_by": { "text": "fixture", "source": "fixture" },
+      }
+  - id: WorkspaceBinding-unknown-field
+    selector: "#/definitions/WorkspaceBinding"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "workspace_binding",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "canonical_workspace": "fixture",
+        "canonical_git_common_dir": null,
+        "location_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+        "confirmed_by": { "text": "fixture", "source": "fixture" },
+        "unexpected": "rejected",
+      }
+  - id: WorkspaceBinding-missing-version
+    selector: "#/definitions/WorkspaceBinding"
+    valid: false
+    value:
+      {
+        "kind": "workspace_binding",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "canonical_workspace": "fixture",
+        "canonical_git_common_dir": null,
+        "location_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+        "confirmed_by": { "text": "fixture", "source": "fixture" },
+      }
+  - id: TaskBinding-valid
+    selector: "#/definitions/TaskBinding"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "task_binding",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "task_id": "TASK-0001",
+        "specification_id": "00000000-0000-4000-8000-000000000001",
+        "specification_slug": "fixture",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "reservation_operation": "00000000-0000-4000-8000-000000000001",
+        "state": "reserved",
+        "owner_session": null,
+        "current_packet": null,
+        "product_pins": [],
+        "specification_source_version": null,
+        "specification_version": null,
+        "specification_review_ref": null,
+        "plan_pins": [],
+        "safety_blocks": [],
+        "completed_packets": [],
+      }
+  - id: TaskBinding-unknown-field
+    selector: "#/definitions/TaskBinding"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "task_binding",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "task_id": "TASK-0001",
+        "specification_id": "00000000-0000-4000-8000-000000000001",
+        "specification_slug": "fixture",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "reservation_operation": "00000000-0000-4000-8000-000000000001",
+        "state": "reserved",
+        "owner_session": null,
+        "current_packet": null,
+        "product_pins": [],
+        "specification_source_version": null,
+        "specification_version": null,
+        "specification_review_ref": null,
+        "plan_pins": [],
+        "safety_blocks": [],
+        "completed_packets": [],
+        "unexpected": "rejected",
+      }
+  - id: TaskBinding-missing-version
+    selector: "#/definitions/TaskBinding"
+    valid: false
+    value:
+      {
+        "kind": "task_binding",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "task_id": "TASK-0001",
+        "specification_id": "00000000-0000-4000-8000-000000000001",
+        "specification_slug": "fixture",
+        "workspace_id": "00000000-0000-4000-8000-000000000001",
+        "reservation_operation": "00000000-0000-4000-8000-000000000001",
+        "state": "reserved",
+        "owner_session": null,
+        "current_packet": null,
+        "product_pins": [],
+        "specification_source_version": null,
+        "specification_version": null,
+        "specification_review_ref": null,
+        "plan_pins": [],
+        "safety_blocks": [],
+        "completed_packets": [],
+      }
+  - id: Decision-valid
+    selector: "#/definitions/Decision"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "decision",
+        "ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "state": "needs_user",
+        "category": "fixture",
+        "question": null,
+        "text": "fixture",
+        "source": "fixture",
+        "selected_ids": [],
+        "predecessors": [],
+        "affected_refs": [],
+        "reconsider_when": null,
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+      }
+  - id: Decision-unknown-field
+    selector: "#/definitions/Decision"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "decision",
+        "ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "state": "needs_user",
+        "category": "fixture",
+        "question": null,
+        "text": "fixture",
+        "source": "fixture",
+        "selected_ids": [],
+        "predecessors": [],
+        "affected_refs": [],
+        "reconsider_when": null,
+        "unexpected": "rejected",
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+      }
+  - id: Decision-missing-version
+    selector: "#/definitions/Decision"
+    valid: false
+    value:
+      {
+        "kind": "decision",
+        "ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "state": "needs_user",
+        "category": "fixture",
+        "question": null,
+        "text": "fixture",
+        "source": "fixture",
+        "selected_ids": [],
+        "predecessors": [],
+        "affected_refs": [],
+        "reconsider_when": null,
+        "candidate_id": "00000000-0000-4000-8000-000000000001",
+      }
+  - id: Review-valid
+    selector: "#/definitions/Review"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "review",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "candidate_ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "candidate_id": "00000000-0000-4000-8000-000000000001",
+          },
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mode": "full",
+        "parent": null,
+        "coverage": "pending",
+        "inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "verdict_objects": [],
+        "consistency_receipt": null,
+      }
+  - id: Review-unknown-field
+    selector: "#/definitions/Review"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "review",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "candidate_ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "candidate_id": "00000000-0000-4000-8000-000000000001",
+          },
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mode": "full",
+        "parent": null,
+        "coverage": "pending",
+        "inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "verdict_objects": [],
+        "consistency_receipt": null,
+        "unexpected": "rejected",
+      }
+  - id: Review-missing-version
+    selector: "#/definitions/Review"
+    valid: false
+    value:
+      {
+        "kind": "review",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "candidate_ref":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "candidate_id": "00000000-0000-4000-8000-000000000001",
+          },
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mode": "full",
+        "parent": null,
+        "coverage": "pending",
+        "inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "verdict_objects": [],
+        "consistency_receipt": null,
+      }
+  - id: ContextSelection-valid
+    selector: "#/definitions/ContextSelection"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "context_selection",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "purpose": "idea",
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "required": [],
+        "optional": [],
+        "blockers": [],
+        "complete": false,
+        "next_cursor": null,
+        "required_total": 0,
+        "optional_total": 0,
+      }
+  - id: ContextSelection-unknown-field
+    selector: "#/definitions/ContextSelection"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "context_selection",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "purpose": "idea",
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "required": [],
+        "optional": [],
+        "blockers": [],
+        "complete": false,
+        "next_cursor": null,
+        "required_total": 0,
+        "optional_total": 0,
+        "unexpected": "rejected",
+      }
+  - id: ContextSelection-missing-version
+    selector: "#/definitions/ContextSelection"
+    valid: false
+    value:
+      {
+        "kind": "context_selection",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "purpose": "idea",
+        "source_version": "0000000000000000000000000000000000000000000000000000000000000000",
+        "required": [],
+        "optional": [],
+        "blockers": [],
+        "complete": false,
+        "next_cursor": null,
+        "required_total": 0,
+        "optional_total": 0,
+      }
+  - id: SafetyBlock-valid
+    selector: "#/definitions/SafetyBlock"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "safety_block",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "affected_refs": [],
+        "affected_task_ids": [],
+        "reason": "security",
+        "explanation": "fixture",
+        "source":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "resolution": null,
+      }
+  - id: SafetyBlock-unknown-field
+    selector: "#/definitions/SafetyBlock"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "safety_block",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "affected_refs": [],
+        "affected_task_ids": [],
+        "reason": "security",
+        "explanation": "fixture",
+        "source":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "resolution": null,
+        "unexpected": "rejected",
+      }
+  - id: SafetyBlock-missing-version
+    selector: "#/definitions/SafetyBlock"
+    valid: false
+    value:
+      {
+        "kind": "safety_block",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "affected_refs": [],
+        "affected_task_ids": [],
+        "reason": "security",
+        "explanation": "fixture",
+        "source":
+          {
+            "product_id": "00000000-0000-4000-8000-000000000001",
+            "artifact": "idea",
+            "id": "00000000-0000-4000-8000-000000000001",
+            "revision": 1,
+          },
+        "resolution": null,
+      }
+  - id: Head-valid
+    selector: "#/definitions/Head"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "head",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "generation": "0000000000000000000000000000000000000000000000000000000000000000",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+      }
+  - id: Head-unknown-field
+    selector: "#/definitions/Head"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "head",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "generation": "0000000000000000000000000000000000000000000000000000000000000000",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+        "unexpected": "rejected",
+      }
+  - id: Head-missing-version
+    selector: "#/definitions/Head"
+    valid: false
+    value:
+      {
+        "kind": "head",
+        "product_id": "00000000-0000-4000-8000-000000000001",
+        "generation": "0000000000000000000000000000000000000000000000000000000000000000",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+      }
+  - id: Lock-valid
+    selector: "#/definitions/Lock"
+    valid: true
+    value:
+      {
+        "schema_version": 1,
+        "kind": "lock",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+        "session_id": "00000000-0000-4000-8000-000000000001",
+        "pid": 1,
+        "expected_revision": null,
+      }
+  - id: Lock-unknown-field
+    selector: "#/definitions/Lock"
+    valid: false
+    value:
+      {
+        "schema_version": 1,
+        "kind": "lock",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+        "session_id": "00000000-0000-4000-8000-000000000001",
+        "pid": 1,
+        "expected_revision": null,
+        "unexpected": "rejected",
+      }
+  - id: Lock-missing-version
+    selector: "#/definitions/Lock"
+    valid: false
+    value:
+      {
+        "kind": "lock",
+        "operation_id": "00000000-0000-4000-8000-000000000001",
+        "session_id": "00000000-0000-4000-8000-000000000001",
+        "pid": 1,
+        "expected_revision": null,
+      }

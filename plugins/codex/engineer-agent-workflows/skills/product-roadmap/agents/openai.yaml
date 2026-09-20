@@ -1,0 +1,5 @@
+interface:
+  display_name: "Product Roadmap"
+  short_description: "Create or revise a staged product roadmap from exact ready PRD and Technical Design pins. Keep distant stages coarse, define independent tasks without creating specifications, review, then stop."
+policy:
+  allow_implicit_invocation: false

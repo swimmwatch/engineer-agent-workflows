@@ -15,6 +15,20 @@ import {
 } from "./lib/fixtures.mjs";
 
 const skillRoot = path.join(projectRoot, "skills", "spec-driven-development");
+const specificationProfiles = [
+  "core",
+  "ui",
+  "backend",
+  "events",
+  "data",
+  "operations",
+  "security",
+  "cross-surface",
+];
+
+function profileReference(profile) {
+  return `references/${profile}-requirements.md`;
+}
 
 async function specificationEntry() {
   const catalog = await readCatalog(projectRoot);
@@ -34,8 +48,8 @@ function normalizeWhitespace(value) {
 test("specification skill is explicit, bounded, bundle-required, and catalog-aligned", async () => {
   const entry = await specificationEntry();
   assert.ok(entry);
-  assert.equal(entry.classification, "bundle-required");
-  assert.deepEqual(entry.dependencies, ["planning-and-task-breakdown"]);
+  assert.equal(entry.classification, "standalone");
+  assert.deepEqual(entry.dependencies, []);
   assert.ok(countCodePoints(entry.description) <= 240);
 
   const document = await fs.readFile(path.join(skillRoot, "SKILL.md"));
@@ -43,18 +57,193 @@ test("specification skill is explicit, bounded, bundle-required, and catalog-ali
   assert.ok(validated.bytes <= 4096);
   for (const pattern of [
     /verify-engineering-manual/,
-    /`AGENTS\.md` in Codex/,
-    /`CLAUDE\.md` in Claude Code/,
-    /only callable Prompt MCP tools/,
-    /Do not construct a tool namespace/,
-    /checkpoint each\s+non-sensitive committed answer/is,
-    /Status: Draft/,
-    /committed positive approval/,
-    /Never\s+create an implementation plan/is,
+    /spec-driven-development.*sole argument/is,
+    /`\{\{HOST_PROJECT_INSTRUCTIONS\}\}`/,
+    /`\{\{HOST_QUESTION_TOOL\}\}`/,
+    /do not enter plan mode\s+solely to ask/is,
+    /Checkpoint each non-sensitive answer immediately/,
+    /references\/test-discipline\.md/,
+    /references\/adaptive-scope\.md/,
+    /references\/<profile>-requirements\.md/,
+    /Lite.*Standard.*Deep/is,
+    /propose.*confirm.*depth.*profiles/is,
+    /confirmed manifest.*only.*active profile/is,
+    /manifest\.yaml/,
+    /planning.*profile artifacts/is,
+    /observation.*excluded\s+outcome/is,
+    /absence.*observable/is,
+    /verified.*assumed.*superseded/is,
+    /Status: Approved/,
+    /without a separate\s+approval question/,
+    /user\s+edits.*authoritative/is,
+    /Do not plan, implement/,
   ]) {
     assert.match(validated.body, pattern);
   }
-  assert.doesNotMatch(validated.body, /prompt-mcp|GTK|Zenity|Go\/MCP/);
+  assert.doesNotMatch(
+    `${entry.description}\n${validated.body}`,
+    /Prompt MCP|prompt-mcp|mcp__|GTK|Zenity|Go\/MCP|AGENTS\.md|CLAUDE\.md|request_user_input|AskUserQuestion/,
+  );
+  assert.doesNotMatch(
+    validated.body,
+    /Status: Draft|draft approval|explicit `approve`/i,
+  );
+});
+
+test("specification scope reference defines adaptive confirmed manifests", async () => {
+  const reference = await fs.readFile(
+    path.join(skillRoot, "references", "adaptive-scope.md"),
+    "utf8",
+  );
+  for (const pattern of [
+    /Lite.*Standard.*Deep/is,
+    /highest applicable depth/i,
+    /do not ask.*already established/is,
+    /do not load.*profile reference.*before.*confirmed/is,
+    /simple examples/i,
+    /propose.*rationale.*confirm/is,
+    /decisions\.yaml.*manifest\.yaml/is,
+    /core.*ui.*backend/is,
+    /profile.*state.*reason/is,
+    /planning_artifacts/,
+    /schema_version/,
+    /Compact Artifact Registry/,
+    /core.*core\/contracts\.yaml/is,
+    /ui.*design\/specs\/<slug>\/experience\.yaml/is,
+    /backend.*contracts\/openapi\.yaml/is,
+  ]) {
+    assert.match(reference, pattern);
+  }
+});
+
+test("specification loads one isolated reference for each active profile", async () => {
+  const references = Object.fromEntries(
+    await Promise.all(
+      specificationProfiles.map(async (profile) => [
+        profile,
+        await fs.readFile(
+          path.join(skillRoot, profileReference(profile)),
+          "utf8",
+        ),
+      ]),
+    ),
+  );
+  for (const profile of specificationProfiles) {
+    assert.match(
+      references[profile],
+      new RegExp(`manifest\\.yaml.*${profile}.*active`, "is"),
+    );
+  }
+  for (const pattern of [
+    /library.*CLI.*configuration/is,
+    /public interface/i,
+    /compatibility.*version/is,
+    /deterministic/i,
+  ]) {
+    assert.match(references.core, pattern);
+  }
+  for (const pattern of [
+    /loading.*empty.*error.*offline.*permission/is,
+    /responsive/i,
+    /keyboard.*focus/is,
+    /accessibility/i,
+    /visual.*behavior/is,
+  ]) {
+    assert.match(references.ui, pattern);
+  }
+  for (const pattern of [
+    /HTTP.*RPC.*external service/is,
+    /authentication.*authorization/is,
+    /idempotency.*retry/is,
+  ]) {
+    assert.match(references.backend, pattern);
+  }
+  for (const pattern of [
+    /ordering.*deduplication.*replay/is,
+    /schema evolution/i,
+  ]) {
+    assert.match(references.events, pattern);
+  }
+  for (const pattern of [
+    /migration.*rollback/is,
+    /retention.*deletion/is,
+  ]) {
+    assert.match(references.data, pattern);
+  }
+  for (const pattern of [
+    /observability/i,
+    /SLI.*SLO/is,
+    /operator\s+recovery/i,
+  ]) {
+    assert.match(references.operations, pattern);
+  }
+  assert.match(references.security, /trust boundaries.*least\s+privilege/is);
+  assert.match(
+    references["cross-surface"],
+    /UI action.*operation.*state.*UI outcome/is,
+  );
+});
+
+test("adaptive specification fixture keeps confirmed scope deterministic", async () => {
+  const fixture = await specificationFixture("adaptive-scope");
+  assert.equal(fixture.schemaVersion, 1);
+  assert.deepEqual(
+    fixture.depths.map((entry) => entry.id),
+    ["lite", "standard", "deep"],
+  );
+  for (const scenario of fixture.scenarios) {
+    assert.ok(fixture.depths.some((entry) => entry.id === scenario.expectedDepth));
+    assert.equal(scenario.scopeProposed, true);
+    assert.equal(typeof scenario.scopeConfirmed, "boolean");
+    assert.ok(scenario.expectedProfiles.length > 0);
+    assert.ok(Array.isArray(scenario.expectedLoadedProfileReferences));
+    const allowedReferences = new Set(
+      specificationProfiles.map(profileReference),
+    );
+    assert.ok(
+      scenario.expectedLoadedProfileReferences.every((reference) =>
+        allowedReferences.has(reference),
+      ),
+    );
+    const expectedReferences = scenario.scopeConfirmed
+      ? scenario.expectedProfiles.map(profileReference)
+      : [];
+    assert.deepEqual(
+      scenario.expectedLoadedProfileReferences,
+      expectedReferences,
+    );
+  }
+  assert.ok(
+    fixture.scenarios.some((scenario) =>
+      scenario.expectedProfiles.includes("core"),
+    ),
+  );
+  assert.ok(
+    fixture.scenarios.some(
+      (scenario) =>
+        scenario.scopeConfirmed === false &&
+        scenario.expectedLoadedProfileReferences.length === 0,
+    ),
+  );
+  assert.deepEqual(Object.keys(fixture.manifest).sort(), [
+    "confirmed",
+    "depth",
+    "planning_artifacts",
+    "profiles",
+    "rationale",
+    "schema_version",
+  ]);
+  assert.equal(fixture.manifest.confirmed, true);
+  for (const profile of fixture.manifest.profiles) {
+    assert.deepEqual(Object.keys(profile).sort(), ["id", "reason", "state"]);
+    assert.ok(specificationProfiles.includes(profile.id));
+    assert.ok(["active", "not_applicable", "needs_user"].includes(profile.state));
+  }
+  assert.ok(
+    fixture.manifest.profiles.some(
+      (profile) => profile.id === "core" && profile.state === "active",
+    ),
+  );
 });
 
 test("specification interview reference defines durable callable-tool recovery", async () => {
@@ -63,30 +252,46 @@ test("specification interview reference defines durable callable-tool recovery",
     "utf8",
   );
   for (const pattern of [
-    /AGENTS\.md|host project guidance/,
+    /AGENTS\.md|host and project guidance/,
     /decisions\.yaml/,
-    /stable\s+semantic IDs/,
-    /append positive integer revisions/,
+    /IDs, revisions.*server-owned/s,
+    /MCP appends a revision/s,
     /Inspect the callable tool list and schemas at runtime/,
-    /Do not hard-code an MCP\s+namespace/is,
-    /recoverable workspace interview/,
-    /bounded batches/,
-    /single-question Prompt MCP/,
-    /cancelled.*timed_out.*unavailable.*conflict.*invalid_request.*failed/is,
+    /`\{\{HOST_QUESTION_TOOL\}\}`/,
+    /Never enter plan mode\s+solely/is,
+    /advertised batch limit/,
+    /ask the exact saved question directly/is,
+    /dismissed.*cancelled.*timed_out.*unavailable.*invalid_response.*failed/is,
     /Do not draft while material decisions/,
     /Keep the artifact behavioral/,
-    /approval\.spec/,
-    /explicitly committed `approve`/,
+    /Automatic Approval/,
+    /Status: Approved/,
+    /do not create.*approval\.spec/is,
+    /user\s+edits.*authoritative/is,
   ]) {
     assert.match(reference, pattern);
   }
-  assert.doesNotMatch(reference, /mcp__[a-z0-9_]+/);
+  assert.doesNotMatch(
+    reference,
+    /Prompt MCP|prompt-mcp|mcp__[a-z0-9_]+|request_user_input|AskUserQuestion/,
+  );
+  assert.doesNotMatch(
+    reference,
+    /request-changes|leave-draft|explicit `approve` answer/i,
+  );
+  // Draft is now an explicit input to the independently persisted review.
+  // The behavioral gates themselves are exercised through the stdio tests.
+  const completion = reference.slice(reference.indexOf("## Automatic Approval"));
+  assert.match(completion, /specification_review_start/);
+  assert.match(completion, /coverage_status: reviewed/);
+  assert.match(completion, /separate fresh context/);
+  assert.match(completion, /Status: Approved` immediately/);
 });
 
 test("specification fixtures keep contracts behavioral and requirement-complete", async () => {
   const fixture = await specificationFixture("behavioral-contract");
   assert.equal(fixture.schemaVersion, 1);
-  assert.equal(fixture.expectedSpecification.status, "Draft");
+  assert.equal(fixture.expectedSpecification.status, "Approved");
   assert.deepEqual(
     [...fixture.expectedSpecification.requirementIds].sort(),
     [...fixture.requirements].sort(),
@@ -98,6 +303,13 @@ test("specification fixtures keep contracts behavioral and requirement-complete"
   assert.ok(
     fixture.expectedSpecification.sections.includes("security-and-privacy"),
   );
+  for (const criterion of fixture.expectedSpecification.acceptanceCriteria) {
+    assert.match(criterion.observation, /./);
+    assert.match(criterion.excludedOutcome, /./);
+    if (criterion.kind === "absence") {
+      assert.match(criterion.observable, /./);
+    }
+  }
   assert.ok(
     fixture.expectedSpecification.forbiddenImplementationUnits.includes(
       "class",
@@ -110,21 +322,20 @@ test("specification fixtures keep contracts behavioral and requirement-complete"
   }
 });
 
-test("specification recovery persists only committed answers and preserves revisions", async () => {
+test("specification recovery persists only explicit answers and preserves revisions", async () => {
   const fixture = await specificationFixture("status-recovery");
   const nonAnswers = new Set([
+    "dismissed",
     "cancelled",
     "timed_out",
     "unavailable",
-    "conflict",
-    "invalid_request",
+    "invalid_response",
     "failed",
   ]);
   const persisted = fixture.outcomes.map((outcome) => {
     if (outcome.persistAnswer) {
       assert.equal(outcome.status, "answered");
-      assert.equal(outcome.committed, true);
-      assert.equal(outcome.durable, true);
+      assert.equal(outcome.hasExplicitAnswer, true);
       return {
         status: outcome.status,
         state: outcome.expectedState,
@@ -132,7 +343,7 @@ test("specification recovery persists only committed answers and preserves revis
       };
     }
     assert.ok(nonAnswers.has(outcome.status));
-    assert.equal(outcome.committed, false);
+    assert.equal(outcome.hasExplicitAnswer, false);
     return {
       status: outcome.status,
       state: outcome.expectedState,
@@ -152,19 +363,17 @@ test("specification recovery persists only committed answers and preserves revis
   assert.match(fixture.resumeFrom, /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
 });
 
-test("specification approval is separate, committed, positive, and durable", async () => {
-  const fixture = await specificationFixture("draft-approval");
-  assert.equal(fixture.approvalDecisionId, "approval.spec");
-  assert.equal(fixture.separateFromInterview, true);
-  for (const approval of fixture.cases) {
-    const actual =
-      approval.selection === "approve" &&
-      approval.committed === true &&
-      approval.durable === true
-        ? "Approved"
-        : "Draft";
-    assert.equal(actual, approval.expectedStatus);
-  }
+test("completed specification is approved automatically and preserves user edits", async () => {
+  const fixture = await specificationFixture("automatic-approval");
+  const complete = Object.values(fixture.generationPreconditions).every(Boolean);
+  const actualStatus = complete ? "Approved" : null;
+
+  assert.equal(actualStatus, fixture.expectedStatus);
+  assert.equal(fixture.separateApprovalQuestion, false);
+  assert.equal(fixture.approvalDecisionCreated, false);
+  assert.equal(fixture.userEdits.authoritative, true);
+  assert.equal(fixture.userEdits.statusAfterEdit, "Approved");
+  assert.equal(fixture.userEdits.reconcileOnNextInvocation, true);
 });
 
 test("specification fixtures and validation do not mutate production", async () => {
@@ -172,7 +381,8 @@ test("specification fixtures and validation do not mutate production", async () 
   for (const fixture of [
     "behavioral-contract",
     "status-recovery",
-    "draft-approval",
+    "automatic-approval",
+    "adaptive-scope",
   ]) {
     await specificationFixture(fixture);
   }
@@ -182,7 +392,7 @@ test("specification fixtures and validation do not mutate production", async () 
   const skill = await fs.readFile(path.join(skillRoot, "SKILL.md"), "utf8");
   const fixedInstruction =
     "Install or update the complete matching engineer-agent-workflows bundle " +
-    "for Codex and Claude Code using the documented pinned global command, " +
+    "for {{HOST_DISPLAY_NAME}} using the documented pinned global command, " +
     "then retry.";
   assert.ok(normalizeWhitespace(skill).includes(fixedInstruction));
 });

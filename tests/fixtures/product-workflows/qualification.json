@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "name": "Portable product workflow",
+    "knownIdea": "Preserve product intent across isolated workspaces and process restarts."
+  },
+  "taskSpecifications": [
+    {
+      "taskId": "TASK-0001",
+      "slug": "product-workflow-a",
+      "requirementId": "PQA-001"
+    },
+    {
+      "taskId": "TASK-0002",
+      "slug": "product-workflow-b",
+      "requirementId": "PQB-001"
+    }
+  ]
+}

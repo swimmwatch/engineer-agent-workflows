@@ -7,7 +7,7 @@ import test from "node:test";
 import {
   layoutPaths,
   verifyEngineeringManual,
-} from "../skills/planning-and-task-breakdown/scripts/verify-engineering-manual.mjs";
+} from "../shared/scripts/verify-engineering-manual.mjs";
 import {
   makeTempTree,
   projectRoot,
@@ -15,11 +15,12 @@ import {
 
 const FIXED_INSTRUCTION =
   "Install or update the complete matching engineer-agent-workflows bundle " +
-  "for Codex and Claude Code using the documented pinned global command, " +
+  "for {{HOST_DISPLAY_NAME}} using the documented pinned global command, " +
   "then retry.";
 const SKILLS = Object.freeze([
-  "planning-and-task-breakdown",
+  "design-planning",
   "spec-driven-development",
+  "planning-and-task-breakdown",
   "incremental-implementation",
 ]);
 
@@ -59,13 +60,14 @@ test("bundle-required direct callers verify the byte-identical owned manual", as
   );
 });
 
-test("bundle-required copy and native plugin layouts verify both callers", async (t) => {
+test("bundle-required copy and native plugin layouts verify the dependency graph", async (t) => {
   for (const prefix of [
     "skills",
-    "plugins/engineer-agent-workflows/skills",
+    "plugins/codex/engineer-agent-workflows/skills",
+    "plugins/claude-code/engineer-agent-workflows/skills",
   ]) {
     const bundle = await copyBundle(t, prefix);
-    for (const caller of SKILLS.slice(1)) {
+    for (const caller of SKILLS) {
       const result = await runBundleWorkflow(
         path.join(bundle.skillsRoot, caller),
       );
@@ -74,7 +76,7 @@ test("bundle-required copy and native plugin layouts verify both callers", async
   }
 });
 
-test("bundle-required symlinked global layouts verify both callers", async (t) => {
+test("bundle-required symlinked global layouts verify the dependency graph", async (t) => {
   const source = await copyBundle(t, "source/skills");
   const installed = path.join(source.root, "global");
   await fs.mkdir(installed);
@@ -93,7 +95,7 @@ test("bundle-required symlinked global layouts verify both callers", async (t) =
     }
     throw error;
   }
-  for (const caller of SKILLS.slice(1)) {
+  for (const caller of SKILLS) {
     assert.equal(
       (await runBundleWorkflow(path.join(installed, caller))).artifactCreated,
       true,
@@ -104,7 +106,20 @@ test("bundle-required symlinked global layouts verify both callers", async (t) =
 test("bundle-required missing and mismatched bundles stop before artifacts", async (t) => {
   const cases = [
     {
-      failedCallers: SKILLS.slice(1),
+      failedCallers: SKILLS,
+      async mutate(bundle) {
+        await fs.rm(
+          path.join(bundle.skillsRoot, "spec-driven-development"),
+          { recursive: true },
+        );
+      },
+    },
+    {
+      failedCallers: [
+        "design-planning",
+        "planning-and-task-breakdown",
+        "incremental-implementation",
+      ],
       async mutate(bundle) {
         await fs.rm(
           path.join(bundle.skillsRoot, "planning-and-task-breakdown"),
@@ -113,12 +128,13 @@ test("bundle-required missing and mismatched bundles stop before artifacts", asy
       },
     },
     {
-      failedCallers: ["spec-driven-development"],
+      failedCallers: SKILLS,
       async mutate(bundle) {
         await fs.rm(
           path.join(
             bundle.skillsRoot,
             "spec-driven-development",
+            "shared",
             "engineering-manual.sha256",
           ),
         );
@@ -131,6 +147,7 @@ test("bundle-required missing and mismatched bundles stop before artifacts", asy
           path.join(
             bundle.skillsRoot,
             "incremental-implementation",
+            "shared",
             "engineering-manual.sha256",
           ),
           `${"0".repeat(64)}\n`,
@@ -138,12 +155,17 @@ test("bundle-required missing and mismatched bundles stop before artifacts", asy
       },
     },
     {
-      failedCallers: SKILLS.slice(1),
+      failedCallers: [
+        "design-planning",
+        "planning-and-task-breakdown",
+        "incremental-implementation",
+      ],
       async mutate(bundle) {
         await fs.rm(
           path.join(
             bundle.skillsRoot,
             "planning-and-task-breakdown",
+            "shared",
             "references",
             "engineering-principles.md",
           ),
@@ -154,7 +176,7 @@ test("bundle-required missing and mismatched bundles stop before artifacts", asy
   for (const bundleCase of cases) {
     const bundle = await copyBundle(t);
     await bundleCase.mutate(bundle);
-    for (const caller of SKILLS.slice(1)) {
+    for (const caller of SKILLS) {
       const result = await runBundleWorkflow(
         path.join(bundle.skillsRoot, caller),
       );
@@ -170,11 +192,12 @@ test("bundle-required missing and mismatched bundles stop before artifacts", asy
   }
 });
 
-test("bundle-required mixed-release update is rejected by owner and caller markers", async (t) => {
+test("bundle-required dependency graph rejects a partial planning update", async (t) => {
   const bundle = await copyBundle(t);
   const manual = path.join(
     bundle.skillsRoot,
     "planning-and-task-breakdown",
+    "shared",
     "references",
     "engineering-principles.md",
   );
@@ -187,34 +210,47 @@ test("bundle-required mixed-release update is rejected by owner and caller marke
   await fs.writeFile(
     path.join(
       bundle.skillsRoot,
-      "spec-driven-development",
+      "planning-and-task-breakdown",
+      "shared",
       "engineering-manual.sha256",
     ),
     `${updatedDigest}\n`,
   );
 
-  const specification = await runBundleWorkflow(
-    path.join(bundle.skillsRoot, "spec-driven-development"),
+  const results = Object.fromEntries(
+    await Promise.all(
+      SKILLS.map(async (skill) => [
+        skill,
+        await runBundleWorkflow(path.join(bundle.skillsRoot, skill)),
+      ]),
+    ),
   );
-  const incremental = await runBundleWorkflow(
-    path.join(bundle.skillsRoot, "incremental-implementation"),
-  );
-  assert.deepEqual(specification, {
-    artifactCreated: false,
-    output: FIXED_INSTRUCTION,
+  assert.deepEqual(results["spec-driven-development"], {
+    artifactCreated: true,
+    output: "",
   });
-  assert.deepEqual(incremental, {
-    artifactCreated: false,
-    output: FIXED_INSTRUCTION,
-  });
+  for (const skill of [
+    "design-planning",
+    "planning-and-task-breakdown",
+    "incremental-implementation",
+  ]) {
+    assert.deepEqual(results[skill], {
+      artifactCreated: false,
+      output: FIXED_INSTRUCTION,
+    });
+  }
 });
 
 test("bundle-required POSIX, macOS, and Windows forms keep sibling identity", () => {
-  for (const caller of SKILLS.slice(1)) {
+  for (const caller of SKILLS) {
     const linux = layoutPaths(`/opt/agents/skills/${caller}`, path.posix);
     assert.equal(
       linux.planningSkill,
       "/opt/agents/skills/planning-and-task-breakdown",
+    );
+    assert.equal(
+      linux.specificationSkill,
+      "/opt/agents/skills/spec-driven-development",
     );
     const macOS = layoutPaths(`/Users/user/.claude/skills/${caller}`, path.posix);
     assert.equal(path.posix.basename(macOS.callerSkill), caller);
@@ -230,7 +266,7 @@ test("bundle-required POSIX, macOS, and Windows forms keep sibling identity", ()
 });
 
 test("bundle-required skills expose one exact content-free failure instruction", async () => {
-  for (const caller of SKILLS.slice(1)) {
+  for (const caller of SKILLS) {
     const document = await fs.readFile(
       path.join(projectRoot, "skills", caller, "SKILL.md"),
       "utf8",

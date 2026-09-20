@@ -12,6 +12,9 @@
     "checklistCompleted": false,
     "handoffRecordsFailure": true,
     "nextPacketStarted": false,
-    "stoppedForReview": true
+    "stoppedIncomplete": true,
+    "correctImplementation": true,
+    "weakenChecks": false,
+    "repeatUntilChecksPass": true
   }
 }

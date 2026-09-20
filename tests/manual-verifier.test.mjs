@@ -12,7 +12,7 @@ import {
   main,
   readExpectedDigest,
   verifyEngineeringManual,
-} from "../skills/planning-and-task-breakdown/scripts/verify-engineering-manual.mjs";
+} from "../shared/scripts/verify-engineering-manual.mjs";
 import {
   makeTempTree,
   projectRoot,
@@ -23,25 +23,28 @@ const sourceSkill = path.join(
   "skills",
   "planning-and-task-breakdown",
 );
+const SKILLS = Object.freeze([
+  "spec-driven-development",
+  "planning-and-task-breakdown",
+  "incremental-implementation",
+]);
 const execFileAsync = promisify(execFile);
 
 async function copyBundle(t, prefix = "skills") {
   const root = await makeTempTree(t);
   const skillsRoot = path.join(root, ...prefix.split("/"));
+  const specification = path.join(skillsRoot, "spec-driven-development");
   const planning = path.join(skillsRoot, "planning-and-task-breakdown");
+  const incremental = path.join(skillsRoot, "incremental-implementation");
   await fs.mkdir(skillsRoot, { recursive: true });
-  await fs.cp(sourceSkill, planning, { recursive: true });
-  return { root, skillsRoot, planning };
-}
-
-async function addCaller(skillsRoot, name = "incremental-implementation") {
-  const caller = path.join(skillsRoot, name);
-  await fs.mkdir(caller, { recursive: true });
-  await fs.copyFile(
-    path.join(sourceSkill, "engineering-manual.sha256"),
-    path.join(caller, "engineering-manual.sha256"),
-  );
-  return caller;
+  for (const skill of SKILLS) {
+    await fs.cp(
+      path.join(projectRoot, "skills", skill),
+      path.join(skillsRoot, skill),
+      { recursive: true },
+    );
+  }
+  return { root, skillsRoot, specification, planning, incremental };
 }
 
 function capture() {
@@ -68,51 +71,97 @@ test("engineering manual verification is deterministic, silent, and copy-isolate
     "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
   );
   assert.equal(await readExpectedDigest(sourceSkill), second.digest);
+  assert.match(second.testDisciplineDigest, /^[a-f0-9]{64}$/);
   const captured = capture();
   assert.equal(await main([sourceSkill], captured.io), 0);
   assert.deepEqual(captured.output(), { stdout: "", stderr: "" });
   assert.deepEqual(await snapshotTree(sourceSkill), before);
 });
 
-test("engineering manual resolves copied, dependent-sibling, and plugin layouts", async (t) => {
+test("engineering manual resolves copied, dependent-sibling, and host plugin layouts", async (t) => {
   const copied = await copyBundle(t);
-  const caller = await addCaller(copied.skillsRoot);
   assert.equal(
     (await verifyEngineeringManual(copied.planning)).digest,
-    (await verifyEngineeringManual(caller)).digest,
+    (await verifyEngineeringManual(copied.incremental)).digest,
   );
   assert.equal(
-    path.basename((await locateBundleRoot(caller)).planningSkill),
+    path.basename((await locateBundleRoot(copied.incremental)).planningSkill),
     "planning-and-task-breakdown",
   );
-
-  const plugin = await copyBundle(
-    t,
-    "plugins/engineer-agent-workflows/skills",
-  );
-  const pluginCaller = await addCaller(
-    plugin.skillsRoot,
+  assert.equal(
+    path.basename(
+      (await locateBundleRoot(copied.incremental)).specificationSkill,
+    ),
     "spec-driven-development",
   );
+
+  for (const prefix of [
+    "plugins/codex/engineer-agent-workflows/skills",
+    "plugins/claude-code/engineer-agent-workflows/skills",
+  ]) {
+    const plugin = await copyBundle(t, prefix);
+    assert.equal(
+      (await verifyEngineeringManual(plugin.specification)).digest,
+      await readExpectedDigest(plugin.specification),
+    );
+  }
+});
+
+test("specification verifies its own resources without planning installed", async (t) => {
+  const root = await makeTempTree(t);
+  const skillsRoot = path.join(root, "skills");
+  const specification = path.join(skillsRoot, "spec-driven-development");
+  await fs.mkdir(skillsRoot, { recursive: true });
+  await fs.cp(
+    path.join(projectRoot, "skills", "spec-driven-development"),
+    specification,
+    { recursive: true },
+  );
+
   assert.equal(
-    (await verifyEngineeringManual(pluginCaller)).digest,
-    await readExpectedDigest(pluginCaller),
+    (await verifyEngineeringManual(specification)).digest,
+    await readExpectedDigest(specification),
+  );
+});
+
+test("planning and incremental verify specification transitively", async (t) => {
+  const withoutSpecification = await copyBundle(t);
+  await fs.rm(withoutSpecification.specification, { recursive: true });
+  await assert.rejects(
+    () => verifyEngineeringManual(withoutSpecification.planning),
+    /bundle is unavailable/,
+  );
+  await assert.rejects(
+    () => verifyEngineeringManual(withoutSpecification.incremental),
+    /bundle is unavailable/,
+  );
+
+  const withoutPlanning = await copyBundle(t);
+  await fs.rm(withoutPlanning.planning, { recursive: true });
+  assert.equal(
+    (await verifyEngineeringManual(withoutPlanning.specification)).digest,
+    await readExpectedDigest(withoutPlanning.specification),
+  );
+  await assert.rejects(
+    () => verifyEngineeringManual(withoutPlanning.incremental),
+    /bundle is unavailable/,
   );
 });
 
 test("engineering manual resolves symlinked global installs", async (t) => {
   const source = await copyBundle(t, "source/skills");
-  const caller = await addCaller(source.skillsRoot);
   const installRoot = path.join(source.root, "global");
   await fs.mkdir(installRoot);
+  const specificationLink = path.join(installRoot, "spec-driven-development");
   const planningLink = path.join(
     installRoot,
     "planning-and-task-breakdown",
   );
   const callerLink = path.join(installRoot, "incremental-implementation");
   try {
+    await fs.symlink(source.specification, specificationLink, "dir");
     await fs.symlink(source.planning, planningLink, "dir");
-    await fs.symlink(caller, callerLink, "dir");
+    await fs.symlink(source.incremental, callerLink, "dir");
   } catch (error) {
     if (error?.code === "EPERM") {
       t.skip("symlink creation is not permitted");
@@ -126,7 +175,8 @@ test("engineering manual resolves symlinked global installs", async (t) => {
   );
   const result = await execFileAsync(process.execPath, [
     path.join(
-      planningLink,
+      callerLink,
+      "shared",
       "scripts",
       "verify-engineering-manual.mjs",
     ),
@@ -142,7 +192,11 @@ test("engineering manual preserves POSIX, macOS, and Windows path forms", () => 
   );
   assert.equal(
     linux.manual,
-    "/home/user/.agents/skills/planning-and-task-breakdown/references/engineering-principles.md",
+    "/home/user/.agents/skills/incremental-implementation/shared/references/engineering-principles.md",
+  );
+  assert.equal(
+    linux.specificationSkill,
+    "/home/user/.agents/skills/spec-driven-development",
   );
   const macOS = layoutPaths(
     "/Users/user/.claude/skills/spec-driven-development",
@@ -150,7 +204,7 @@ test("engineering manual preserves POSIX, macOS, and Windows path forms", () => 
   );
   assert.equal(
     macOS.marker,
-    "/Users/user/.claude/skills/spec-driven-development/engineering-manual.sha256",
+    "/Users/user/.claude/skills/spec-driven-development/shared/engineering-manual.sha256",
   );
   const windows = layoutPaths(
     "C:\\Users\\user\\.agents\\skills\\incremental-implementation",
@@ -158,7 +212,11 @@ test("engineering manual preserves POSIX, macOS, and Windows path forms", () => 
   );
   assert.equal(
     windows.manual,
-    "C:\\Users\\user\\.agents\\skills\\planning-and-task-breakdown\\references\\engineering-principles.md",
+    "C:\\Users\\user\\.agents\\skills\\incremental-implementation\\shared\\references\\engineering-principles.md",
+  );
+  assert.equal(
+    windows.testDiscipline,
+    "C:\\Users\\user\\.agents\\skills\\incremental-implementation\\shared\\references\\test-discipline.md",
   );
   assert.throws(
     () =>
@@ -178,11 +236,67 @@ test("engineering manual preserves POSIX, macOS, and Windows path forms", () => 
   );
 });
 
+test("engineering resource verification rejects mismatched test discipline", async (t) => {
+  const bundle = await copyBundle(t);
+  await fs.appendFile(
+    path.join(
+      bundle.incremental,
+      "shared",
+      "references",
+      "test-discipline.md",
+    ),
+    "tampered\n",
+  );
+  await assert.rejects(
+    () => verifyEngineeringManual(bundle.incremental),
+    /test discipline does not match the installed bundle/,
+  );
+});
+
+test("task workflow verification rejects a tampered product protocol", async (t) => {
+  const bundle = await copyBundle(t);
+  await fs.appendFile(
+    path.join(
+      bundle.incremental,
+      "shared",
+      "references",
+      "product-workflow.md",
+    ),
+    "tampered\n",
+  );
+
+  await assert.rejects(
+    () => verifyEngineeringManual(bundle.incremental),
+    /product protocol does not match the installed bundle/,
+  );
+});
+
+test("task workflow verification requires and aligns product protocol markers", async (t) => {
+  const bundle = await copyBundle(t);
+  const specification = await verifyEngineeringManual(bundle.specification);
+  const planning = await verifyEngineeringManual(bundle.planning);
+  const incremental = await verifyEngineeringManual(bundle.incremental);
+
+  assert.match(specification.productProtocolDigest, /^[a-f0-9]{64}$/u);
+  assert.equal(planning.productProtocolDigest, specification.productProtocolDigest);
+  assert.equal(incremental.productProtocolDigest, specification.productProtocolDigest);
+
+  await fs.rm(path.join(
+    bundle.planning,
+    "shared",
+    "product-protocol.sha256",
+  ));
+  await assert.rejects(
+    () => verifyEngineeringManual(bundle.planning),
+    /product protocol marker is unavailable/,
+  );
+});
+
 test("engineering manual failures stop before planning output", async (t) => {
   const bundle = await copyBundle(t);
-  const caller = await addCaller(bundle.skillsRoot);
+  const caller = bundle.incremental;
   await fs.writeFile(
-    path.join(caller, "engineering-manual.sha256"),
+    path.join(caller, "shared", "engineering-manual.sha256"),
     `${"0".repeat(64)}\n`,
   );
   await assert.rejects(
@@ -191,28 +305,31 @@ test("engineering manual failures stop before planning output", async (t) => {
   );
 
   await fs.writeFile(
-    path.join(caller, "engineering-manual.sha256"),
+    path.join(caller, "shared", "engineering-manual.sha256"),
     "not-a-digest\n",
   );
   await assert.rejects(() => verifyEngineeringManual(caller), /marker is invalid/);
 
-  await fs.rm(path.join(caller, "engineering-manual.sha256"));
+  await fs.rm(path.join(caller, "shared", "engineering-manual.sha256"));
   await assert.rejects(() => verifyEngineeringManual(caller), /marker is unavailable/);
 
-  const valid = await addCaller(
-    bundle.skillsRoot,
-    "spec-driven-development",
+  await fs.rm(caller, { recursive: true });
+  await fs.cp(
+    path.join(projectRoot, "skills", "incremental-implementation"),
+    caller,
+    { recursive: true },
   );
   await fs.rm(
     path.join(
-      bundle.planning,
+      bundle.specification,
+      "shared",
       "references",
       "engineering-principles.md",
     ),
   );
   let planProduced = false;
   await assert.rejects(async () => {
-    await verifyEngineeringManual(valid);
+    await verifyEngineeringManual(bundle.planning);
     planProduced = true;
   }, /manual is unavailable/);
   assert.equal(planProduced, false);
@@ -220,7 +337,11 @@ test("engineering manual failures stop before planning output", async (t) => {
 
 test("engineering manual rejects symlinked content and network paths", async (t) => {
   const bundle = await copyBundle(t);
-  const marker = path.join(bundle.planning, "engineering-manual.sha256");
+  const marker = path.join(
+    bundle.planning,
+    "shared",
+    "engineering-manual.sha256",
+  );
   const markerTarget = path.join(bundle.root, "marker.txt");
   await fs.copyFile(marker, markerTarget);
   await fs.rm(marker);

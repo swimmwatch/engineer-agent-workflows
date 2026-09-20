@@ -143,7 +143,7 @@ export async function validateSourceRepository(root, options = {}) {
   if (requireComplete && skills.missing.length > 0) {
     throw new ValidationError(
       "E_INCOMPLETE",
-      "complete validation requires all 15 skill directories",
+      "complete validation requires all 16 skill directories",
     );
   }
   return {
@@ -171,7 +171,7 @@ export async function validateRepository(root, options = {}) {
     if (requireComplete) {
       throw new ValidationError(
         "E_INCOMPLETE",
-        "complete validation requires all 15 skill directories",
+        "complete validation requires all 16 skill directories",
       );
     }
     return structuredClone(source);

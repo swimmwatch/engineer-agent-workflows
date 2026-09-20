@@ -9,6 +9,7 @@ export const APPROVED_SKILL_NAMES = Object.freeze([
   "code-review-and-quality",
   "code-simplification",
   "context-engineering",
+  "design-planning",
   "documentation-and-adrs",
   "doubt-driven-development",
   "idea-refine",
@@ -16,11 +17,11 @@ export const APPROVED_SKILL_NAMES = Object.freeze([
   "interview-me",
   "performance-optimization",
   "planning-and-task-breakdown",
-  "project-docs-maintainer",
-  "project-pull-request",
-  "project-release",
+  "product-definition",
+  "product-roadmap",
   "security-and-hardening",
   "spec-driven-development",
+  "technical-design",
 ]);
 
 const SKILL_KEYS = new Set([
@@ -203,10 +204,10 @@ export function validateCatalog(catalog) {
   if (catalog.schemaVersion !== 1) {
     throw new ValidationError("E_INVALID_CATALOG", "skill catalog schema is unsupported");
   }
-  if (!Array.isArray(catalog.skills) || catalog.skills.length !== 15) {
+  if (!Array.isArray(catalog.skills) || catalog.skills.length !== APPROVED_SKILL_NAMES.length) {
     throw new ValidationError(
       "E_INVALID_CATALOG",
-      "skill catalog must contain exactly 15 entries",
+      `skill catalog must contain exactly ${APPROVED_SKILL_NAMES.length} entries`,
     );
   }
   const validated = catalog.skills.map(validateSkillEntry);

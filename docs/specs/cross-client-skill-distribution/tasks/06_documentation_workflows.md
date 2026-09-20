@@ -49,9 +49,10 @@ inventing project facts.
 
 ## Shared Documentation Contract
 
-- Read applicable `AGENTS.md`/`CLAUDE.md`, then established README/docs
-  structure, code/interfaces/config, tests, and release evidence relevant to
-  the requested claim.
+- Reuse host-supplied project instructions. Read `AGENTS.md`/`CLAUDE.md` only
+  for additional scoped guidance absent from active context or when the file
+  itself is in scope, then inspect the established README/docs structure,
+  code/interfaces/config, tests, and release evidence relevant to the claim.
 - Label content as current/verified, proposed, experimental, deprecated, or
   unknown. Never collapse those states.
 - Reuse the project's terminology, link style, command syntax, and document

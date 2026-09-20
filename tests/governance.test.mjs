@@ -23,7 +23,8 @@ test("required governance files exist", async () => {
 test("README is factual, pre-release, and lists the complete catalog", async () => {
   const readme = await read("README.md");
   const catalog = await readCatalog(projectRoot);
-  assert.match(readme, /not yet\s+installable/i);
+  assert.match(readme, /local\s+Codex\s+dev\s+build/i);
+  assert.match(readme, /\]\(docs\/local-development\.md\)/);
   assert.match(readme, /pre-release/i);
   assert.doesNotMatch(readme, /\bnpx\b/);
   for (const skill of catalog.skills) {
@@ -66,15 +67,27 @@ test("repository-local Markdown links resolve", async () => {
   }
 });
 
-test("package metadata is private and dependency-free", async () => {
+test("private maintenance package keeps only pinned schema checks outside its MCP workspace", async () => {
   const packageJSON = JSON.parse(await read("package.json"));
   assert.equal(packageJSON.private, true);
   assert.equal(packageJSON.engines.node, ">=22.20.0");
   assert.equal(packageJSON["b" + "in"], undefined);
   assert.equal(packageJSON.dependencies, undefined);
-  assert.equal(packageJSON.devDependencies, undefined);
+  assert.deepEqual(packageJSON.devDependencies, { ajv: "6.15.0", yaml: "2.9.0" });
   assert.equal(packageJSON.scripts["post" + "install"], undefined);
-  await assert.rejects(() => fs.access(path.join(projectRoot, "package-lock.json")));
+  assert.deepEqual(packageJSON.workspaces, ["packages/*"]);
+  const lock = JSON.parse(await read("package-lock.json"));
+  assert.equal(lock.name, packageJSON.name);
+  assert.deepEqual(lock.packages[""].devDependencies, packageJSON.devDependencies);
+  const workspacePath = "packages/engineer-agent-workflow-mcp";
+  const workspace = JSON.parse(await read(`${workspacePath}/package.json`));
+  assert.equal(lock.packages[workspacePath].name, workspace.name);
+  for (const field of ["dependencies", "devDependencies"]) {
+    assert.deepEqual(lock.packages[workspacePath][field], workspace[field]);
+    for (const version of Object.values(workspace[field])) {
+      assert.match(version, /^\d+\.\d+\.\d+$/);
+    }
+  }
 });
 
 test("governance files contain no personal filesystem path or credential fixture", async () => {

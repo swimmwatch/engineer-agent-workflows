@@ -1,0 +1,114 @@
+schema_version: 1
+spec_slug: decision-ledger-mcp
+decisions:
+  - id: distribution.artifact
+    revision: 1
+    category: scope
+    state: answered
+    provenance: user
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [typescript-package]
+      text: Add MCP as another artifact, implemented as a TypeScript package with suitable packages, linters and tests.
+    last_tool_status: direct_user_message
+    supersedes_revision: null
+    requirement_ids: [PKG-001]
+  - id: workflow.access
+    revision: 1
+    category: workflow
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: How should agents access large decision journals?
+      kind: single
+      options:
+        - id: mcp-only
+          label: Only MCP; stop journal work when unavailable.
+    answer:
+      selected_ids: [mcp-only]
+      text: Only MCP, without a local-command or whole-file fallback.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [FLOW-001]
+  - id: scope.depth
+    revision: 1
+    category: scope
+    state: answered
+    provenance: user
+    evidence: [manifest.yaml]
+    question:
+      text: Use Standard depth for a local read-only package, covering tool contracts, YAML data, access safety and two-client packaging, without UI, HTTP, a database or decision writes?
+      kind: single
+      options:
+        - id: standard
+          label: This scope is sufficient.
+    answer:
+      selected_ids: [standard]
+      text: Use the proposed scope.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [PKG-001, READ-001, FLOW-001]
+  - id: source.projects
+    revision: 1
+    category: security
+    state: superseded
+    provenance: user
+    evidence: []
+    question:
+      text: Should the server accept one configured project or several pre-authorized projects?
+      kind: single
+      options:
+        - id: multiple
+          label: Several pre-authorized projects.
+    answer:
+      selected_ids: [multiple]
+      text: Several pre-authorized projects.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SOURCE-001]
+  - id: source.projects
+    revision: 2
+    category: security
+    state: answered
+    provenance: user
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [automatic]
+      text: Do not require a manually maintained allowed-directory list; project selection must work automatically.
+    last_tool_status: direct_user_message
+    supersedes_revision: 1
+    requirement_ids: [SOURCE-001]
+  - id: source.specifications
+    revision: 1
+    category: data
+    state: answered
+    provenance: user
+    evidence: []
+    question: null
+    answer:
+      selected_ids: [multiple-per-project]
+      text: Each project may contain multiple specifications, each with its own decisions.yaml and implementation tasks.
+    last_tool_status: direct_user_message
+    supersedes_revision: null
+    requirement_ids: [SOURCE-001, READ-001]
+  - id: source.transport
+    revision: 1
+    category: security
+    state: answered
+    provenance: user
+    evidence: []
+    question:
+      text: Pass the project path from the agent's working context on every call, without a manual allowlist or dependency on client roots support?
+      kind: single
+      options:
+        - id: explicit-context-path
+          label: Pass the project path from working context.
+    answer:
+      selected_ids: [explicit-context-path]
+      text: Pass the project path from working context. The server can read matching journals at that path within its process permissions and does not scan the entire disk.
+    last_tool_status: answered
+    supersedes_revision: null
+    requirement_ids: [SOURCE-001]

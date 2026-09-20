@@ -20,6 +20,20 @@ const skillRoot = path.join(
   "skills",
   "planning-and-task-breakdown",
 );
+const planningProfiles = [
+  "core",
+  "ui",
+  "backend",
+  "events",
+  "data",
+  "operations",
+  "security",
+  "cross-surface",
+];
+
+function profileReference(profile) {
+  return `references/${profile}-planning.md`;
+}
 
 async function planningEntry() {
   const catalog = await readCatalog(projectRoot);
@@ -77,37 +91,211 @@ async function readPlanningFixture(name) {
 test("planning skill is portable, explicit-only, bounded, and catalog-aligned", async () => {
   const entry = await planningEntry();
   assert.ok(entry);
-  assert.equal(entry.classification, "standalone");
-  assert.deepEqual(entry.dependencies, []);
+  assert.equal(entry.classification, "bundle-required");
+  assert.deepEqual(entry.dependencies, ["spec-driven-development"]);
   assert.ok(countCodePoints(entry.description) <= 240);
 
   const document = await fs.readFile(path.join(skillRoot, "SKILL.md"));
   const validated = validateSkillDocument(entry, document);
   assert.ok(validated.bytes <= 4096);
   assert.match(validated.body, /explicit request/);
-  assert.match(validated.body, /`AGENTS\.md` in Codex/);
-  assert.match(validated.body, /`CLAUDE\.md` in Claude Code/);
+  assert.match(validated.body, /`\{\{HOST_PROJECT_INSTRUCTIONS\}\}`/);
   assert.match(validated.body, /verify-engineering-manual/);
+  assert.match(validated.body, /planning-and-task-breakdown.*sole argument/is);
   assert.match(validated.body, /Stop without a plan if\s+verification fails/);
+  assert.match(validated.body, /`\{\{HOST_QUESTION_TOOL\}\}`/);
+  assert.match(validated.body, /do not enter plan mode solely to\s+ask/is);
+  assert.match(
+    validated.body,
+    /tool is unavailable, ask the question directly/is,
+  );
   assert.match(validated.body, /language-appropriate/);
   assert.match(validated.body, /Do not invent classes/);
   assert.match(validated.body, /contradicted by repository evidence/);
   assert.match(validated.body, /substantial multi-step work/);
+  assert.match(validated.body, /references\/test-discipline\.md/);
+  assert.match(validated.body, /references\/developer-documentation\.md/);
+  assert.match(validated.body, /references\/adaptive-planning\.md/);
+  assert.match(validated.body, /references\/<profile>-planning\.md/);
+  assert.match(validated.body, /Status: Approved.*manifest\.yaml/is);
+  assert.match(validated.body, /Lite.*Standard.*Deep/is);
+  assert.match(validated.body, /only.*active profile.*manifest/is);
+  assert.match(validated.body, /one compact.*packet/is);
+  assert.match(validated.body, /planning artifacts.*not production/is);
   assert.match(validated.body, /Never mutate production\s+artifacts/);
+  assert.doesNotMatch(validated.body, /Prompt MCP|prompt-mcp|mcp__/);
+  assert.doesNotMatch(
+    validated.body,
+    /AGENTS\.md|CLAUDE\.md|request_user_input|AskUserQuestion/,
+  );
 });
 
-test("planning engineering manual exists once and covers the complete quality contract", async () => {
-  const files = await walkFiles(path.join(projectRoot, "skills"));
+test("adaptive planning requires approved scope and scales output", async () => {
+  const reference = await fs.readFile(
+    path.join(skillRoot, "references", "adaptive-planning.md"),
+    "utf8",
+  );
+  for (const pattern of [
+    /Approved.*spec\.md/is,
+    /confirmed.*manifest\.yaml/is,
+    /missing.*stop.*specification/is,
+    /Lite.*one compact.*packet/is,
+    /Standard.*profile/is,
+    /Deep.*quality.*risk/is,
+    /core.*profile/is,
+    /highest applicable depth/i,
+    /do not silently downgrade/i,
+  ]) {
+    assert.match(reference, pattern);
+  }
+
+  const fixture = await readPlanningFixture("adaptive-profile-artifacts");
+  assert.equal(fixture.schemaVersion, 1);
+  assert.equal(fixture.prerequisites.specStatus, "Approved");
+  assert.equal(fixture.prerequisites.manifestConfirmed, true);
+  for (const entry of fixture.cases) {
+    assert.deepEqual(
+      entry.expectedLoadedProfileReferences,
+      entry.profiles.map(profileReference),
+    );
+  }
+  const lite = fixture.cases.find((entry) => entry.depth === "lite");
+  assert.deepEqual(lite.outputs.numberedPackets, ["01_implementation.md"]);
+  assert.equal(lite.outputs.profileArtifacts.length, 0);
+  const standard = fixture.cases.find((entry) => entry.depth === "standard");
+  assert.ok(standard.profiles.includes("core"));
+  assert.ok(standard.outputs.profileArtifacts.includes("core/contracts.yaml"));
+  assert.ok(standard.outputs.projectArtifacts.includes("design/specs/example/experience.yaml"));
+  assert.deepEqual(lite.outputs.projectArtifacts, []);
+  const deep = fixture.cases.find((entry) => entry.depth === "deep");
+  assert.ok(deep.outputs.profileArtifacts.includes("contracts/openapi.yaml"));
+  assert.ok(deep.outputs.profileArtifacts.includes("architecture/model.dsl"));
+});
+
+test("planning loads one isolated reference for each active profile", async () => {
+  const references = Object.fromEntries(
+    await Promise.all(
+      planningProfiles.map(async (profile) => [
+        profile,
+        await fs.readFile(
+          path.join(skillRoot, profileReference(profile)),
+          "utf8",
+        ),
+      ]),
+    ),
+  );
+  for (const profile of planningProfiles) {
+    assert.match(
+      references[profile],
+      new RegExp(`manifest.*${profile}.*active`, "is"),
+    );
+  }
+  for (const pattern of [
+    /core\/contracts\.yaml/,
+    /library.*CLI.*configuration/is,
+    /public interface/i,
+    /compatibility/i,
+  ]) {
+    assert.match(references.core, pattern);
+  }
+  for (const pattern of [
+    /experience\.yaml/,
+    /design tokens/i,
+    /wireframe/i,
+    /state transition/i,
+    /derived preview/i,
+  ]) {
+    assert.match(references.ui, pattern);
+  }
+  for (const pattern of [
+    /OpenAPI.*HTTP/is,
+    /problem type/i,
+    /contract test/i,
+  ]) {
+    assert.match(references.backend, pattern);
+  }
+  assert.match(references.events, /AsyncAPI.*event/is);
+  assert.match(references.data, /JSON Schema.*migration/is);
+  assert.match(references.operations, /SLI.*SLO.*operator recovery/is);
+  assert.match(references.security, /trust boundaries.*least\s+privilege/is);
+  assert.match(references["cross-surface"], /C4.*dynamic view.*ADR/is);
+  assert.match(
+    Object.values(references).join("\n"),
+    /repository-local planning artifact/i,
+  );
+});
+
+test("planning blocks when paired specification artifacts are absent", async () => {
+  const fixture = await readPlanningFixture("missing-specification-scope");
+  assert.equal(fixture.schemaVersion, 1);
+  for (const scenario of fixture.scenarios) {
+    assert.equal(scenario.expected.status, "blocked");
+    assert.equal(scenario.expected.productionMutation, false);
+    assert.match(scenario.expected.nextAction, /spec-driven-development/);
+  }
+});
+
+test("shared engineering manual is authoritative and covers the complete quality contract", async () => {
+  const sharedRoot = path.join(projectRoot, "shared");
+  const files = await walkFiles(sharedRoot);
   assert.deepEqual(
-    files.filter((file) => file.endsWith("/engineering-principles.md")),
+    files,
     [
-      "planning-and-task-breakdown/references/engineering-principles.md",
+      "references/engineering-principles.md",
+      "references/product-workflow.md",
+      "references/test-discipline.md",
+    "references/yaml-contracts.md",
+    "schemas/catalog.schema.json",
+    "schemas/decisions.schema.json",
+    "schemas/experience.schema.json",
+    "schemas/manifest.schema.json",
+      "schemas/product.schema.json",
+      "scripts/verify-engineering-manual.mjs",
+      "scripts/verify-product-workflow.mjs",
     ],
   );
   const manual = await fs.readFile(
-    path.join(skillRoot, "references", "engineering-principles.md"),
+    path.join(sharedRoot, "references", "engineering-principles.md"),
     "utf8",
   );
+  const verifier = await fs.readFile(
+    path.join(sharedRoot, "scripts", "verify-engineering-manual.mjs"),
+    "utf8",
+  );
+  for (const skill of [
+    "planning-and-task-breakdown",
+    "incremental-implementation",
+    "spec-driven-development",
+  ]) {
+    assert.equal(
+      await fs.readFile(
+        path.join(
+          projectRoot,
+          "skills",
+          skill,
+          "shared",
+          "references",
+          "engineering-principles.md",
+        ),
+        "utf8",
+      ),
+      manual,
+    );
+    assert.equal(
+      await fs.readFile(
+        path.join(
+          projectRoot,
+          "skills",
+          skill,
+          "shared",
+          "scripts",
+          "verify-engineering-manual.mjs",
+        ),
+        "utf8",
+      ),
+      verifier,
+    );
+  }
   for (const pattern of [
     /requirements and applicable repository\s+instructions outrank/is,
     /contracts, invariants/is,
@@ -137,7 +325,7 @@ test("planning engineering manual exists once and covers the complete quality co
   }
 });
 
-test("planning task packet reference is generalized and review-gated", async () => {
+test("planning task packet reference is generalized and bounded", async () => {
   const reference = await fs.readFile(
     path.join(skillRoot, "references", "task-packets.md"),
     "utf8",
@@ -148,9 +336,47 @@ test("planning task packet reference is generalized and review-gated", async () 
   assert.match(reference, /Scope and explicit non-goals/);
   assert.match(reference, /ownership boundaries/);
   assert.match(reference, /Objective acceptance criteria/);
+  assert.match(reference, /test plan/i);
+  assert.match(reference, /(?:written|writes).*before\s+implementation/is);
+  assert.match(reference, /correct.*check.*implementation/is);
+  assert.match(reference, /`file:line`/);
   assert.match(reference, /`MANUAL GATE`/);
   assert.match(reference, /explicit authorization/);
   assert.doesNotMatch(reference, /Go\/MCP|prompt-mcp|GTK|Zenity/);
+});
+
+test("planning makes a repository-localized developer-documentation decision", async () => {
+  const reference = await fs.readFile(
+    path.join(skillRoot, "references", "developer-documentation.md"),
+    "utf8",
+  );
+  for (const pattern of [
+    /two\s+or\s+more/i,
+    /state the decision either way/i,
+    /after.*behavior.*end-to-end/is,
+    /repository.*guidance.*language/is,
+    /reader who did not write/i,
+  ]) {
+    assert.match(reference, pattern);
+  }
+
+  const notWarranted = await readPlanningFixture(
+    "developer-documentation-not-warranted",
+  );
+  assert.equal(notWarranted.expected.packetPlanned, false);
+  assert.match(notWarranted.expected.reason, /one layer/i);
+  assert.equal(notWarranted.expected.decisionRecorded, true);
+
+  const warranted = await readPlanningFixture(
+    "developer-documentation-warranted",
+  );
+  assert.ok(Object.values(warranted.signals).filter(Boolean).length >= 2);
+  assert.equal(warranted.expected.packetPlanned, true);
+  assert.equal(warranted.expected.finalPacket, true);
+  assert.equal(warranted.expected.afterImplementation, true);
+  assert.equal(warranted.expected.afterEndToEndVerification, true);
+  assert.equal(warranted.expected.languageSource, "repository-guidance");
+  assert.match(warranted.expected.readerAcceptance, /reader/i);
 });
 
 test("planning architecture fixtures expose complete language-appropriate units", async () => {
@@ -224,10 +450,14 @@ test("planning blocks incomplete evidence without mutating production", async ()
   assert.deepEqual(incomplete.expected.units, []);
   const fixtureFiles = await fs.readdir(fixturePath("planning"));
   assert.deepEqual(fixtureFiles.sort(), [
+    "adaptive-profile-artifacts.json",
+    "developer-documentation-not-warranted.json",
+    "developer-documentation-warranted.json",
     "disproved-boundary.json",
     "documentation-configuration.json",
     "functional-procedural.json",
     "incomplete-evidence.json",
+    "missing-specification-scope.json",
     "object-oriented.json",
     "rule-conflict.json",
   ]);

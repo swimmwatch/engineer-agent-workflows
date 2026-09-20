@@ -8,9 +8,13 @@ import {
 import { ValidationError } from "./errors.mjs";
 
 export const PLUGIN_NAME = "engineer-agent-workflows";
+export const CODEX_PLUGIN_SOURCE = `./plugins/codex/${PLUGIN_NAME}`;
+export const CLAUDE_PLUGIN_SOURCE = `./plugins/claude-code/${PLUGIN_NAME}`;
 export const PLUGIN_DISPLAY_NAME = "Engineer Agent Workflows";
-export const PLUGIN_DESCRIPTION =
-  "Fifteen reusable, explicit-only engineering workflows for Codex and Claude Code.";
+export const CODEX_PLUGIN_DESCRIPTION =
+  "Reusable, explicit-only engineering workflows for Codex.";
+export const CLAUDE_PLUGIN_DESCRIPTION =
+  "Reusable, explicit-only engineering workflows for Claude Code.";
 export const REPOSITORY_URL =
   "https://github.com/swimmwatch/engineer-agent-workflows";
 
@@ -169,7 +173,7 @@ export function buildCodexPluginManifest(releaseValue) {
   return {
     name: PLUGIN_NAME,
     version: release.version,
-    description: PLUGIN_DESCRIPTION,
+    description: CODEX_PLUGIN_DESCRIPTION,
     author: author(release),
     homepage: REPOSITORY_URL,
     repository: REPOSITORY_URL,
@@ -177,10 +181,9 @@ export function buildCodexPluginManifest(releaseValue) {
     skills: "./skills/",
     interface: {
       displayName: PLUGIN_DISPLAY_NAME,
-      shortDescription:
-        "Explicit engineering workflows for Codex and Claude Code.",
-      longDescription:
-        "Fifteen reusable workflows for specification, planning, implementation, quality, documentation, discovery, pull requests, and releases. Every workflow requires explicit user invocation.",
+    shortDescription: "Explicit engineering workflows for Codex.",
+    longDescription:
+      "Reusable workflows for specification, planning, implementation, quality, documentation, discovery, pull requests, and releases. Every workflow requires explicit user invocation.",
       developerName: release.publisher.name,
       category: "Productivity",
       capabilities: [],
@@ -208,7 +211,7 @@ export function buildClaudePluginManifest(releaseValue) {
   return {
     name: PLUGIN_NAME,
     version: release.version,
-    description: PLUGIN_DESCRIPTION,
+    description: CLAUDE_PLUGIN_DESCRIPTION,
     author: author(release),
     homepage: REPOSITORY_URL,
     repository: REPOSITORY_URL,
@@ -240,7 +243,7 @@ export function buildCodexMarketplace(releaseValue) {
         name: PLUGIN_NAME,
         source: {
           source: "local",
-          path: `./plugins/${PLUGIN_NAME}`,
+          path: CODEX_PLUGIN_SOURCE,
         },
         policy: {
           installation: "AVAILABLE",
@@ -270,15 +273,15 @@ export function buildClaudeMarketplace(releaseValue) {
     name: PLUGIN_NAME,
     owner: author(release),
     metadata: {
-      description: PLUGIN_DESCRIPTION,
+      description: CLAUDE_PLUGIN_DESCRIPTION,
       version: release.version,
     },
     plugins: [
       {
         name: PLUGIN_NAME,
-        source: `./plugins/${PLUGIN_NAME}`,
+        source: CLAUDE_PLUGIN_SOURCE,
         version: release.version,
-        description: PLUGIN_DESCRIPTION,
+        description: CLAUDE_PLUGIN_DESCRIPTION,
         author: author(release),
       },
     ],

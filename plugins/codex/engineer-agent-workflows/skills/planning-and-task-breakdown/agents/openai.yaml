@@ -1,0 +1,5 @@
+interface:
+  display_name: "Planning And Task Breakdown"
+  short_description: "Create adaptive-depth implementation plans from Approved specifications and confirmed scope when explicitly requested. Produce profile contracts, architecture, test-first tasks, and documentation; do not implement."
+policy:
+  allow_implicit_invocation: false
