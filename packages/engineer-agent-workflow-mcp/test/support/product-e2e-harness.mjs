@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { fileURLToPath, URL } from "node:url";
+import { fileURLToPath, pathToFileURL, URL } from "node:url";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
 
@@ -69,19 +69,26 @@ async function directoryBytes(path) {
   return total;
 }
 
-function actor(t, { name, root, calls }) {
+function actor(t, { name, root, calls, entrypoint = server }) {
   let client;
   let context;
+  const launches = [];
 
   async function start() {
     if (client) return;
     client = new Client({ name, version: "1" });
-    await client.connect(new StdioClientTransport({
+    const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [server],
+      args: [entrypoint],
       env: processEnvironment(root),
       stderr: "pipe",
-    }));
+    });
+    await client.connect(transport);
+    // The pinned SDK exposes the spawned ChildProcess at runtime; retain a copied argument observation only.
+    const actualArguments = transport._process?.spawnargs;
+    assert.ok(Array.isArray(actualArguments), "the actual stdio child arguments must be observable");
+    assert.deepEqual(actualArguments.slice(1), [entrypoint], "stdio actor must actually launch the selected executable entrypoint");
+    launches.push({ pid: transport.pid, spawnargs: [...actualArguments] });
   }
 
   async function close() {
@@ -90,14 +97,16 @@ function actor(t, { name, root, calls }) {
     if (active) await active.close();
   }
 
-  async function request(tool, arguments_, updateContext) {
+  async function request(tool, arguments_, updateContext, expectedError = false) {
     await start();
     const started = performance.now();
     const response = await client.callTool({ name: tool, arguments: arguments_ });
     const elapsedMs = performance.now() - started;
     const responseBytes = Buffer.byteLength(JSON.stringify(response));
-    calls.push({ actor: name, tool, elapsedMs, responseBytes, isError: response.isError === true });
-    assert.notEqual(response.isError, true, JSON.stringify(response.structuredContent));
+    calls.push({ actor: name, tool, elapsedMs, responseBytes, isError: response.isError === true,
+      ...(typeof arguments_.scenario === "string" ? { scenario: arguments_.scenario } : {}) });
+    if (expectedError) assert.equal(response.isError, true, "the selected fault must block the public request");
+    else assert.notEqual(response.isError, true, JSON.stringify(response.structuredContent));
     if (updateContext && typeof response.structuredContent.context === "string") {
       context = response.structuredContent.context;
     }
@@ -107,6 +116,7 @@ function actor(t, { name, root, calls }) {
   t.after(close);
   return {
     context: () => context,
+    launches: () => launches.map(({ pid, spawnargs }) => ({ pid, spawnargs: [...spawnargs] })),
     setContext(value) {
       context = value;
     },
@@ -116,6 +126,39 @@ function actor(t, { name, root, calls }) {
     },
     async raw(tool, arguments_) {
       return request(tool, arguments_, false);
+    },
+    async expectedError(tool, arguments_) {
+      return request(tool, arguments_, false, true);
+    },
+    async openSession(candidateRef) {
+      const response = await request("product_session_open", { context, candidate_ref: candidateRef }, false);
+      return { session_ref: response.result.session_ref, expected_revision: response.result.session_revision };
+    },
+    async sessionStart(session, scenario, arguments_) {
+      const response = await request("product_session_call", { ...session, request_id: randomUUID(), scenario, arguments: arguments_ }, false);
+      session.expected_revision = response.result.session_revision;
+      return response.result;
+    },
+    async sessionCollect(session, first) {
+      let page = first, text = "", outputs = [];
+      for (let portions = 0; portions < 10000; portions += 1) {
+        assert.equal(page.read_ref, first.read_ref);
+        text += page.delivery.text;
+        if (page.delivery.complete) {
+          const output = JSON.parse(text);
+          outputs.push(output);
+          if (typeof output.context === "string") context = output.context;
+          text = "";
+        }
+        if (page.complete) { assert.equal(text, ""); return outputs; }
+        const next = await request("product_session_next", { ...session, read_ref: first.read_ref }, false);
+        session.expected_revision = next.result.session_revision;
+        page = next.result;
+      }
+      assert.fail("bounded session delivery must terminate");
+    },
+    async sessionCall(session, scenario, arguments_) {
+      return this.sessionCollect(session, await this.sessionStart(session, scenario, arguments_));
     },
     async call(tool, arguments_ = {}) {
       const input = context && !WITHOUT_CONTEXT.has(tool)
@@ -202,6 +245,15 @@ async function reviewAndActivate({ author, reviewer, candidateRef, recovery }) {
       await reviewer.call("product_review_record", { review_ref: started.review_ref, value });
     }
   }
+  if (started.inventory_contract === "semantic-v2") {
+    let consistency = await reviewer.call("product_review_consistency_get", { review_ref: started.review_ref });
+    while (consistency.next_cursor !== null) consistency = await reviewer.call("product_review_consistency_get", {
+      review_ref: started.review_ref, cursor: consistency.next_cursor,
+    });
+    await reviewer.call("product_review_consistency_record", { review_ref: started.review_ref,
+      read_receipt: consistency.read_receipt, verdict: "covered",
+      explanation: "The synthetic blocks are consistent with the selected artifact scope.", counterexample: null });
+  }
   const completed = await reviewer.call("product_review_complete", { review_ref: started.review_ref });
   assert.equal(completed.coverage_status, "reviewed");
   author.setContext(reviewer.context());
@@ -214,7 +266,7 @@ async function reviewAndActivate({ author, reviewer, candidateRef, recovery }) {
   return { activated, duplicateVerdicts, replayed: recovery };
 }
 
-async function collectPins(author, purpose, artifact) {
+async function collectPins(author, purpose, artifact, includeDecisions = false) {
   const first = await author.call("product_context_prepare", {
     purpose,
     artifact,
@@ -231,7 +283,7 @@ async function collectPins(author, purpose, artifact) {
   assert.equal(pages.every((page) => page.blockers.length === 0), true);
   return pages
     .flatMap((page) => [...page.required, ...page.optional])
-    .filter((pin) => pin.artifact === artifact && pin.element_ids.length > 0);
+    .filter((pin) => pin.artifact === artifact && (pin.element_ids.length > 0 || (includeDecisions && pin.source_kind === "decision")));
 }
 
 async function semanticSubject(author, artifact, candidateRef) {
@@ -373,15 +425,267 @@ function uniquePins(pins) {
   return [...new Map(pins.map((pin) => [JSON.stringify(pin), pin])).values()];
 }
 
+async function effectSnapshot(root, relative = "") {
+  const result = [];
+  for (const entry of (await readdir(join(root, relative), { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.name === "sessions") continue;
+    const child = relative ? `${relative}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) result.push(...await effectSnapshot(root, child));
+    else result.push([child, hash(await readFile(join(root, child)))]);
+  }
+  return result;
+}
+
+const canonical = (value) => value === null || typeof value !== "object"
+  ? JSON.stringify(value)
+  : Array.isArray(value) ? `[${value.map(canonical).join(",")}]`
+    : `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
+
+function exactPortions(outputs) {
+  let text = "", offset = 0;
+  for (const output of outputs) {
+    const page = output.result;
+    if (Object.hasOwn(page, "offset")) assert.equal(page.offset, offset);
+    text += page.text;
+    offset += Array.from(page.text).length;
+    assert.equal(page.complete, page.next_cursor === null);
+  }
+  assert.equal(outputs.at(-1).result.complete, true);
+  if (Object.hasOwn(outputs.at(-1).result, "total_characters")) assert.equal(offset, outputs.at(-1).result.total_characters);
+  return { ...outputs.at(-1).result, text };
+}
+
+async function reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint }) {
+  // Fixture answers/verdicts exercise protocol mechanics, not authenticated consent or semantic independence.
+  const runtime = (await author.raw("workflow_runtime_info", {})).result;
+  const stamp = JSON.parse(await readFile(join(dirname(entrypoint), "runtime-stamp.json"), "utf8"));
+  assert.equal(runtime.identity_status, "verified");
+  assert.equal(runtime.build_id, stamp.build_id);
+  assert.equal(runtime.contract_digest, stamp.contract_digest);
+  const draftWorkspace = join(directory, "draft-evidence-雪😀");
+  await initializeRepository(draftWorkspace);
+  await author.call("product_initialize", { workspace: draftWorkspace, name: "Draft evidence fixture", known_idea: "Reconstruct exact saved evidence." });
+  const draft = await author.call("product_artifact_draft", { artifact: "idea", upstream_pins: [] });
+  let authorSession = await author.openSession(draft.candidate_ref);
+  const instructionText = "Retain exact Unicode evidence 雪😀é.\n".repeat(160);
+  const [saved] = await author.sessionCall(authorSession, "product_record_instruction", {
+    candidate_ref: draft.candidate_ref, text: instructionText, source: "fixture:instruction", related_refs: [], affected_refs: [],
+  });
+  const [question] = await author.sessionCall(authorSession, "product_question_prepare", {
+    candidate_ref: draft.candidate_ref, category: "research", text: "Which nested source applies?", options: [],
+  });
+  const evidence = { question_ref: question.result.question_ref, conclusion: "Nested evidence 雪😀".repeat(130),
+    sources: [{ url: "https://example.invalid/qualification", checked_date: "2026-10-12", version_applicability: "Synthetic v1",
+      finding: "Independent nested observation 🧪".repeat(65) }], uncertainty: ["Future applicability is unknown."], limitations: ["Simulated isolated evidence."] };
+  const [research] = await author.sessionCall(authorSession, "product_record_research", { candidate_ref: draft.candidate_ref, evidence });
+  // Only the test adapter drops an actual applied result; all authoring and recovery still cross stdio.
+  const adapterPath = join(directory, "lost-response.mjs");
+  const serverURL = pathToFileURL(join(dirname(entrypoint), "server.js")).href;
+  const stateURL = pathToFileURL(join(dirname(entrypoint), "state.js")).href;
+  await writeFile(adapterPath, `import { workflowTools } from ${JSON.stringify(serverURL)};
+import { WorkflowError } from ${JSON.stringify(stateURL)};
+const tool = workflowTools.find(tool => tool.name === "product_record_instruction");
+const run = tool.run;
+tool.run = async input => { const result = await run(input); if (!result.replayed) throw new WorkflowError("RECOVERY_REQUIRED", "Synthetic lost result after actual durable effect."); return result; };
+await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
+`);
+  const recoveryActor = actor(t, { name: "product-author-recovery", root, calls: [], entrypoint: adapterPath });
+  recoveryActor.setContext(author.context());
+  const recoverySession = await recoveryActor.openSession(draft.candidate_ref);
+  const recoveryArgs = { candidate_ref: draft.candidate_ref, text: "Recover one actual durable effect.", source: "fixture:recovery", related_refs: [], affected_refs: [] };
+  const unknown = await recoveryActor.expectedError("product_session_call", { ...recoverySession, request_id: randomUUID(),
+    scenario: "product_record_instruction", arguments: recoveryArgs });
+  assert.equal(unknown.error.code, "RECOVERY_REQUIRED");
+  const uncertain = await recoveryActor.raw("product_session_status", { session_ref: recoverySession.session_ref });
+  assert.equal(uncertain.result.state, "unknown");
+  recoverySession.expected_revision = uncertain.result.session_revision;
+  const effectsBeforeRecovery = await effectSnapshot(root);
+  await recoveryActor.restart();
+  const resumed = await recoveryActor.raw("product_session_resume", recoverySession);
+  recoverySession.expected_revision = resumed.result.session_revision;
+  const [recovered] = await recoveryActor.sessionCollect(recoverySession, resumed.result);
+  assert.equal(recovered.replayed, true);
+  assert.equal(recovered.result.decision_ref.revision, 1);
+  assert.deepEqual(await effectSnapshot(root), effectsBeforeRecovery, "unknown-result recovery must never duplicate business effects");
+  const candidatePath = join(root, "products", draft.candidate_ref.product_id, "drafts", draft.candidate_ref.candidate_id, "candidate.yaml");
+  const afterRecovery = JSON.parse(await readFile(candidatePath, "utf8"));
+  const recoveryEffects = afterRecovery.decision_heads.filter((head) => head.decision_ref.id === recovered.result.decision_ref.id).length;
+  assert.equal(recoveryEffects, 1);
+  author.setContext(recovered.context);
+  authorSession = await author.openSession(draft.candidate_ref);
+  const beforeReads = await effectSnapshot(root);
+  const draftKinds = [];
+  let restartDeliveryExact = false;
+  for (const [kind, record, text, source, state, category, predecessors, reconsiderWhen] of [
+    ["decision", saved, instructionText, "fixture:instruction", "answered", "instruction", [], null],
+    ["research", research, JSON.stringify(evidence), "product_record_research", "observed", "research", [evidence.question_ref], evidence.uncertainty.join("; ")],
+  ]) {
+    const reference = record.result.decision_ref;
+    assert.equal(reference.revision, 1);
+    const expected = { schema_version: 1, kind: "decision", ref: reference, state, category, question: null,
+      text, source, selected_ids: [], predecessors, affected_refs: [], reconsider_when: reconsiderWhen, candidate_id: draft.candidate_ref.candidate_id };
+    const expectedText = `${JSON.stringify(expected)}\n`;
+    const input = { candidate_ref: draft.candidate_ref, record_ref: { kind, id: reference.id, revision: reference.revision } };
+    const first = await author.sessionStart(authorSession, "product_candidate_record_get", input);
+    assert.equal(first.complete, false, "large draft evidence must require continued delivery");
+    if (kind === "decision") {
+      await author.restart();
+      const resumed = await author.raw("product_session_resume", authorSession);
+      authorSession.expected_revision = resumed.result.session_revision;
+      assert.equal(resumed.result.read_ref, first.read_ref);
+      assert.equal(resumed.result.delivery.text, first.delivery.text);
+      restartDeliveryExact = true;
+    }
+    const outputs = await author.sessionCollect(authorSession, first);
+    const body = exactPortions(outputs);
+    assert.equal(body.text, expectedText, "saved draft body must equal the independently specified record");
+    assert.equal(body.source_object_sha256, hash(expectedText));
+    assert.deepEqual(body.candidate_ref, draft.candidate_ref);
+    assert.deepEqual(body.record_ref, input.record_ref);
+    assert.deepEqual(JSON.parse(body.text), expected);
+    draftKinds.push(kind);
+  }
+  assert.deepEqual(await effectSnapshot(root), beforeReads, "draft reads and process restart must not mutate product evidence");
+
+  const product = await author.call("product_initialize", { workspace: workspaces[0], name: "119-block public fixture", known_idea: "Keep independent current coverage." });
+  await reviewer.call("product_bind_workspace", { workspace: workspaces[1], product_id: product.product_id,
+    binding_answer: "Bind the independent simulated reviewer.", source: "fixture:binding" });
+  const selected = await author.call("product_artifact_draft", { artifact: "idea", upstream_pins: [] });
+  const candidateRef = selected.candidate_ref;
+  await confirmScope(author, candidateRef);
+  const subject = await semanticSubject(author, "idea", candidateRef);
+  authorSession = await author.openSession(candidateRef);
+  let firstElement;
+  for (let index = 0; index < 116; index += 1) {
+    const [written] = await author.sessionCall(authorSession, "idea_define_problem", { candidate_ref: candidateRef, subject,
+      value: { title: `Independent problem ${index + 1}`, provenance: [], applicability: { state: "current", stage_refs: [], global: false, reason: "Synthetic isolated block; no product-wide influence." },
+        problem: `Isolated problem ${index + 1}.`, actors: ["Fixture author"], workarounds: [], value: "Keep exact product evidence.",
+        success_signals: ["Public evidence remains exact."], constraints: [], non_goals: [], assumptions: [], risks: [], open_questions: [] } });
+    firstElement ??= written.result.changed_refs[0];
+  }
+  const [instruction] = await author.sessionCall(authorSession, "product_record_instruction", { candidate_ref: candidateRef,
+    text: "Correct only the diagram arrow spelling when necessary.", source: "fixture:diagram", related_refs: [], affected_refs: [firstElement] });
+  await author.sessionCall(authorSession, "idea_define_problem", { candidate_ref: candidateRef, subject,
+    value: { title: "Independent problem 1", provenance: [instruction.result.decision_ref],
+      applicability: { state: "current", stage_refs: [], global: false, reason: "Synthetic isolated block; no product-wide influence." },
+      problem: "Isolated problem 1.", actors: ["Fixture author"], workarounds: [], value: "Keep exact product evidence.",
+      success_signals: ["Public evidence remains exact."], constraints: [], non_goals: [], assumptions: [], risks: [], open_questions: [] },
+    element_ref: firstElement });
+  const documents = await author.call("product_document_list", { artifact: "idea", limit: 50 });
+  const document = documents.items.find((entry) => entry.document.subject === subject).document;
+  const edit = await author.call("product_document_begin_edit", { artifact: "idea", document_id: document.id });
+  const original = await readFile(edit.editable_path, "utf8");
+  const elementHeading = `### ${firstElement.element_id}:`;
+  assert.ok(original.includes(elementHeading));
+  const withDiagram = original.replace(new RegExp(`(${elementHeading}[^\\n]*\\n)`, "u"), "$1\n```mermaid\nflowchart LR\nA-->B\n```\n");
+  await writeFile(edit.editable_path, withDiagram);
+  const inspected = await author.call("product_document_inspect_edits", { candidate_ref: candidateRef, document_id: document.id });
+  await author.call("product_document_accept_edits", { candidate_ref: candidateRef, document_id: document.id,
+    observed_digest: inspected.source_version, instruction_ref: instruction.result.decision_ref });
+  authorSession = await author.openSession(candidateRef);
+  const [parent] = await author.sessionCall(authorSession, "product_review_start", { candidate_ref: candidateRef, mode: "full" });
+  assert.equal(parent.result.total_items, 119, "public seed must contain exactly 119 review blocks");
+  reviewer.setContext(author.context());
+  let reviewerSession = await reviewer.openSession(candidateRef);
+  async function finishReview(started, parentEvidence = null) {
+    let status = started;
+    const verdicts = new Map(), sourceDigests = new Map();
+    while (status.next_item_index !== null) {
+      const item = exactPortions(await reviewer.sessionCall(reviewerSession, "product_review_get", {
+        review_ref: status.review_ref, item_index: status.next_item_index, representation: "explicit-v1" }));
+      const explicit = JSON.parse(item.text);
+      assert.equal(explicit.source_content.source_content_sha256, hash(explicit.source_content.text));
+      sourceDigests.set(item.item_key, explicit.source_content.source_content_sha256);
+      const value = { item_key: item.item_key, verdict: "covered", explanation: "Simulated independent current block judgment.",
+        counterexample: null, evidence_refs: [], evidence_sources: [], read_receipt: item.read_receipt, inherited_from: null };
+      await reviewer.sessionCall(reviewerSession, "product_review_record", { review_ref: status.review_ref, value });
+      verdicts.set(value.item_key, value);
+      const [next] = await reviewer.sessionCall(reviewerSession, "product_review_status", { review_ref: status.review_ref });
+      status = next.result;
+    }
+    if (parentEvidence !== null) {
+      for (let index = 0; index < 119; index += 1) {
+        const item = exactPortions(await reviewer.sessionCall(reviewerSession, "product_review_get", {
+          review_ref: status.review_ref, item_index: index, representation: "explicit-v1" }));
+        const value = item.recorded_result;
+        assert.equal(item.object_sha256, item.verdict_object_sha256);
+        assert.equal(item.verdict_object_sha256, hash(`${canonical(value)}\n`));
+        if (value.inherited_from === parent.result.review_ref) {
+          assert.deepEqual(value, { ...parentEvidence.verdicts.get(item.item_key), inherited_from: parent.result.review_ref });
+          assert.equal(JSON.parse(item.text).source_content.source_content_sha256, parentEvidence.sourceDigests.get(item.item_key));
+        } else assert.deepEqual(value, verdicts.get(item.item_key));
+        verdicts.set(item.item_key, value);
+      }
+    }
+    const consistency = exactPortions(await reviewer.sessionCall(reviewerSession, "product_review_consistency_get", {
+      review_ref: status.review_ref, representation: "explicit-v1" }));
+    const body = JSON.parse(consistency.text);
+    assert.equal(body.results.length, 119);
+    for (const result of body.results) {
+      assert.equal(result.object_sha256, result.verdict_object_sha256);
+      assert.equal(result.verdict_object_sha256, hash(`${canonical(verdicts.get(result.item_key))}\n`));
+      if (result.source_evidence) assert.equal(result.source_evidence.source_content.source_content_sha256, sourceDigests.get(result.item_key));
+    }
+    const incomplete = await reviewer.expectedError("product_review_complete", { context: reviewer.context(), review_ref: status.review_ref });
+    assert.equal(incomplete.error.code, "PREREQUISITE_REQUIRED", "fresh consistency remains mandatory");
+    const [consistent] = await reviewer.sessionCall(reviewerSession, "product_review_consistency_record", { review_ref: status.review_ref,
+      read_receipt: consistency.read_receipt, verdict: "covered", explanation: "Simulated fresh whole-artifact consistency.", counterexample: null });
+    const [complete] = await reviewer.sessionCall(reviewerSession, "product_review_complete", { review_ref: status.review_ref });
+    assert.equal(complete.result.coverage_status, "reviewed");
+    return { consistency, body, context: consistent.context, verdicts, sourceDigests };
+  }
+  const parentEvidence = await finishReview(parent.result);
+  const parentPath = join(root, "products", candidateRef.product_id, "drafts", candidateRef.candidate_id, "reviews", `${parent.result.review_ref}.yaml`);
+  const parentBytes = await readFile(parentPath);
+  // An independent reviewer changed candidate evidence; explicitly reopen the author's selected snapshot.
+  const reopened = await author.call("product_open", { workspace: workspaces[0] });
+  const refreshed = await author.call("product_artifact_draft", { artifact: "idea", upstream_pins: [] });
+  assert.deepEqual(refreshed.candidate_ref, candidateRef);
+  const nextEdit = await author.call("product_document_begin_edit", { artifact: "idea", document_id: document.id });
+  await writeFile(nextEdit.editable_path, withDiagram.replace("A-->B", "A-->>B"));
+  const changed = await author.call("product_document_inspect_edits", { candidate_ref: candidateRef, document_id: document.id });
+  await author.call("product_document_accept_edits", { candidate_ref: candidateRef, document_id: document.id,
+    observed_digest: changed.source_version, instruction_ref: instruction.result.decision_ref });
+  authorSession = await author.openSession(candidateRef);
+  const [recheck] = await author.sessionCall(authorSession, "product_review_start", { candidate_ref: candidateRef, mode: "recheck", parent_review_ref: parent.result.review_ref });
+  assert.equal(recheck.result.total_items, 119);
+  assert.equal(recheck.result.recheck?.inherited_items, 118, "localized recheck must inherit exactly 118 parent verdicts");
+  assert.equal(recheck.result.recheck?.pending_items, 1);
+  reviewer.setContext(author.context());
+  reviewerSession = await reviewer.openSession(candidateRef);
+  const current = await finishReview(recheck.result, parentEvidence);
+  assert.notEqual(current.consistency.read_receipt, parentEvidence.consistency.read_receipt);
+  assert.deepEqual(await readFile(parentPath), parentBytes);
+  assert.equal(current.body.results.filter((result) => result.inherited_from === parent.result.review_ref).length, 118);
+  assert.equal(current.body.results.filter((result) => result.inherited_from === null).length, 1);
+  await author.call("product_open", { workspace: workspaces[0] });
+  const finalSelected = await author.call("product_artifact_draft", { artifact: "idea", upstream_pins: [] });
+  assert.deepEqual(finalSelected.candidate_ref, candidateRef);
+  authorSession = await author.openSession(candidateRef);
+  const [checked] = await author.sessionCall(authorSession, "product_candidate_check", { candidate_ref: candidateRef });
+  assert.equal(checked.result.status, "pass");
+  return { sessionActors: 2, draftKinds, exactDraftReads: 2, restartDeliveryExact, unknownResultRecovered: recovered.replayed, recoveryEffects, parentItems: parent.result.total_items,
+    inheritedItems: recheck.result.recheck.inherited_items, freshItems: recheck.result.recheck.pending_items,
+    freshConsistency: current.consistency.read_receipt !== parentEvidence.consistency.read_receipt, parentUnchanged: true,
+    authorReopened: reopened.product_id === candidateRef.product_id, effectSnapshotSha256: hash(JSON.stringify(await effectSnapshot(root))),
+    runtimeBuildId: runtime.build_id, runtimeContractDigest: runtime.contract_digest,
+    executedEntrypoint: author.launches()[0].spawnargs[1], launches: [...author.launches(), ...reviewer.launches()] };
+}
+
 export async function runProductWorkflowQualification(t, options = {}) {
   const directory = await mkdtemp(join(tmpdir(), "eaw-product-e2e-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const root = join(directory, "product-data");
-  const workspaces = [join(directory, "workspace-a"), join(directory, "workspace-b")];
+  const workspaces = [join(directory, "workspace-a-雪😀"), join(directory, "workspace-b-é")];
   await Promise.all(workspaces.map(initializeRepository));
   const calls = [];
-  const author = actor(t, { name: "product-author-qualification", root, calls });
-  const reviewer = actor(t, { name: "product-reviewer-qualification", root, calls });
+  const author = actor(t, { name: "product-author-qualification", root, calls, entrypoint: options.entrypoint });
+  const reviewer = actor(t, { name: "product-reviewer-qualification", root, calls, entrypoint: options.entrypoint });
+  if (options.reliability === true) {
+    const reliability = await reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint: options.entrypoint ?? server });
+    reliability.sessionActors = new Set(calls.filter((call) => call.tool === "product_session_open").map((call) => call.actor)).size;
+    return { reliability, calls };
+  }
 
   const initialized = await author.call("product_initialize", {
     workspace: workspaces[0],
@@ -462,9 +766,18 @@ export async function runProductWorkflowQualification(t, options = {}) {
       target: "Two independent workspaces agree.",
     },
   });
+  if (options.remediation === true) {
+    const decision = await author.call("product_record_instruction", { candidate_ref: prdRef,
+      text: "Accept portable product context as the product-wide architecture justification.", source: "fixture:prd-decision",
+      related_refs: [], affected_refs: [goalElement.changed_refs[0]] });
+    await author.call("prd_define_goal", { candidate_ref: prdRef, subject: prdDraft.subject, element_ref: goalElement.changed_refs[0],
+      value: { title: "Portable product context", provenance: [decision.decision_ref], applicability: applicability(),
+        outcome: "Every bound workspace retrieves the same accepted product meaning.", measurement: "Compare selected source versions and exact content digests.",
+        baseline: null, target: "Two independent workspaces agree." } });
+  }
   await reviewAndActivate({ author, reviewer, candidateRef: prdRef, recovery: false });
 
-  const prdPins = await collectPins(author, "technical-design", "prd");
+  const prdPins = await collectPins(author, "technical-design", "prd", options.remediation === true);
   const selectedPrdGeneration = JSON.parse(Buffer.from(author.context(), "base64url").toString("utf8")).target_revision;
   assert.equal(
     prdPins.every((pin) => pin.generation === selectedPrdGeneration),
@@ -479,13 +792,15 @@ export async function runProductWorkflowQualification(t, options = {}) {
   sourceReads.push(...(await Promise.all(prdPins.map((pin) => readPinExactly(author, pin)))).filter(Boolean));
   const technicalDraft = await draftStage(author, "technical-design", prdPins);
   const technicalRef = technicalDraft.candidateRef;
+  const beforeRoadmap = options.remediation === true ? await author.call("product_document_list", { artifact: "roadmap", limit: 50 }) : null;
+  if (beforeRoadmap !== null) assert.equal(beforeRoadmap.items.length, 0, "accepted architecture must not require a Roadmap member");
   const technicalElement = await author.call("technical_define_technology", {
     candidate_ref: technicalRef,
     subject: technicalDraft.subject,
     value: {
       title: "Local stdio MCP",
       provenance: [],
-      applicability: {
+      applicability: options.remediation === true ? applicability() : {
         state: "current",
         stage_refs: [],
         global: true,
@@ -499,6 +814,15 @@ export async function runProductWorkflowQualification(t, options = {}) {
       revisit_when: "The host no longer supports local stdio MCP servers.",
     },
   });
+  let acceptedTargetReadBack = false;
+  if (options.remediation === true) {
+    // Observe the isolated public writer's persisted metadata; no test shortcut authors or migrates it.
+    const candidate = JSON.parse(await readFile(join(root, "products", technicalRef.product_id, "drafts", technicalRef.candidate_id, "candidate.yaml"), "utf8"));
+    const registry = JSON.parse(await readFile(join(root, "products", technicalRef.product_id, "objects", `${candidate.registry.object_sha256}.yaml`), "utf8"));
+    const saved = registry.element_metadata.find((metadata) => metadata.ref.element_id === technicalElement.changed_refs[0].element_id);
+    assert.deepEqual(saved.applicability, applicability());
+    acceptedTargetReadBack = saved.applicability.state === "accepted_target" && saved.applicability.global && saved.applicability.stage_refs.length === 0;
+  }
   await reviewAndActivate({ author, reviewer, candidateRef: technicalRef, recovery: false });
 
   const roadmapPins = uniquePins([
@@ -506,6 +830,11 @@ export async function runProductWorkflowQualification(t, options = {}) {
     ...await collectPins(author, "product-roadmap", "technical-design"),
   ]);
   sourceReads.push(...(await Promise.all(roadmapPins.map((pin) => readPinExactly(author, pin)))).filter(Boolean));
+  const remediation = options.remediation === true ? {
+    acceptedTargetBeforeRoadmap: beforeRoadmap.items.length === 0 && technicalElement.changed_refs.length === 1,
+    emptyDecisionPins: prdPins.filter((pin) => pin.source_kind === "decision" && pin.element_ids.length === 0).length,
+    acceptedTargetReadBack,
+  } : undefined;
   const roadmapDraft = await draftStage(author, "roadmap", roadmapPins);
   const roadmapRef = roadmapDraft.candidateRef;
   const stage = await author.call("roadmap_define_stage", {
@@ -654,6 +983,7 @@ export async function runProductWorkflowQualification(t, options = {}) {
     calls,
     sourceReads,
     recovery,
+    ...(remediation ? { remediation } : {}),
     persistedBytes: await directoryBytes(root),
   };
 }

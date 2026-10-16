@@ -16,6 +16,7 @@ import test from "node:test";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { gunzipSync } from "fflate";
+import { runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
 
 const executeFile = promisify(execFile);
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -59,12 +60,16 @@ const expectedInventory = [
   "dist/product/interview.js",
   "dist/product/operations.d.ts",
   "dist/product/operations.js",
+  "dist/product/review-blocks.d.ts",
+  "dist/product/review-blocks.js",
   "dist/product/review.d.ts",
   "dist/product/review.js",
   "dist/product/roadmap.d.ts",
   "dist/product/roadmap.js",
   "dist/product/schemas.d.ts",
   "dist/product/schemas.js",
+  "dist/product/sessions.d.ts",
+  "dist/product/sessions.js",
   "dist/product/storage.d.ts",
   "dist/product/storage.js",
   "dist/product/tasks.d.ts",
@@ -83,6 +88,9 @@ const expectedInventory = [
   "dist/review-snapshots.js",
   "dist/reviews.d.ts",
   "dist/reviews.js",
+  "dist/runtime-info.d.ts",
+  "dist/runtime-info.js",
+  "dist/runtime-stamp.json",
   "dist/schemas/catalog.schema.json",
   "dist/schemas/decisions.schema.json",
   "dist/schemas/experience.schema.json",
@@ -218,7 +226,7 @@ async function connectPackedClient(t, entrypoint) {
   return client;
 }
 
-test("packed artifact has the exact runtime inventory and serves MCP calls", { timeout: 30_000 }, async (t) => {
+test("packed artifact has the exact runtime inventory and serves MCP calls", { timeout: 600_000 }, async (t) => {
   await mkdir(artifactsRoot, { recursive: true });
   const workspace = await mkdtemp(path.join(artifactsRoot, "packed-"));
   t.after(() => rm(workspace, { recursive: true, force: true }));
@@ -257,6 +265,13 @@ test("packed artifact has the exact runtime inventory and serves MCP calls", { t
   const fixtureProject = await writeFixtureProject(workspace);
   const client = await connectPackedClient(t, mainPath);
   const tools = await client.listTools();
+  const runtime = await client.callTool({ name: "workflow_runtime_info", arguments: {} });
+  assert.notEqual(runtime.isError, true, JSON.stringify(runtime));
+  assert.equal(runtime.structuredContent.result.identity_status, "verified", "packed metadata must match shipped executable artifacts");
+  const stamp = JSON.parse(await readFile(path.join(extractedPackage, "dist/runtime-stamp.json"), "utf8"));
+  assert.equal(runtime.structuredContent.result.build_id, stamp.build_id);
+  assert.equal(runtime.structuredContent.result.contract_digest, stamp.contract_digest);
+  assert.deepEqual(runtime.structuredContent.result.capabilities, tools.tools.map((tool) => tool.name).sort());
   assert.deepEqual(
     tools.tools.filter((tool) => tool.name.startsWith("decisions_")).map((tool) => tool.name).sort(),
     ["decisions_catalog", "decisions_get", "decisions_overview", "decisions_search"],
@@ -288,4 +303,20 @@ test("packed artifact has the exact runtime inventory and serves MCP calls", { t
   assert.notEqual(exact.isError, true, JSON.stringify(exact));
   assert.equal(exact.structuredContent.complete, true);
   assert.equal(JSON.parse(exact.structuredContent.text).answer.text, "Packed artifact serves MCP calls.");
+
+  const integrated = await runProductWorkflowQualification(t, { entrypoint: mainPath, reliability: true });
+  assert.equal(integrated.reliability.parentItems, 119);
+  assert.equal(integrated.reliability.inheritedItems, 118);
+  assert.equal(integrated.reliability.freshItems, 1);
+  assert.equal(integrated.reliability.exactDraftReads, 2);
+  assert.equal(integrated.reliability.restartDeliveryExact, true);
+  assert.equal(integrated.reliability.executedEntrypoint, mainPath, "integrated public calls must execute the extracted package");
+  assert.equal(integrated.reliability.runtimeBuildId, stamp.build_id);
+  const architecture = await runProductWorkflowQualification(t, { entrypoint: mainPath, remediation: true });
+  assert.equal(architecture.remediation.acceptedTargetBeforeRoadmap, true);
+  assert.equal(architecture.remediation.emptyDecisionPins > 0, true);
+  assert.equal(architecture.remediation.acceptedTargetReadBack, true);
+  t.diagnostic(JSON.stringify({ os: process.platform, node: process.versions.node,
+    packed_build_id: stamp.build_id, packed_contract_digest: stamp.contract_digest,
+    reliability: integrated.reliability }));
 });

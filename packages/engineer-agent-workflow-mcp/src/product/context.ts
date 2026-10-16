@@ -17,7 +17,7 @@ const ARTIFACTS = new Set(["idea", "prd", "technical-design", "roadmap"]);
 const GLOBAL_CONSTRAINT_TYPES = new Set(["PrdConstraint", "PrdRule", "TechnicalPolicy"]);
 const MAX_CONTEXT_SOURCES = 10_000;
 const MAX_GENERATIONS = 100_000;
-const PORTION_CODE_POINTS = 4096;
+export const PORTION_CODE_POINTS = 4096;
 
 type Artifact = "idea" | "prd" | "technical-design" | "roadmap";
 type Purpose = "idea" | "product-definition" | "technical-design" | "product-roadmap"
@@ -242,7 +242,7 @@ async function loadState(root: string, contextText: string): Promise<LoadedState
   return { context, generation, registry, relations, documents, elements };
 }
 
-function encodeCursor(payload: CursorPayload): string {
+export function encodeCursor(payload: CursorPayload): string {
   const query = payload.query as ContextQuery | undefined;
   const compact = {
     k: payload.kind,
@@ -269,7 +269,7 @@ function encodeCursor(payload: CursorPayload): string {
   return cursor;
 }
 
-function decodeCursor(value: string, kind: string, context: string): CursorPayload {
+export function decodeCursor(value: string, kind: string, context: string): CursorPayload {
   let payload: CursorPayload;
   try {
     const encoded = Buffer.from(value, "base64url");

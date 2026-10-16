@@ -30,6 +30,23 @@ const PROFILE_IDS = Object.freeze([
 ]);
 const read = relativePath => readFile(path.join(projectRoot, relativePath), "utf8");
 
+function assertReadyPrdPins(document) {
+  assert.match(document, /exact ready PRD[^\n]*(?:source )?pins?/iu);
+  assert.match(document, /Require exact ready PRD pins from the current revision/u);
+  assert.match(document, /only the validated PRD upstream pins/u);
+}
+
+function assertProfileRoutes(document) {
+  assert.match(document, /Do not read any profile reference before[\s\S]+product_scope_confirm/iu);
+  assert.match(document, /read only[\s\S]+active profile/iu);
+  if (document.includes("idea-refine/references/product-profiles/<profile>.md")) {
+    assert.match(document, /substituting each confirmed/u);
+    for (const profile of PROFILE_IDS) assert.ok(document.includes(`\`${profile}\``), `confirmed profile ${profile} must be explicitly routable`);
+  } else {
+    for (const profile of PROFILE_IDS) assert.match(document, new RegExp(`idea-refine/references/product-profiles/${profile}\\.md`, "u"));
+  }
+}
+
 async function productBundle(t, sourceRoot = path.join(projectRoot, "skills")) {
   const root = await mkdtemp(path.join(tmpdir(), "product-planning-bundle-"));
   t.after(() => rm(root, { recursive: true, force: true }));
@@ -48,7 +65,7 @@ async function productBundle(t, sourceRoot = path.join(projectRoot, "skills")) {
 
 test("P15 registers the four-stage product authoring chain", async () => {
   const catalog = await readCatalog(projectRoot);
-  assert.equal(catalog.skills.length, 16);
+  assert.equal(catalog.skills.length, 17);
   const technical = catalog.skills.find(skill => skill.name === "technical-design");
   const roadmap = catalog.skills.find(skill => skill.name === "product-roadmap");
 
@@ -72,7 +89,7 @@ test("P15 skills require exact ready inputs and stop before downstream work", as
     read("shared/references/product-workflow.md"),
   ]);
 
-  assert.match(technical, /exact ready PRD[^\n]*source pin/iu);
+  assertReadyPrdPins(technical);
   assert.match(technical, /product_artifact_draft[^\n]*technical-design/iu);
   assert.match(technical, /product_context_prepare[^\n]*technical-design/iu);
   assert.match(technical, /technical_define_boundary/u);
@@ -116,18 +133,21 @@ test("P15 routes only confirmed active profiles through the shared source", asyn
   ]);
 
   for (const document of documents) {
-    assert.match(
-      document,
-      /Do not read any profile reference before[\s\S]+product_scope_confirm/iu,
-    );
-    assert.match(document, /read only[\s\S]+active profile/iu);
-    for (const profile of PROFILE_IDS) {
-      assert.match(
-        document,
-        new RegExp(`idea-refine/references/product-profiles/${profile}\\.md`, "u"),
-      );
-    }
+    assertProfileRoutes(document);
   }
+  for (const profile of PROFILE_IDS) await access(path.join(projectRoot, "skills/idea-refine/references/product-profiles", `${profile}.md`));
+});
+
+test("compact profile routing still rejects an omitted profile, wrong owner and removed confirmation gate", async () => {
+  const document = await read("skills/technical-design/SKILL.md");
+  assertProfileRoutes(document);
+  assert.throws(() => assertProfileRoutes(document.replace("`core`,", "")), /profile core/u);
+  assert.throws(() => assertProfileRoutes(document.replace("idea-refine/references/product-profiles/<profile>.md", "product-definition/references/product-profiles/<profile>.md")));
+  assert.throws(() => assertProfileRoutes(document.replace("Do not read any profile reference before successful `product_scope_confirm`.", "Read profiles immediately.")));
+  assert.throws(() => assertProfileRoutes(document.replace("read only confirmed active profile references", "read all profile references")));
+  assert.throws(() => assertReadyPrdPins(document.replaceAll("exact ready PRD", "draft PRD")));
+  assert.throws(() => assertReadyPrdPins(document.replaceAll("exact ready PRD", "stale PRD")));
+  assert.throws(() => assertReadyPrdPins(document.replace("only the validated PRD upstream pins", "whatever PRD state is current")));
 });
 
 test("P15 Q33 exposes typed technical and roadmap scenario tools", () => {
@@ -209,6 +229,18 @@ test("P15 product bundle verifier covers every required upstream skill", async t
     verifyProductWorkflowBundle(bundle["product-roadmap"]),
     error => error?.code === "E_PRODUCT_BUNDLE_LAYOUT",
   );
+});
+
+test("product bundle verifies the conditional technology decision reference", async t => {
+  const bundle = await productBundle(t);
+  const reference = path.join(bundle["technical-design"], "references", "technology-decisions.md");
+  const original = await readFile(reference, "utf8");
+  await writeFile(reference, `${original}\nChanged guidance.\n`);
+  await assert.rejects(verifyProductWorkflowBundle(bundle["technical-design"]),
+    error => error?.code === "E_PRODUCT_BUNDLE_MISMATCH");
+  await rm(reference);
+  await assert.rejects(verifyProductWorkflowBundle(bundle["product-roadmap"]),
+    error => error?.code === "E_PRODUCT_BUNDLE_LAYOUT");
 });
 
 test("P15 product bundle layout remains portable", () => {

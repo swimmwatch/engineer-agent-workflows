@@ -9,9 +9,12 @@ import { validateProductPath } from "./config.js";
 import { parseProductDocument } from "./documents.js";
 import { replayProductMutationResult, runProductMutation } from "./operations.js";
 import { validateProductRecord } from "./schemas.js";
+import { buildSemanticBlocks, semanticBlockText, validateSemanticBlocks } from "./review-blocks.js";
+import type { SemanticBlock } from "./review-blocks.js";
 import {
   loadGeneration,
   readObject,
+  readGenerationMetadata,
   saveGeneration,
   saveObject,
   verifySourcePin,
@@ -30,7 +33,7 @@ const ARTIFACTS = ["idea", "prd", "technical-design", "roadmap"] as const;
 
 type Artifact = typeof ARTIFACTS[number];
 type Coverage = "pending" | "reviewed" | "gaps" | "stale";
-type ReviewMode = "full" | "followup";
+type ReviewMode = "full" | "followup" | "recheck";
 
 interface CandidateRef {
   readonly product_id: string;
@@ -178,8 +181,14 @@ interface Verdict {
   readonly inherited_from: string | null;
 }
 
+interface VerdictIndexEntry extends RecordObject {
+  readonly item_key: string;
+  readonly verdict: Verdict["verdict"];
+  readonly bytes: number;
+}
+
 interface ReviewRecord {
-  readonly schema_version: 1;
+  readonly schema_version: 1 | 2;
   readonly kind: "review";
   readonly id: string;
   readonly candidate_ref: CandidateRef;
@@ -188,8 +197,10 @@ interface ReviewRecord {
   readonly parent: string | null;
   readonly coverage: Exclude<Coverage, "stale">;
   readonly inventory_sha256: string;
-  readonly verdict_objects: readonly RecordObject[];
+  readonly verdict_objects?: readonly RecordObject[];
+  readonly verdict_index?: readonly VerdictIndexEntry[];
   readonly consistency_receipt: string | null;
+  readonly scope_expansions?: readonly { readonly item_keys: readonly string[]; readonly reason: string }[];
 }
 
 interface InventoryItem {
@@ -197,6 +208,7 @@ interface InventoryItem {
   readonly text: string;
   readonly text_sha256: string;
   readonly refs: readonly Ref[];
+  readonly sources?: readonly Parameters<typeof readObject>[1][];
 }
 
 interface ReviewInventory {
@@ -206,6 +218,15 @@ interface ReviewInventory {
   readonly source_version: string;
   readonly items: readonly InventoryItem[];
   readonly consistency_text: string;
+  readonly blocks?: readonly SemanticBlock[];
+  readonly recheck_basis?: CandidateRecord;
+  readonly recheck_impact?: RecheckImpact;
+}
+
+interface RecheckImpact {
+  readonly parent_review_ref: string;
+  readonly pending_keys: readonly string[];
+  readonly changes: readonly { readonly atom_key: string; readonly change: "added" | "changed" | "removed" }[];
 }
 
 interface ReviewStatus {
@@ -216,7 +237,18 @@ interface ReviewStatus {
   readonly total_items: number;
   readonly recorded_items: number;
   readonly next_item_index: number | null;
+  readonly inventory_contract: "atomic-v1" | "semantic-v2";
+  readonly source_atoms: number;
+  readonly recheck?: {
+    readonly parent_review_ref: string;
+    readonly pending_items: number;
+    readonly inherited_items: number;
+    readonly changed_atoms: number;
+    readonly removed_atoms: number;
+  };
 }
+
+type ReviewRepresentation = "explicit-v1";
 
 interface ReviewPortion {
   readonly review_ref: string;
@@ -227,6 +259,10 @@ interface ReviewPortion {
   readonly next_cursor: string | null;
   readonly read_receipt: string | null;
   readonly recorded_result: Verdict | null;
+  readonly representation?: ReviewRepresentation;
+  readonly verdict_object_sha256?: string | null;
+  readonly object_sha256?: string | null;
+  readonly verdict_digest_domain?: "canonical-verdict-json-utf8-newline";
   readonly next_item_index: number | null;
 }
 
@@ -269,14 +305,51 @@ interface CandidateState {
   readonly candidate: CandidateRecord;
   readonly candidateBytes: Buffer;
   readonly registry: RegistryRecord;
-  readonly generation: LoadedGeneration;
+  readonly generation: Pick<LoadedGeneration, "generation">;
+  readonly sourceChecks?: Map<string, () => Promise<unknown>>;
+}
+
+interface SavedVerdict {
+  readonly verdict?: Verdict;
+  readonly object: RecordObject;
+  readonly kind: Verdict["verdict"];
+  readonly bytes: number;
 }
 
 interface ReviewState extends CandidateState {
   readonly review: ReviewRecord;
   readonly reviewBytes: Buffer;
   readonly inventory: ReviewInventory;
-  readonly verdicts: ReadonlyMap<string, { readonly verdict: Verdict; readonly object: RecordObject }>;
+  readonly retainedSources: ReadonlyMap<string, InventoryItem["sources"]>;
+  readonly verdicts: Map<string, SavedVerdict>;
+  readonly sourceChecks?: Map<string, () => Promise<unknown>>;
+}
+
+// Process-local audit evidence is bounded and never survives a server restart.
+const auditedReviews = new Set<string>();
+const auditedSourceIndexes = new Map<string, ReadonlyMap<string, InventoryItem["sources"]>>();
+const MAX_AUDITED_REVIEWS = 128;
+const inventoryViews = new WeakMap<ReviewInventory, readonly InventoryItem[]>();
+
+function reviewItems(inventory: ReviewInventory): readonly InventoryItem[] {
+  if (inventory.blocks === undefined) return inventory.items;
+  const cached = inventoryViews.get(inventory);
+  if (cached !== undefined) return cached;
+  const atoms = new Map(inventory.items.map((entry) => [entry.item_key, entry]));
+  // Materialize only a requested block, not every expanded shared context.
+  const items = inventory.blocks.map((block) => ({
+    item_key: block.item_key,
+    get text() { return semanticBlockText(inventory.items, block, atoms); },
+    get text_sha256() { return digest(semanticBlockText(inventory.items, block, atoms)); },
+    get refs() { return [...block.primary_atoms, ...block.related_atoms].flatMap((key) => atoms.get(key)!.refs); },
+    get sources() { return [...block.primary_atoms, ...block.related_atoms].flatMap((key) => atoms.get(key)!.sources ?? []); },
+  }));
+  inventoryViews.set(inventory, items);
+  return items;
+}
+
+function requireSavedVerdict(saved: SavedVerdict): Verdict {
+  return saved.verdict ?? fail("INVALID_STATE", "This operation requires an audited verdict body.");
 }
 
 interface Fix {
@@ -509,6 +582,7 @@ async function loadCandidate(
   context: ProductContext,
   reference: CandidateRef,
   requireSelected = true,
+  staged = false,
 ): Promise<CandidateState> {
   if (reference.product_id !== context.product_id) return fail("NOT_FOUND", "Product candidate belongs to another product.");
   if (requireSelected && context.candidate_ref?.candidate_id !== reference.candidate_id) {
@@ -528,7 +602,9 @@ async function loadCandidate(
   )) {
     return fail("CONFLICT", "Product candidate changed after the context was opened.");
   }
-  const generation = await loadGeneration(root, candidate.product_id, candidate.base_generation);
+  const generation = staged
+    ? { generation: await readGenerationMetadata(root, candidate.product_id, candidate.base_generation) }
+    : await loadGeneration(root, candidate.product_id, candidate.base_generation);
   const registryBytes = await readObject(root, {
     productId: candidate.product_id, kind: "record", sha256: candidate.registry.object_sha256,
   });
@@ -539,8 +615,9 @@ async function loadCandidate(
   return { root, context, candidate, candidateBytes, registry, generation };
 }
 
-function item(reference: string, text: string, refs: readonly Ref[] = []): InventoryItem {
-  return { item_key: reference, text, text_sha256: digest(text), refs: [...refs].sort((a, b) => refKey(a).localeCompare(refKey(b))) };
+function item(reference: string, text: string, refs: readonly Ref[] = [], sources?: InventoryItem["sources"]): InventoryItem {
+  return { item_key: reference, text, text_sha256: digest(text), refs: [...refs].sort((a, b) => refKey(a).localeCompare(refKey(b))),
+    ...(sources === undefined ? {} : { sources }) };
 }
 
 function proseOutsideElements(source: string, elements: readonly { readonly start: number; readonly end: number }[]): string {
@@ -569,6 +646,11 @@ async function buildInventory(state: CandidateState): Promise<ReviewInventory> {
   };
   append(item("scope", canonicalValue(state.candidate.scope)));
   const metadataByRef = new Map(state.registry.element_metadata.map((entry) => [refKey(entry.ref), entry]));
+  const assertKnownRef = (reference: Ref): void => {
+    if (reference.product_id !== state.candidate.product_id || !metadataByRef.has(refKey(reference))) {
+      fail("BROKEN_REFERENCE", "Review evidence references an unknown product element.");
+    }
+  };
   for (const document of state.registry.documents) {
     if (document.role !== "semantic") continue;
     const value = await readObject(state.root, {
@@ -585,12 +667,14 @@ async function buildInventory(state: CandidateState): Promise<ReviewInventory> {
           `element:${document.artifact}:${element.id}`,
           parsed.source.slice(element.start, element.end),
           [metadata.ref],
+          [{ productId: state.candidate.product_id, kind: "markdown", sha256: document.object_sha256 }],
         ));
       }
     }
     if (document.artifact === state.candidate.artifact) {
       const prose = proseOutsideElements(parsed.source, parsed.elements);
-      if (prose.length > 0) append(item(`document:${document.id}:prose`, prose));
+      if (prose.length > 0) append(item(`document:${document.id}:prose`, prose, [],
+        [{ productId: state.candidate.product_id, kind: "markdown", sha256: document.object_sha256 }]));
     }
   }
   for (const head of state.candidate.decision_heads) {
@@ -602,17 +686,20 @@ async function buildInventory(state: CandidateState): Promise<ReviewInventory> {
       decisionId: head.decision_ref.id,
       revision: head.decision_ref.revision,
     });
-    const decision = parseJson(decisionBytes, "Product decision") as Record<string, unknown>;
-    const affected = Array.isArray(decision.affected_refs)
-      ? decision.affected_refs.filter((entry): entry is Ref => entry !== null && typeof entry === "object")
-      : [];
+    const decision = await validateProductRecord("Decision", parseJson(decisionBytes, "Product decision")) as DecisionRecord;
+    const affected = decision.affected_refs;
+    affected.forEach(assertKnownRef);
     append(item(
       `decision:${head.decision_ref.artifact}:${head.decision_ref.id}:${head.decision_ref.revision}`,
       new TextDecoder().decode(decisionBytes),
       affected,
+      [{ productId: state.candidate.product_id, kind: "decision", sha256: head.object_sha256,
+        artifact: head.decision_ref.artifact, decisionId: head.decision_ref.id, revision: head.decision_ref.revision }],
     ));
   }
   for (const relation of state.candidate.relations) {
+    assertKnownRef(relation.from);
+    assertKnownRef(relation.to);
     if (relation.from.artifact === state.candidate.artifact || relation.to.artifact === state.candidate.artifact) {
       append(item(
         `relation:${digest(canonicalValue(relation))}`,
@@ -621,12 +708,13 @@ async function buildInventory(state: CandidateState): Promise<ReviewInventory> {
       ));
     }
   }
-  state.candidate.upstream_pins.forEach((pin, index) => {
+  for (const [index, pin] of state.candidate.upstream_pins.entries()) {
+    await verifySourcePin(state.root, pin);
     const refs = pin.element_ids.map((elementId) => ({
       product_id: pin.product_id, artifact: pin.artifact, element_id: elementId,
     }));
     append(item(`upstream:${String(index).padStart(4, "0")}:${pin.artifact}`, canonicalValue(pin), refs));
-  });
+  }
   items.sort((left, right) => left.item_key.localeCompare(right.item_key));
   if (items.length > 10_000) return fail("SOURCE_LIMIT", "Product review inventory exceeds supported item count.");
   const keys = new Set<string>();
@@ -686,6 +774,10 @@ function validateInventory(value: unknown, review: ReviewRecord): ReviewInventor
     ) return fail("INVALID_STATE", "Product review inventory item is invalid.");
     keys.add(itemValue.item_key);
   }
+  if (inventory.blocks !== undefined) {
+    if (!Array.isArray(inventory.blocks)) return fail("INVALID_STATE", "Semantic inventory blocks are invalid.");
+    validateSemanticBlocks(rawItems as InventoryItem[], inventory.blocks as SemanticBlock[]);
+  }
   return value as ReviewInventory;
 }
 
@@ -693,10 +785,22 @@ async function loadVerdicts(
   root: string,
   productId: string,
   review: ReviewRecord,
-): Promise<ReadonlyMap<string, { readonly verdict: Verdict; readonly object: RecordObject }>> {
-  const result = new Map<string, { verdict: Verdict; object: RecordObject }>();
+  full = true,
+): Promise<Map<string, SavedVerdict>> {
+  const result = new Map<string, SavedVerdict>();
   let aggregateBytes = 0;
-  for (const object of review.verdict_objects) {
+  if (review.schema_version === 2) {
+    for (const entry of review.verdict_index ?? []) {
+      if (result.has(entry.item_key)) return fail("INVALID_STATE", "Review index contains duplicate item keys.");
+      aggregateBytes += entry.bytes;
+      if (aggregateBytes > MAX_SOURCE_BYTES) return fail("SOURCE_LIMIT", "Product review verdicts exceed supported aggregate size.");
+      result.set(entry.item_key, { object: { id: entry.id, object_sha256: entry.object_sha256 }, kind: entry.verdict, bytes: entry.bytes });
+    }
+    if (!full) return result;
+    for (const [key, saved] of result) result.set(key, await readIndexedVerdict(root, productId, key, saved));
+    return result;
+  }
+  for (const object of review.verdict_objects ?? []) {
     const value = await readObject(root, { productId, kind: "record", sha256: object.object_sha256 });
     if (value.byteLength > MAX_SOURCE_BYTES - aggregateBytes) {
       return fail("SOURCE_LIMIT", "Product review verdicts exceed supported aggregate size.");
@@ -704,9 +808,45 @@ async function loadVerdicts(
     aggregateBytes += value.byteLength;
     const verdict = await validateProductRecord("Verdict", parseJson(value, "Product review verdict")) as Verdict;
     if (result.has(verdict.item_key)) return fail("INVALID_STATE", "Product review contains duplicate verdicts.");
-    result.set(verdict.item_key, { verdict, object });
+    result.set(verdict.item_key, { verdict, object, kind: verdict.verdict, bytes: value.byteLength });
   }
   return result;
+}
+
+async function readIndexedVerdict(root: string, productId: string, key: string, saved: SavedVerdict): Promise<SavedVerdict> {
+  const value = await readObject(root, { productId, kind: "record", sha256: saved.object.object_sha256 });
+  const verdict = await validateProductRecord("Verdict", parseJson(value, "Product review verdict")) as Verdict;
+  if (verdict.item_key !== key || verdict.verdict !== saved.kind || value.byteLength !== saved.bytes) {
+    return fail("SOURCE_CHANGED", "Review index does not match retained verdict evidence.");
+  }
+  return { ...saved, verdict };
+}
+
+async function loadUsedVerdict(state: ReviewState, key: string): Promise<SavedVerdict | undefined> {
+  const saved = state.verdicts.get(key);
+  if (saved === undefined) return undefined;
+  const loaded = await readIndexedVerdict(state.root, state.candidate.product_id, key, saved);
+  state.verdicts.set(key, loaded);
+  return loaded;
+}
+
+function indexedReview(state: ReviewState, additions: readonly Verdict[] = []): ReviewRecord {
+  const entries = new Map([...state.verdicts].map(([key, saved]) => [key, {
+    item_key: key, ...saved.object, verdict: saved.kind, bytes: saved.bytes,
+  }]));
+  for (const verdict of additions) {
+    const value = canonicalBytes(verdict);
+    const sha256 = digest(value);
+    entries.set(verdict.item_key, { item_key: verdict.item_key,
+      id: deterministicUuid(`${state.candidate.product_id}:${verdict.item_key}:${sha256}`),
+      object_sha256: sha256, verdict: verdict.verdict, bytes: value.byteLength });
+  }
+  if ([...entries.values()].reduce((sum, entry) => sum + entry.bytes, 0) > MAX_SOURCE_BYTES) {
+    return fail("SOURCE_LIMIT", "Product review verdicts exceed supported aggregate size.");
+  }
+  const next = { ...state.review, schema_version: 2 as const, verdict_index: [...entries.values()].sort((a, b) => a.item_key.localeCompare(b.item_key)) };
+  delete next.verdict_objects;
+  return next;
 }
 
 async function loadReviewState(
@@ -715,8 +855,11 @@ async function loadReviewState(
   reference: CandidateRef,
   reviewId: string,
   requireSelected = true,
+  full = false,
+  ancestors: readonly string[] = [],
 ): Promise<ReviewState> {
-  const candidate = await loadCandidate(root, context, reference, requireSelected);
+  if (ancestors.includes(reviewId) || ancestors.length >= 128) return fail("INVALID_STATE", "Review inheritance history is cyclic or exceeds its supported depth.");
+  let candidate = await loadCandidate(root, context, reference, requireSelected, true);
   const reviewBytes = await readSafe(root, reviewPath(reference, reviewId), context.canonical_workspace);
   if (reviewBytes === null) return fail("NOT_FOUND", "Product review does not exist.");
   const review = await validateProductRecord("Review", parseJson(reviewBytes, "Product review")) as ReviewRecord;
@@ -727,25 +870,128 @@ async function loadReviewState(
   const inventoryBytes = await readObject(root, {
     productId: reference.product_id, kind: "record", sha256: review.inventory_sha256,
   });
-  const inventory = validateInventory(parseJson(inventoryBytes, "Product review inventory"), review);
-  const verdicts = await loadVerdicts(root, reference.product_id, review);
-  return { ...candidate, review, reviewBytes, inventory, verdicts };
+  let inventory = validateInventory(parseJson(inventoryBytes, "Product review inventory"), review);
+  const retainedSources = new Map(inventory.items.map((entry) => [entry.item_key, entry.sources]));
+  const auditKey = `${root}:${reference.product_id}:${review.id}:${candidate.candidate.source_version}:${review.inventory_sha256}`;
+  const audit = full || review.mode === "recheck" || review.schema_version === 1 || !auditedReviews.has(auditKey);
+  let sourceIndex: ReadonlyMap<string, InventoryItem["sources"]> | undefined;
+  if (audit) {
+    candidate = await loadCandidate(root, context, reference, requireSelected);
+    if (review.source_version === candidate.candidate.source_version) {
+      const actualInventory = await buildInventory(candidate);
+      const withoutSources = (entries: readonly InventoryItem[]) => entries.map((entry) => ({
+        item_key: entry.item_key, text: entry.text, text_sha256: entry.text_sha256, refs: entry.refs,
+      }));
+      if (canonicalValue(withoutSources(actualInventory.items)) !== canonicalValue(withoutSources(inventory.items))
+        || actualInventory.consistency_text !== inventory.consistency_text) {
+        return fail("SOURCE_CHANGED", "Frozen review inventory does not match retained candidate sources.");
+      }
+      if (inventory.blocks !== undefined && canonicalValue(actualInventory.items) !== canonicalValue(inventory.items)) {
+        return fail("SOURCE_CHANGED", "Semantic source provenance does not match retained candidate sources.");
+      }
+      sourceIndex = new Map(actualInventory.items.map((entry) => [entry.item_key, entry.sources]));
+    }
+  }
+  if (inventory.blocks === undefined) {
+    const sources = sourceIndex ?? auditedSourceIndexes.get(auditKey);
+    if (sources !== undefined) inventory = { ...inventory, items: inventory.items.map((entry) => {
+      const origins = sources.get(entry.item_key);
+      return origins === undefined ? entry : { ...entry, sources: origins };
+    }) };
+  }
+  const verdicts = await loadVerdicts(root, reference.product_id, review, audit);
+  const keys = new Set(reviewItems(inventory).map((entry) => entry.item_key));
+  for (const key of verdicts.keys()) {
+    if (key !== "__consistency__" && !keys.has(key)) return fail("INVALID_STATE", "Review contains a verdict outside its inventory.");
+  }
+  if (audit) {
+    const entries = new Map(reviewItems(inventory).map((entry) => [entry.item_key, entry]));
+    const auditState = { ...candidate, review, reviewBytes, inventory, retainedSources, verdicts };
+    let recheckParent: ReviewState | undefined;
+    if (review.mode === "recheck") {
+      if (review.parent === null || inventory.recheck_impact === undefined) return fail("SOURCE_CHANGED", "Recheck parent or impact evidence is missing.");
+      recheckParent = await loadReviewState(root, context, reference, review.parent, requireSelected, true, [...ancestors, reviewId]);
+      assertSuccessfulParent(recheckParent);
+      const prior = await recheckBasis(recheckParent);
+      await verifyParentEvidence(recheckParent, prior);
+      const historical = await recheckBasis(auditState);
+      const impact = await deriveRecheckImpact(recheckParent, prior, historical, inventory);
+      if (canonicalValue(impact) !== canonicalValue(inventory.recheck_impact)) return fail("SOURCE_CHANGED", "Recheck impact differs from retained source evidence.");
+      const keys = new Set(reviewItems(inventory).map((entry) => entry.item_key));
+      if ((review.scope_expansions ?? []).some((entry) => entry.item_keys.some((key) => !keys.has(key)))) {
+        return fail("SOURCE_CHANGED", "Recheck expansion references an obsolete block.");
+      }
+    }
+    for (const [key, saved] of verdicts) {
+      const verdict = requireSavedVerdict(saved);
+      if (verdict.inherited_from !== null) {
+        if (!(["followup", "recheck"] as ReviewMode[]).includes(review.mode) || verdict.inherited_from !== review.parent || key === "__consistency__") {
+          return fail("SOURCE_CHANGED", "Retained verdict has invalid inherited provenance.");
+        }
+        if (recheckParent !== undefined) {
+          const original = recheckParent.verdicts.get(key);
+          if (requiredRecheckKeys(auditState).has(key) || original === undefined
+            || canonicalValue(inheritedVerdict(requireSavedVerdict(original), review.parent)) !== canonicalValue(verdict)) {
+            return fail("SOURCE_CHANGED", "Recheck inherited verdict is ineligible or differs from parent attribution.");
+          }
+        }
+      } else {
+        if (!validReviewReceipt(auditState, key, verdict.read_receipt, key === "__consistency__" ? undefined : entries.get(key)!)) {
+          return fail("SOURCE_CHANGED", "Retained verdict does not match its source read receipt.");
+        }
+      }
+    }
+    if ((review.consistency_receipt !== null || verdicts.has("__consistency__"))
+      && review.consistency_receipt !== verdicts.get("__consistency__")?.verdict?.read_receipt) {
+      return fail("SOURCE_CHANGED", "Review consistency receipt does not match retained evidence.");
+    }
+  }
+  const after = await readSafe(root, reviewPath(reference, reviewId), context.canonical_workspace);
+  if (after === null || !after.equals(reviewBytes)) return fail("CONFLICT", "Product review changed during inspection.");
+  const candidateAfter = await readSafe(root, candidatePath(reference), context.canonical_workspace);
+  if (candidateAfter === null || !candidateAfter.equals(candidate.candidateBytes)) {
+    return fail("CONFLICT", "Product candidate changed during review inspection.");
+  }
+  if (audit) {
+    if (auditedReviews.size >= MAX_AUDITED_REVIEWS) {
+      auditedReviews.clear();
+      auditedSourceIndexes.clear();
+    }
+    if (sourceIndex !== undefined) auditedSourceIndexes.set(auditKey, sourceIndex);
+    auditedReviews.add(auditKey);
+  }
+  const sourceChecks = new Map<string, () => Promise<unknown>>();
+  if (review.mode === "recheck") sourceChecks.set("recheck-history", async () => {
+    await loadReviewState(root, context, reference, reviewId, requireSelected, true);
+  });
+  return { ...candidate, review, reviewBytes, inventory, retainedSources, verdicts, sourceChecks };
 }
 
 function statusFor(state: ReviewState): ReviewStatus {
   const stale = state.review.source_version !== state.candidate.source_version;
-  const recorded = state.inventory.items.filter((entry) => state.verdicts.has(entry.item_key)).length;
+  const items = reviewItems(state.inventory);
+  const recorded = items.filter((entry) => state.verdicts.has(entry.item_key)).length;
   const nextIndex = stale || state.review.coverage !== "pending"
     ? null
-    : state.inventory.items.findIndex((entry) => !state.verdicts.has(entry.item_key));
+    : items.findIndex((entry) => !state.verdicts.has(entry.item_key));
   return {
     review_ref: state.review.id,
     source_version: state.review.source_version,
     current_source_version: state.candidate.source_version,
     coverage_status: stale ? "stale" : state.review.coverage,
-    total_items: state.inventory.items.length,
+    total_items: items.length,
     recorded_items: recorded,
     next_item_index: nextIndex === null || nextIndex < 0 ? null : nextIndex,
+    inventory_contract: state.inventory.blocks === undefined ? "atomic-v1" : "semantic-v2",
+    source_atoms: state.inventory.items.length,
+    ...(state.review.mode !== "recheck" ? {} : { recheck: {
+      parent_review_ref: state.review.parent!,
+      pending_items: items.filter((entry) => !state.verdicts.has(entry.item_key)).length,
+      inherited_items: [...state.verdicts.values()].filter((entry) => entry.verdict?.inherited_from !== null
+        && entry.verdict?.inherited_from !== undefined).length,
+      changed_atoms: state.inventory.recheck_impact!.changes.filter((entry) => entry.change !== "removed").length,
+      removed_atoms: state.inventory.recheck_impact!.changes.filter((entry) => entry.change === "removed").length,
+    } }),
   };
 }
 
@@ -895,6 +1141,17 @@ async function mutateReview<T extends object>(input: {
   readonly saveObjects?: () => Promise<void>;
 }): Promise<ProductReviewOutcome<T>> {
   const id = operationId(input.scenario, input.state.candidate.source_version, input.scenarioInput);
+  const verifyCandidate = async (): Promise<void> => {
+    const current = await readSafe(input.state.root, candidatePath({
+      product_id: input.state.candidate.product_id, candidate_id: input.state.candidate.candidate_id,
+    }), input.state.context.canonical_workspace);
+    if (current === null || !current.equals(input.state.candidateBytes)) {
+      fail("CONFLICT", "Product candidate changed before review mutation.");
+    }
+    if ("sourceChecks" in input.state) {
+      for (const check of (input.state as ReviewState).sourceChecks?.values() ?? []) await check();
+    }
+  };
   const outcome = await runProductMutation({
     root: input.state.root,
     productId: input.state.candidate.product_id,
@@ -906,6 +1163,8 @@ async function mutateReview<T extends object>(input: {
     intent: { schema_version: 1, kind: "operation_intent", scenario: input.scenario, input: input.scenarioInput },
     result: input.result as Record<string, unknown>,
     resultDefinition: input.resultDefinition,
+    ...(["product_review_record", "product_review_record_batch", "product_review_consistency_record"].includes(input.scenario)
+      ? { verifyReviewSources: verifyCandidate } : {}),
     targets: [{
       root: "store",
       binding_id: null,
@@ -914,12 +1173,14 @@ async function mutateReview<T extends object>(input: {
       after: digest(input.after),
     }],
     ...(input.saveObjects === undefined ? {} : { saveObjects: async () => input.saveObjects!() }),
-    saveLocalBinding: async () => applyChange(
-      input.state.root, input.relativePath, input.before, input.after, input.state.context.canonical_workspace,
-    ),
-    verifyTargets: async () => verifyChange(
-      input.state.root, input.relativePath, input.after, input.state.context.canonical_workspace,
-    ),
+    saveLocalBinding: async () => {
+      await verifyCandidate();
+      await applyChange(input.state.root, input.relativePath, input.before, input.after, input.state.context.canonical_workspace);
+    },
+    verifyTargets: async () => {
+      await verifyCandidate();
+      await verifyChange(input.state.root, input.relativePath, input.after, input.state.context.canonical_workspace);
+    },
   });
   return {
     context: encodeContext(input.state.context, input.state.candidate),
@@ -930,8 +1191,8 @@ async function mutateReview<T extends object>(input: {
 }
 
 function inventoryDiff(parent: ReviewInventory, current: ReviewInventory): readonly InventoryItem[] {
-  const parentItems = new Map(parent.items.map((entry) => [entry.item_key, entry]));
-  const currentItems = new Map(current.items.map((entry) => [entry.item_key, entry]));
+  const parentItems = new Map(reviewItems(parent).map((entry) => [entry.item_key, entry]));
+  const currentItems = new Map(reviewItems(current).map((entry) => [entry.item_key, entry]));
   const keys = new Set([...parentItems.keys(), ...currentItems.keys()]);
   const changed: InventoryItem[] = [];
   for (const key of keys) {
@@ -940,6 +1201,304 @@ function inventoryDiff(parent: ReviewInventory, current: ReviewInventory): reado
     if (before?.text_sha256 !== after?.text_sha256) changed.push(after ?? before!);
   }
   return changed;
+}
+
+function fullReviewRequired(reason: string): never {
+  return fail("PREREQUISITE_REQUIRED", `${reason} Start a full independent review of intact current inputs.`);
+}
+
+/** Reconstruct historical membership from retained inputs, never from current hydration. */
+async function recheckBasis(state: ReviewState): Promise<CandidateState> {
+  if (state.inventory.recheck_basis === undefined || state.inventory.blocks === undefined) {
+    return fullReviewRequired("Parent review lacks compatible retained inheritance inputs.");
+  }
+  const candidate = await validateProductRecord("Candidate", state.inventory.recheck_basis);
+  if (candidate.product_id !== state.review.candidate_ref.product_id
+    || candidate.candidate_id !== state.review.candidate_ref.candidate_id
+    || candidate.source_version !== state.review.source_version || candidate.base_generation === null) {
+    return fail("SOURCE_CHANGED", "Retained inheritance candidate does not match its review.");
+  }
+  const registry = await validateProductRecord("Registry", parseJson(await readObject(state.root, {
+    productId: candidate.product_id, kind: "record", sha256: candidate.registry.object_sha256,
+  }), "Retained review registry")) as RegistryRecord;
+  if (registry.product_id !== candidate.product_id) return fail("SOURCE_CHANGED", "Retained review registry identity changed.");
+  const historical: CandidateState = { ...state, candidate, registry,
+    candidateBytes: canonicalBytes(candidate), generation: await loadGeneration(state.root, candidate.product_id, candidate.base_generation) };
+  const actual = await buildInventory(historical);
+  if (canonicalValue(actual.items) !== canonicalValue(state.inventory.items)
+    || actual.consistency_text !== state.inventory.consistency_text) {
+    return fail("SOURCE_CHANGED", "Retained inheritance inventory does not match historical inputs.");
+  }
+  return historical;
+}
+
+function atomMetadata(state: CandidateState, atom: InventoryItem): string {
+  const documents = state.registry.documents.filter((document) => (atom.sources ?? []).some((source) =>
+    source.kind === "markdown" && source.sha256 === document.object_sha256))
+    .map(({ object_sha256: ignoredDigest, ...document }) => { void ignoredDigest; return document; });
+  const metadata = atom.refs.map((reference) => state.registry.element_metadata.find((entry) => refKey(entry.ref) === refKey(reference))
+    ?? fail("BROKEN_REFERENCE", "Inheritance metadata is missing a referenced element."));
+  return canonicalValue({ documents, metadata });
+}
+
+function originalInputs(inventory: ReviewInventory): string {
+  return canonicalValue(inventory.items.filter((atom) => {
+    if (atom.item_key === "scope") return true;
+    if (!atom.item_key.startsWith("decision:")) return false;
+    const decision = parseJson(Buffer.from(atom.text), "Retained review decision") as DecisionRecord;
+    return decision.category === "instruction" || decision.category === "scope"
+      || ["answered", "needs_user", "no_answer"].includes(decision.state);
+  }));
+}
+
+/** Compare immutable evidence for every reached source participant, not just graph edges. */
+async function dependencyEvidence(state: CandidateState, seed: {
+  readonly refs: readonly Ref[]; readonly artifact: Artifact; readonly wholeRegistry: boolean;
+}, requireMembership = false): Promise<string> {
+  if (seed.refs.some((reference) => reference.product_id !== state.candidate.product_id)) {
+    return fullReviewRequired("Reviewer dependency belongs to an untracked product.");
+  }
+  const references = new Set(seed.refs.map(refKey));
+  const heads = new Map([...state.generation.generation.decision_heads, ...state.candidate.decision_heads]
+    .map((head) => [`${head.decision_ref.artifact}:${head.decision_ref.id}`, head]));
+  const decisions = await Promise.all([...heads].map(async ([key, head]) => {
+    const value = await readObject(state.root, { productId: state.candidate.product_id, kind: "decision", sha256: head.object_sha256,
+      artifact: head.decision_ref.artifact, decisionId: head.decision_ref.id, revision: head.decision_ref.revision });
+    const decision = await validateProductRecord("Decision", parseJson(value, "Reviewer dependency decision")) as DecisionRecord;
+    if (canonicalValue(decision.ref) !== canonicalValue(head.decision_ref)) return fail("SOURCE_CHANGED", "Reviewer dependency decision identity changed.");
+    return { key, head, decision };
+  }));
+  const neededDecisions = new Set(decisions.filter((entry) => seed.wholeRegistry || entry.head.decision_ref.artifact === seed.artifact)
+    .map((entry) => entry.key));
+  let expanded = true;
+  while (expanded) {
+    expanded = false;
+    const include = (reference: Ref): void => {
+      if (reference.product_id !== state.candidate.product_id) return fullReviewRequired("Reviewer dependency belongs to an untracked product.");
+      if (!references.has(refKey(reference))) { references.add(refKey(reference)); expanded = true; }
+    };
+    for (const entry of state.registry.element_metadata) {
+      if (!references.has(refKey(entry.ref))) continue;
+      entry.applicability.stage_refs.forEach(include);
+      for (const provenance of entry.provenance) {
+        const key = `${provenance.artifact}:${provenance.id}`;
+        if (requireMembership && !decisions.some((value) => canonicalValue(value.decision.ref) === canonicalValue(provenance))) {
+          return fullReviewRequired("Reviewer dependency provenance lacks retained decision evidence.");
+        }
+        if (!neededDecisions.has(key)) { neededDecisions.add(key); expanded = true; }
+      }
+    }
+    for (const relation of state.candidate.relations) {
+      if (!references.has(refKey(relation.from)) && !references.has(refKey(relation.to))) continue;
+      include(relation.from); include(relation.to);
+    }
+    for (const entry of decisions) {
+      if (!neededDecisions.has(entry.key) && !entry.decision.affected_refs.some((reference) => references.has(refKey(reference)))) continue;
+      if (!neededDecisions.has(entry.key)) { neededDecisions.add(entry.key); expanded = true; }
+      entry.decision.affected_refs.forEach(include);
+    }
+    for (const dependency of state.candidate.upstream_pins) {
+      if (!state.registry.element_metadata.some((entry) => entry.ref.artifact === dependency.artifact && references.has(refKey(entry.ref)))) continue;
+      if (dependency.product_id !== state.candidate.product_id) return fullReviewRequired("Reviewer upstream dependency belongs to an untracked product.");
+      dependency.element_ids.forEach((element_id) => include({ product_id: dependency.product_id, artifact: dependency.artifact, element_id }));
+    }
+  }
+  const metadata = state.registry.element_metadata.filter((entry) => references.has(refKey(entry.ref)));
+  if (requireMembership && metadata.length !== references.size) return fullReviewRequired("Reviewer dependency lacks retained element metadata.");
+  const artifacts = new Set([seed.artifact, ...metadata.map((entry) => entry.ref.artifact)]);
+  const documents = state.registry.documents.filter((document) => document.role === "semantic" && artifacts.has(document.artifact));
+  const members = await Promise.all(documents.map(async (document) => {
+    const source = parseProductDocument(await readObject(state.root, { productId: state.candidate.product_id, kind: "markdown", sha256: document.object_sha256 }));
+    return { document, element_ids: source.elements.map((entry) => entry.id) };
+  }));
+  if (requireMembership && metadata.some((entry) => (entry.state === "active"
+    || (!seed.wholeRegistry && seed.refs.some((reference) => refKey(reference) === refKey(entry.ref)))) && !members.some((member) =>
+    member.document.artifact === entry.ref.artifact && member.element_ids.includes(entry.ref.element_id)))) {
+    return fullReviewRequired("Reviewer dependency lacks retained document membership.");
+  }
+  return canonicalValue({ participants: [...references].sort(), metadata, members,
+    relations: state.candidate.relations.filter((relation) => seed.wholeRegistry
+      || references.has(refKey(relation.from)) || references.has(refKey(relation.to))),
+    decisions: decisions.filter((entry) => neededDecisions.has(entry.key)),
+    candidate_decisions: state.candidate.decision_heads.filter((head) => neededDecisions.has(`${head.decision_ref.artifact}:${head.decision_ref.id}`)),
+    upstream: state.candidate.upstream_pins.filter((dependency) => seed.wholeRegistry || artifacts.has(dependency.artifact)),
+  });
+}
+
+async function referencedEvidence(state: CandidateState, reference: Ref, requireMembership = false): Promise<string> {
+  return dependencyEvidence(state, { refs: [reference], artifact: reference.artifact, wholeRegistry: false }, requireMembership);
+}
+
+async function sourcePinEvidence(state: CandidateState, pin: SourcePin, requireMembership = false): Promise<string> {
+  if (pin.product_id !== state.candidate.product_id) return fullReviewRequired("Reviewer source evidence belongs to an untracked product.");
+  const roots = state.registry.element_metadata.filter((entry) => pin.source_kind === "record"
+    || (entry.ref.artifact === pin.artifact && (pin.element_ids.length === 0 || pin.element_ids.includes(entry.ref.element_id))));
+  const refs = [...roots.map((entry) => entry.ref), ...pin.element_ids.map((element_id) => ({
+    product_id: pin.product_id, artifact: pin.artifact, element_id,
+  }))];
+  const heads = new Map([...state.generation.generation.decision_heads, ...state.candidate.decision_heads]
+    .map((head) => [`${head.decision_ref.artifact}:${head.decision_ref.id}`, head]));
+  const source = pin.source_kind === "markdown"
+    ? state.registry.documents.find((document) => document.id === pin.source_id) ?? null
+    : pin.source_kind === "record" ? { identity: state.candidate.registry, registry: state.registry }
+      : heads.get(`${pin.artifact}:${pin.source_id}`) ?? null;
+  const dependency = await dependencyEvidence(state, { refs, artifact: pin.artifact, wholeRegistry: pin.source_kind === "record" }, requireMembership);
+  return canonicalValue({ pin, source, dependency });
+}
+
+async function verifyRetainedSourceEvidence(state: CandidateState, pin: SourcePin): Promise<void> {
+  await sourcePinEvidence(state, pin, true);
+  if (pin.source_kind === "markdown") {
+    const document = state.registry.documents.find((entry) => entry.id === pin.source_id);
+    if (document === undefined || document.artifact !== pin.artifact || document.object_sha256 !== pin.object_sha256) {
+      return fullReviewRequired("Reviewer source evidence lacks matching retained document membership.");
+    }
+    const source = parseProductDocument(await readObject(state.root, {
+      productId: pin.product_id, kind: "markdown", sha256: pin.object_sha256,
+    }));
+    if (pin.element_ids.some((id) => !source.elements.some((element) => element.id === id)
+      || !state.registry.element_metadata.some((entry) => entry.ref.artifact === pin.artifact
+        && entry.ref.element_id === id && entry.state === "active"))) {
+      return fullReviewRequired("Reviewer source evidence lacks retained active element membership.");
+    }
+  } else if (pin.source_kind === "record") {
+    if (state.candidate.registry.id !== pin.source_id || state.candidate.registry.object_sha256 !== pin.object_sha256) {
+      return fullReviewRequired("Reviewer registry evidence lacks a matching retained registry.");
+    }
+  } else {
+    const head = [...state.candidate.decision_heads, ...state.generation.generation.decision_heads]
+      .find((entry) => entry.decision_ref.artifact === pin.artifact && entry.decision_ref.id === pin.source_id);
+    if (head === undefined || canonicalValue(head.decision_ref) !== canonicalValue(pin.decision_ref)
+      || head.object_sha256 !== pin.object_sha256) {
+      return fullReviewRequired("Reviewer decision evidence lacks a matching retained decision head.");
+    }
+  }
+}
+
+async function verifyParentEvidence(parent: ReviewState, prior: CandidateState, ancestors: readonly string[] = []): Promise<void> {
+  if (ancestors.includes(parent.review.id) || ancestors.length >= 128) return fullReviewRequired("Historical evidence chain is cyclic or exceeds supported depth.");
+  if (parent.review.mode === "followup" && [...parent.verdicts.values()].some((entry) => entry.verdict?.inherited_from !== null)) {
+    if (parent.review.parent === null) return fullReviewRequired("Finding-linked inheritance has no retained parent.");
+    const grand = await loadReviewState(parent.root, parent.context, parent.review.candidate_ref, parent.review.parent, true, true, [...ancestors, parent.review.id]);
+    const historical = await recheckBasis(grand);
+    await verifyParentEvidence(grand, historical, [...ancestors, parent.review.id]);
+    const impact = await deriveRecheckImpact(grand, historical, prior, parent.inventory);
+    const pending = new Set(impact.pending_keys);
+    for (const [key, saved] of parent.verdicts) {
+      const verdict = requireSavedVerdict(saved);
+      if (verdict.inherited_from === null) continue;
+      const original = grand.verdicts.get(key);
+      if (pending.has(key) || original === undefined || (original.kind !== "covered" && original.kind !== "not_applicable")
+        || canonicalValue(verdict) !== canonicalValue(inheritedVerdict(requireSavedVerdict(original), grand.review.id))) {
+        return fullReviewRequired("Finding-linked inheritance lacks verified successful-parent eligibility.");
+      }
+    }
+  }
+  const verified = new Set<string>();
+  for (const saved of parent.verdicts.values()) {
+    const verdict = requireSavedVerdict(saved);
+    for (const pin of verdict.evidence_sources) {
+      const key = canonicalValue(pin);
+      if (!verified.has(key)) {
+        await verifySourcePin(parent.root, pin); await verifyRetainedSourceEvidence(prior, pin); verified.add(key);
+      }
+    }
+    for (const reference of verdict.evidence_refs) {
+      if (verified.has(refKey(reference))) continue;
+      await referencedEvidence(prior, reference, true);
+      verified.add(refKey(reference));
+    }
+  }
+}
+
+async function deriveRecheckImpact(parent: ReviewState, prior: CandidateState, current: CandidateState,
+  inventory: ReviewInventory): Promise<RecheckImpact> {
+  if (prior.candidate.artifact !== current.candidate.artifact
+    || prior.candidate.base_generation !== current.candidate.base_generation
+    || prior.candidate.workspace_id !== current.candidate.workspace_id
+    || canonicalValue(prior.candidate.scope) !== canonicalValue(current.candidate.scope)
+    || originalInputs(parent.inventory) !== originalInputs(inventory)) {
+    return fullReviewRequired("Scope, original instructions, answers or review binding changed.");
+  }
+  const before = new Map(parent.inventory.items.map((atom) => [atom.item_key, atom]));
+  const after = new Map(inventory.items.map((atom) => [atom.item_key, atom]));
+  const changes: RecheckImpact["changes"][number][] = [];
+  const affectedRefs = new Set<string>();
+  let globalImpact = false;
+  for (const key of [...new Set([...before.keys(), ...after.keys()])].sort()) {
+    const old = before.get(key), next = after.get(key);
+    if (old !== undefined && next !== undefined && old.text_sha256 === next.text_sha256
+      && canonicalValue(old.refs) === canonicalValue(next.refs)
+      && atomMetadata(prior, old) === atomMetadata(current, next)) continue;
+    changes.push({ atom_key: key, change: old === undefined ? "added" : next === undefined ? "removed" : "changed" });
+    for (const reference of [...old?.refs ?? [], ...next?.refs ?? []]) affectedRefs.add(refKey(reference));
+    if ([...old?.refs ?? [], ...next?.refs ?? []].some((reference) => [prior.registry, current.registry].some((registry) =>
+      registry.element_metadata.some((metadata) => refKey(metadata.ref) === refKey(reference) && metadata.applicability.global)))) globalImpact = true;
+    if (key.startsWith("document:") || key.startsWith("upstream:")) globalImpact = true;
+    else if (key !== "scope" && !key.startsWith("element:") && !key.startsWith("relation:") && !key.startsWith("decision:")) {
+      return fullReviewRequired("Changed evidence has uncertain semantic influence.");
+    }
+    if (key.startsWith("decision:") && (old?.refs.length ?? next?.refs.length ?? 0) === 0) {
+      return fullReviewRequired("Changed decision evidence has no bounded impact references.");
+    }
+  }
+  // Relationship participants and decision dependencies widen impact transitively.
+  let expanded = true;
+  const allAtoms = [...parent.inventory.items, ...inventory.items];
+  while (expanded) {
+    expanded = false;
+    for (const atom of allAtoms) {
+      if (!atom.item_key.startsWith("relation:") && !atom.item_key.startsWith("decision:")) continue;
+      if (!atom.refs.some((reference) => affectedRefs.has(refKey(reference)))) continue;
+      for (const reference of atom.refs) if (!affectedRefs.has(refKey(reference))) {
+        affectedRefs.add(refKey(reference)); expanded = true;
+      }
+    }
+  }
+  const evidenceChanges = new Map<string, boolean>();
+  for (const saved of parent.verdicts.values()) {
+    const verdict = requireSavedVerdict(saved);
+    for (const reference of verdict.evidence_refs) {
+      const key = `ref:${refKey(reference)}`;
+      if (!evidenceChanges.has(key)) evidenceChanges.set(key,
+        await referencedEvidence(prior, reference) !== await referencedEvidence(current, reference));
+    }
+    for (const pin of verdict.evidence_sources) {
+      const key = `pin:${canonicalValue(pin)}`;
+      if (!evidenceChanges.has(key)) evidenceChanges.set(key,
+        await sourcePinEvidence(prior, pin) !== await sourcePinEvidence(current, pin));
+    }
+  }
+  const previous = new Map(reviewItems(parent.inventory).map((entry) => [entry.item_key, entry]));
+  const changedKeys = new Set(changes.map((entry) => entry.atom_key));
+  const pending = reviewItems(inventory).filter((entry) => {
+    const old = previous.get(entry.item_key);
+    const block = inventory.blocks!.find((entryBlock) => entryBlock.item_key === entry.item_key)!;
+    const atoms = [...block.primary_atoms, ...block.related_atoms];
+    const oldBlock = parent.inventory.blocks!.find((entryBlock) => entryBlock.item_key === entry.item_key);
+    const verdict = parent.verdicts.get(entry.item_key)?.verdict;
+    const extraEvidenceChanged = verdict?.evidence_refs.some((reference) => affectedRefs.has(refKey(reference))
+      || evidenceChanges.get(`ref:${refKey(reference)}`))
+      || verdict?.evidence_sources.some((pin) => evidenceChanges.get(`pin:${canonicalValue(pin)}`)
+        || pin.element_ids.some((element_id) => affectedRefs.has(refKey({ product_id: pin.product_id, artifact: pin.artifact, element_id }))));
+    return globalImpact || old === undefined || old.text_sha256 !== entry.text_sha256
+      || canonicalValue(oldBlock) !== canonicalValue(block)
+      || extraEvidenceChanged || atoms.some((key) => changedKeys.has(key)) || entry.refs.some((reference) => affectedRefs.has(refKey(reference)));
+  }).map((entry) => entry.item_key);
+  return { parent_review_ref: parent.review.id, pending_keys: pending, changes };
+}
+
+function requiredRecheckKeys(state: ReviewState): Set<string> {
+  return new Set([...state.inventory.recheck_impact?.pending_keys ?? [],
+    ...(state.review.scope_expansions ?? []).flatMap((entry) => entry.item_keys)]);
+}
+
+function assertSuccessfulParent(parent: ReviewState): void {
+  if (parent.review.coverage !== "reviewed" || parent.review.consistency_receipt === null
+    || parent.verdicts.get("__consistency__")?.kind !== "covered" || reviewItems(parent.inventory).some((entry) => !parent.verdicts.has(entry.item_key))
+    || [...parent.verdicts.values()].some((entry) => entry.kind !== "covered" && entry.kind !== "not_applicable")) {
+    return fullReviewRequired("Recheck requires a completed successful parent with fresh consistency and full coverage.");
+  }
 }
 
 function receipt(reviewId: string, sourceVersion: string, itemKey: string, text: string): string {
@@ -990,17 +1549,79 @@ function decodeCursor(value: string, review: ReviewRecord, itemKey: string, code
   return offset;
 }
 
+function explicitSourceEvidence(state: ReviewState, entry: InventoryItem, includeText = true): Record<string, unknown> {
+  const block = state.inventory.blocks?.find((value) => value.item_key === entry.item_key);
+  const keys = new Set(block === undefined ? [entry.item_key] : [...block.primary_atoms, ...block.related_atoms]);
+  // Current-candidate hydration is useful for verification, but is not frozen provenance.
+  const sources = [...keys].flatMap((key) => state.retainedSources.get(key) ?? []);
+  const unique = new Map(sources.map((source) => [canonicalValue(source), source]));
+  const pins = state.inventory.items.filter((atom) => keys.has(atom.item_key) && atom.item_key.startsWith("upstream:"))
+    .map((atom) => parseJson(Buffer.from(atom.text), "Review source pin") as SourcePin);
+  return {
+    source_version: {
+      domain: "candidate-version",
+      identity: state.review.candidate_ref,
+      source_version_sha256: state.review.source_version,
+    },
+    source_content: {
+      domain: "review-item-text-utf8",
+      identity: { item_key: entry.item_key },
+      source_content_sha256: digest(entry.text),
+      canonicalization: "Exact review-item UTF-8 text, without an added newline.",
+      ...(includeText ? { text: entry.text } : {}),
+    },
+    source_pins: pins.map((pin) => ({
+      domain: "immutable-object-bytes",
+      identity: { product_id: pin.product_id, artifact: pin.artifact, source_kind: pin.source_kind,
+        source_id: pin.source_id, generation: pin.generation, decision_ref: pin.decision_ref },
+      source_object_sha256: pin.object_sha256,
+      canonicalization: "Exact bytes identified by the retained upstream pin; no verdict substitution.",
+    })),
+    source_objects_status: [...keys].some((key) => state.retainedSources.get(key) !== undefined)
+      ? "retained-inventory" : state.inventory.blocks === undefined ? "unavailable-in-legacy-inventory" : "no-source-objects",
+    source_objects: [...unique.values()].map((source) => ({
+      domain: "immutable-object-bytes",
+      identity: {
+        product_id: source.productId,
+        kind: source.kind,
+        ...(source.artifact === undefined ? {} : { artifact: source.artifact }),
+        ...(source.decisionId === undefined ? {} : { decision_id: source.decisionId }),
+        ...(source.revision === undefined ? {} : { revision: source.revision }),
+      },
+      source_object_sha256: source.sha256,
+      canonicalization: "Exact immutable stored bytes; no reserialization.",
+    })),
+  };
+}
+
+function reviewText(state: ReviewState, entry: InventoryItem, representation?: ReviewRepresentation): string {
+  if (representation !== undefined && representation !== "explicit-v1") {
+    return fail("INVALID_INPUT", "Unsupported review representation; omit it for legacy or use explicit-v1.");
+  }
+  return representation === undefined ? entry.text : canonicalValue(explicitSourceEvidence(state, entry));
+}
+
+function validReviewReceipt(state: ReviewState, itemKey: string, value: string, entry?: InventoryItem): boolean {
+  const legacy = entry === undefined ? consistencyText(state) : entry.text;
+  if (value === receipt(state.review.id, state.review.source_version, itemKey, legacy)) return true;
+  const explicit = entry === undefined ? consistencyText(state, "explicit-v1") : reviewText(state, entry, "explicit-v1");
+  return value === receipt(state.review.id, state.review.source_version, itemKey, explicit);
+}
+
 function portion(
   state: ReviewState,
   itemKey: string,
   text: string,
   nextItemIndex: number | null,
   cursorValue?: string,
+  maxPoints = PORTION_CODE_POINTS,
+  representation?: ReviewRepresentation,
 ): ReviewPortion {
+  const cursorKey = representation === undefined ? itemKey : `${itemKey}:representation:${representation}`;
   const codePoints = Array.from(text);
-  const offset = cursorValue === undefined ? 0 : decodeCursor(cursorValue, state.review, itemKey, codePoints);
+  const offset = cursorValue === undefined ? 0 : decodeCursor(cursorValue, state.review, cursorKey, codePoints);
   if (offset > codePoints.length) return fail("STALE_CURSOR", "Product review continuation is outside current source.");
-  const part = codePoints.slice(offset, offset + PORTION_CODE_POINTS).join("");
+  const part = codePoints.slice(offset, offset + maxPoints).join("");
   const nextOffset = offset + Array.from(part).length;
   const complete = nextOffset >= codePoints.length;
   return {
@@ -1012,12 +1633,18 @@ function portion(
     next_cursor: complete ? null : cursor({
       review: state.review.id,
       source: state.review.source_version,
-      item: itemKey,
+      item: cursorKey,
       offset: nextOffset,
       prefix_sha256: digest(codePoints.slice(0, nextOffset).join("")),
     }),
     read_receipt: complete ? receipt(state.review.id, state.review.source_version, itemKey, text) : null,
     recorded_result: state.verdicts.get(itemKey)?.verdict ?? null,
+    ...(representation === undefined ? {} : {
+      representation,
+      verdict_digest_domain: "canonical-verdict-json-utf8-newline" as const,
+      verdict_object_sha256: state.verdicts.get(itemKey)?.object.object_sha256 ?? null,
+      object_sha256: state.verdicts.get(itemKey)?.object.object_sha256 ?? null,
+    }),
     next_item_index: nextItemIndex,
   };
 }
@@ -1387,29 +2014,59 @@ export async function startProductReview(input: {
   const context = decodeContext(input.context);
   const state = await loadCandidate(input.root, context, input.candidateRef);
   const fixes = input.fixes ?? [];
-  if ((input.mode === "followup") !== (input.parentReviewRef !== undefined && fixes.length > 0)) {
-    return fail("INVALID_INPUT", "Followup review requires a parent and at least one correction.");
+  if (!(["full", "followup", "recheck"] as ReviewMode[]).includes(input.mode)
+    || (input.mode === "full" && (input.parentReviewRef !== undefined || input.fixes !== undefined))
+    || (input.mode === "followup" && (input.parentReviewRef === undefined || fixes.length === 0))
+    || (input.mode === "recheck" && (input.parentReviewRef === undefined || input.fixes !== undefined))) {
+    return fail("INVALID_INPUT", "Full review has no parent or fixes; followup requires parent and fixes; recheck requires a successful parent without fixes.");
   }
   const parent = input.parentReviewRef ?? null;
   const id = exactReviewId(state.candidate, input.mode, parent, fixes);
   const path = reviewPath(input.candidateRef, id);
   const existing = await readSafe(input.root, path, context.canonical_workspace);
   if (existing !== null) {
-    const loaded = await loadReviewState(input.root, context, input.candidateRef, id);
+    const loaded = await loadReviewState(input.root, context, input.candidateRef, id, true, true);
     return { context: input.context, result: statusFor(loaded), replayed: true, operationRef: null };
   }
-  const inventory = await buildInventory(state);
-  const inventoryBytes = canonicalBytes(inventory);
-  const inventorySha256 = digest(inventoryBytes);
+  let inventory: ReviewInventory = { ...await buildInventory(state), recheck_basis: state.candidate };
+  if (input.mode === "full" || input.mode === "recheck") inventory = { ...inventory, blocks: buildSemanticBlocks(inventory.items) };
   const inherited: Verdict[] = [];
+  const sourceChecks = new Map<string, () => Promise<unknown>>();
+  if (input.mode === "recheck") {
+    let parentState: ReviewState;
+    let prior: CandidateState;
+    try {
+      parentState = await loadReviewState(input.root, context, input.candidateRef, parent!, true, true);
+      assertSuccessfulParent(parentState);
+      prior = await recheckBasis(parentState);
+      await verifyParentEvidence(parentState, prior);
+    } catch (error) {
+      if (!(error instanceof WorkflowError) || error.code === "PREREQUISITE_REQUIRED") throw error;
+      return fullReviewRequired("Parent history is unavailable or corrupt; inheritance is blocked.");
+    }
+    const impact = await deriveRecheckImpact(parentState, prior, state, inventory);
+    inventory = { ...inventory, recheck_impact: impact };
+    const pending = new Set(impact.pending_keys);
+    for (const entry of reviewItems(inventory)) {
+      if (!pending.has(entry.item_key)) inherited.push(inheritedVerdict(requireSavedVerdict(parentState.verdicts.get(entry.item_key)!), parent!));
+    }
+    sourceChecks.set("recheck-parent", async () => {
+      const bytes = await readSafe(input.root, reviewPath(input.candidateRef, parent!), context.canonical_workspace);
+      if (bytes === null || !bytes.equals(parentState.reviewBytes)) return fail("CONFLICT", "Recheck parent changed before mutation.");
+      await recheckBasis(parentState);
+      await verifyParentEvidence(parentState, prior);
+      await loadVerdicts(input.root, state.candidate.product_id, parentState.review, true);
+    });
+  }
   if (input.mode === "followup") {
-    const parentState = await loadReviewState(input.root, context, input.candidateRef, parent!);
+    const parentState = await loadReviewState(input.root, context, input.candidateRef, parent!, true, true);
+    if (parentState.inventory.blocks !== undefined) inventory = { ...inventory, blocks: buildSemanticBlocks(inventory.items) };
     if (parentState.review.coverage !== "gaps" || parentState.review.source_version === state.candidate.source_version) {
       return fail("PREREQUISITE_REQUIRED", "Followup review requires a completed gaps review over an earlier source.");
     }
-    const findings = new Set([...parentState.verdicts.values()]
-      .filter(({ verdict }) => verdict.verdict === "gap" || verdict.verdict === "conflict")
-      .map(({ verdict }) => verdict.item_key));
+    const findings = new Set([...parentState.verdicts.values()].map(requireSavedVerdict)
+      .filter((verdict) => verdict.verdict === "gap" || verdict.verdict === "conflict")
+      .map((verdict) => verdict.item_key));
     const fixesByFinding = new Map(fixes.map((fix) => [fix.finding_key, fix]));
     if (findings.size !== fixesByFinding.size || [...findings].some((finding) => !fixesByFinding.has(finding))) {
       return fail("PREREQUISITE_REQUIRED", "Followup corrections must address every recorded finding.");
@@ -1420,9 +2077,10 @@ export async function startProductReview(input: {
         return fail("PREREQUISITE_REQUIRED", "Correction impact is incomplete; start a full independent review.");
       }
     }
-    const currentItems = new Map(inventory.items.map((entry) => [entry.item_key, entry]));
-    for (const { verdict } of parentState.verdicts.values()) {
-      const previous = parentState.inventory.items.find((entry) => entry.item_key === verdict.item_key);
+    const currentItems = new Map(reviewItems(inventory).map((entry) => [entry.item_key, entry]));
+    for (const saved of parentState.verdicts.values()) {
+      const verdict = requireSavedVerdict(saved);
+      const previous = reviewItems(parentState.inventory).find((entry) => entry.item_key === verdict.item_key);
       const current = currentItems.get(verdict.item_key);
       if (
         current !== undefined && previous?.text_sha256 === current.text_sha256
@@ -1430,6 +2088,9 @@ export async function startProductReview(input: {
       ) inherited.push(inheritedVerdict(verdict, parent!));
     }
   }
+  const inventoryBytes = canonicalBytes(inventory);
+  if (inventoryBytes.byteLength > MAX_SOURCE_BYTES) return fail("SOURCE_LIMIT", "Retained review inputs exceed supported aggregate size.");
+  const inventorySha256 = digest(inventoryBytes);
   const review: ReviewRecord = {
     schema_version: 1,
     kind: "review",
@@ -1451,16 +2112,19 @@ export async function startProductReview(input: {
       object_sha256: digest(objectBytes),
     });
   }
-  const nextReview = { ...review, verdict_objects: inheritedObjects };
+  const verdictMap = new Map(inherited.map((verdict, index) => [verdict.item_key, {
+    verdict, object: inheritedObjects[index]!, kind: verdict.verdict, bytes: canonicalBytes(verdict).byteLength,
+  }]));
+  const retainedSources = new Map(inventory.items.map((entry) => [entry.item_key, entry.sources]));
+  const nextReview = indexedReview({ ...state, review, reviewBytes: canonicalBytes(review), inventory, retainedSources, verdicts: verdictMap });
   await validateProductRecord("Review", nextReview);
   const nextBytes = canonicalBytes(nextReview);
-  const verdictMap = new Map(inherited.map((verdict, index) => [verdict.item_key, { verdict, object: inheritedObjects[index]! }]));
   const nextState: ReviewState = {
-    ...state, review: nextReview, reviewBytes: nextBytes, inventory, verdicts: verdictMap,
+    ...state, review: nextReview, reviewBytes: nextBytes, inventory, retainedSources, verdicts: verdictMap, sourceChecks,
   };
   const result = statusFor(nextState);
   return mutateReview({
-    state,
+    state: { ...state, sourceChecks },
     scenario: "product_review_start",
     scenarioInput: { candidate_ref: input.candidateRef, mode: input.mode, parent_review_ref: parent, fixes },
     relativePath: path,
@@ -1476,6 +2140,44 @@ export async function startProductReview(input: {
       for (const verdict of inherited) await saveVerdictObject(input.root, state.candidate.product_id, verdict);
     },
   });
+}
+
+export async function expandProductReviewScope(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly reviewRef: string;
+  readonly itemKeys: readonly string[];
+  readonly reason: string;
+}): Promise<ProductReviewOutcome<ReviewStatus>> {
+  const context = decodeContext(input.context);
+  const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Scope expansion requires selected candidate context.");
+  const state = await loadReviewState(input.root, context, reference, input.reviewRef, true, true);
+  if (state.review.mode !== "recheck" || state.review.coverage !== "pending"
+    || state.review.source_version !== state.candidate.source_version) return fail("INVALID_STATE", "Only a current pending recheck can expand scope.");
+  if (input.itemKeys.length < 1 || input.itemKeys.length > 100 || new Set(input.itemKeys).size !== input.itemKeys.length
+    || input.reason.length < 1 || input.reason.length > 4096) return fail("INVALID_INPUT", "Expand 1–100 unique current block keys with a reason of 1–4096 characters.");
+  assertNonSensitive([input.reason]);
+  const known = new Set(reviewItems(state.inventory).map((entry) => entry.item_key));
+  if (input.itemKeys.some((key) => !known.has(key))) return fail("NOT_FOUND", "Scope expansion references a foreign or obsolete current block.");
+  const expansion = { item_keys: [...input.itemKeys].sort(), reason: input.reason };
+  if ((state.review.scope_expansions ?? []).some((entry) => canonicalValue(entry) === canonicalValue(expansion))) {
+    return { context: input.context, result: statusFor(state), replayed: true, operationRef: null };
+  }
+  const verdicts = new Map(state.verdicts);
+  for (const key of input.itemKeys) {
+    const saved = verdicts.get(key);
+    if (saved !== undefined && requireSavedVerdict(saved).inherited_from !== null) verdicts.delete(key);
+  }
+  verdicts.delete("__consistency__");
+  const review = indexedReview({ ...state, verdicts, review: { ...state.review, consistency_receipt: null,
+    scope_expansions: [...state.review.scope_expansions ?? [], expansion] } });
+  await validateProductRecord("Review", review);
+  const next: ReviewState = { ...state, verdicts, review, reviewBytes: canonicalBytes(review) };
+  if (next.reviewBytes.byteLength > MAX_SOURCE_BYTES) return fail("SOURCE_LIMIT", "Scope expansion exceeds supported review size.");
+  return mutateReview({ state, scenario: "product_review_scope_expand",
+    scenarioInput: { review_ref: input.reviewRef, item_keys: expansion.item_keys, reason: input.reason },
+    relativePath: reviewPath(reference, input.reviewRef), before: state.reviewBytes, after: next.reviewBytes,
+    result: statusFor(next), resultDefinition: "Success_ReviewStatus" });
 }
 
 export async function getProductReviewStatus(input: {
@@ -1495,16 +2197,159 @@ export async function readProductReviewItem(input: {
   readonly reviewRef: string;
   readonly itemIndex: number;
   readonly cursor?: string;
+  readonly representation?: ReviewRepresentation;
 }): Promise<ProductReviewOutcome<ReviewPortion>> {
   const context = decodeContext(input.context);
   const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
   const state = await loadReviewState(input.root, context, reference, input.reviewRef);
-  if (!Number.isSafeInteger(input.itemIndex) || input.itemIndex < 0 || input.itemIndex >= state.inventory.items.length) {
+  const items = reviewItems(state.inventory);
+  if (!Number.isSafeInteger(input.itemIndex) || input.itemIndex < 0 || input.itemIndex >= items.length) {
     return fail("NOT_FOUND", "Product review item does not exist.");
   }
-  const entry = state.inventory.items[input.itemIndex]!;
-  const result = portion(state, entry.item_key, entry.text, statusFor(state).next_item_index, input.cursor);
+  const entry = items[input.itemIndex]!;
+  await verifyUsedSources(state, entry);
+  await loadUsedVerdict(state, entry.item_key);
+  const result = portion(state, entry.item_key, reviewText(state, entry, input.representation), statusFor(state).next_item_index, input.cursor, PORTION_CODE_POINTS, input.representation);
   return { context: input.context, result, replayed: false, operationRef: null };
+}
+
+async function verifyUsedSources(state: ReviewState, entry: InventoryItem): Promise<void> {
+  for (const source of entry.sources ?? []) {
+    const key = canonicalValue(source);
+    if (state.sourceChecks?.has(key)) continue;
+    const check = () => readObject(state.root, source);
+    await check();
+    state.sourceChecks?.set(key, check);
+  }
+  const atomKeys = state.inventory.blocks?.find((block) => block.item_key === entry.item_key);
+  const included = new Set(atomKeys === undefined ? [entry.item_key] : [...atomKeys.primary_atoms, ...atomKeys.related_atoms]);
+  for (const atom of state.inventory.items) {
+    if (!included.has(atom.item_key) || !atom.item_key.startsWith("upstream:")) continue;
+    const key = `pin:${atom.text_sha256}`;
+    if (state.sourceChecks?.has(key)) continue;
+    const pin = parseJson(Buffer.from(atom.text), "Review source pin") as SourcePin;
+    const check = () => verifySourcePin(state.root, pin);
+    await check();
+    state.sourceChecks?.set(key, check);
+  }
+}
+
+async function validateFreshVerdict(state: ReviewState, value: Verdict): Promise<Verdict> {
+  const verdict = await validateProductRecord("Verdict", value);
+  if (verdict.inherited_from !== null) return fail("INVALID_INPUT", "Fresh review verdict cannot claim inherited provenance.");
+  const entry = reviewItems(state.inventory).find((item) => item.item_key === verdict.item_key);
+  if (entry === undefined) return fail("NOT_FOUND", "Product review item does not exist.");
+  await verifyUsedSources(state, entry);
+  if (!validReviewReceipt(state, entry.item_key, verdict.read_receipt, entry)) {
+    return fail("INVALID_INPUT", "Product review verdict requires a complete current read receipt.");
+  }
+  if ((verdict.verdict === "gap" || verdict.verdict === "conflict") && verdict.counterexample === null) {
+    return fail("INVALID_INPUT", "Gap or conflict verdict requires a concrete counterexample.");
+  }
+  for (const reference of verdict.evidence_refs) {
+    if (reference.product_id !== state.candidate.product_id) return fail("NOT_FOUND", "Review evidence belongs to another product.");
+  }
+  for (const pin of verdict.evidence_sources) {
+    const check = () => verifySourcePin(state.root, pin);
+    await check();
+    state.sourceChecks?.set(`evidence:${canonicalValue(pin)}`, check);
+  }
+  return verdict;
+}
+
+export async function readProductReviewBatch(input: {
+  readonly root: string; readonly context: string; readonly reviewRef: string;
+  readonly startIndex: number; readonly limit?: number; readonly representation?: ReviewRepresentation;
+}): Promise<ProductReviewOutcome<{ readonly items: readonly { item_index: number; portion: ReviewPortion }[]; readonly next_item_index: number | null }>> {
+  const context = decodeContext(input.context);
+  const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
+  const state = await loadReviewState(input.root, context, reference, input.reviewRef);
+  const inventory = reviewItems(state.inventory);
+  const limit = input.limit ?? 20;
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 20) return fail("INVALID_INPUT", "Review batch limit must be 1–20.");
+  if (!Number.isSafeInteger(input.startIndex) || input.startIndex < 0 || input.startIndex >= inventory.length) {
+    return fail("NOT_FOUND", "Product review batch start does not exist.");
+  }
+  const items: { item_index: number; portion: ReviewPortion }[] = [];
+  let next: number | null = input.startIndex;
+  const fits = (entries: typeof items, nextIndex: number | null): boolean => Buffer.byteLength(JSON.stringify({
+    protocol_version: 2, context: input.context, result: { items: entries, next_item_index: nextIndex },
+    replayed: false, operation_ref: null,
+  }), "utf8") <= 24 * 1024;
+  for (let index = input.startIndex; index < inventory.length && items.length < limit; index++) {
+    const entry = inventory[index]!;
+    await verifyUsedSources(state, entry);
+    await loadUsedVerdict(state, entry.item_key);
+    let points = PORTION_CODE_POINTS;
+    let part = portion(state, entry.item_key, reviewText(state, entry, input.representation), statusFor(state).next_item_index, undefined, points, input.representation);
+    let after = part.complete ? (index + 1 < inventory.length ? index + 1 : null) : index;
+    while (!fits([...items, { item_index: index, portion: part }], after) && items.length === 0 && points > 1) {
+      points = Math.floor(points / 2);
+      part = portion(state, entry.item_key, reviewText(state, entry, input.representation), statusFor(state).next_item_index, undefined, points, input.representation);
+      after = part.complete ? (index + 1 < inventory.length ? index + 1 : null) : index;
+    }
+    if (!fits([...items, { item_index: index, portion: part }], after)) {
+      if (items.length === 0) return fail("RESULT_LIMIT", "One review item exceeds the bounded batch response.");
+      break;
+    }
+    items.push({ item_index: index, portion: part });
+    next = after;
+    if (!part.complete) break;
+  }
+  return { context: input.context, result: { items, next_item_index: next }, replayed: false, operationRef: null };
+}
+
+export async function recordProductVerdictBatch(input: {
+  readonly root: string; readonly context: string; readonly reviewRef: string; readonly items: readonly Verdict[];
+}): Promise<ProductReviewOutcome<MutationResult>> {
+  if (input.items.length < 1 || input.items.length > 20) {
+    return fail("INVALID_INPUT", "Review batch must contain 1–20 verdicts.");
+  }
+  if (Buffer.byteLength(canonicalValue({ context: input.context, review_ref: input.reviewRef, items: input.items }), "utf8") > 131_072) {
+    return fail("SOURCE_LIMIT", "Review batch arguments exceed 131072 UTF-8 bytes.");
+  }
+  const context = decodeContext(input.context);
+  const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
+  const state = await loadReviewState(input.root, context, reference, input.reviewRef);
+  if (state.review.source_version !== state.candidate.source_version) return fail("CONFLICT", "Product review source changed.");
+  const scenario = "product_review_record_batch";
+  const scenarioInput = { review_ref: input.reviewRef, items: input.items };
+  const id = operationId(scenario, state.review.source_version, scenarioInput);
+  try {
+    const replay = await replayProductMutationResult({ root: input.root, productId: state.candidate.product_id,
+      operationId: id, scenario, intent: { schema_version: 1, kind: "operation_intent", scenario, input: scenarioInput } });
+    for (const verdict of input.items) {
+      const saved = await loadUsedVerdict(state, verdict.item_key);
+      if (saved === undefined || canonicalValue(saved.verdict) !== canonicalValue(verdict)) {
+        return fail("RECOVERY_REQUIRED", "Retained batch evidence no longer matches its recorded result.");
+      }
+    }
+    return { context: input.context, result: replay.result as MutationResult, replayed: true, operationRef: id };
+  } catch (error) {
+    if (!(error instanceof WorkflowError) || error.code !== "NOT_FOUND") throw error;
+  }
+  if (state.review.coverage !== "pending") return fail("INVALID_STATE", "Completed review cannot accept a new batch.");
+  const keys = new Set<string>();
+  const verdicts: Verdict[] = [];
+  for (const [index, value] of input.items.entries()) {
+    try {
+      const verdict = await validateFreshVerdict(state, value);
+      if (keys.has(verdict.item_key)) return fail("INVALID_INPUT", "Review batch contains duplicate item keys.", { index });
+      if (state.verdicts.has(verdict.item_key)) return fail("CONFLICT", "Review batch overlaps recorded items.", { index });
+      keys.add(verdict.item_key);
+      verdicts.push(verdict);
+    } catch (error) {
+      if (error instanceof WorkflowError) return fail(error.code, error.message, { ...error.details, index });
+      throw error;
+    }
+  }
+  const next = indexedReview(state, verdicts);
+  await validateProductRecord("Review", next);
+  return mutateReview({ state, scenario, scenarioInput, relativePath: reviewPath(reference, state.review.id),
+    before: state.reviewBytes, after: canonicalBytes(next), resultDefinition: "Success_MutationResult",
+    result: mutationResult(id, state.candidate, state.review.id, "Continue with the next unrecorded semantic block."),
+    saveObjects: async () => { for (const verdict of verdicts) await saveVerdictObject(input.root, state.candidate.product_id, verdict); },
+  });
 }
 
 export async function recordProductVerdict(input: {
@@ -1518,22 +2363,8 @@ export async function recordProductVerdict(input: {
   const state = await loadReviewState(input.root, context, reference, input.reviewRef);
   if (state.review.source_version !== state.candidate.source_version) return fail("CONFLICT", "Product review source changed.");
   if (state.review.coverage !== "pending") return fail("INVALID_STATE", "Completed product review cannot accept verdicts.");
-  const verdict = await validateProductRecord("Verdict", input.value);
-  if (verdict.inherited_from !== null) return fail("INVALID_INPUT", "Fresh review verdict cannot claim inherited provenance.");
-  const index = state.inventory.items.findIndex((entry) => entry.item_key === verdict.item_key);
-  if (index < 0) return fail("NOT_FOUND", "Product review item does not exist.");
-  const entry = state.inventory.items[index]!;
-  if (verdict.read_receipt !== receipt(state.review.id, state.review.source_version, entry.item_key, entry.text)) {
-    return fail("INVALID_INPUT", "Product review verdict requires a complete current read receipt.");
-  }
-  if ((verdict.verdict === "gap" || verdict.verdict === "conflict") && verdict.counterexample === null) {
-    return fail("INVALID_INPUT", "Gap or conflict verdict requires a concrete counterexample.");
-  }
-  for (const referenceValue of verdict.evidence_refs) {
-    if (referenceValue.product_id !== state.candidate.product_id) return fail("NOT_FOUND", "Review evidence belongs to another product.");
-  }
-  for (const pin of verdict.evidence_sources) await verifySourcePin(input.root, pin);
-  const existing = state.verdicts.get(verdict.item_key);
+  const verdict = await validateFreshVerdict(state, input.value);
+  const existing = await loadUsedVerdict(state, verdict.item_key);
   const id = operationId("product_review_record", state.review.source_version, {
     review_ref: state.review.id, value: verdict,
   });
@@ -1549,7 +2380,7 @@ export async function recordProductVerdict(input: {
     id: deterministicUuid(`${state.candidate.product_id}:${verdict.item_key}:${digest(verdictBytes)}`),
     object_sha256: digest(verdictBytes),
   };
-  const review: ReviewRecord = { ...state.review, verdict_objects: [...state.review.verdict_objects, object] };
+  const review = indexedReview(state, [verdict]);
   await validateProductRecord("Review", review);
   const reviewBytes = canonicalBytes(review);
   return mutateReview({
@@ -1568,18 +2399,84 @@ export async function recordProductVerdict(input: {
   });
 }
 
+function consistencyText(state: ReviewState, representation?: ReviewRepresentation): string {
+  if (representation !== undefined && representation !== "explicit-v1") {
+    return fail("INVALID_INPUT", "Unsupported review representation; omit it for legacy or use explicit-v1.");
+  }
+  if (state.review.mode === "followup") return representation === undefined ? state.inventory.consistency_text
+    : canonicalValue({ representation, sources: state.inventory.items.map((entry) => explicitSourceEvidence(state, entry)) });
+  if (reviewItems(state.inventory).some((entry) => !state.verdicts.has(entry.item_key))) {
+    return fail("PREREQUISITE_REQUIRED", "Read and judge every semantic block before cross-block consistency.");
+  }
+  if (state.review.mode === "recheck") {
+    const impact = { ...state.inventory.recheck_impact, scope_expansions: state.review.scope_expansions ?? [] };
+    const results = [...state.verdicts].filter(([key]) => key !== "__consistency__").sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, value]) => ({ item_key: key, verdict: value.kind, inherited_from: requireSavedVerdict(value).inherited_from,
+        ...(representation === undefined ? { object_sha256: value.object.object_sha256 } : {
+          verdict_object_sha256: value.object.object_sha256, object_sha256: value.object.object_sha256,
+          verdict_digest_domain: "canonical-verdict-json-utf8-newline",
+        }) }));
+    return representation === undefined ? `Recheck whole-current-artifact consistency; inherited attribution remains provisional.\n${state.inventory.consistency_text}\n${canonicalValue({ impact, results })}`
+      : canonicalValue({ representation, impact, results, sources: state.inventory.items.map((entry) => explicitSourceEvidence(state, entry)) });
+  }
+  if (representation !== undefined) {
+    const entries = new Map(reviewItems(state.inventory).map((entry) => [entry.item_key, entry]));
+    return canonicalValue({ representation, source_version: state.review.source_version, blocks: state.inventory.blocks,
+      results: [...state.verdicts].filter(([key]) => key !== "__consistency__")
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, value]) => ({ item_key: key, verdict: value.kind,
+          verdict_digest_domain: "canonical-verdict-json-utf8-newline",
+          verdict_object_sha256: value.object.object_sha256,
+          object_sha256: value.object.object_sha256,
+          source_evidence: explicitSourceEvidence(state, entries.get(key)!, false),
+        })),
+    });
+  }
+  return `Review cross-block consistency using the exact blocks already read. Re-read any context no longer available.\nSource: ${state.review.source_version}\n`
+    + canonicalValue({ blocks: state.inventory.blocks, results: [...state.verdicts]
+      .filter(([key]) => key !== "__consistency__")
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, value]) => ({ item_key: key, verdict: value.kind, object_sha256: value.object.object_sha256 })) });
+}
+
 export async function readProductReviewConsistency(input: {
   readonly root: string;
   readonly context: string;
   readonly reviewRef: string;
   readonly cursor?: string;
+  readonly representation?: ReviewRepresentation;
 }): Promise<ProductReviewOutcome<ReviewPortion>> {
   const context = decodeContext(input.context);
   const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
   const state = await loadReviewState(input.root, context, reference, input.reviewRef);
-  if (state.review.mode !== "followup") return fail("INVALID_STATE", "Only followup review has a consistency gate.");
-  const result = portion(state, "__consistency__", state.inventory.consistency_text, statusFor(state).next_item_index, input.cursor);
+  if (state.review.mode !== "followup" && state.inventory.blocks === undefined) return fail("INVALID_STATE", "Legacy full review has no consistency gate.");
+  if (state.review.mode === "followup") {
+    for (const entry of reviewItems(state.inventory)) await verifyUsedSources(state, entry);
+  }
+  await loadUsedVerdict(state, "__consistency__");
+  const result = portion(state, "__consistency__", consistencyText(state, input.representation), statusFor(state).next_item_index, input.cursor, PORTION_CODE_POINTS, input.representation);
   return { context: input.context, result, replayed: false, operationRef: null };
+}
+
+// Keep the public portion shape unchanged. The owning reader recomputes its exact
+// bounded range from immutable source text and validates the requested prefix.
+export async function verifyProductReviewDelivery(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly reviewRef: string;
+  readonly itemIndex?: number;
+  readonly cursor?: string;
+  readonly representation?: ReviewRepresentation;
+}, delivered: Record<string, unknown>): Promise<void> {
+  const expected = input.itemIndex === undefined
+    ? await readProductReviewConsistency(input)
+    : await readProductReviewItem({ ...input, itemIndex: input.itemIndex });
+  for (const key of ["review_ref", "source_version", "item_key", "representation", "complete", "next_cursor", "read_receipt"] as const) {
+    if (delivered[key] !== expected.result[key]) return fail("SOURCE_CHANGED", "Review delivery differs from the exact owning source range.");
+  }
+  if (typeof delivered.text !== "string" || delivered.text !== expected.result.text) {
+    return fail("SOURCE_CHANGED", "Review delivery text differs from the exact owning source range.");
+  }
 }
 
 export async function recordProductReviewConsistency(input: {
@@ -1594,11 +2491,13 @@ export async function recordProductReviewConsistency(input: {
   const context = decodeContext(input.context);
   const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
   const state = await loadReviewState(input.root, context, reference, input.reviewRef);
-  if (state.review.mode !== "followup" || state.review.coverage !== "pending") {
+  if ((state.review.mode !== "followup" && state.inventory.blocks === undefined) || state.review.coverage !== "pending") {
     return fail("INVALID_STATE", "Product review consistency gate is unavailable.");
   }
-  const expectedReceipt = receipt(state.review.id, state.review.source_version, "__consistency__", state.inventory.consistency_text);
-  if (input.readReceipt !== expectedReceipt) return fail("INVALID_INPUT", "Consistency verdict requires complete current read receipt.");
+  if (state.review.mode === "followup") {
+    for (const entry of reviewItems(state.inventory)) await verifyUsedSources(state, entry);
+  }
+  if (!validReviewReceipt(state, "__consistency__", input.readReceipt)) return fail("INVALID_INPUT", "Consistency verdict requires complete current read receipt.");
   if ((input.verdict === "gap" || input.verdict === "conflict") && input.counterexample === null) {
     return fail("INVALID_INPUT", "Consistency gap requires a concrete counterexample.");
   }
@@ -1617,8 +2516,8 @@ export async function recordProductReviewConsistency(input: {
     review_ref: state.review.id, read_receipt: input.readReceipt, verdict: input.verdict,
     explanation: input.explanation, counterexample: input.counterexample,
   });
-  const result = mutationResult(id, state.candidate, state.review.id, "Complete the followup review after all item verdicts are recorded.");
-  const existing = state.verdicts.get("__consistency__");
+  const result = mutationResult(id, state.candidate, state.review.id, "Complete the review after all required verdicts are recorded.");
+  const existing = await loadUsedVerdict(state, "__consistency__");
   if (existing !== undefined) {
     if (canonicalValue(existing.verdict) !== canonicalValue(verdict)) return fail("CONFLICT", "Consistency verdict already differs.");
     return { context: input.context, result, replayed: true, operationRef: id };
@@ -1629,8 +2528,7 @@ export async function recordProductReviewConsistency(input: {
     object_sha256: digest(verdictBytes),
   };
   const review: ReviewRecord = {
-    ...state.review,
-    verdict_objects: [...state.review.verdict_objects, object],
+    ...indexedReview(state, [verdict]),
     consistency_receipt: input.readReceipt,
   };
   await validateProductRecord("Review", review);
@@ -1660,19 +2558,20 @@ export async function completeProductReview(input: {
 }): Promise<ProductReviewOutcome<ReviewStatus>> {
   const context = decodeContext(input.context);
   const reference = context.candidate_ref ?? fail("INVALID_INPUT", "Product review requires selected candidate context.");
-  const state = await loadReviewState(input.root, context, reference, input.reviewRef);
+  const state = await loadReviewState(input.root, context, reference, input.reviewRef, true, true);
   if (state.review.source_version !== state.candidate.source_version) return fail("CONFLICT", "Product review source changed.");
   if (state.review.coverage !== "pending") {
     return { context: input.context, result: statusFor(state), replayed: true, operationRef: null };
   }
-  const missing = state.inventory.items.find((entry) => !state.verdicts.has(entry.item_key));
+  const missing = reviewItems(state.inventory).find((entry) => !state.verdicts.has(entry.item_key));
   if (missing !== undefined) return fail("PREREQUISITE_REQUIRED", "Product review still has unrecorded inventory items.");
   const consistency = state.verdicts.get("__consistency__")?.verdict;
-  if (state.review.mode === "followup" && (state.review.consistency_receipt === null || consistency === undefined)) {
+  if ((state.review.mode === "followup" || state.inventory.blocks !== undefined)
+    && (state.review.consistency_receipt === null || consistency === undefined)) {
     return fail("PREREQUISITE_REQUIRED", "Followup review requires a fresh whole-artifact consistency verdict.");
   }
-  const gap = [...state.verdicts.values()].some(({ verdict }) => verdict.verdict === "gap" || verdict.verdict === "conflict");
-  const review: ReviewRecord = { ...state.review, coverage: gap ? "gaps" : "reviewed" };
+  const gap = [...state.verdicts.values()].some(({ kind }) => kind === "gap" || kind === "conflict");
+  const review: ReviewRecord = { ...indexedReview(state), coverage: gap ? "gaps" : "reviewed" };
   await validateProductRecord("Review", review);
   const reviewBytes = canonicalBytes(review);
   const verdicts = state.verdicts;
@@ -1738,6 +2637,15 @@ async function checkCandidateState(state: CandidateState, requiredReview?: strin
   else selected = reviews.find((review) => review.source_version === state.candidate.source_version && review.coverage === "reviewed");
   if (selected === undefined || selected.source_version !== state.candidate.source_version || selected.coverage !== "reviewed") {
     issues.push({ code: "REVIEW_REQUIRED", message: "Candidate requires a fresh complete independent review.", ref: null });
+  } else {
+    const audited = await loadReviewState(state.root, state.context,
+      { product_id: state.candidate.product_id, candidate_id: state.candidate.candidate_id }, selected.id, false, true);
+    if (reviewItems(audited.inventory).some((entry) => !audited.verdicts.has(entry.item_key))
+      || [...audited.verdicts.values()].some((saved) => saved.kind === "gap" || saved.kind === "conflict")
+      || ((audited.inventory.blocks !== undefined || selected.mode === "followup")
+        && (!audited.verdicts.has("__consistency__") || selected.consistency_receipt === null))) {
+      issues.push({ code: "REVIEW_REQUIRED", message: "Retained review coverage is incomplete or inconsistent.", ref: null });
+    }
   }
   const readyArtifacts = new Map(state.generation.generation.ready_artifacts.map((entry) => [entry.artifact, entry]));
   for (const artifact of lineageArtifacts(state.candidate.artifact)) {

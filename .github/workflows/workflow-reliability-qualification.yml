@@ -1,0 +1,51 @@
+name: Workflow reliability qualification snapshot
+
+on:
+  push:
+    branches:
+      - feature/workflow-reliability-qualification
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    name: Qualification (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-15
+          - windows-2025
+        node:
+          - 22.20.0
+          - 24.14.0
+    env:
+      CI: "1"
+      DISABLE_TELEMETRY: "1"
+    steps:
+      - name: Check out qualification snapshot
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: false
+      - name: Verify exact qualification inputs
+        run: node .github/qualification/verify-workflow-reliability-inputs.mjs
+      - name: Install pinned dependencies
+        run: npm ci
+      - name: Build MCP
+        run: npm run build
+      - name: Verify generated distributions
+        run: npm run generate:check
+      - name: Lint MCP
+        run: npm run lint
+      - name: Test public, packed and transport acceptance
+        run: node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs packages/engineer-agent-workflow-mcp/test/transport.test.mjs packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs
+      - name: Run native product qualification
+        run: node scripts/qualify-product-workflows.mjs --run --skip-model-trials

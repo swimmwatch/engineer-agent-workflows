@@ -392,3 +392,72 @@ test("P14 Q31/Q32 execute durable native-answer and no-answer resume flow", asyn
   assert.deepEqual(candidate.scope.confirmed_answer, answered.result.decision_ref);
   assert.deepEqual(unanswered.result.decision_ref, resumed.result.question_ref);
 });
+
+const ARCHITECTURE_LENSES = {
+  "missing-choice": /material technology choices[\s\S]*actual recorded answers/iu,
+  "missing-diagram": /present[\s\S]*component diagram[\s\S]*responsibilities[\s\S]*boundaries[\s\S]*dependencies/iu,
+  "missing-flow": /data flows/iu,
+  "missing-state-owner": /databases[\s\S]*durable state owners[\s\S]*readers[\s\S]*writers/iu,
+  "unverified-integration": /unverified integrations[\s\S]*assumptions[\s\S]*required validation/iu,
+  "compact-na": /reasons for N\/A[\s\S]*do not invent infrastructure/iu,
+};
+
+// These checks qualify mandatory instructions, not actual model execution.
+// The same requests are used by separate fresh-context host trials.
+const architectureFixtures = JSON.parse(await read(
+  "tests/fixtures/product-workflows/architecture-readiness.json",
+));
+for (const [host, skillPath] of Object.entries({
+  canonical: "skills/technical-design/SKILL.md",
+  codex: "plugins/codex/engineer-agent-workflows/skills/technical-design/SKILL.md",
+  claude: "plugins/claude-code/engineer-agent-workflows/skills/technical-design/SKILL.md",
+})) {
+  test(`I09 ${host} owns readiness before creating or resuming a candidate`, async () => {
+    const document = await read(skillPath);
+    const draft = document.indexOf("`product_artifact_draft`");
+    const upfront = document.slice(0, draft);
+    assert.ok(draft > 0);
+    assert.match(upfront, /new and resumed candidates/iu);
+    assert.match(upfront, /never call `product_candidate_check` or `product_review_start`/iu);
+    assert.match(upfront, /directly or through sessions/iu);
+    assert.match(upfront, /diagnostic shortcut/iu);
+    assert.match(upfront, /current architecture is visible[\s\S]*applicable material answers are actually recorded/iu);
+    assert.match(upfront, /overrides[\s\S]*generic authoring check/iu);
+    assert.match(upfront, /inspect saved evidence through readers first/iu);
+    assert.match(upfront, /Present its component diagram and flows in an assistant message; source\/tool reads do not count/iu);
+  });
+  for (const scenario of architectureFixtures.cases) {
+    test(`I09 ${host} mandatory checkpoint covers ${scenario.id} simulation`, async () => {
+      assert.equal(architectureFixtures.classification, "SIMULATION_ONLY");
+      assert.ok(scenario.request.length > 0);
+      if (scenario.fixtureAnswer) assert.match(scenario.fixtureAnswer, /^SIMULATION ONLY:/u);
+      const document = await read(skillPath);
+      const step = document.match(/^8\. [^\n]+/mu)?.[0];
+      assert.ok(step);
+      const readiness = step.indexOf("`product_candidate_check`");
+      const checkpoint = step.slice(0, readiness);
+      assert.ok(readiness > 0);
+      assert.match(checkpoint, /Before readiness checking or review/iu);
+      assert.match(checkpoint, ARCHITECTURE_LENSES[scenario.id]);
+      assert.match(checkpoint, /Hold readiness while[\s\S]*material choice[\s\S]*diagram\/flow[\s\S]*state owner[\s\S]*missing/iu);
+      assert.match(checkpoint, /only then call/iu);
+      assert.ok(step.indexOf("`product_review_start`") > readiness);
+      assert.match(document, /independent reviewer[\s\S]*verdicts[\s\S]*completion/iu);
+      if (host !== "canonical") {
+        assert.match(document, host === "codex" ? /request_user_input/u : /AskUserQuestion/u);
+        assert.doesNotMatch(document, host === "codex" ? /AskUserQuestion/u : /request_user_input/u);
+      }
+    });
+  }
+}
+
+test("I09 technology detail retains evidence and proportionate architecture lenses", async () => {
+  const detail = await read("skills/technical-design/references/technology-decisions.md");
+  assert.match(detail, /Inventory existing constraints, accepted choices/iu);
+  assert.match(detail, /alternatives, evidence, rationale, constraints and conditions for revisiting/iu);
+  assert.match(detail, /component diagram/iu);
+  assert.match(detail, /who reads[\s\S]*mutates/iu);
+  assert.match(detail, /unverified integrations[\s\S]*validation/iu);
+  assert.match(detail, /N\/A[\s\S]*reason/iu);
+  assert.match(detail, /before[\s\S]*product_candidate_check[\s\S]*product_review_start/iu);
+});

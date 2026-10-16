@@ -45,6 +45,154 @@
     }
   ],
   "definitions": {
+    "product_review_get_batch_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "review_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "start_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "representation": {
+          "type": "string",
+          "enum": [
+            "explicit-v1"
+          ],
+          "description": "Opt-in explicit digest domains; omit for the unchanged legacy result."
+        }
+      },
+      "required": [
+        "context",
+        "review_ref",
+        "start_index"
+      ]
+    },
+    "product_review_record_batch_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "review_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/definitions/Verdict"
+          }
+        }
+      },
+      "required": [
+        "context",
+        "review_ref",
+        "items"
+      ]
+    },
+    "ReviewBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "item_index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "portion": {
+                "$ref": "#/definitions/ReviewPortion"
+              }
+            },
+            "required": [
+              "item_index",
+              "portion"
+            ]
+          }
+        },
+        "next_item_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_item_index"
+      ]
+    },
+    "Success_ReviewBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/ReviewBatch"
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
+    },
     "Uuid": {
       "type": "string",
       "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
@@ -1063,6 +1211,7 @@
             "product_review_start",
             "product_review_complete",
             "product_review_record",
+            "product_review_record_batch",
             "product_review_consistency_record",
             "product_amendment_prepare",
             "product_amendment_rebase",
@@ -1075,7 +1224,8 @@
             "product_safety_block",
             "product_safety_resolve",
             "product_operation_resume",
-            "product_operation_abandon"
+            "product_operation_abandon",
+            "product_review_scope_expand"
           ]
         },
         "intent_sha256": {
@@ -1175,85 +1325,268 @@
       ]
     },
     "Review": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "schema_version": {
-          "const": 1
-        },
-        "kind": {
-          "const": "review"
-        },
-        "id": {
-          "$ref": "#/definitions/Uuid"
-        },
-        "candidate_ref": {
-          "$ref": "#/definitions/CandidateRef"
-        },
-        "source_version": {
-          "$ref": "#/definitions/Digest"
-        },
-        "mode": {
-          "type": "string",
-          "enum": [
-            "full",
-            "followup"
-          ]
-        },
-        "parent": {
-          "anyOf": [
-            {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "kind": {
+              "const": "review"
+            },
+            "id": {
               "$ref": "#/definitions/Uuid"
             },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "coverage": {
-          "type": "string",
-          "enum": [
-            "pending",
-            "reviewed",
-            "gaps",
-            "stale"
-          ]
-        },
-        "inventory_sha256": {
-          "$ref": "#/definitions/Digest"
-        },
-        "verdict_objects": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RecordObject"
-          },
-          "maxItems": 10000
-        },
-        "consistency_receipt": {
-          "anyOf": [
-            {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 512
+            "candidate_ref": {
+              "$ref": "#/definitions/CandidateRef"
             },
-            {
-              "type": "null"
+            "source_version": {
+              "$ref": "#/definitions/Digest"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "full",
+                "followup",
+                "recheck"
+              ]
+            },
+            "parent": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "coverage": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "reviewed",
+                "gaps",
+                "stale"
+              ]
+            },
+            "inventory_sha256": {
+              "$ref": "#/definitions/Digest"
+            },
+            "verdict_objects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RecordObject"
+              },
+              "maxItems": 10000
+            },
+            "consistency_receipt": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scope_expansions": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "item_keys": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    }
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  }
+                },
+                "required": [
+                  "item_keys",
+                  "reason"
+                ]
+              }
             }
+          },
+          "required": [
+            "schema_version",
+            "kind",
+            "id",
+            "candidate_ref",
+            "source_version",
+            "mode",
+            "parent",
+            "coverage",
+            "inventory_sha256",
+            "verdict_objects",
+            "consistency_receipt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 2
+            },
+            "kind": {
+              "const": "review"
+            },
+            "id": {
+              "$ref": "#/definitions/Uuid"
+            },
+            "candidate_ref": {
+              "$ref": "#/definitions/CandidateRef"
+            },
+            "source_version": {
+              "$ref": "#/definitions/Digest"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "full",
+                "followup",
+                "recheck"
+              ]
+            },
+            "parent": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "coverage": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "reviewed",
+                "gaps",
+                "stale"
+              ]
+            },
+            "inventory_sha256": {
+              "$ref": "#/definitions/Digest"
+            },
+            "consistency_receipt": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "verdict_index": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Uuid"
+                  },
+                  "object_sha256": {
+                    "$ref": "#/definitions/Digest"
+                  },
+                  "item_key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "verdict": {
+                    "type": "string",
+                    "enum": [
+                      "covered",
+                      "gap",
+                      "conflict",
+                      "not_applicable"
+                    ]
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16777216
+                  }
+                },
+                "required": [
+                  "id",
+                  "object_sha256",
+                  "item_key",
+                  "verdict",
+                  "bytes"
+                ]
+              }
+            },
+            "scope_expansions": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "item_keys": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    }
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  }
+                },
+                "required": [
+                  "item_keys",
+                  "reason"
+                ]
+              }
+            }
+          },
+          "required": [
+            "schema_version",
+            "kind",
+            "id",
+            "candidate_ref",
+            "source_version",
+            "mode",
+            "parent",
+            "coverage",
+            "inventory_sha256",
+            "consistency_receipt",
+            "verdict_index"
           ]
         }
-      },
-      "required": [
-        "schema_version",
-        "kind",
-        "id",
-        "candidate_ref",
-        "source_version",
-        "mode",
-        "parent",
-        "coverage",
-        "inventory_sha256",
-        "verdict_objects",
-        "consistency_receipt"
       ]
     },
     "SafetyBlock": {
@@ -3036,7 +3369,15 @@
     "product_capabilities_input": {
       "type": "object",
       "additionalProperties": false,
-      "properties": {},
+      "properties": {
+        "representation": {
+          "type": "string",
+          "enum": [
+            "explicit-v1"
+          ],
+          "description": "Opt-in explicit digest domains; omit for the unchanged legacy result."
+        }
+      },
       "required": []
     },
     "product_open_input": {
@@ -4614,7 +4955,8 @@
           "type": "string",
           "enum": [
             "full",
-            "followup"
+            "followup",
+            "recheck"
           ]
         },
         "parent_review_ref": {
@@ -4680,19 +5022,38 @@
             }
           },
           "else": {
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "parent_review_ref"
-                  ]
-                },
-                {
-                  "required": [
-                    "fixes"
-                  ]
+            "if": {
+              "properties": {
+                "mode": {
+                  "const": "recheck"
                 }
-              ]
+              }
+            },
+            "then": {
+              "required": [
+                "parent_review_ref"
+              ],
+              "not": {
+                "required": [
+                  "fixes"
+                ]
+              }
+            },
+            "else": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "parent_review_ref"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "fixes"
+                    ]
+                  }
+                ]
+              }
             }
           }
         }
@@ -4754,6 +5115,13 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 8192
+        },
+        "representation": {
+          "type": "string",
+          "enum": [
+            "explicit-v1"
+          ],
+          "description": "Opt-in explicit digest domains; omit for the unchanged legacy result."
         }
       },
       "required": [
@@ -4800,6 +5168,13 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 8192
+        },
+        "representation": {
+          "type": "string",
+          "enum": [
+            "explicit-v1"
+          ],
+          "description": "Opt-in explicit digest domains; omit for the unchanged legacy result."
         }
       },
       "required": [
@@ -5046,6 +5421,433 @@
         "task_id",
         "specification_id",
         "specification_slug"
+      ]
+    },
+    "TaskCheckSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "source_version": {
+          "$ref": "#/definitions/Digest"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "ref": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/Ref"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "ref"
+            ]
+          },
+          "maxItems": 5
+        },
+        "semantic_correctness_proven": {
+          "const": false
+        },
+        "user_consent_authenticated": {
+          "const": false
+        },
+        "review_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "task_id": {
+          "$ref": "#/definitions/TaskId"
+        },
+        "task_state": {
+          "type": "string",
+          "enum": [
+            "reserved",
+            "specified",
+            "planned",
+            "started",
+            "blocked",
+            "completed"
+          ]
+        },
+        "specification_source_version": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specification_version": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specification_review_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coverage_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "pending",
+                "reviewed",
+                "gaps",
+                "stale"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check_ref": {
+          "$ref": "#/definitions/Digest"
+        },
+        "product_pin_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "plan_pin_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "issue_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "issues_truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "source_version",
+        "issues",
+        "semantic_correctness_proven",
+        "user_consent_authenticated",
+        "coverage_status",
+        "review_ref",
+        "task_id",
+        "task_state",
+        "specification_source_version",
+        "specification_version",
+        "specification_review_ref",
+        "check_ref",
+        "product_pin_count",
+        "plan_pin_count",
+        "issue_count",
+        "issues_truncated"
+      ]
+    },
+    "TaskInputDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "check_ref": {
+          "$ref": "#/definitions/Digest"
+        },
+        "section": {
+          "type": "string",
+          "enum": [
+            "issues",
+            "product_pins",
+            "plan_pins"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "element_offset": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "complete": {
+                "type": "boolean"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64
+                      },
+                      "message": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 512
+                      },
+                      "ref": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/definitions/Ref"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "message",
+                      "ref"
+                    ]
+                  },
+                  {
+                    "$ref": "#/definitions/SourcePin"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "relative_path": {
+                        "$ref": "#/definitions/RelativePath"
+                      },
+                      "sha256": {
+                        "$ref": "#/definitions/Digest"
+                      }
+                    },
+                    "required": [
+                      "relative_path",
+                      "sha256"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "index",
+              "element_offset",
+              "complete",
+              "value"
+            ]
+          }
+        },
+        "total_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "check_ref",
+        "section",
+        "items",
+        "total_items",
+        "next_cursor",
+        "complete"
+      ]
+    },
+    "Success_TaskCheckSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/TaskCheckSummary"
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
+    },
+    "Success_TaskInputDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/TaskInputDetails"
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
+    },
+    "task_inputs_details_get_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "task_id": {
+          "$ref": "#/definitions/TaskId"
+        },
+        "packet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "check_ref": {
+          "$ref": "#/definitions/Digest"
+        },
+        "section": {
+          "type": "string",
+          "enum": [
+            "issues",
+            "product_pins",
+            "plan_pins"
+          ]
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "context",
+        "task_id",
+        "check_ref",
+        "section"
       ]
     },
     "task_inputs_check_input": {
@@ -5313,42 +6115,13 @@
       ]
     },
     "Capabilities": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "contract": {
-          "const": "product-1"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LegacyCapabilities"
         },
-        "schema_version": {
-          "const": 1
-        },
-        "tools": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 128
-          },
-          "maxItems": 100
-        },
-        "root_state": {
-          "type": "string",
-          "enum": [
-            "available",
-            "missing",
-            "invalid"
-          ]
-        },
-        "runtime_supported": {
-          "type": "boolean"
+        {
+          "$ref": "#/definitions/ExplicitCapabilities"
         }
-      },
-      "required": [
-        "contract",
-        "schema_version",
-        "tools",
-        "root_state",
-        "runtime_supported"
       ]
     },
     "OpenResult": {
@@ -5501,56 +6274,170 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "source_version": { "$ref": "#/definitions/Digest" },
-        "candidate_ref": { "$ref": "#/definitions/CandidateRef" },
-        "state": { "type": "string", "enum": [ "needs_user", "no_answer", "complete" ] },
-        "question_ref": { "anyOf": [ { "$ref": "#/definitions/DecisionRef" }, { "type": "null" } ] },
-        "category": { "anyOf": [ { "type": "string", "minLength": 1, "maxLength": 128 }, { "type": "null" } ] },
-        "question": { "anyOf": [ { "type": "string", "minLength": 1, "maxLength": 8192 }, { "type": "null" } ] },
+        "source_version": {
+          "$ref": "#/definitions/Digest"
+        },
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "needs_user",
+            "no_answer",
+            "complete"
+          ]
+        },
+        "question_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DecisionRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "category": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "question": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "options": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "id": { "type": "string", "minLength": 1, "maxLength": 64 },
-              "label": { "type": "string", "minLength": 1, "maxLength": 256 }
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
             },
-            "required": [ "id", "label" ]
+            "required": [
+              "id",
+              "label"
+            ]
           },
           "maxItems": 20
         },
         "last_outcome": {
           "anyOf": [
-            { "type": "string", "enum": [ "dismissed", "cancelled", "timed_out", "unavailable", "invalid_response", "failed" ] },
-            { "type": "null" }
+            {
+              "type": "string",
+              "enum": [
+                "dismissed",
+                "cancelled",
+                "timed_out",
+                "unavailable",
+                "invalid_response",
+                "failed"
+              ]
+            },
+            {
+              "type": "null"
+            }
           ]
         }
       },
-      "required": [ "source_version", "candidate_ref", "state", "question_ref", "category", "question", "options", "last_outcome" ]
+      "required": [
+        "source_version",
+        "candidate_ref",
+        "state",
+        "question_ref",
+        "category",
+        "question",
+        "options",
+        "last_outcome"
+      ]
     },
     "product_interview_resume_input": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "context": { "type": "string", "minLength": 1, "maxLength": 8192 },
-        "candidate_ref": { "$ref": "#/definitions/CandidateRef" }
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        }
       },
-      "required": [ "context", "candidate_ref" ]
+      "required": [
+        "context",
+        "candidate_ref"
+      ]
     },
     "Success_InterviewResume": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "protocol_version": { "const": 2 },
-        "context": { "anyOf": [ { "type": "string", "minLength": 1, "maxLength": 8192 }, { "type": "null" } ] },
-        "result": { "$ref": "#/definitions/InterviewResume" },
-        "replayed": { "type": "boolean" },
-        "operation_ref": { "anyOf": [ { "$ref": "#/definitions/Uuid" }, { "type": "null" } ] }
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/InterviewResume"
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
       },
-      "required": [ "protocol_version", "context", "result", "replayed", "operation_ref" ]
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
     },
-
     "Page": {
       "type": "object",
       "additionalProperties": false,
@@ -5677,6 +6564,54 @@
             "gaps",
             "stale"
           ]
+        },
+        "inventory_contract": {
+          "type": "string",
+          "enum": [
+            "atomic-v1",
+            "semantic-v2"
+          ]
+        },
+        "source_atoms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "recheck": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "parent_review_ref": {
+              "$ref": "#/definitions/Uuid"
+            },
+            "pending_items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "inherited_items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "changed_atoms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20000
+            },
+            "removed_atoms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "parent_review_ref",
+            "pending_items",
+            "inherited_items",
+            "changed_atoms",
+            "removed_atoms"
+          ]
         }
       },
       "required": [
@@ -5690,83 +6625,13 @@
       ]
     },
     "ReviewPortion": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "review_ref": {
-          "$ref": "#/definitions/Uuid"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LegacyReviewPortion"
         },
-        "source_version": {
-          "$ref": "#/definitions/Digest"
-        },
-        "item_key": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 512
-        },
-        "text": {
-          "type": "string",
-          "maxLength": 4096
-        },
-        "complete": {
-          "type": "boolean"
-        },
-        "next_cursor": {
-          "anyOf": [
-            {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 8192
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "read_receipt": {
-          "anyOf": [
-            {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 512
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "recorded_result": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Verdict"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "next_item_index": {
-          "anyOf": [
-            {
-              "type": "integer",
-              "minimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+        {
+          "$ref": "#/definitions/ExplicitReviewPortion"
         }
-      },
-      "required": [
-        "review_ref",
-        "source_version",
-        "item_key",
-        "text",
-        "complete",
-        "next_cursor",
-        "read_receipt",
-        "recorded_result",
-        "next_item_index"
       ]
     },
     "CheckResult": {
@@ -8094,6 +8959,1092 @@
         "kind",
         "scenario",
         "input"
+      ]
+    },
+    "CandidateRecordRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "decision",
+            "research"
+          ]
+        },
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "revision"
+      ]
+    },
+    "product_candidate_record_get_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        },
+        "record_ref": {
+          "$ref": "#/definitions/CandidateRecordRef"
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        }
+      },
+      "required": [
+        "context",
+        "candidate_ref",
+        "record_ref"
+      ]
+    },
+    "CandidateRecordPortion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        },
+        "record_ref": {
+          "$ref": "#/definitions/CandidateRecordRef"
+        },
+        "source_version": {
+          "$ref": "#/definitions/Digest"
+        },
+        "source_object_sha256": {
+          "$ref": "#/definitions/Digest"
+        },
+        "encoding": {
+          "const": "canonical-json-utf8"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_characters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "candidate_ref",
+        "record_ref",
+        "source_version",
+        "source_object_sha256",
+        "encoding",
+        "text",
+        "offset",
+        "total_characters",
+        "complete",
+        "next_cursor"
+      ]
+    },
+    "Success_CandidateRecordPortion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/CandidateRecordPortion"
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
+    },
+    "LegacyReviewPortion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "source_version": {
+          "$ref": "#/definitions/Digest"
+        },
+        "item_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "read_receipt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_result": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Verdict"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_item_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "review_ref",
+        "source_version",
+        "item_key",
+        "text",
+        "complete",
+        "next_cursor",
+        "read_receipt",
+        "recorded_result",
+        "next_item_index"
+      ]
+    },
+    "ExplicitReviewPortion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "source_version": {
+          "$ref": "#/definitions/Digest"
+        },
+        "item_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "read_receipt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_result": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Verdict"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_item_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "representation": {
+          "const": "explicit-v1"
+        },
+        "verdict_object_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "object_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Digest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Legacy alias of verdict_object_sha256, never a source digest."
+        },
+        "verdict_digest_domain": {
+          "const": "canonical-verdict-json-utf8-newline"
+        }
+      },
+      "required": [
+        "review_ref",
+        "source_version",
+        "item_key",
+        "text",
+        "complete",
+        "next_cursor",
+        "read_receipt",
+        "recorded_result",
+        "next_item_index",
+        "representation",
+        "verdict_object_sha256",
+        "object_sha256",
+        "verdict_digest_domain"
+      ]
+    },
+    "LegacyCapabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract": {
+          "const": "product-1"
+        },
+        "schema_version": {
+          "const": 1
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 100
+        },
+        "root_state": {
+          "type": "string",
+          "enum": [
+            "available",
+            "missing",
+            "invalid"
+          ]
+        },
+        "runtime_supported": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "contract",
+        "schema_version",
+        "tools",
+        "root_state",
+        "runtime_supported"
+      ]
+    },
+    "ExplicitCapabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract": {
+          "const": "product-1"
+        },
+        "schema_version": {
+          "const": 1
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 100
+        },
+        "root_state": {
+          "type": "string",
+          "enum": [
+            "available",
+            "missing",
+            "invalid"
+          ]
+        },
+        "runtime_supported": {
+          "type": "boolean"
+        },
+        "representation": {
+          "const": "explicit-v1"
+        },
+        "review_representations": {
+          "type": "array",
+          "items": {
+            "const": "explicit-v1"
+          },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "review_modes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "full",
+              "followup",
+              "recheck"
+            ]
+          },
+          "uniqueItems": true,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "contract",
+        "schema_version",
+        "tools",
+        "root_state",
+        "runtime_supported",
+        "representation",
+        "review_representations"
+      ]
+    },
+    "product_review_scope_expand_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "review_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "item_keys": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "context",
+        "review_ref",
+        "item_keys",
+        "reason"
+      ]
+    },
+    "Intent_product_review_scope_expand": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "operation_intent"
+        },
+        "scenario": {
+          "const": "product_review_scope_expand"
+        },
+        "input": {
+          "$ref": "#/definitions/product_review_scope_expand_input"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "scenario",
+        "input"
+      ]
+    },
+    "SessionCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "product_session"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "product_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        },
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "enum": [
+            "idle",
+            "pending",
+            "acknowledged",
+            "delivering",
+            "unknown",
+            "blocked"
+          ]
+        },
+        "pending": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                },
+                "scenario": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                "arguments": {
+                  "type": "object"
+                },
+                "context": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                "write": {
+                  "type": "boolean"
+                },
+                "phase": {
+                  "enum": [
+                    "prepared",
+                    "dispatched",
+                    "acknowledged"
+                  ]
+                },
+                "operation_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "recovery": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "contract": {
+                      "const": "candidate-evidence-v1"
+                    },
+                    "request_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "attempts": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "contract",
+                    "request_sha256",
+                    "attempts"
+                  ]
+                }
+              },
+              "required": [
+                "request_id",
+                "scenario",
+                "arguments",
+                "context",
+                "write",
+                "phase",
+                "operation_ref"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delivery": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "read_ref": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                },
+                "response": {
+                  "type": "string",
+                  "maxLength": 24576
+                },
+                "offset": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "next_cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8192
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "source_version": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8192
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "progress": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "continuation_scenario": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                }
+              },
+              "required": [
+                "read_ref",
+                "response",
+                "offset",
+                "next_cursor",
+                "source_version",
+                "progress",
+                "continuation_scenario"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_read": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "scenario": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                "arguments": {
+                  "type": "object"
+                },
+                "receipt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                "item_key": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8192
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "source_version": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8192
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "scenario",
+                "arguments",
+                "receipt",
+                "item_key",
+                "source_version"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review_state_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "product_id",
+        "candidate_ref",
+        "context",
+        "revision",
+        "state",
+        "pending",
+        "delivery",
+        "completed_read",
+        "review_state_sha256"
+      ]
+    },
+    "product_session_open_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "candidate_ref": {
+          "$ref": "#/definitions/CandidateRef"
+        }
+      },
+      "required": [
+        "context",
+        "candidate_ref"
+      ]
+    },
+    "product_session_call_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "scenario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "arguments": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "session_ref",
+        "expected_revision",
+        "request_id",
+        "scenario",
+        "arguments"
+      ]
+    },
+    "product_session_next_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "read_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        }
+      },
+      "required": [
+        "session_ref",
+        "expected_revision",
+        "read_ref"
+      ]
+    },
+    "product_session_status_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        }
+      },
+      "required": [
+        "session_ref"
+      ]
+    },
+    "Success_SessionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": 2
+        },
+        "context": {
+          "type": "null"
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "session_ref": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            "session_revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "state": {
+              "enum": [
+                "idle",
+                "pending",
+                "acknowledged",
+                "delivering",
+                "unknown",
+                "blocked"
+              ]
+            },
+            "candidate_ref": {
+              "$ref": "#/definitions/CandidateRef"
+            },
+            "supported_scenarios": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8192
+              },
+              "maxItems": 100
+            },
+            "freshness": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            "pending": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                    },
+                    "scenario": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8192
+                    },
+                    "phase": {
+                      "enum": [
+                        "prepared",
+                        "dispatched",
+                        "acknowledged"
+                      ]
+                    },
+                    "write": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "scenario",
+                    "phase",
+                    "write"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "complete": {
+              "type": "boolean"
+            },
+            "read_ref": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "delivery": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "encoding": {
+                      "const": "json-utf8"
+                    },
+                    "text": {
+                      "type": "string",
+                      "maxLength": 2048
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "total_characters": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "complete": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "encoding",
+                    "text",
+                    "offset",
+                    "total_characters",
+                    "complete"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "operation_ref": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "recovery_step": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "session_ref",
+            "session_revision",
+            "state",
+            "complete",
+            "read_ref",
+            "delivery",
+            "operation_ref"
+          ]
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol_version",
+        "context",
+        "result",
+        "replayed",
+        "operation_ref"
+      ]
+    },
+    "product_session_resume_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "session_ref",
+        "expected_revision"
       ]
     }
   }
