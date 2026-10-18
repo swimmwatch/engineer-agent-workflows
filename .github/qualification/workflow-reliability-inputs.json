@@ -772,7 +772,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
-      "sha256": "127776c8c2abe41249f6728604b98b844974f5bb8995c1e09a278cf5721a1d91"
+      "sha256": "d56a84c1318689263c4aafe2d09a53b3e909825828de974efdaf186f640a603f"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-foundation.test.mjs",
@@ -804,7 +804,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
-      "sha256": "43d2f5053bb0fc626f71eb24e6065e19eba78222bdbaaa691fe61120940ad4cd"
+      "sha256": "af010137381c74574f86e86c83c1e9df1fea44f583f97896fadb73b006bba52a"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs",
@@ -876,7 +876,11 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
-      "sha256": "9f266d573fee6eec161c22220015da9fc6dd81d33439defccbe41e19a9e3f5d8"
+      "sha256": "5c45ca68087b9be1ed90bb0243fb547cb8d72d841e44965b1df6b45fca52d24a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/recovery-checkpoint.mjs",
+      "sha256": "eaf4b285979052f58d06dde16420a542dae9e36e7e204b792f4ffe9d53415499"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",

@@ -8,6 +8,23 @@ import test from "node:test";
 import { promisify } from "node:util";
 
 import { runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
+import { createQualificationDiagnostics } from "./support/qualification-diagnostics.mjs";
+
+test("I11-N4: qualification labels are finite and preserve packed default diagnostics", async () => {
+  for (const [selected, expected] of [[undefined, "packed"], ["public", "public"], ["SENTINEL_PRIVATE_LABEL", "redacted"]]) {
+    const controller = new globalThis.AbortController(), lines = [], hooks = [];
+    const diagnostics = createQualificationDiagnostics({ signal: controller.signal,
+      diagnostic(line) { lines.push(JSON.parse(line)); }, after(hook) { hooks.push(hook); } }, selected);
+    await diagnostics.phase("reliability", async () => {
+      diagnostics.observe({ event: "start", actor: "SENTINEL_PRIVATE_ACTOR", tool: "SENTINEL_PRIVATE_TOOL",
+        scenario: "SENTINEL_PRIVATE_SCENARIO", arguments: { context: "SENTINEL_CONTEXT" } });
+      controller.abort();
+    });
+    assert.equal(lines.find(line => line.event === "aborted").qualification, expected);
+    assert.doesNotMatch(JSON.stringify(lines), /SENTINEL/);
+    for (const hook of hooks) hook();
+  }
+});
 
 const executeFile = promisify(execFile);
 const qualificationScript = fileURLToPath(
@@ -164,8 +181,17 @@ test("Q38: exact source pages and restart recovery remain lossless", async (t) =
   assert.equal(result.recovery.duplicateVerdicts, 0);
 });
 
-test("I11: public actor sessions reconstruct draft evidence and recheck exactly 119 blocks", { timeout: 600_000 }, async (t) => {
-  const result = await runProductWorkflowQualification(t, { reliability: true });
+test("I11: public actor sessions reconstruct draft evidence and recheck exactly 119 blocks", { timeout: process.platform === "win32" ? 1_200_000 : 600_000 }, async (t) => {
+  const diagnostics = createQualificationDiagnostics(t, "public");
+  let observedRequests = 0, observedLastReviewItem = false;
+  const onProgress = (event) => {
+    diagnostics.observe(event);
+    if (event.event === "start") observedRequests += 1;
+    if (event.event === "review-item" && event.itemIndex === 118 && event.totalItems === 119) observedLastReviewItem = true;
+  };
+  const result = await diagnostics.phase("reliability", () => runProductWorkflowQualification(t, { reliability: true, onProgress }));
+  assert.ok(observedRequests > 0, "the public observer must receive actual requests");
+  assert.equal(observedLastReviewItem, true, "the public observer must receive the final actual review item");
   assert.equal(result.reliability?.sessionActors, 2, "both independent actors must use public sessions");
   assert.deepEqual(result.reliability.draftKinds, ["decision", "research"]);
   assert.equal(result.reliability.exactDraftReads, 2);

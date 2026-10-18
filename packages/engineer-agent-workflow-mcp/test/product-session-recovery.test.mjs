@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { randomUUID, createHash } from "node:crypto";
 import { execFile, spawn } from "node:child_process";
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { join, posix, win32 } from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
 import { setTimeout, clearTimeout } from "node:timers";
@@ -10,12 +10,43 @@ import { fileURLToPath, URL } from "node:url";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { createTemporaryDirectory } from "./support/temporary-directory.mjs";
+import { injectRecoveryCheckpointFailure } from "./support/recovery-checkpoint.mjs";
 
 const execute = promisify(execFile);
 const server = fileURLToPath(new URL("../dist/main.js", import.meta.url));
 const moduleURL = new URL("../dist/server.js", import.meta.url).href;
 const sessionURL = new URL("../dist/product/sessions.js", import.meta.url).href;
 const stateURL = new URL("../dist/state.js", import.meta.url).href;
+const recoveryCheckpointURL = new URL("./support/recovery-checkpoint.mjs", import.meta.url).href;
+
+test("I11-N4: real recovery checkpoint injection uses native paths and preserves unmatched renames", async (t) => {
+  const ref = { product_id: "synthetic-product", id: "synthetic-session" };
+  const sessionRef = Buffer.from(JSON.stringify(ref)).toString("base64url");
+  for (const [name, pathAPI, root] of [["posix", posix, "/synthetic/store"], ["win32", win32, "C:\\synthetic\\store"]]) {
+    for (const phase of ["before-attempt", "after-response"]) await t.test(`${name} ${phase}`, async () => {
+      const renamed = [];
+      const rename = async (...args) => { renamed.push(args); };
+      let next = { state: "unknown", pending: { phase: "unknown", recovery: { attempts: 0 } } };
+      const fs = { rename, async readFile() { return JSON.stringify(next); } };
+      const injection = injectRecoveryCheckpointFailure(fs, root, sessionRef, phase, pathAPI);
+      const target = pathAPI.join(root, "products", ref.product_id, "sessions", `${ref.id}.json`);
+      try {
+        await fs.rename("unrelated.tmp", "unrelated.json");
+        await fs.rename(`${target}.tmp`, target);
+        assert.equal(injection.injected, false);
+        assert.equal(renamed.length, 2);
+        next = { state: phase === "before-attempt" ? "unknown" : "acknowledged",
+          pending: { phase: "acknowledged", recovery: { attempts: 1 } } };
+        await assert.rejects(fs.rename(`${target}.tmp`, target), /Synthetic recovery checkpoint failure/);
+        assert.equal(injection.injected, true, "the actual worker hook must fire before interpreting recovery");
+        assert.equal(renamed.length, 2, "injected checkpoint must not reach the original rename");
+        await fs.rename(`${target}.tmp`, target);
+        assert.equal(renamed.length, 3, "injection is a single selected checkpoint failure");
+      } finally { injection.restore(); }
+      assert.equal(fs.rename, rename);
+    });
+  }
+});
 async function fixture(t) {
   const directory = await createTemporaryDirectory(t, "eaw-session-recovery-");
   const root = join(directory, "store"), workspace = join(directory, "workspace");
@@ -320,17 +351,18 @@ test("checkpoint failures before and after the recovery attempt never acknowledg
       process.env.EAW_PRODUCT_DATA_DIR = process.argv[1];
       const input = JSON.parse(process.argv[2]); const phase = process.argv[3];
       const { workflowTools } = await import(${JSON.stringify(moduleURL)}); const { productSessionHandlers } = await import(${JSON.stringify(sessionURL)});
-      const ref = JSON.parse(Buffer.from(input.session_ref, "base64url")); const path = process.argv[1]+"/products/"+ref.product_id+"/sessions/"+ref.id+".json";
-      let calls=0, failed=false; const rename = fs.rename;
-      fs.rename = async(from,to) => { if(!failed && to === path) { const next = JSON.parse(await fs.readFile(from,"utf8"));
-        if(next.pending?.recovery?.attempts === 1 && ((phase === "before-attempt" && next.state === "unknown") || (phase === "after-response" && next.pending.phase === "acknowledged"))) { failed=true; throw new Error("Synthetic recovery checkpoint failure"); }
-      } return rename(from,to); }; syncBuiltinESMExports();
+      const { injectRecoveryCheckpointFailure } = await import(${JSON.stringify(recoveryCheckpointURL)});
+      const injection = injectRecoveryCheckpointFailure(fs, process.argv[1], input.session_ref, phase);
+      let calls = 0; syncBuiltinESMExports();
+      try {
       const tools = workflowTools.map(t => t.name !== "product_record_instruction" ? t : { ...t, run: async args => { calls++; return t.run(args); }});
       const handlers = productSessionHandlers(tools);
       try { await handlers.resume(process.argv[1],input); throw new Error("Unknown checkpoint was acknowledged"); } catch(e) { if(e.code !== "RECOVERY_REQUIRED" || e.details.outcome !== "blocked") throw e; }
-      const saved = JSON.parse(await fs.readFile(path,"utf8"));
+      if (!injection.injected) throw new Error("Recovery checkpoint injection did not fire");
+      const saved = JSON.parse(await fs.readFile(injection.path,"utf8"));
       if(calls !== (phase === "before-attempt" ? 0 : 1) || saved.pending.recovery.attempts !== (phase === "before-attempt" ? 0 : 1)) throw new Error("Replay consumption did not match real dispatch");
       if(phase === "after-response") { try { await handlers.resume(process.argv[1],{...input,expected_revision:saved.revision}); throw new Error("Repeated recovery bypassed consumed budget"); } catch(e) { if(e.code !== "RECOVERY_REQUIRED") throw e; } if(calls !== 1) throw new Error("Duplicate recovery dispatch"); }
+      } finally { injection.restore(); syncBuiltinESMExports(); }
     `;
     await execute(process.execPath, ["--input-type=module", "--eval", worker, f.root, JSON.stringify(s), phase]);
     assert.deepEqual(await snapshot(f.root), before); assert.equal((await f.effects()).length, 1);
