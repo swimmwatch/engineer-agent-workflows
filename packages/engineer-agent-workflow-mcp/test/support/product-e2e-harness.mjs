@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL, URL } from "node:url";
 import { performance } from "node:perf_hooks";
@@ -10,6 +9,7 @@ import { promisify } from "node:util";
 
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { createTemporaryDirectory } from "./temporary-directory.mjs";
 
 const executeFile = promisify(execFile);
 const server = fileURLToPath(new URL("../../dist/main.js", import.meta.url));
@@ -673,8 +673,7 @@ await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
 }
 
 export async function runProductWorkflowQualification(t, options = {}) {
-  const directory = await mkdtemp(join(tmpdir(), "eaw-product-e2e-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTemporaryDirectory(t, "eaw-product-e2e-");
   const root = join(directory, "product-data");
   const workspaces = [join(directory, "workspace-a-雪😀"), join(directory, "workspace-b-é")];
   await Promise.all(workspaces.map(initializeRepository));

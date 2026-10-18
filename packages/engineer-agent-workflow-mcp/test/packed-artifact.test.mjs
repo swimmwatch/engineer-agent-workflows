@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, URL } from "node:url";
 import { promisify, TextDecoder } from "node:util";
 import {
   mkdtemp,
+  copyFile,
   mkdir,
   readdir,
   readFile,
+  realpath,
   rm,
   writeFile,
 } from "node:fs/promises";
@@ -17,6 +19,7 @@ import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { gunzipSync } from "fflate";
 import { runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
+import { packArtifact } from "./support/npm-pack.mjs";
 
 const executeFile = promisify(execFile);
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -226,17 +229,44 @@ async function connectPackedClient(t, entrypoint) {
   return client;
 }
 
+test("I11-N1: Windows npm selection executes bundled JavaScript with literal arguments on this host", async (t) => {
+  await mkdir(artifactsRoot, { recursive: true });
+  const workspace = await realpath(await mkdtemp(path.join(artifactsRoot, "npm invocation & data-")));
+  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const executable = path.join(workspace, process.platform === "win32" ? "node.exe" : "node");
+  await copyFile(process.execPath, executable);
+  const npmDirectory = path.join(workspace, "node_modules", "npm", "bin");
+  await mkdir(npmDirectory, { recursive: true });
+  await writeFile(path.join(npmDirectory, "npm-cli.js"),
+    "process.stdout.write(JSON.stringify({ args: process.argv.slice(2), cwd: process.cwd() }));\n");
+  await writeFile(path.join(workspace, "npm.cmd"), "@echo off\r\nexit /b 91\r\n");
+  const destination = path.join(workspace, "pack %PATH% & $HOME data");
+  const worker = `
+    import "node:child_process";
+    const [executable, module, workspace, destination] = process.argv.slice(1);
+    Object.defineProperty(process, "platform", { value: "win32" });
+    process.execPath = executable;
+    const { packArtifact } = await import(module);
+    const result = await packArtifact(workspace, destination);
+    process.stdout.write(result.stdout);
+  `;
+  const result = await executeFile(process.execPath, ["--input-type=module", "--eval", worker,
+    executable, new URL("./support/npm-pack.mjs", import.meta.url).href, workspace, destination], {
+    env: { ...process.env, PATH: workspace + path.delimiter + process.env.PATH },
+  });
+  assert.deepEqual(JSON.parse(result.stdout), {
+    args: ["pack", "--json", "--ignore-scripts", "--pack-destination", destination],
+    cwd: workspace,
+  });
+  assert.equal(result.stderr, "");
+});
+
 test("packed artifact has the exact runtime inventory and serves MCP calls", { timeout: 600_000 }, async (t) => {
   await mkdir(artifactsRoot, { recursive: true });
   const workspace = await mkdtemp(path.join(artifactsRoot, "packed-"));
   t.after(() => rm(workspace, { recursive: true, force: true }));
 
-  const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-  const { stdout } = await executeFile(
-    npmCommand,
-    ["pack", "--json", "--ignore-scripts", "--pack-destination", workspace],
-    { cwd: packageRoot, maxBuffer: 1_024 * 1_024 },
-  );
+  const { stdout } = await packArtifact(packageRoot, workspace);
   const packed = JSON.parse(stdout);
   assert.equal(packed.length, 1);
   assert.equal(typeof packed[0].filename, "string");

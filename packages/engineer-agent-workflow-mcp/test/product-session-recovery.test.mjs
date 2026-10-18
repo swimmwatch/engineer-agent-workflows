@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import { randomUUID, createHash } from "node:crypto";
 import { execFile, spawn } from "node:child_process";
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
@@ -10,6 +9,7 @@ import { setTimeout, clearTimeout } from "node:timers";
 import { fileURLToPath, URL } from "node:url";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { createTemporaryDirectory } from "./support/temporary-directory.mjs";
 
 const execute = promisify(execFile);
 const server = fileURLToPath(new URL("../dist/main.js", import.meta.url));
@@ -17,8 +17,7 @@ const moduleURL = new URL("../dist/server.js", import.meta.url).href;
 const sessionURL = new URL("../dist/product/sessions.js", import.meta.url).href;
 const stateURL = new URL("../dist/state.js", import.meta.url).href;
 async function fixture(t) {
-  const directory = await mkdtemp(join(tmpdir(), "eaw-session-recovery-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTemporaryDirectory(t, "eaw-session-recovery-");
   const root = join(directory, "store"), workspace = join(directory, "workspace");
   await mkdir(workspace);
   await execute("git", ["init", "--quiet", "--initial-branch=main"], { cwd: workspace });

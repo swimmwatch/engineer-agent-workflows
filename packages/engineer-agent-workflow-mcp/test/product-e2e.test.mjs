@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { mkdir, mkdtemp, realpath, rm, symlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath, URL } from "node:url";
 import test from "node:test";
 import { promisify } from "node:util";
@@ -10,6 +13,33 @@ const executeFile = promisify(execFile);
 const qualificationScript = fileURLToPath(
   new URL("../../../scripts/qualify-product-workflows.mjs", import.meta.url),
 );
+
+test("I11-N1: public and recovery fixtures accept a temporary parent alias", { timeout: 120_000 }, async (t) => {
+  const directory = await realpath(await mkdtemp(join(tmpdir(), "eaw-temporary-alias-")));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const physical = join(directory, "physical temporary parent");
+  const alias = join(directory, "temporary alias & data");
+  await mkdir(physical);
+  await symlink(physical, alias, process.platform === "win32" ? "junction" : "dir");
+  const cases = [
+    ["public qualification", "^Q36:", fileURLToPath(import.meta.url)],
+    ["session recovery", "^public session resume", fileURLToPath(new URL("./product-session-recovery.test.mjs", import.meta.url))],
+  ];
+  const env = { ...process.env, TMPDIR: alias, TMP: alias, TEMP: alias };
+  delete env.NODE_TEST_CONTEXT;
+  for (const [name, pattern, file] of cases) {
+    await t.test(name, async () => {
+      const result = await executeFile(process.execPath, ["--test", "--test-name-pattern", pattern, file], {
+        env,
+        maxBuffer: 1024 * 1024,
+        timeout: 90_000,
+      });
+      assert.equal(result.stderr, "");
+      assert.match(result.stdout, /(?:#|ℹ) pass 1\b/u);
+      assert.match(result.stdout, /(?:#|ℹ) fail 0\b/u);
+    });
+  }
+});
 
 test("Q37: qualification is explicit-only and import has no execution effect", async () => {
   const imported =

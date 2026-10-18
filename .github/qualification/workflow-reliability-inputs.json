@@ -732,7 +732,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
-      "sha256": "83da80abfa6d88f8b4563ca13035f5d567a563ef9d4c6ce4bae05836b254a7c9"
+      "sha256": "de1d988fb33f6ad367c16c07b50c6c6c8192bcd8b39ee255c8835606b7f4bd98"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs",
@@ -768,7 +768,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
-      "sha256": "1e7ea0df3da0a05c5456ac2fb52f79e649ba2330a0e1798675a9313dff586b91"
+      "sha256": "127776c8c2abe41249f6728604b98b844974f5bb8995c1e09a278cf5721a1d91"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-foundation.test.mjs",
@@ -800,7 +800,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
-      "sha256": "242f4c8e2ee27a70a54e056b2d0cbf77960bdfc35a5ffbeb00a3fafcd75c37cc"
+      "sha256": "43d2f5053bb0fc626f71eb24e6065e19eba78222bdbaaa691fe61120940ad4cd"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs",
@@ -859,8 +859,16 @@
       "sha256": "62f68ce25a408c6a7255255cc4694a714ccdfcd59ef3b9bbf9f801aa7b80c2a1"
     },
     {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/npm-pack.mjs",
+      "sha256": "19a38e26df5fcae0ce5c8b82e1e80634a2f958a3b131a96b1834ba4a9c578951"
+    },
+    {
       "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
-      "sha256": "8892c797859255bd9c11b501c7059153e557b5313c71b14c5707c7d12fb6eb60"
+      "sha256": "b96110a04af7b210155f2b8df6a9fd44ef12bb54165f6d497e56011d87fd0936"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",
+      "sha256": "bfdc1715250641157d0ae0d2c7f04bd41960247e70869140f32d1970945eeb67"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/tool-metadata.test.mjs",
