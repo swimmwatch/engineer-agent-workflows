@@ -5,6 +5,7 @@ import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL, URL } from "node:url";
 import { performance } from "node:perf_hooks";
+import { setTimeout as delay } from "node:timers/promises";
 import { promisify } from "node:util";
 
 import { Client } from "@modelcontextprotocol/client";
@@ -73,42 +74,92 @@ function reportProgress(onProgress, event) {
   try { onProgress?.(event); } catch { /* Observers cannot change MCP outcomes. */ }
 }
 
-function actor(t, { name, root, calls, entrypoint = server, onProgress }) {
+export function actor(t, { name, root, calls, entrypoint = server, onProgress }) {
+  t.checkActive?.();
   const progress = (event, tool, scenario) => {
     reportProgress(onProgress, { event, actor: name, tool, scenario });
   };
   let client;
+  let transport;
+  let connecting;
+  let closing;
   let context;
   const launches = [];
+  const checkCancelled = () => { t.checkActive?.(); t.signal?.throwIfAborted(); };
 
   async function start() {
-    if (client) return;
+    checkCancelled();
+    if (closing) await closing;
+    checkCancelled();
+    if (client) {
+      await connecting;
+      checkCancelled();
+      return;
+    }
+    closing = undefined;
     client = new Client({ name, version: "1" });
-    const transport = new StdioClientTransport({
+    transport = new StdioClientTransport({
       command: process.execPath,
       args: [entrypoint],
       env: processEnvironment(root),
       stderr: "pipe",
     });
+    // Own the transport before connect; the client may not yet own a pending handshake.
+    const startTransport = transport.start.bind(transport);
+    const ownedTransport = transport;
+    ownedTransport.start = async () => {
+      checkCancelled();
+      const started = startTransport();
+      const pid = ownedTransport.pid;
+      // Existing argument observation is test-only; lifecycle uses the public PID.
+      const actualArguments = ownedTransport._process?.spawnargs;
+      if (pid) launches.push({ pid, spawnargs: [...(actualArguments ?? [])] });
+      await started;
+      assert.ok(Number.isSafeInteger(pid) && pid > 0, "a launched actor must have an observable owned PID");
+      assert.ok(Array.isArray(actualArguments), "the actual stdio child arguments must be observable");
+      assert.deepEqual(actualArguments.slice(1), [entrypoint], "stdio actor must actually launch the selected executable entrypoint");
+    };
     progress("start", "connect");
-    try { await client.connect(transport); }
-    finally { progress("end", "connect"); }
-    // The pinned SDK exposes the spawned ChildProcess at runtime; retain a copied argument observation only.
-    const actualArguments = transport._process?.spawnargs;
-    assert.ok(Array.isArray(actualArguments), "the actual stdio child arguments must be observable");
-    assert.deepEqual(actualArguments.slice(1), [entrypoint], "stdio actor must actually launch the selected executable entrypoint");
-    launches.push({ pid: transport.pid, spawnargs: [...actualArguments] });
+    connecting = client.connect(transport, { signal: t.signal });
+    try {
+      await connecting;
+      checkCancelled();
+    } catch (error) {
+      try { await close(); }
+      catch (cleanupError) { throw new AggregateError([error, cleanupError], "qualification connection and cleanup failed", { cause: cleanupError }); }
+      throw error;
+    } finally { progress("end", "connect"); }
   }
 
-  async function close() {
+  function close() {
+    if (closing) return closing;
     const active = client;
-    client = undefined;
-    if (active) {
+    const ownedTransport = transport;
+    if (!active && !ownedTransport) return Promise.resolve();
+    closing = (async () => {
       progress("start", "close");
-      try { await active.close(); }
-      finally { progress("end", "close"); }
-    }
+      try {
+        // Explicit transport close also cancels SDK negotiation before client ownership.
+        const results = await Promise.allSettled([ownedTransport?.close(), active?.close()]);
+        const errors = results.filter((result) => result.status === "rejected").map((result) => result.reason);
+        const isAlive = (pid) => {
+          try { process.kill(pid, 0); return true; }
+          catch (error) { if (error.code === "ESRCH") return false; throw error; }
+        };
+        // SDK close may return just after signalling; wait for actual owned process exit.
+        for (let attempt = 0; attempt < 200 && launches.some(({ pid }) => isAlive(pid)); attempt += 1) await delay(10);
+        if (launches.some(({ pid }) => isAlive(pid))) errors.push(new Error("qualification actor child did not exit"));
+        if (errors.length) throw new AggregateError(errors, "qualification actor cleanup failed");
+      } finally {
+        client = undefined;
+        transport = undefined;
+        progress("end", "close");
+      }
+    })();
+    return closing;
   }
+  const onAbort = () => { close().catch(() => { /* The retained promise is surfaced by owned teardown. */ }); };
+  t.signal?.addEventListener("abort", onAbort, { once: true });
 
   async function request(tool, arguments_, updateContext, expectedError = false) {
     const scenario = typeof arguments_.scenario === "string" ? arguments_.scenario : undefined;
@@ -118,7 +169,8 @@ function actor(t, { name, root, calls, entrypoint = server, onProgress }) {
     try {
       await start();
       started = performance.now();
-      response = await client.callTool({ name: tool, arguments: arguments_ });
+      checkCancelled();
+      response = await client.callTool({ name: tool, arguments: arguments_ }, { signal: t.signal });
     } finally { progress("end", tool, scenario); }
     const elapsedMs = performance.now() - started;
     const responseBytes = Buffer.byteLength(JSON.stringify(response));
@@ -132,7 +184,10 @@ function actor(t, { name, root, calls, entrypoint = server, onProgress }) {
     return response.structuredContent;
   }
 
-  t.after(close);
+  t.after(async () => {
+    try { await close(); }
+    finally { t.signal?.removeEventListener("abort", onAbort); }
+  });
   return {
     context: () => context,
     launches: () => launches.map(({ pid, spawnargs }) => ({ pid, spawnargs: [...spawnargs] })),
@@ -694,6 +749,8 @@ await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
 }
 
 export async function runProductWorkflowQualification(t, options = {}) {
+  t.signal?.throwIfAborted();
+  t = createQualificationScope(t);
   const directory = await createTemporaryDirectory(t, "eaw-product-e2e-");
   const root = join(directory, "product-data");
   const workspaces = [join(directory, "workspace-a-雪😀"), join(directory, "workspace-b-é")];
@@ -1005,5 +1062,38 @@ export async function runProductWorkflowQualification(t, options = {}) {
     recovery,
     ...(remediation ? { remediation } : {}),
     persistedBytes: await directoryBytes(root),
+  };
+}
+
+// One test-fixture owner: close newer clients before older directories, attempting all disposers.
+export function createQualificationScope(t) {
+  t.checkActive?.();
+  t.signal?.throwIfAborted();
+  const disposers = [];
+  let cleanup;
+  let disposed = false;
+  t.after(() => {
+    disposed = true;
+    cleanup ??= (async () => {
+      const errors = [];
+      for (const dispose of disposers.reverse()) {
+        try { await dispose(); } catch (error) { errors.push(error); }
+      }
+      if (errors.length) throw new AggregateError(errors, "qualification cleanup failed");
+    })();
+    return cleanup;
+  });
+  return {
+    signal: t.signal,
+    checkActive() {
+      t.checkActive?.();
+      t.signal?.throwIfAborted();
+      if (disposed) throw new Error("qualification fixture is already disposed");
+    },
+    diagnostic: (message) => t.diagnostic?.(message),
+    after(dispose) {
+      if (disposed) throw new Error("qualification fixture already disposed");
+      disposers.push(dispose);
+    },
   };
 }

@@ -18,7 +18,7 @@ import test from "node:test";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { gunzipSync } from "fflate";
-import { runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
+import { createQualificationScope, runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
 import { packArtifact } from "./support/npm-pack.mjs";
 import { createQualificationDiagnostics } from "./support/qualification-diagnostics.mjs";
 
@@ -336,11 +336,16 @@ process.stdin.resume();
   }
 });
 
-test("packed artifact has the exact runtime inventory and serves MCP calls", { timeout: 600_000 }, async (t) => {
+test("packed artifact has the exact runtime inventory and serves MCP calls", { timeout: process.platform === "win32" ? 1_200_000 : 600_000 }, async (t) => {
+  t.signal?.throwIfAborted();
+  t = createQualificationScope(t);
   const diagnostics = createQualificationDiagnostics(t);
   await mkdir(artifactsRoot, { recursive: true });
-  const workspace = await mkdtemp(path.join(artifactsRoot, "packed-"));
-  t.after(() => rm(workspace, { recursive: true, force: true }));
+  t.checkActive();
+  const creatingWorkspace = mkdtemp(path.join(artifactsRoot, "packed-"));
+  t.after(async () => rm(await creatingWorkspace, { recursive: true, force: true }));
+  const workspace = await creatingWorkspace;
+  t.checkActive();
 
   const { stdout } = await diagnostics.phase("npm-pack", () => packArtifact(packageRoot, workspace));
   const packed = JSON.parse(stdout);

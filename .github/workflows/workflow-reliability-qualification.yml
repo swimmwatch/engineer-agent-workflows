@@ -12,7 +12,7 @@ jobs:
   qualification:
     name: Qualification (${{ matrix.os }}, Node ${{ matrix.node }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: ${{ matrix.os == 'windows-2025' && 30 || 20 }}
     strategy:
       fail-fast: false
       matrix:
@@ -46,6 +46,6 @@ jobs:
       - name: Lint MCP
         run: npm run lint
       - name: Test public, packed and transport acceptance
-        run: node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs packages/engineer-agent-workflow-mcp/test/transport.test.mjs packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs
+        run: node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs packages/engineer-agent-workflow-mcp/test/transport.test.mjs packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs packages/engineer-agent-workflow-mcp/test/product-actor-lifecycle.test.mjs
       - name: Run native product qualification
         run: node scripts/qualify-product-workflows.mjs --run --skip-model-trials

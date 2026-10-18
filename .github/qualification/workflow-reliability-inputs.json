@@ -48,7 +48,7 @@
     },
     {
       "path": ".github/workflows/workflow-reliability-qualification.yml",
-      "sha256": "da472245a6a65bec55c5ef24e7dd53dc294f69e376dadf8f3f358bf1e19189eb"
+      "sha256": "5684a05af84d6aec6f662cda6a52756dda5bbb658088048cfb772b1ebe4a4701"
     },
     {
       "path": ".gitignore",
@@ -732,7 +732,11 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
-      "sha256": "e5c4ec756f043c27380e8dd0a2d8974ea6cdf1c212756b487152968ad6eef911"
+      "sha256": "52fd4af31720cb703117a00c1292b6e115bd4440fe6d45c14d0564facc7ac7a8"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-actor-lifecycle.test.mjs",
+      "sha256": "f4892d11e595b858603406fdd039e1690419b0c80d34121cad39e3ce55298611"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs",
@@ -868,7 +872,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
-      "sha256": "d15027c72d57e86cbf48e761acb4ce4cec8fe028dd00ddac8520ade468cbc48b"
+      "sha256": "fead2bda66e896411a325331d741ce3217e55d7cb9e94a2c590e0dc1f86ba7d0"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
@@ -876,7 +880,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",
-      "sha256": "bfdc1715250641157d0ae0d2c7f04bd41960247e70869140f32d1970945eeb67"
+      "sha256": "9157fad15042e13ca1e950e8000a9b098f1e9ff9e6c19e0544128e1c416fe400"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/tool-metadata.test.mjs",
