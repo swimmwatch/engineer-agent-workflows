@@ -732,7 +732,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
-      "sha256": "de1d988fb33f6ad367c16c07b50c6c6c8192bcd8b39ee255c8835606b7f4bd98"
+      "sha256": "e5c4ec756f043c27380e8dd0a2d8974ea6cdf1c212756b487152968ad6eef911"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs",
@@ -819,6 +819,10 @@
       "sha256": "ad69981eab7e4b386f4705860c73ae71e3684c7868f8d88914ec5f3014be9e83"
     },
     {
+      "path": "packages/engineer-agent-workflow-mcp/test/qualification-diagnostics.test.mjs",
+      "sha256": "bbacac524def824a58beda3114dd993dfb6362076b9dc41674380a2c3b9e3858"
+    },
+    {
       "path": "packages/engineer-agent-workflow-mcp/test/result.test.mjs",
       "sha256": "c01b33ff2fb78301f25d08b9aec8f204785de982c9ccfd2bcba8a0f46087a3ac"
     },
@@ -864,7 +868,11 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
-      "sha256": "b96110a04af7b210155f2b8df6a9fd44ef12bb54165f6d497e56011d87fd0936"
+      "sha256": "d15027c72d57e86cbf48e761acb4ce4cec8fe028dd00ddac8520ade468cbc48b"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
+      "sha256": "9f266d573fee6eec161c22220015da9fc6dd81d33439defccbe41e19a9e3f5d8"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",

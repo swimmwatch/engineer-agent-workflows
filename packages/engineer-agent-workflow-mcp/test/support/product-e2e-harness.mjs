@@ -69,7 +69,14 @@ async function directoryBytes(path) {
   return total;
 }
 
-function actor(t, { name, root, calls, entrypoint = server }) {
+function reportProgress(onProgress, event) {
+  try { onProgress?.(event); } catch { /* Observers cannot change MCP outcomes. */ }
+}
+
+function actor(t, { name, root, calls, entrypoint = server, onProgress }) {
+  const progress = (event, tool, scenario) => {
+    reportProgress(onProgress, { event, actor: name, tool, scenario });
+  };
   let client;
   let context;
   const launches = [];
@@ -83,7 +90,9 @@ function actor(t, { name, root, calls, entrypoint = server }) {
       env: processEnvironment(root),
       stderr: "pipe",
     });
-    await client.connect(transport);
+    progress("start", "connect");
+    try { await client.connect(transport); }
+    finally { progress("end", "connect"); }
     // The pinned SDK exposes the spawned ChildProcess at runtime; retain a copied argument observation only.
     const actualArguments = transport._process?.spawnargs;
     assert.ok(Array.isArray(actualArguments), "the actual stdio child arguments must be observable");
@@ -94,13 +103,23 @@ function actor(t, { name, root, calls, entrypoint = server }) {
   async function close() {
     const active = client;
     client = undefined;
-    if (active) await active.close();
+    if (active) {
+      progress("start", "close");
+      try { await active.close(); }
+      finally { progress("end", "close"); }
+    }
   }
 
   async function request(tool, arguments_, updateContext, expectedError = false) {
-    await start();
-    const started = performance.now();
-    const response = await client.callTool({ name: tool, arguments: arguments_ });
+    const scenario = typeof arguments_.scenario === "string" ? arguments_.scenario : undefined;
+    progress("start", tool, scenario);
+    let response;
+    let started;
+    try {
+      await start();
+      started = performance.now();
+      response = await client.callTool({ name: tool, arguments: arguments_ });
+    } finally { progress("end", tool, scenario); }
     const elapsedMs = performance.now() - started;
     const responseBytes = Buffer.byteLength(JSON.stringify(response));
     calls.push({ actor: name, tool, elapsedMs, responseBytes, isError: response.isError === true,
@@ -455,7 +474,7 @@ function exactPortions(outputs) {
   return { ...outputs.at(-1).result, text };
 }
 
-async function reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint }) {
+async function reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint, onProgress }) {
   // Fixture answers/verdicts exercise protocol mechanics, not authenticated consent or semantic independence.
   const runtime = (await author.raw("workflow_runtime_info", {})).result;
   const stamp = JSON.parse(await readFile(join(dirname(entrypoint), "runtime-stamp.json"), "utf8"));
@@ -489,7 +508,7 @@ const run = tool.run;
 tool.run = async input => { const result = await run(input); if (!result.replayed) throw new WorkflowError("RECOVERY_REQUIRED", "Synthetic lost result after actual durable effect."); return result; };
 await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
 `);
-  const recoveryActor = actor(t, { name: "product-author-recovery", root, calls: [], entrypoint: adapterPath });
+  const recoveryActor = actor(t, { name: "product-author-recovery", root, calls: [], entrypoint: adapterPath, onProgress });
   recoveryActor.setContext(author.context());
   const recoverySession = await recoveryActor.openSession(draft.candidate_ref);
   const recoveryArgs = { candidate_ref: draft.candidate_ref, text: "Recover one actual durable effect.", source: "fixture:recovery", related_refs: [], affected_refs: [] };
@@ -591,6 +610,7 @@ await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
     let status = started;
     const verdicts = new Map(), sourceDigests = new Map();
     while (status.next_item_index !== null) {
+      reportProgress(onProgress, { event: "review-item", itemIndex: status.next_item_index, totalItems: started.total_items });
       const item = exactPortions(await reviewer.sessionCall(reviewerSession, "product_review_get", {
         review_ref: status.review_ref, item_index: status.next_item_index, representation: "explicit-v1" }));
       const explicit = JSON.parse(item.text);
@@ -605,6 +625,7 @@ await import(${JSON.stringify(pathToFileURL(entrypoint).href)});
     }
     if (parentEvidence !== null) {
       for (let index = 0; index < 119; index += 1) {
+        reportProgress(onProgress, { event: "review-item", itemIndex: index, totalItems: 119 });
         const item = exactPortions(await reviewer.sessionCall(reviewerSession, "product_review_get", {
           review_ref: status.review_ref, item_index: index, representation: "explicit-v1" }));
         const value = item.recorded_result;
@@ -678,10 +699,10 @@ export async function runProductWorkflowQualification(t, options = {}) {
   const workspaces = [join(directory, "workspace-a-雪😀"), join(directory, "workspace-b-é")];
   await Promise.all(workspaces.map(initializeRepository));
   const calls = [];
-  const author = actor(t, { name: "product-author-qualification", root, calls, entrypoint: options.entrypoint });
-  const reviewer = actor(t, { name: "product-reviewer-qualification", root, calls, entrypoint: options.entrypoint });
+  const author = actor(t, { name: "product-author-qualification", root, calls, entrypoint: options.entrypoint, onProgress: options.onProgress });
+  const reviewer = actor(t, { name: "product-reviewer-qualification", root, calls, entrypoint: options.entrypoint, onProgress: options.onProgress });
   if (options.reliability === true) {
-    const reliability = await reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint: options.entrypoint ?? server });
+    const reliability = await reliabilityQualification(t, { author, reviewer, root, workspaces, directory, entrypoint: options.entrypoint ?? server, onProgress: options.onProgress });
     reliability.sessionActors = new Set(calls.filter((call) => call.tool === "product_session_open").map((call) => call.actor)).size;
     return { reliability, calls };
   }
