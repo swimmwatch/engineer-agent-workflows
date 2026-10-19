@@ -56,6 +56,17 @@ Treat these as lenses, not mandatory new features. A narrow amendment replaces
 only its specified part; unrelated obligations in the broad original remain.
 Explicit complete replacement is different from a partial edit.
 
+For a compound request narrowed to one specification, inspect the saved boundary
+question and actual answer or explicit user instruction, using `decision_find`
+with `categories: ["scope-boundary"]` and exact `decision_get` reads when needed. A
+confirmed deferral is satisfied by an explicit, source-linked non-goal for this
+delivery; do not demand that later feature now. Deferral neither cancels the
+original request nor authorizes removing existing behavior. Require coverage of
+all retained conditions, dependencies and shared constraints. An author's split
+proposal, silence, or a `context_reason` label cannot authorize narrowing. Report
+unsupported exclusions and missing retained safeguards as gaps. Read the full
+server inventory normally; narrowing is not permission to skip original sources.
+
 Before aggregating a compound source to `covered`, locate support in the actual
 requirement text for every independently testable material obligation within
 scope. Do not fill absent rules from the source or infer coverage from a matching

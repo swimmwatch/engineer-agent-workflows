@@ -130,7 +130,10 @@ test("Q39: external dependency boundary preserves exact-response integrity", asy
     assert.match(markdown, /complete continuations/iu, `${label}: require complete delivery`);
     assert.match(markdown, /owning (?:original-content )?retrieval path/iu, `${label}: restore from the owner`);
     assert.match(markdown, /(?:unavailable or inconsistent|missing or corrupt)[\s\S]{0,90}stop the\s+affected (?:read|workflow)/iu, `${label}: exact-data failure must stop dependent work`);
-    assert.doesNotMatch(markdown, /Select `design_tokens` together with `shared_design`/u, `${label}: unsupported design-token scope promise`);
+    if (index === 1) {
+      assert.match(markdown, /Select `design_tokens` together with `shared_design`/u, `${label}: document explicit supported token scope`);
+      assert.match(markdown, /`shared_design` alone does not add tokens/u, `${label}: retain explicit token declaration boundary`);
+    }
   }
   const metadata = await Promise.all([
     repositoryFile("package.json"),

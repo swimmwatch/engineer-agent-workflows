@@ -86,6 +86,8 @@ current client; do not hard-code a generated namespace.
 - Open/discover: `specification_list`, `specification_open`, `scope_get`.
 - Scope: `scope_propose` saves the proposal and exact confirmation question;
   `scope_confirm` builds the manifest only from its actual recorded confirmation.
+  Select `design_tokens` together with `shared_design` to explicitly declare
+  `design/system/tokens.tokens.json`; `shared_design` alone does not add tokens.
 - Interview: `question_prepare`, `question_record_answer`,
   `question_record_no_answer`, `decision_record_fact`,
   `decision_record_assumption`, `decision_link_requirements`,

@@ -116,6 +116,102 @@ test("CP2: unanswered interview recovery, revision history and bounded decision 
   assert.deepEqual(parse(await readFile(file, "utf8")).decisions.slice(0, before.decisions.length), before.decisions);
 });
 
+test("boundary selection survives a non-answer and restart without creating sibling specifications", async (t) => {
+  const { project, call } = await fixture(t);
+  const target = { project, specification: "subscriptions" };
+  const original = "Add subscriptions and payment, promotion codes, accounting exports, and colleague invitations with roles.";
+  const question = "Specify subscriptions and payment now; retain promotion codes, accounting exports and invitations for later specifications?";
+  let state = await call("specification_open", target);
+  state = await call("decision_record_instruction", {
+    context: state.context, category: "request", text: original,
+    source: "fixture-customer:initial", kind: "initial_request",
+  });
+  const originalRef = state.result.decision_ref;
+  state = await call("question_prepare", {
+    context: state.context, category: "scope-boundary", text: question,
+    options: [{ id: "subscriptions-first", label: "Subscriptions and payment first" }, { id: "change", label: "Change the boundary" }],
+  });
+  state = await call("question_record_no_answer", { context: state.context, question_ref: state.result.question_ref, outcome: "dismissed" });
+  const pendingRef = state.result.question_ref;
+  const directory = join(project, "docs/specs/subscriptions");
+  const beforeResume = await readFile(join(directory, "decisions.yaml"));
+  await assert.rejects(readFile(join(directory, "manifest.yaml")), { code: "ENOENT" });
+  await assert.rejects(readFile(join(directory, "spec.md")), { code: "ENOENT" });
+
+  const resumed = await connect(t);
+  const response = await resumed.callTool({ name: "specification_open", arguments: target });
+  assert.notEqual(response.isError, true);
+  state = response.structuredContent;
+  assert.equal(state.result.pending_count, 1);
+  assert.deepEqual(state.result.pending_questions, [pendingRef]);
+  const read = await call("decision_get", { context: state.context, decision_ref: pendingRef });
+  const pending = JSON.parse(read.result.text);
+  assert.equal(pending.question.text, question);
+  assert.equal(pending.status, "dismissed");
+  assert.equal(pending.answer, null);
+  assert.deepEqual(await readFile(join(directory, "decisions.yaml")), beforeResume);
+
+  const reply = "Subscriptions and payment now; keep the other three for later. Failed and duplicate callbacks must be safe.";
+  state = await call("question_record_answer", {
+    context: state.context, question_ref: pendingRef, selected_ids: ["subscriptions-first"],
+    text: reply, source: "fixture-customer:boundary",
+  });
+  const boundaryRef = state.result.decision_ref;
+  await call("scope_confirm", { context: state.context, proposal_ref: pendingRef, answer_ref: boundaryRef }, "ANSWER_REQUIRED");
+  state = await call("scope_propose", {
+    context: state.context, depth: "standard",
+    rationale: ["Subscriptions and payment only; promotion codes, accounting exports and invitations are deferred by the saved boundary answer."],
+    profiles: [{ id: "backend", reason: "Payment API and safe callbacks." }], artifacts: [],
+  });
+  const proposalRef = state.result.question_ref;
+  state = await call("question_record_answer", {
+    context: state.context, question_ref: proposalRef, selected_ids: ["confirm"],
+    text: "Confirm this scope.", source: "fixture-customer:scope",
+  });
+  state = await call("scope_confirm", { context: state.context, proposal_ref: proposalRef, answer_ref: state.result.decision_ref });
+  await writeFile(join(directory, "spec.md"), [
+    "Status: Draft", "", "### PAY-001: Subscription payment",
+    "Activate a paid subscription only after successful payment. Failed callbacks do not grant access; duplicate callbacks do not repeat activation.",
+    "Acceptance: failed and repeated callbacks leave access consistent with one successful payment.",
+    "", "### BOUNDARY-001: Deferred outcomes",
+    "This specification adds no promotion codes, accounting exports or colleague invitations. These requests remain deferred for later specifications, not cancelled or forbidden in future work.",
+    "Acceptance: the delivery introduces only the payment outcome; existing unrelated functionality is preserved.", "",
+  ].join("\n"));
+  state = await call("decision_link_requirements_batch", {
+    context: state.context,
+    items: [originalRef, boundaryRef].map((decision_ref) => ({ decision_ref, requirement_ids: ["PAY-001", "BOUNDARY-001"] })),
+  });
+  const linked = state.result.items.map((item) => item.decision_ref);
+  const rawOriginal = await call("decision_get", { context: state.context, decision_ref: originalRef });
+  assert.equal(JSON.parse(rawOriginal.result.text).instruction.text, original);
+  const savedBoundary = await call("decision_get", { context: state.context, decision_ref: linked[1] });
+  assert.equal(JSON.parse(savedBoundary.result.text).answer.text, reply);
+  const boundarySources = await call("decision_find", { context: state.context, requirement_ids: ["BOUNDARY-001"] });
+  assert.equal(boundarySources.result.items.length, 2);
+  const review = await call("specification_review_start", { context: state.context, require_consistency: true });
+  assert.equal(review.result.mechanical_status, "pass");
+  let index = 0;
+  const sources = [];
+  do {
+    let cursor, item, text = "";
+    do {
+      item = await call("specification_review_get", { context: review.context, review_ref: review.result.review_ref, item_index: index, ...(cursor ? { cursor } : {}) });
+      text += item.result.text;
+      cursor = item.result.next_cursor;
+    } while (cursor);
+    const payload = JSON.parse(text);
+    if (payload.kind === "source") sources.push(payload.source);
+    index = item.result.next_item_index;
+  } while (index !== null);
+  for (const reference of linked) {
+    const source = sources.find((entry) => entry.id === reference.id);
+    assert.ok(source, "Every boundary source must remain in independent review evidence");
+    assert.ok(!source.context_reason);
+    assert.deepEqual(source.requirement_ids, ["PAY-001", "BOUNDARY-001"]);
+  }
+  assert.deepEqual((await call("specification_list", { project })).result.items, ["subscriptions"]);
+});
+
 test("CP3: shared components, variants, bounded lookup and real export prerequisite", async (t) => {
   const f = await designFixture(t);
   let state = await f.call("design_system_connect", { context: f.state.context, instance: "https://design.example.invalid", team_id: "team-1", project_id: "project-1", file_id: "library-1" });

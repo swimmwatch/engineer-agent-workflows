@@ -1,0 +1,261 @@
+schema_version: 1
+kind: "workflow_reliability_quality_scenarios"
+specification: "workflow-reliability-remediation"
+source_version: "d6499cf2486dbf002516f0977d1f9f951a9bce97eadc44e553f99d035561aae4"
+specification_version: "b070eb5dd558d766ddfa61945c90e53d9b586a07d90a4ee8795d21b68b61fa28"
+review_ref: "e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383"
+requirements_domain: "WR-001..WR-014"
+scenarios:
+  - id: "Q01"
+    requirements: ["WR-002","WR-013"]
+    packet: "I01"
+    environment: "isolated Linux source snapshot"
+    workload: "valid decision pin with empty element_ids and invalid Markdown/identity/digest/lineage variants"
+    observation: "accepted valid source and byte-identical store after rejected inputs"
+    threshold: "all cases correct; zero writes on rejection"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "restore unconditional nonempty-elements check"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q02"
+    requirements: ["WR-003","WR-013"]
+    packet: "I01"
+    environment: "isolated Linux source snapshot"
+    workload: "accepted global target without any Roadmap; invalid scope/provenance variants"
+    observation: "accepted_target preserved; no Roadmap member; rejected inputs do not write"
+    threshold: "all cases correct; zero Roadmap writes"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "restore stage requirement and separately inject a Roadmap write"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q03"
+    requirements: ["WR-006","WR-013","WR-014"]
+    packet: "I02"
+    environment: "isolated public stdio fixture"
+    workload: "Architecture vs Overview and limit 100 vs max 50; nested/private/oversized invalid inputs"
+    observation: "safe field/range/allowed-subject diagnostics and corrected-call success"
+    threshold: "zero private-data leaks; current response budgets respected"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-diagnostics.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "drop field path/range; separately expose forbidden input"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q04"
+    requirements: ["WR-005","WR-008","WR-013","WR-014"]
+    packet: "I03"
+    environment: "isolated product store and stdio"
+    workload: "small/large Unicode research and decision drafts, exact and foreign revisions/cursors"
+    observation: "full canonical content/digest and immutable read snapshots"
+    threshold: "100 percent exact reconstruction; zero reads causing writes"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-draft-records.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "omit last portion; separately insert a read-side write"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q05"
+    requirements: ["WR-009","WR-013","WR-014"]
+    packet: "I04"
+    environment: "two isolated build/process snapshots"
+    workload: "build A running while B replaces files; same package version; unavailable/mixed metadata"
+    observation: "serving identity vs loaded snapshot and advertised capability set"
+    threshold: "no process reports an un-loaded build as loaded"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "read mutable current disk identity on every call"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q06"
+    requirements: ["WR-010","WR-013","WR-014"]
+    packet: "I05"
+    environment: "isolated review store; old/new consumer schemas"
+    workload: "same source/new verdict; changed source; old records and explicit output"
+    observation: "domain-correct digest, legacy equivalence, no read migration"
+    threshold: "zero hash-domain substitutions; zero read-side writes"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "swap source and verdict hashes; separately write during read"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q07"
+    requirements: ["WR-004","WR-010","WR-013"]
+    packet: "I06"
+    environment: "isolated 119-block product artifact"
+    workload: "successful parent; one local Mermaid correction with no other impact"
+    observation: "fresh and inherited persisted verdict counts plus consistency"
+    threshold: "1 fresh block; 118 verified inherited blocks; 1 fresh consistency verdict"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "inherit changed block or accept missing consistency separately"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q08"
+    requirements: ["WR-004","WR-013","WR-014"]
+    packet: "I06"
+    environment: "isolated review/history fault fixtures"
+    workload: "wide impact, new/deleted/moved members, scope change, corrupt history, concurrent source change"
+    observation: "required inventory and current completion status"
+    threshold: "zero false current passes; full fallback only on intact current inputs"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "ignore shared-source drift or deleted membership separately"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q09"
+    requirements: ["WR-007","WR-013","WR-014"]
+    packet: "I07"
+    environment: "two isolated actor sessions over stdio"
+    workload: "dependent calls, errors, acknowledged restart and reviewer changing author state"
+    observation: "tokens delivered to handlers, persisted checkpoint and identity isolation"
+    threshold: "latest valid context used; zero cross-session effects"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "retain stale token; separately share contexts"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q10"
+    requirements: ["WR-008","WR-013"]
+    packet: "I07"
+    environment: "bounded session read delivery"
+    workload: "large source, repeated/wrong cursor, dropped page and changed version"
+    observation: "delivered reconstruction, progress and completeness flags"
+    threshold: "no complete result before all exact portions; no non-advancing loop"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "set complete before last delivered portion"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q11"
+    requirements: ["WR-007","WR-008","WR-013","WR-014"]
+    packet: "I08"
+    environment: "isolated interrupted subprocesses with actual operation counters"
+    workload: "fault before dispatch, after applied write, before checkpoint; missing/expired replay; active lock"
+    observation: "durable effects, request identity, replay count and known/unknown status"
+    threshold: "at most one safe automatic replay; at most one business effect; unknown never success"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "blindly retry changed input or mark unknown as success separately"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q12"
+    requirements: ["WR-011","WR-013","WR-014"]
+    packet: "I09"
+    environment: "generated Codex/Claude fixtures plus separate actual-host fresh-context trials"
+    workload: "missing choice/diagram/flow/state owner/unverified integration and compact N/A case"
+    observation: "ordering of presentation/answers before review; host-correct generated skill"
+    threshold: "no readiness with material gap; no invented infrastructure; every claimed live host actually executed"
+    check: "rtk proxy node scripts/run-tests.mjs tests/product-authoring-skills.test.mjs"
+    check_kind: "repository"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "remove unconditional checkpoint or hide it in unread optional detail"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q13"
+    requirements: ["WR-012","WR-008","WR-013","WR-014"]
+    packet: "I10"
+    environment: "repository fault-injection adapter"
+    workload: "nested schemas, critical opaque fields, Unicode and large records; lossy JSON/marker/digest variants"
+    observation: "exact payload identity or blocked dependent completion"
+    threshold: "all exact cases reconstruct; every corruption rejected; ordinary quoted markers allowed"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-compression-contract.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "disable one field/digest/completeness guard at a time"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q14"
+    requirements: ["WR-001","WR-012","WR-013"]
+    packet: "I10"
+    environment: "external Headroom boundary; excluded from repository delivery"
+    workload: "cancelled by explicit user scope amendment2026-10-19"
+    observation: "historical external observations retained with their original limits"
+    threshold: "CANCELLED / NO LONGER REQUIRED; never recorded as passed"
+    check: "not required; do not execute external qualification"
+    check_kind: "external"
+    red: "not applicable: cancelled external scenario, not a passing test"
+    prove: "not applicable: Q13 exact-data guards remain required independently"
+    execution_status: "cancelled"
+    prerequisite: null
+  - id: "Q15"
+    requirements: ["WR-001","WR-002","WR-003","WR-004","WR-005","WR-006","WR-007","WR-008","WR-009","WR-010","WR-011","WR-012","WR-013","WR-014"]
+    packet: "I11"
+    environment: "isolated full workflow with separate author/reviewer and packed MCP"
+    workload: "compose every completed packet across save/read/review/restart/current-use"
+    observation: "exact source versions, final runtime result, stored effects and regenerated distributions"
+    threshold: "all scoped integration and repository checks pass; no substituted external results"
+    check: "rtk proxy node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs"
+    check_kind: "package"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "remove one required integration binding and observe its semantic assertion"
+    execution_status: "not_run"
+    prerequisite: null
+  - id: "Q16"
+    requirements: ["WR-014","WR-013"]
+    packet: "I11"
+    environment: "Linux/macOS 15/Windows 2025 x Node 22.20.0/24.14.0; actual native execution required"
+    workload: "packed startup, Unicode paths, cancellation, old data, isolated global state and controlled actual-owner cleanup/alias-child diagnostic failures"
+    observation: "per-combination exit/results and effect snapshots; bounded safe disposer/boundary and child-exec metadata with exact original errors, LIFO/all-attempt cleanup, missing/null/false distinctions and no private canaries"
+    threshold: "all required actual combinations passed with exact-input evidence; failed or skipped native outcomes keep Q16 incomplete"
+    check: "rtk proxy node scripts/qualify-product-workflows.mjs --run --skip-model-trials"
+    check_kind: "external"
+    red: "Write the discriminating assertion first; an import/collection failure is not the required RED."
+    prove: "break a material path/cancellation invariant in isolated fixture"
+    execution_status: "not_run"
+    prerequisite: "Published N5 run39221641935 has three native passes and Windows22 Q36 child/parent failure78/80, CLI skipped; cause/timeout unproven. N6 corrects only proven execFile diagnostic loss: unchanged90s/120s/1MiB, args/env/assertions/cleanup/workload/callcount, original error identity and throwing-sink safety; actual-owner RED and real-child controls on both Linux pins, required PROVE and proportional focused checks precede separate code/security reviews. I12-R1 baseline recovery requires separately audited prepared inputs; sequence N6/reviews then I12 on new7aa+verifiedN6patch+auditedI12overlay. Preserve separate freezes, one final exact manifest and combined checks/reviews; fresh exact combined publication authority and all four actual native passes are required. Q14 cancelled, not passed."
+
+  - id: "Q17"
+    requirements: ["WR-001","WR-004","WR-005","WR-006","WR-007","WR-008","WR-009","WR-010","WR-011","WR-012","WR-013","WR-014"]
+    packet: "I12"
+    environment: "isolated docs example fixtures and a fresh-context reader"
+    workload: "audit-pinned prepared I12 examples on published7aa plus verified N6 patch and exact N5 runtime; test-first published-doc RED, external non-dependency, cancelled gate and unsupported-token correction"
+    observation: "schema/execution validity and reader answers grounded in actual behavior"
+    threshold: "all examples correct against exact frozen N5 runtime on both Linux pins; Headroom external and outside repository acceptance; cancelled Q14 never passed; generic critical fields and fail-closed handling retained; no unsupported design-token promise; historical Q17/native results never relabelled as new passes"
+    check: "rtk proxy node scripts/run-tests.mjs tests/product-documentation.test.mjs"
+    check_kind: "repository"
+    red: "Install/extend only the pinned prepared test first; keep guide/README at published bytes and observe missing explicit policy/integrity assertion, never a fabricated stale-gate or import failure."
+    prove: "separately restore mandatory external gate in each doc, mark cancelled Q14 passed, remove exact-data stop guidance or reinsert only two unsupported README token lines; intended assertions reject each defect"
+    execution_status: "not_run"
+    prerequisite: "N6 final independent acceptance first; I12 input audit and repaired packet pin three accepted historical prepared inputs plus exact 38-source/83-runtime N5 set. New7aa checkout consumes verified N6 patch; test-first prepared test precedes docs GREEN. Single final combined manifest and focused checks/reviews required; Q14 cancelled and four exact new-tree native passes remain separately required after fresh publication authority."
+
+
+# I11-N3 / Q16: real actor pending-request and handshake cancellation, actual child exit,
+# natural runner exit and no post-abort launches. Attempt all cleanup owners before
+# root disposal, retaining failures. After GREEN/PROVE, Windows-only packed1200s
+# and native-job30min; elsewhere600s/20min. All119 items and assertions retained.
+# Native Windows completion still requires separately authorized actual execution.
+
+# N3 local author result2026-10-18: mapped66 unchanged integration cases +5 final
+# lifecycle cases on each pinned Linux runtime; six PROVE defects detected;
+# actual after-only qualification CLI passes both pins. Final independent reviews
+# remain pending. Q16 threshold is unchanged and native Windows remains incomplete.
+
+# I11-N4 / Q16: actual recovery worker and controlled posix/win32 hooks share
+# native checkpoint joining; assert injected before interpreting blocked outcome.
+# Preserve before/after dispatch0/1, durable effects1 and all119 review assertions.
+# Public uses bounded redacted observer, Windows1200s/other600s; workflow30/20 unchanged.
+# N3 Windows public timeout and missed injection remain failed native evidence.
+# Local correction and simulation do not close Q16 or separate Q14.
+# N4 local author final:79/79 immutable cases and actual CLI pass on both Linux pins.
+# Final independent reviews and separately authorized actual native runs pending.
+
+# I11-N5 / Q16: safe cleanup diagnostics only; unknown Windows22 cause is not fixed
+# by planning or local GREEN. Preserve after(callback), LIFO/all attempts, original
+# error identity/order and PID-observation precedence; no retry/deadline changes.
+# Actual owner TAP RED and redaction/identity PROVE on both pinned Linux runtimes;
+# early static/lint gate, final immutable integration/CLI, exact source freeze.
+# Historical N5 Q14 owner/capture conditions are superseded: external Q14 is
+# cancelled2026-10-19, not passed. Q13 integrity and Q16 native guards remain required.
+# I12-R1 docs/test changes are different exact inputs; no N5 pass certifies that tree.
+# Preserve strict inventory and obtain separate concrete publication/four-job authority.

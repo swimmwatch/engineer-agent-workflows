@@ -42,6 +42,10 @@ Declare exact project-relative outputs in optional `project_artifacts`:
 `design/system/catalog.yaml`, `design/system/library.penpot`, warranted
 `design/system/tokens.tokens.json`, and
 `design/specs/<slug>/experience.yaml` plus `screens.penpot`.
+Use `scope_propose.artifacts` selections: `shared_design` for the catalog and
+library, `screen_design` for the specification's screens, and `design_tokens`
+together with `shared_design` when the token export is required. Shared design
+alone does not authorize a token export; confirm the returned exact paths.
 Existing shared assets used read-only are inputs, not write authority.
 No component library is created for an inactive UI profile.
 

@@ -52,7 +52,7 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "cd35d50a6856086de65f9384a8ddde49bd25121e7896422897e1e4695c2632da"
+      "sha256": "e67abc2ef5813fd7e0c6daa64945b60d397f1dc3a066aa87753f4b06c7fc5db7"
     },
     {
       "path": ".trackerignore",
@@ -76,7 +76,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "38c6fcc33babb595e4d7231e10af8cec9baaf68edb614c9c7c6dd668fda8d342"
+      "sha256": "bcb5228842e888d216e1a6dced9994332cc174817afc9f34bd9acb21c8c5b331"
     },
     {
       "path": "SECURITY.md",
@@ -92,7 +92,11 @@
     },
     {
       "path": "catalog/skills.json",
-      "sha256": "54eb2668932d850f52f0a62feb543cb16a39b4a3521736a64f77eed54449aec0"
+      "sha256": "51fe4fa9a3ed7c750cc6a993aa9f5221e8ac54c6ed707f8b72ec339f18397b30"
+    },
+    {
+      "path": "docs/context-scouting.md",
+      "sha256": "4b715c4d07d2623cb18ca597dc2f0c0ae219e131dd4704f71769e5a57e84c78d"
     },
     {
       "path": "docs/evidence/codex-budget-checkpoint.md",
@@ -164,7 +168,7 @@
     },
     {
       "path": "docs/local-development.md",
-      "sha256": "f18391baa20d59aace82b282e5fce4a292258194499e3cdf1fffbcb0ee6351c6"
+      "sha256": "63a5ec3bf5140d8da704098c8cece1e9309c6da0c8548cb0a642fb5d7e3e9590"
     },
     {
       "path": "docs/product-workflows.md",
@@ -189,6 +193,10 @@
     {
       "path": "docs/research/product-definition-technical-design-workflow.md",
       "sha256": "47b08e64ec09c5333ef09f938911fff543160b261786fd9e4664a227b5780db3"
+    },
+    {
+      "path": "docs/specs/context-scouting/spec.md",
+      "sha256": "7123783b659e234339201ee1c6ac155fa0781af68ba8769376d1edc766f3258c"
     },
     {
       "path": "docs/specs/cross-client-skill-distribution/.workflow/review-inputs/967629b92c791934f5168f5a66b81cf3826a4801b1cbfe307753631ff7b0c8ae.json",
@@ -340,7 +348,7 @@
     },
     {
       "path": "docs/specs/product-planning-workflows/contracts/mcp.md",
-      "sha256": "ca8f9aeb80e0b2cba39a20f6a22bf1a4304bd5ec269c0215aba001f538e16a6b"
+      "sha256": "1c3f050c11e8b3d74c7602125e681020f0c5749ca4831b77db9ddc81b59a543c"
     },
     {
       "path": "docs/specs/product-planning-workflows/contracts/schemas/data.schema.json",
@@ -360,7 +368,7 @@
     },
     {
       "path": "docs/specs/product-planning-workflows/spec.md",
-      "sha256": "5017dfd2eb80812ed3b7506ab83fe06ef856769c83f4000deee26d01506b6e1c"
+      "sha256": "3488457cddc46c7b025bef6489d35cf3a9f4fcfa62b56015665bb894cb1bd98c"
     },
     {
       "path": "docs/specs/product-planning-workflows/tasks/01_schema_config_and_paths.md",
@@ -471,6 +479,14 @@
       "sha256": "e586a47924d755be792aa8d7135c3f46b9efa3100cc931cfb8fd2f491f80d06c"
     },
     {
+      "path": "docs/specs/product-review-efficiency/contracts/review.md",
+      "sha256": "51bf94ed6da7506b01a24dd07c444d09ad854597768e295778222469ea32ec7d"
+    },
+    {
+      "path": "docs/specs/product-review-efficiency/spec.md",
+      "sha256": "000306b7ab885993115485e62d5d2c5fc08e4331167f2725eb016e4b565fbd2a"
+    },
+    {
       "path": "docs/specs/specification-completeness/contracts/mcp.md",
       "sha256": "9d70cb9fbf77b4d904a1be591a547d2f5294de127162cff28d6933bcb753c785"
     },
@@ -519,6 +535,18 @@
       "sha256": "bcb1a652188e09e37dc8920f7433d2a2fe777b0fc79beda087b50b40a343d325"
     },
     {
+      "path": "docs/specs/workflow-reliability-remediation/contracts/mcp.md",
+      "sha256": "35ea2555c25de6e958a7a76cb65292a0df6084bb7400069fc6908e4e31eef195"
+    },
+    {
+      "path": "docs/specs/workflow-reliability-remediation/quality/scenarios.yaml",
+      "sha256": "c498ce426522fa363fea878dd5f836e41cfdde708f86b402d955f6a356459ed7"
+    },
+    {
+      "path": "docs/specs/workflow-reliability-remediation/spec.md",
+      "sha256": "6151e3ebf664e72764b364eab0c55392bf2b1b47d296d93eb13b6acc285f4e77"
+    },
+    {
       "path": "package-lock.json",
       "sha256": "bfdd902d409d51ce8abf7f2a0b0c79b77d866aa9eb5b5380f1d90b03fb2aef2b"
     },
@@ -532,7 +560,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/README.md",
-      "sha256": "29cc4994f82648beb6abff25baa0d893f8e2fe3806919cf26d108d35d88cc1a6"
+      "sha256": "714eb19adeacc018bfbcd426bf2f208d83120f6f81780064639c0736de697fef"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/eslint.config.mjs",
@@ -684,7 +712,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/src/scope.ts",
-      "sha256": "51e928c32079a9a4188aa0ffdd868bcb54bbc33caf36c0378faef93b8a4385ac"
+      "sha256": "800d155ede819821a7e119e2939d3caf1c5c9c8721f7bc165a9aaaf074e9467a"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/src/server.ts",
@@ -703,6 +731,10 @@
       "sha256": "b73572c8f62edfbd3efbc6d3283dc078a808570fafb4837e9cd566c26abe2420"
     },
     {
+      "path": "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs",
+      "sha256": "81d0fd3ddbabfe06f20e36ee5768f30e72a0802516a22679d01a60ecb57fd719"
+    },
+    {
       "path": "packages/engineer-agent-workflow-mcp/test-support/stdio-harness.mjs",
       "sha256": "f5ef64c8254bc95d5a6420276ec226c040c8a13f020725a830626a61060eb368"
     },
@@ -717,6 +749,10 @@
     {
       "path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs",
       "sha256": "e03d8fe8842e472ee58131b58f7d2ea2a699886e299518f0a993583a5782effb"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/design-token-scope.test.mjs",
+      "sha256": "1561d4d429ede18c25154c533ba92e79228fca8988e2da6bb7385acb6dea9eea"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs",
@@ -779,12 +815,24 @@
       "sha256": "28ce8d2fe2f86b142df616cbfaf90faf7b731e63085e7eb84d107e0b8bbe6b06"
     },
     {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs",
+      "sha256": "6900affbd68b79078be55307170745a281986acd56778e72128a8aae0c7a16c1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "sha256": "8a58bf20767794e97375536e807cdc3d61ba1b749fc10fb6432ecbaa5d319a96"
+    },
+    {
       "path": "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs",
       "sha256": "4b957cabb7e6212855d97bb1949a89d780ebc212aadcd2faaef7f6ac008043cf"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs",
       "sha256": "ad44dc4cd53ace3319900369e174ac16999214d96433c9562d4626fa55ccb17b"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs",
+      "sha256": "6c752f4ae6799a3946717730c07d9e71be00eab4e732f0ea8595e125ffaf9264"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs",
@@ -808,7 +856,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs",
-      "sha256": "8f100a682278b116c71624e5999d4fa505048efe755dc2a37228a9bfec5d1174"
+      "sha256": "0ce6246b5eb5d22527c954a4bdd4cbdb28880a99568bb9fcfd109346a73df4be"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs",
@@ -892,7 +940,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs",
-      "sha256": "0013f4912656533c7bbae14c77f20179aada59f7477b22a94a7a24b5c3f95c4f"
+      "sha256": "a24c4180f9227c17d50d264048cf55e66bb11b602769f06ba8ddf2a1a0156896"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/tsconfig.json",
@@ -904,7 +952,7 @@
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/catalog.json",
-      "sha256": "0c239055e9f87e031f17532ad6e4c9b7f6c26200b1052fd3f4b0865d679bbd78"
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/shared/engineering-manual.sha256",
@@ -967,6 +1015,14 @@
       "sha256": "19673d91dc89c63a7a0640f89b4d343d4d9af4992eeb48d2ef6a5b2130d95848"
     },
     {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+      "sha256": "e84635d83ebff52309481f606c8beb17b3c7c1f63af5eb1ac0d11ae6f7f6d65a"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+      "sha256": "9927c7e37ad68b16d4fa3fce99fbd2c5225b4d32f2e2c9c35ae87c518c09fba3"
+    },
+    {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/SKILL.md",
       "sha256": "3ef52b75cb10603a24152bf599bf7f7c0f138ad8d57e1ad72dad709a0aed7c6a"
     },
@@ -984,7 +1040,7 @@
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/references/penpot-workflow.md",
-      "sha256": "ef4688426eaa0800f32406e9b1e05cd43b00195b4cf47c2f8d3bfb3308b75b8c"
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/engineering-manual.sha256",
@@ -1284,11 +1340,11 @@
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/SKILL.md",
-      "sha256": "e83a149d70695f45e14bd8e383b4855706952df9553eba42e4f2692dd2607d26"
+      "sha256": "38260c3054c19e04939441b5f187a37ed7d8a48328eb32666322242a68375ede"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/adaptive-scope.md",
-      "sha256": "84c52d3be493ba63b06a0a3b11b6e922d091cb6cef5b213297363f2b6ef07ffb"
+      "sha256": "3603ec1b0e7cf5999388f2884c50707116bbc8937ce88c12528608a7b7464e53"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/backend-requirements.md",
@@ -1296,7 +1352,7 @@
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md",
-      "sha256": "8e88be9f35e9bb4ed758bc681ed6a0329023a24ae90c3ba5f446422738817b74"
+      "sha256": "f030664f8df47d6bbec0b7e56bfc6994f907cf1da89dba069789ce2bcaf173c4"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/core-requirements.md",
@@ -1323,16 +1379,20 @@
       "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
     },
     {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/security-requirements.md",
       "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/specification-interview.md",
-      "sha256": "9e4e539c421937779535328af450be025766824128860b38182670210bc79a67"
+      "sha256": "9474ed04ebbb23cf0720441f304bfa819d3c3f35a20c2b3978e751ebbef8f4c6"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/ui-requirements.md",
-      "sha256": "48fa955402f655911f03cda27f8c91c30125b7b7012bcc0dba11c2dd738f2ea4"
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
     },
     {
       "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/engineering-manual.sha256",
@@ -1408,7 +1468,7 @@
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/catalog.json",
-      "sha256": "0c239055e9f87e031f17532ad6e4c9b7f6c26200b1052fd3f4b0865d679bbd78"
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/shared/engineering-manual.sha256",
@@ -1483,6 +1543,18 @@
       "sha256": "d0e3bf77535a9d5799ad06b706d2af16cc64fa81d66355881784d2d3fe6112b6"
     },
     {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+      "sha256": "4891bd0e404692d64694c897437e06d66be0984092b04f85226b14e9d7b01e4b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/agents/openai.yaml",
+      "sha256": "f41dc375413a1bca422eec852ade0d6773fcc771abb9c5b6a53551452692670b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+      "sha256": "323864fa6701c7ce71c19a945522a3db59fecfc21c68fe47aa006b48a39a9c80"
+    },
+    {
       "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/SKILL.md",
       "sha256": "8ac51fa44caf83ecf3fde4bc7840de0ed472a008b43781beafcb1cf56100711c"
     },
@@ -1504,7 +1576,7 @@
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/references/penpot-workflow.md",
-      "sha256": "ef4688426eaa0800f32406e9b1e05cd43b00195b4cf47c2f8d3bfb3308b75b8c"
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/engineering-manual.sha256",
@@ -1844,7 +1916,7 @@
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/SKILL.md",
-      "sha256": "99255edacae40b06cbf7ae0178d94fed91e918a99ffa4e037b11c580075abb2a"
+      "sha256": "965d3e1bb24561971125d6331f4907b364357cbb89fe7ac4cb197b5d33d9158b"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/agents/openai.yaml",
@@ -1852,7 +1924,7 @@
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/adaptive-scope.md",
-      "sha256": "372a0939dd2eb4150d4614ac2d6b984bb4ba65293e4a40ca15a53d7bffd72715"
+      "sha256": "8b085b78a2a195557c9e482a98a5090fe39db2e5a4a6d52837e153f721bc12b6"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/backend-requirements.md",
@@ -1860,7 +1932,7 @@
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md",
-      "sha256": "94afc0896cc5f38b092a4d88ba2e0d165b520a72aeb9ed87c52ac6441b0dd5ec"
+      "sha256": "1ff316b3f3bd0e07fd366b0b01f26792f708d5c161c06204fcc6f6a3bbdf8637"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/core-requirements.md",
@@ -1887,16 +1959,20 @@
       "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
     },
     {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/security-requirements.md",
       "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/specification-interview.md",
-      "sha256": "0ddae4b9465ea83e1ad6f1fe955c26e211d611fa11f8b16d0313d2c4b2f3c8ba"
+      "sha256": "e9c53050975249f95d70bf7e1318f92e8f2bf34300b57c04f48b1cb1ba59d85b"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/ui-requirements.md",
-      "sha256": "48fa955402f655911f03cda27f8c91c30125b7b7012bcc0dba11c2dd738f2ea4"
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
     },
     {
       "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/engineering-manual.sha256",
@@ -1971,6 +2047,10 @@
       "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
     },
     {
+      "path": "scripts/benchmark-product-review.mjs",
+      "sha256": "4c2617ca824983a5af5fe2d2888b740513c0b1acdf62337053246be07aad2f8b"
+    },
+    {
       "path": "scripts/build-dev.mjs",
       "sha256": "aa7eb97de54c7eec90bd5fde6eed80cfe212d158b5e25c78025fe8e742ce35d6"
     },
@@ -1984,7 +2064,7 @@
     },
     {
       "path": "scripts/lib/catalog.mjs",
-      "sha256": "b5bfeb309e14581a9e1e831a373beb6144ad9358c2d6479d6173f4773c17d192"
+      "sha256": "6b4b25fc5a8ecce8532270a47152386304bf0d1e908d305bf12f2fc919373435"
     },
     {
       "path": "scripts/lib/distribution.mjs",
@@ -2005,6 +2085,10 @@
     {
       "path": "scripts/lib/skill-document.mjs",
       "sha256": "0536ccaa1fc3c6230a8252fcdea95dfce65214cae80b37c9c54d361ece94122d"
+    },
+    {
+      "path": "scripts/qualify-product-review.mjs",
+      "sha256": "58135e560af31e65cb380cbd9c44042873e8e0b2a43e24652c596bc4d0e228ec"
     },
     {
       "path": "scripts/qualify-product-workflows.mjs",
@@ -2091,6 +2175,18 @@
       "sha256": "d0e3bf77535a9d5799ad06b706d2af16cc64fa81d66355881784d2d3fe6112b6"
     },
     {
+      "path": "skills/context-scouting/SKILL.md",
+      "sha256": "f33a0ec07eb53b0d1f69797766473518dd2877f1bd5223e8736430403e79e391"
+    },
+    {
+      "path": "skills/context-scouting/agents/openai.yaml",
+      "sha256": "f41dc375413a1bca422eec852ade0d6773fcc771abb9c5b6a53551452692670b"
+    },
+    {
+      "path": "skills/context-scouting/references/delegation.md",
+      "sha256": "7776425dc52fc6f84532135e2e34e13b9259531185718aadda1389c374af22cf"
+    },
+    {
       "path": "skills/design-planning/SKILL.md",
       "sha256": "bf99aa1d66b4270590d32de4d4e3760eeb5d19447872a942928ff265a82c815b"
     },
@@ -2112,7 +2208,7 @@
     },
     {
       "path": "skills/design-planning/references/penpot-workflow.md",
-      "sha256": "ef4688426eaa0800f32406e9b1e05cd43b00195b4cf47c2f8d3bfb3308b75b8c"
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
     },
     {
       "path": "skills/design-planning/shared/engineering-manual.sha256",
@@ -2452,7 +2548,7 @@
     },
     {
       "path": "skills/spec-driven-development/SKILL.md",
-      "sha256": "036f6bbcc97ff97182e1ae2078286eafd4daa47c16cfed006ad48c63f5c81278"
+      "sha256": "632627911f7c639cac4460055d28e283def0ee0e9c7e8e1379d82ec809ea9671"
     },
     {
       "path": "skills/spec-driven-development/agents/openai.yaml",
@@ -2460,7 +2556,7 @@
     },
     {
       "path": "skills/spec-driven-development/references/adaptive-scope.md",
-      "sha256": "0df850a38661bab031746282555774449f89031de9a6647fc8409c3d60f0c5cf"
+      "sha256": "cc02d7dd3a1889c8340a77d0e3a132fbe510cc88de2d0452ef269075b6c9ae37"
     },
     {
       "path": "skills/spec-driven-development/references/backend-requirements.md",
@@ -2468,7 +2564,7 @@
     },
     {
       "path": "skills/spec-driven-development/references/completeness-review.md",
-      "sha256": "8b68eb8c0e14df1bebb7aaf9d5a3e9b0aaa3bd076392ff4ec6a5499ddb2c4cdc"
+      "sha256": "86eaeae7f2f9fbbc904cc955d3cd03f1d72d4b0d95851fc0a9031c65c2c24f65"
     },
     {
       "path": "skills/spec-driven-development/references/core-requirements.md",
@@ -2495,16 +2591,20 @@
       "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
     },
     {
+      "path": "skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
       "path": "skills/spec-driven-development/references/security-requirements.md",
       "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
     },
     {
       "path": "skills/spec-driven-development/references/specification-interview.md",
-      "sha256": "9421e614eee45b24517516b749c0e06e0f7e11cdfa6119a02707c72b985e7eee"
+      "sha256": "b05511ea0524d83599622d9589b70d03712b76db245765ba72a1ba0821b61a09"
     },
     {
       "path": "skills/spec-driven-development/references/ui-requirements.md",
-      "sha256": "48fa955402f655911f03cda27f8c91c30125b7b7012bcc0dba11c2dd738f2ea4"
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
     },
     {
       "path": "skills/spec-driven-development/shared/engineering-manual.sha256",
@@ -2588,7 +2688,7 @@
     },
     {
       "path": "tests/catalog.test.mjs",
-      "sha256": "9737e8ac6eb1a51807deaf85eedaba3b3219c53e939c19bd29ab72bd43050ca6"
+      "sha256": "300d9b3d5ac474d6a665838404ab85c34f6e311479b383d12f90a414567b29ab"
     },
     {
       "path": "tests/cli.test.mjs",
@@ -2601,6 +2701,10 @@
     {
       "path": "tests/context-discovery-skills.test.mjs",
       "sha256": "32a3c5e5660827688197af1ea74d944379f4057e14073f034212227705ea01c6"
+    },
+    {
+      "path": "tests/context-scouting.test.mjs",
+      "sha256": "5782e09cadba74fed2506e574d1b3c5de1228900943b13b118b5bc80553c32c6"
     },
     {
       "path": "tests/decision-authoring-contract.test.mjs",
@@ -2661,6 +2765,26 @@
     {
       "path": "tests/fixtures/context-discovery/question-tool-outcomes.json",
       "sha256": "50ad63f9398275ddd8f88b5cff01de3a7d132a97e76cec34fcf43f0d58e3abae"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/README.md",
+      "sha256": "582adfd91e5c17a5acf86be60de0653e359b0ffb061a2b0802f5f04374be8e78"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/src/delivery.mjs",
+      "sha256": "23e71ce125b577232448b85d1d27b9246633093fabf997619b1998a0bb8defab"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/src/orders.mjs",
+      "sha256": "c0b248c1cadf755c3b66c4ef5116479b6467f7cc7c3c28631f24a0ad6c278be4"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/test/orders.test.mjs",
+      "sha256": "cc5b902c030f2f0033d5461c101cd598335479daa691eba4de214e1f57527f16"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/scenarios.json",
+      "sha256": "bcac09617be078c06cda3a077feb2dcb380f01abd74c155a4566324d51efb637"
     },
     {
       "path": "tests/fixtures/documentation/documentation-and-adrs/scenarios.json",
@@ -2744,7 +2868,7 @@
     },
     {
       "path": "tests/fixtures/manifests/plugin-catalog.json",
-      "sha256": "0c239055e9f87e031f17532ad6e4c9b7f6c26200b1052fd3f4b0865d679bbd78"
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
     },
     {
       "path": "tests/fixtures/planning/adaptive-profile-artifacts.json",
@@ -2819,6 +2943,10 @@
       "sha256": "4f2031597cd9d252ae326b943eb52f369d21632807a4a127ad552c875d9076b6"
     },
     {
+      "path": "tests/fixtures/specification/scope-boundaries.md",
+      "sha256": "a515c24eaf931c305c04e6985a49f7e9ba9ad5ac025b0e113fecb8e714ec19c4"
+    },
+    {
       "path": "tests/fixtures/specification/status-recovery.json",
       "sha256": "c22ca42de09633450d731f0336ee14cdbf6ed184890bd067ea99f9af08c465e5"
     },
@@ -2872,7 +3000,7 @@
     },
     {
       "path": "tests/host-model-roles.test.mjs",
-      "sha256": "21aff687b743736e3d9701f16876fc457b05b8b3883a7e0b6ec332970b69b8b6"
+      "sha256": "016989356cb163ecfbf16c4b594299c16076170d4530dd0e0e4e86832e80649a"
     },
     {
       "path": "tests/host-project-instructions.test.mjs",
@@ -2956,7 +3084,7 @@
     },
     {
       "path": "tests/product-documentation.test.mjs",
-      "sha256": "987c80a654d5b8067b38de7770b273636d5b88849b211a97c4ba5f79df6259be"
+      "sha256": "9bd699da3709f6c8af01631ddea8029fe669c156c152012c405db4821c92d1c9"
     },
     {
       "path": "tests/product-planning-skills.test.mjs",

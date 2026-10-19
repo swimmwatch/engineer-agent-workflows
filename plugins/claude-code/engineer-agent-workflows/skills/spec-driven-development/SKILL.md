@@ -21,8 +21,7 @@ Model suggestion: Opus. Never switch or gate on model.
    `shared/references/test-discipline.md`. Use host-supplied project instructions;
    do not reread them solely to recover context. Read
    `CLAUDE.md` only if absent from
-   active context or itself in scope. Approved requirements and
-   repository evidence outrank generic guidance.
+   active context or itself in scope.
 3. Read `references/adaptive-scope.md` and
    `references/specification-interview.md`. Use workflow MCP for decisions and
    manifest state; never read workflow YAML directly.
@@ -30,9 +29,10 @@ Model suggestion: Opus. Never switch or gate on model.
    For valid product-linked task, read `shared/references/product-workflow.md`
    follow its Specification role; otherwise keep the standalone path and do
    not call product task tools.
-4. Infer known scope, then ask only missing high-level questions. Propose and
+4. Check task boundaries through adaptive-scope before broad research, detailed
+   interviewing or profile reads. Resolve any splitting choice first. Propose and
    confirm the Lite, Standard, or Deep depth and active profiles through the
-   callable `AskUserQuestion` in the current mode. Follow its exposed
+   callable `AskUserQuestion`. Follow its exposed
    schema and do not enter plan mode solely to ask. Checkpoint the proposal and
    explicit answer in `decisions.yaml`; write only the confirmed scope
    to `manifest.yaml`. If the tool gives no answer, use the saved conversational
