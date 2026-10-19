@@ -5,13 +5,15 @@ import { fail } from "../state.js";
 const STATE_DEFINITIONS = [
   "Store", "Ref", "SourcePin", "Generation", "Candidate", "Operation",
   "WorkspaceBinding", "TaskBinding", "SafetyBlock", "Decision", "Registry", "Review", "Verdict", "ContextSelection",
-  "Head", "Lock", "ElementMetadata", "TaskId",
+  "Head", "Lock", "SessionCheckpoint", "ElementMetadata", "TaskId",
 ] as const;
 
 const SUCCESS_DEFINITIONS = [
   "Success_Capabilities", "Success_OpenResult", "Success_Page", "Success_InterviewResume", "Success_MutationResult",
   "Success_EditResult", "Success_Portion", "Success_ContextSelection", "Success_ReviewStatus",
-  "Success_ReviewPortion", "Success_CheckResult", "Success_TaskCheckResult", "Success_OperationStatus",
+  "Success_ReviewPortion", "Success_ReviewBatch", "Success_CheckResult", "Success_TaskCheckResult", "Success_OperationStatus",
+  "Success_TaskCheckSummary", "Success_TaskInputDetails",
+  "Success_CandidateRecordPortion", "Success_SessionResult",
 ] as const;
 
 export const PRODUCT_RECORD_DEFINITIONS = [...STATE_DEFINITIONS, ...SUCCESS_DEFINITIONS] as const;

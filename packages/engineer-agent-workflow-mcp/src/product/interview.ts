@@ -6,6 +6,7 @@ import { dirname } from "node:path";
 
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
+import { decodeCursor, encodeCursor, PORTION_CODE_POINTS } from "./context.js";
 import { replayProductMutationResult, runProductMutation } from "./operations.js";
 import { validateProductRecord } from "./schemas.js";
 import { loadGeneration, saveObject, verifySourcePin } from "./storage.js";
@@ -142,6 +143,7 @@ interface CandidateState {
   readonly context: ProductContext;
   readonly candidate: CandidateRecord;
   readonly candidateBytes: Buffer;
+  readonly evidence: Map<string, DecisionRecord>;
 }
 
 interface CandidateMutation {
@@ -362,7 +364,7 @@ async function loadCandidate(
     return fail("CONFLICT", "Product candidate changed since this context was issued.");
   }
   await loadGeneration(root, candidate.product_id, candidate.base_generation);
-  const state = { root, context, candidate, candidateBytes: bytes };
+  const state = { root, context, candidate, candidateBytes: bytes, evidence: new Map<string, DecisionRecord>() };
   await verifyDecisionHistory(state);
   return state;
 }
@@ -401,6 +403,7 @@ async function verifyDecisionHistory(state: CandidateState): Promise<void> {
     if (seen.has(key)) continue;
     seen.add(key);
     const decision = await readDecisionEvidence(state, current.reference, current.expectedDigest);
+    state.evidence.set(key, decision);
     for (const predecessor of decision.predecessors) {
       if (predecessor.product_id !== state.candidate.product_id) {
         return fail("BROKEN_REFERENCE", "Product decision predecessor belongs to another product.");
@@ -412,6 +415,66 @@ async function verifyDecisionHistory(state: CandidateState): Promise<void> {
 
 async function loadDecision(state: CandidateState, reference: DecisionRef): Promise<DecisionRecord> {
   return readDecisionEvidence(state, reference);
+}
+
+export async function readCandidateRecord(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly candidateRef: CandidateRef;
+  readonly recordRef: { readonly kind: "decision" | "research"; readonly id: string; readonly revision: number };
+  readonly cursor?: string;
+}): Promise<InterviewOutcome<Record<string, unknown>>> {
+  const state = await loadCandidate(input.root, input.context, input.candidateRef);
+  if (candidateVersion(state.candidate) !== state.candidate.source_version) {
+    return fail("SOURCE_CHANGED", "Selected candidate bytes do not match their recorded version.");
+  }
+  const reference: DecisionRef = { product_id: state.candidate.product_id, artifact: state.candidate.artifact,
+    id: input.recordRef.id, revision: input.recordRef.revision };
+  const record = state.evidence.get(`${reference.artifact}:${reference.id}:${reference.revision}`);
+  if (record === undefined) return fail("NOT_FOUND", "Record revision is outside the selected candidate evidence history.");
+  const kind = record.category === "research" && record.source === "product_record_research" ? "research" : "decision";
+  if (kind !== input.recordRef.kind) return fail("NOT_FOUND", "Record kind does not match the selected candidate evidence.");
+  const bytes = canonicalBytes(record);
+  const sourceDigest = digest(bytes);
+  const currentBytes = await readSafe(input.root, decisionPath(reference), state.context.canonical_workspace);
+  if (currentBytes === null) return fail("MISSING_EVIDENCE", "Selected candidate record is unavailable.");
+  if (!currentBytes.equals(bytes)) return fail("SOURCE_CHANGED", "Selected candidate record changed or is not canonical stored data.");
+  const identity = digest(JSON.stringify({ product_id: reference.product_id, candidate_id: state.candidate.candidate_id,
+    artifact: reference.artifact, kind: input.recordRef.kind, id: reference.id, revision: reference.revision,
+    source_object_sha256: sourceDigest }));
+  let offset = 0;
+  if (input.cursor !== undefined) {
+    const payload = decodeCursor(input.cursor, "candidate-record", input.context);
+    if (payload.source_version !== state.candidate.source_version || payload.identity !== identity) {
+      return fail("STALE_CURSOR", "Candidate record continuation belongs to another exact snapshot.");
+    }
+    offset = payload.offset;
+  }
+  const points = Array.from(bytes.toString("utf8"));
+  if (offset >= points.length) return fail("STALE_CURSOR", "Candidate record continuation is outside the selected record.");
+  let length = Math.min(PORTION_CODE_POINTS, points.length - offset);
+  let result: Record<string, unknown>;
+  for (;;) {
+    const next = offset + length;
+    result = { candidate_ref: input.candidateRef, record_ref: input.recordRef,
+      source_version: state.candidate.source_version, source_object_sha256: sourceDigest,
+      encoding: "canonical-json-utf8", text: points.slice(offset, next).join(""),
+      offset, total_characters: points.length, complete: next === points.length,
+      next_cursor: next === points.length ? null : encodeCursor({ kind: "candidate-record",
+        context_digest: digest(input.context), source_version: state.candidate.source_version, offset: next, identity }) };
+    const payload = { protocol_version: 2, context: input.context, result, replayed: false, operation_ref: null };
+    const text = JSON.stringify(payload);
+    const wire = { content: [{ type: "text", text }], structuredContent: payload };
+    if (Buffer.byteLength(text) <= 24 * 1024 && Buffer.byteLength(JSON.stringify(wire)) <= 64 * 1024) break;
+    if (length === 1) return fail("RESULT_LIMIT", "Candidate record envelope cannot fit the response budget.");
+    length = Math.max(1, Math.floor(length / 2));
+  }
+  const candidateBytes = await readSafe(input.root, candidatePath(state.candidate.product_id, state.candidate.candidate_id),
+    state.context.canonical_workspace);
+  if (candidateBytes === null || !candidateBytes.equals(state.candidateBytes)) {
+    return fail("SOURCE_CHANGED", "Selected candidate changed while its record was read.");
+  }
+  return { context: input.context, result, replayed: false, operationRef: null };
 }
 
 function assertCandidateRef(candidate: CandidateRecord, reference: DecisionRef): void {
@@ -432,7 +495,7 @@ function assertAffectedRefs(candidate: CandidateRecord, references: readonly Ref
   }
 }
 
-function assertNonSensitive(value: unknown): void {
+export function assertNonSensitive(value: unknown): void {
   const pending: unknown[] = [value];
   while (pending.length > 0) {
     const current = pending.pop();
@@ -496,6 +559,30 @@ async function verifyCandidate(state: CandidateState, expected: Buffer): Promise
     state.context.canonical_workspace,
   );
   if (!current?.equals(expected)) return fail("CONFLICT", "Product candidate changed during mutation recovery.");
+}
+
+type EvidenceScenario = "product_record_instruction" | "product_record_observation" | "product_record_assumption" | "product_record_research";
+function evidenceScenarioInput(scenario: EvidenceScenario, input: Record<string, unknown>): Record<string, unknown> {
+  const candidate_ref = input.candidate_ref;
+  switch (scenario) {
+    case "product_record_instruction": return { candidate_ref, text: input.text, source: input.source, related_refs: input.related_refs, affected_refs: input.affected_refs };
+    case "product_record_observation": return { candidate_ref, finding: input.finding, source: input.source, affected_refs: input.affected_refs };
+    case "product_record_assumption": return { candidate_ref, assumption: input.assumption, reconsider_when: input.reconsider_when, affected_refs: input.affected_refs };
+    case "product_record_research": return { candidate_ref, evidence: input.evidence };
+  }
+}
+// The same owner projection and identity are used before dispatch and by the original handler.
+export function productInterviewReplayIdentity(contextText: string, scenario: string, input: Record<string, unknown>): {
+  operationId: string; intent: Record<string, unknown>;
+} | null {
+  if (!["product_record_instruction", "product_record_observation", "product_record_assumption", "product_record_research"].includes(scenario)) return null;
+  const context = decodeContext(contextText);
+  const candidate = input.candidate_ref as CandidateRef;
+  if (context.candidate_ref === null || candidate.product_id !== context.product_id || candidate.product_id !== context.candidate_ref.product_id
+    || candidate.candidate_id !== context.candidate_ref.candidate_id) return fail("INVALID_INPUT", "Recovery requires the exact selected candidate context.");
+  const normalized = evidenceScenarioInput(scenario as EvidenceScenario, input);
+  return { operationId: operationId(scenario, candidate, context.selected_sources_sha256, normalized),
+    intent: { schema_version: 1, kind: "operation_intent", scenario, input: normalized } };
 }
 
 async function replayCandidateMutation(
@@ -1170,7 +1257,7 @@ export async function recordProductInstruction(input: {
   return recordDecision({
     ...input,
     scenario: "product_record_instruction",
-    scenarioInput: { candidate_ref: input.candidateRef, text: input.text, source: input.source, related_refs: input.relatedRefs, affected_refs: input.affectedRefs },
+    scenarioInput: evidenceScenarioInput("product_record_instruction", { candidate_ref: input.candidateRef, text: input.text, source: input.source, related_refs: input.relatedRefs, affected_refs: input.affectedRefs }),
     state: "answered",
     category: "instruction",
     predecessors: input.relatedRefs,
@@ -1192,7 +1279,7 @@ export async function recordProductObservation(input: {
     context: input.context,
     candidateRef: input.candidateRef,
     scenario: "product_record_observation",
-    scenarioInput: { candidate_ref: input.candidateRef, finding: input.finding, source: input.source, affected_refs: input.affectedRefs },
+    scenarioInput: evidenceScenarioInput("product_record_observation", { candidate_ref: input.candidateRef, finding: input.finding, source: input.source, affected_refs: input.affectedRefs }),
     state: "observed",
     category: "observation",
     text: input.finding,
@@ -1216,7 +1303,7 @@ export async function recordProductAssumption(input: {
     context: input.context,
     candidateRef: input.candidateRef,
     scenario: "product_record_assumption",
-    scenarioInput: { candidate_ref: input.candidateRef, assumption: input.assumption, reconsider_when: input.reconsiderWhen, affected_refs: input.affectedRefs },
+    scenarioInput: evidenceScenarioInput("product_record_assumption", { candidate_ref: input.candidateRef, assumption: input.assumption, reconsider_when: input.reconsiderWhen, affected_refs: input.affectedRefs }),
     state: "assumed",
     category: "assumption",
     text: input.assumption,
@@ -1249,7 +1336,7 @@ export async function recordProductResearch(input: {
     context: input.context,
     candidateRef: input.candidateRef,
     scenario: "product_record_research",
-    scenarioInput: { candidate_ref: input.candidateRef, evidence: input.evidence },
+    scenarioInput: evidenceScenarioInput("product_record_research", { candidate_ref: input.candidateRef, evidence: input.evidence }),
     state: "observed",
     category: "research",
     text,

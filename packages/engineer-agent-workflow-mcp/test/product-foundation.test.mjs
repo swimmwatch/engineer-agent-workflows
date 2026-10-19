@@ -356,6 +356,23 @@ function records() {
       required_total: 1,
       optional_total: 0,
     },
+    SessionCheckpoint: {
+      schema_version: 1, kind: "product_session", id: UUID, product_id: UUID,
+      candidate_ref: { product_id: UUID, candidate_id: UUID_2 },
+      context: "synthetic-context", revision: 0, state: "idle", pending: null,
+      delivery: null, completed_read: null, review_state_sha256: DIGEST,
+    },
+    SafetyBlock: {
+      schema_version: 1, kind: "safety_block", id: UUID_2, product_id: UUID,
+      affected_refs: [ref], affected_task_ids: [TASK_ID], reason: "security",
+      explanation: "Retain the observed safety finding.", source: decisionRef, resolution: null,
+    },
+    Registry: { schema_version: 1, kind: "registry", product_id: UUID, documents: [], element_metadata: [] },
+    Verdict: {
+      item_key: "scope", verdict: "covered", explanation: "The fixture scope is covered.",
+      counterexample: null, evidence_refs: [], evidence_sources: [],
+      read_receipt: "synthetic-receipt", inherited_from: null,
+    },
     Head: { schema_version: 1, kind: "head", product_id: UUID, generation: DIGEST, operation_id: UUID_2 },
     Lock: { schema_version: 1, kind: "lock", operation_id: UUID, session_id: UUID_2, pid: 1, expected_revision: null },
     ElementMetadata: {
@@ -383,7 +400,7 @@ test("Q03: the published product schema compiles and validates strict state reco
   const requiredDefinitions = [
     "Store", "Ref", "SourcePin", "Generation", "Candidate", "Operation",
     "WorkspaceBinding", "TaskBinding", "SafetyBlock", "Decision", "Registry", "Review", "Verdict", "ContextSelection",
-    "Head", "Lock", "ElementMetadata", "TaskId",
+    "Head", "Lock", "SessionCheckpoint", "ElementMetadata", "TaskId",
   ];
   const successDefinitions = Object.keys(schema.definitions).filter((name) => name.startsWith("Success_"));
   assert.ok(successDefinitions.length > 0);
@@ -392,6 +409,7 @@ test("Q03: the published product schema compiles and validates strict state reco
     assert.doesNotThrow(() => ajv.compile({ definitions: schema.definitions, $ref: `#/definitions/${name}` }), name);
   }
 
+  assert.deepEqual(new Set(Object.keys(records())), new Set(requiredDefinitions), "every required state definition needs an independent positive fixture");
   for (const [name, value] of Object.entries(records())) {
     try {
       assert.deepEqual(await validateProductRecord(name, value), value, name);

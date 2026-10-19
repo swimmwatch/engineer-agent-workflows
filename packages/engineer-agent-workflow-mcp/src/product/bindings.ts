@@ -52,6 +52,7 @@ const PRODUCT_TOOL_NAMES = [
   "product_artifact_draft",
   "product_bind_workspace",
   "product_candidate_check",
+  "product_candidate_record_get",
   "product_capabilities",
   "product_context_next",
   "product_context_prepare",
@@ -81,14 +82,23 @@ const PRODUCT_TOOL_NAMES = [
   "product_review_consistency_get",
   "product_review_consistency_record",
   "product_review_get",
+  "product_review_get_batch",
   "product_review_record",
+  "product_review_record_batch",
+  "product_review_scope_expand",
   "product_review_start",
   "product_review_status",
   "product_safety_block",
   "product_safety_resolve",
   "product_scope_confirm",
   "product_scope_propose",
+  "product_session_call",
+  "product_session_next",
+  "product_session_open",
+  "product_session_resume",
+  "product_session_status",
   "task_inputs_check",
+  "task_inputs_details_get",
   "task_packet_complete",
   "task_packet_start",
   "task_specification_register_copy",
@@ -837,13 +847,17 @@ export async function resolveWorkspace(input: { readonly root: string; readonly 
   };
 }
 
-export async function productCapabilities(input: { readonly root: string }): Promise<ProductOutcome<{
+export async function productCapabilities(input: { readonly root: string; readonly representation?: "explicit-v1" }): Promise<ProductOutcome<{
   readonly contract: "product-1";
   readonly schema_version: 1;
   readonly tools: readonly string[];
   readonly root_state: "available" | "missing" | "invalid";
   readonly runtime_supported: boolean;
+  readonly representation?: "explicit-v1";
+  readonly review_representations?: readonly string[];
+  readonly review_modes?: readonly string[];
 }>> {
+  if (input.representation !== undefined && input.representation !== "explicit-v1") return fail("INVALID_INPUT", "Unsupported capability representation; use explicit-v1 or omit it for legacy.");
   let rootState: "available" | "missing" | "invalid";
   try {
     rootState = await readStore(input.root) === null ? "missing" : "available";
@@ -858,6 +872,7 @@ export async function productCapabilities(input: { readonly root: string }): Pro
       tools: PRODUCT_TOOL_NAMES,
       root_state: rootState,
       runtime_supported: true,
+      ...(input.representation === undefined ? {} : { representation: input.representation, review_representations: ["explicit-v1"], review_modes: ["full", "followup", "recheck"] }),
     },
     replayed: false,
     operationRef: null,
