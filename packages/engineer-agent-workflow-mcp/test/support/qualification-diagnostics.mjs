@@ -1,4 +1,5 @@
 import { performance } from "node:perf_hooks";
+import { types } from "node:util";
 
 // Test-only identifiers; never accept request bodies, contexts, paths, or error text.
 const operations = new Set(["decisions_catalog", "decisions_overview", "decisions_search", "decisions_get", "connect", "close", "idea_define_problem", "list_tools", "prd_define_actor", "prd_define_goal", "product_amendment_activate", "product_amendment_impact", "product_amendment_prepare", "product_artifact_draft", "product_bind_workspace", "product_candidate_check", "product_candidate_record_get", "product_capabilities", "product_context_next", "product_context_prepare", "product_document_accept_edits", "product_document_begin_edit", "product_document_create_subject", "product_document_inspect_edits", "product_document_list", "product_element_get", "product_initialize", "product_list", "product_open", "product_question_answer", "product_question_prepare", "product_record_instruction", "product_record_observation", "product_record_research", "product_review_complete", "product_review_consistency_get", "product_review_consistency_record", "product_review_get", "product_review_record", "product_review_start", "product_review_status", "product_safety_block", "product_scope_confirm", "product_scope_propose", "product_session_call", "product_session_next", "product_session_open", "product_session_resume", "product_session_status", "roadmap_define_stage", "roadmap_define_task", "specification_check_state", "specification_open", "specification_review_complete", "specification_review_get", "specification_review_record", "specification_review_start", "task_inputs_check", "task_specification_reserve", "technical_define_technology", "workflow_runtime_info"]);
@@ -104,4 +105,63 @@ export function reportCleanupFailure(t, identity, error, index = 0, truncated = 
       error: cleanupError(error, 0, new Set(), { remaining: 64 }), truncated: truncated === true };
     t.diagnostic?.(JSON.stringify(event));
   } catch { /* Diagnostics never change cleanup results or later disposal. */ }
+}
+
+const childCases = new Set(["public-qualification", "session-recovery"]);
+const childCodes = new Set(["ERR_CHILD_PROCESS_STDIO_MAXBUFFER", "ABORT_ERR", "ENOENT", "EACCES", "EPERM", "EINVAL", "EAGAIN", "EMFILE", "ENFILE"]);
+const childSignals = new Set(["SIGTERM", "SIGKILL", "SIGINT", "SIGABRT", "SIGHUP", "SIGQUIT", "SIGSEGV", "SIGPIPE", "SIGBUS", "SIGILL", "SIGFPE", "SIGBREAK"]);
+const unavailable = Symbol("unavailable");
+const redacted = Symbol("redacted");
+
+function childValue(value, key) {
+  if (value === null || (typeof value !== "object" && typeof value !== "function") || types.isProxy(value)) return unavailable;
+  const descriptor = Object.getOwnPropertyDescriptor(value, key);
+  if (!descriptor) return unavailable;
+  return Object.hasOwn(descriptor, "value") ? descriptor.value : redacted;
+}
+
+function childField(value, allowed) {
+  return value === unavailable ? "unavailable" : allowed(value) ? value : "redacted";
+}
+
+function childOutput(value) {
+  if (value === unavailable) return { bytes: "unavailable", tap: { available: false } };
+  if (typeof value !== "string" || value.length > 1024 * 1024) return { bytes: "redacted", tap: { available: false } };
+  const bytes = Buffer.byteLength(value);
+  // At most 2048 UTF-16 code units, hence at most 8 KiB, enter the parser.
+  const offset = Math.max(0, value.length - 2048);
+  const tail = value.slice(offset).split(/\r?\n/u);
+  if (offset > 0 && value[offset - 1] !== "\n") tail.shift();
+  const start = tail.findLastIndex(line => /^(?:#|ℹ) tests [0-9]+$/u.test(line));
+  const counts = {}, fields = new Set(["tests", "pass", "fail", "cancelled", "skipped", "todo"]);
+  if (start < 0) return { bytes, tap: { available: false } };
+  for (const line of tail.slice(start)) {
+    if (line === "" || /^(?:#|ℹ) (?:suites [0-9]+|duration_ms [0-9]+(?:\.[0-9]+)?)$/u.test(line)) continue;
+    const match = line.match(/^(?:#|ℹ) (tests|pass|fail|cancelled|skipped|todo) ([0-9]+)$/u);
+    if (!match || Object.hasOwn(counts, match[1])) return { bytes, tap: { available: false } };
+    const count = Number(match[2]);
+    if (!Number.isSafeInteger(count) || count > 1_000_000) return { bytes, tap: { available: false } };
+    counts[match[1]] = count;
+  }
+  return { bytes, tap: Object.keys(counts).length === fields.size ? { available: true, ...counts } : { available: false } };
+}
+
+// Only finite metadata, original own data fields and numeric TAP totals are emitted.
+export function reportQualificationChildFailure(diagnostic, metadata, error) {
+  try {
+    if (typeof diagnostic !== "function" || types.isProxy(diagnostic)) return;
+    const stdout = childOutput(childValue(error, "stdout"));
+    const stderr = childOutput(childValue(error, "stderr"));
+    const event = {
+      event: "qualification-child-failed", case: safe(childValue(metadata, "case"), childCases),
+      deadlineMs: childField(childValue(metadata, "deadlineMs"), value => Number.isSafeInteger(value) && value >= 0),
+      elapsedMs: childField(childValue(metadata, "elapsedMs"), value => Number.isSafeInteger(value) && value >= 0),
+      code: childField(childValue(error, "code"), value => value === null || Number.isSafeInteger(value) || childCodes.has(value)),
+      signal: childField(childValue(error, "signal"), value => value === null || childSignals.has(value)),
+      killed: childField(childValue(error, "killed"), value => typeof value === "boolean"),
+      stdoutBytes: stdout.bytes, stderrBytes: stderr.bytes, tap: stdout.tap,
+    };
+    const line = JSON.stringify(event);
+    if (Buffer.byteLength(line) <= 2048) diagnostic(line);
+  } catch { /* Classification and delivery never change the original child result. */ }
 }

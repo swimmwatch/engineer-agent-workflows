@@ -3,12 +3,13 @@ import { execFile } from "node:child_process";
 import { mkdir, mkdtemp, realpath, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { performance } from "node:perf_hooks";
 import { fileURLToPath, URL } from "node:url";
 import test from "node:test";
 import { promisify } from "node:util";
 
 import { runProductWorkflowQualification } from "./support/product-e2e-harness.mjs";
-import { createQualificationDiagnostics } from "./support/qualification-diagnostics.mjs";
+import { createQualificationDiagnostics, reportQualificationChildFailure } from "./support/qualification-diagnostics.mjs";
 
 test("I11-N4: qualification labels are finite and preserve packed default diagnostics", async () => {
   for (const [selected, expected] of [[undefined, "packed"], ["public", "public"], ["SENTINEL_PRIVATE_LABEL", "redacted"]]) {
@@ -45,12 +46,24 @@ test("I11-N1: public and recovery fixtures accept a temporary parent alias", { t
   const env = { ...process.env, TMPDIR: alias, TMP: alias, TEMP: alias };
   delete env.NODE_TEST_CONTEXT;
   for (const [name, pattern, file] of cases) {
-    await t.test(name, async () => {
-      const result = await executeFile(process.execPath, ["--test", "--test-name-pattern", pattern, file], {
-        env,
-        maxBuffer: 1024 * 1024,
-        timeout: 90_000,
-      });
+    await t.test(name, async (child) => {
+      const started = performance.now();
+      let result;
+      try {
+        result = await executeFile(process.execPath, ["--test", "--test-name-pattern", pattern, file], {
+          env,
+          maxBuffer: 1024 * 1024,
+          timeout: 90_000,
+        });
+      } catch (error) {
+        try {
+          reportQualificationChildFailure(line => child.diagnostic(line), {
+            case: name === "public qualification" ? "public-qualification" : "session-recovery",
+            deadlineMs: 90_000, elapsedMs: Math.max(0, Math.round(performance.now() - started)),
+          }, error);
+        } catch { /* Diagnostics cannot replace the original child failure. */ }
+        throw error;
+      }
       assert.equal(result.stderr, "");
       assert.match(result.stdout, /(?:#|ℹ) pass 1\b/u);
       assert.match(result.stdout, /(?:#|ℹ) fail 0\b/u);

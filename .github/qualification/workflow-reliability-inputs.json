@@ -168,7 +168,7 @@
     },
     {
       "path": "docs/product-workflows.md",
-      "sha256": "0be5533d4c93a9fd73bed9712cbd175e8f924f2185b9d4098b9be4bc7d073fbe"
+      "sha256": "b7285177456c567716d6d3d0016dff12f08f49e8de38211f83c4625461952630"
     },
     {
       "path": "docs/reports/cdp-review-efficiency-validation.md",
@@ -540,7 +540,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/README.md",
-      "sha256": "1821b7281d69534ca4733a9b2e69bbed78357d79ab4fb7854f953793551b9c6b"
+      "sha256": "29cc4994f82648beb6abff25baa0d893f8e2fe3806919cf26d108d35d88cc1a6"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/eslint.config.mjs",
@@ -772,7 +772,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
-      "sha256": "d56a84c1318689263c4aafe2d09a53b3e909825828de974efdaf186f640a603f"
+      "sha256": "7820468a1781a6392db436d0aa65094765d1f4ec2b1d162072223410a5da826b"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-foundation.test.mjs",
@@ -824,7 +824,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/qualification-diagnostics.test.mjs",
-      "sha256": "40cb400333f5ed2136429ce982f65ad7ad3db15a55a27f285f770ba27d4a5bd3"
+      "sha256": "6c5835bed4e455b38175de299878bcf3c89c2b52885a472b4e20c6671ebe7ee6"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/result.test.mjs",
@@ -876,7 +876,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
-      "sha256": "0bb724078e50a9ced47761c0d345cdf316bc92e05e63ad36429837b9d0d3225c"
+      "sha256": "21b0c1c71bc4fb92df061a02b779c7fa67cf3b22153b8689ca8f4cdc9de4b564"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/recovery-checkpoint.mjs",
@@ -2964,7 +2964,7 @@
     },
     {
       "path": "tests/product-documentation.test.mjs",
-      "sha256": "3da973cc5ab209b2e23b5c502e6b1529b10dd8f91c7e5f1912b11f04a7fb8277"
+      "sha256": "987c80a654d5b8067b38de7770b273636d5b88849b211a97c4ba5f79df6259be"
     },
     {
       "path": "tests/product-planning-skills.test.mjs",
