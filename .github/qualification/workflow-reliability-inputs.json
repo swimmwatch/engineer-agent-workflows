@@ -732,11 +732,11 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
-      "sha256": "52fd4af31720cb703117a00c1292b6e115bd4440fe6d45c14d0564facc7ac7a8"
+      "sha256": "ef7ca8f358a39f2340289dbe09c9677ef7f4eca0b02863ad5a0ff8db3fe1895f"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-actor-lifecycle.test.mjs",
-      "sha256": "f4892d11e595b858603406fdd039e1690419b0c80d34121cad39e3ce55298611"
+      "sha256": "7f22a7e3f7697144bb746c0991d815a8729dfdd30b605a635773cc8b74655790"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs",
@@ -824,7 +824,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/qualification-diagnostics.test.mjs",
-      "sha256": "bbacac524def824a58beda3114dd993dfb6362076b9dc41674380a2c3b9e3858"
+      "sha256": "40cb400333f5ed2136429ce982f65ad7ad3db15a55a27f285f770ba27d4a5bd3"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/result.test.mjs",
@@ -872,11 +872,11 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
-      "sha256": "fead2bda66e896411a325331d741ce3217e55d7cb9e94a2c590e0dc1f86ba7d0"
+      "sha256": "cad0a487772383d8018543876680d88354ac0b3fd4c159e56e09dd38ae2b1320"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
-      "sha256": "5c45ca68087b9be1ed90bb0243fb547cb8d72d841e44965b1df6b45fca52d24a"
+      "sha256": "0bb724078e50a9ced47761c0d345cdf316bc92e05e63ad36429837b9d0d3225c"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/recovery-checkpoint.mjs",
@@ -884,7 +884,7 @@
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",
-      "sha256": "9157fad15042e13ca1e950e8000a9b098f1e9ff9e6c19e0544128e1c416fe400"
+      "sha256": "803287d954544bb5b66eecd4fd79640d126b45716c3b60300f91c03bd8df14e4"
     },
     {
       "path": "packages/engineer-agent-workflow-mcp/test/tool-metadata.test.mjs",

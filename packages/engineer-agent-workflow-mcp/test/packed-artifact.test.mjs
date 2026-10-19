@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import { syncBuiltinESMExports } from "node:module";
 import { execFile } from "node:child_process";
 import { fileURLToPath, URL } from "node:url";
 import { promisify, TextDecoder } from "node:util";
@@ -218,6 +220,10 @@ decisions:
   return project;
 }
 
+function registerPackedRoot(t, creatingWorkspace) {
+  t.after(async () => rm(await creatingWorkspace, { recursive: true, force: true }), { resource: "packed-root", boundary: "filesystem-remove" });
+}
+
 async function connectPackedClient(t, entrypoint, diagnostics) {
   const transport = new StdioClientTransport({
     command: process.execPath,
@@ -227,7 +233,7 @@ async function connectPackedClient(t, entrypoint, diagnostics) {
   const client = new Client({ name: "packed-artifact-test", version: "0.0.0" });
   t.after(async () => diagnostics
     ? diagnostics.phase("smoke-teardown", () => client.close())
-    : client.close());
+    : client.close(), { resource: "packed-smoke", actor: "packed-smoke", boundary: "client-close" });
   await client.connect(transport);
   return client;
 }
@@ -343,7 +349,7 @@ test("packed artifact has the exact runtime inventory and serves MCP calls", { t
   await mkdir(artifactsRoot, { recursive: true });
   t.checkActive();
   const creatingWorkspace = mkdtemp(path.join(artifactsRoot, "packed-"));
-  t.after(async () => rm(await creatingWorkspace, { recursive: true, force: true }));
+  registerPackedRoot(t, creatingWorkspace);
   const workspace = await creatingWorkspace;
   t.checkActive();
 
@@ -445,3 +451,24 @@ test("packed artifact has the exact runtime inventory and serves MCP calls", { t
     packed_build_id: stamp.build_id, packed_contract_digest: stamp.contract_digest,
     reliability: integrated.reliability }));
 });
+
+if (process.env.EAW_PACKED_CLEANUP_DIAGNOSTICS_PROBE === "1") {
+  test("I11-N5: controlled packed cleanup owners", async (native) => {
+    const scope = createQualificationScope(native);
+    await mkdir(artifactsRoot, { recursive: true });
+    const creatingWorkspace = mkdtemp(path.join(artifactsRoot, "controlled-cleanup-"));
+    registerPackedRoot(scope, creatingWorkspace);
+    const workspace = await creatingWorkspace;
+    const original = { rm: fs.promises.rm, connect: Client.prototype.connect, close: Client.prototype.close };
+    native.after(async () => {
+      fs.promises.rm = original.rm; syncBuiltinESMExports();
+      Client.prototype.connect = original.connect; Client.prototype.close = original.close;
+      await original.rm(workspace, { recursive: true, force: true });
+    });
+    fs.promises.rm = async () => { throw Object.assign(new Error("PRIVATE_PACKED_ROOT"), { code: "EBUSY" }); };
+    syncBuiltinESMExports();
+    Client.prototype.connect = async () => {};
+    Client.prototype.close = async () => { throw Object.assign(new Error("PRIVATE_PACKED_SMOKE"), { code: "EACCES" }); };
+    await connectPackedClient(scope, "controlled-unused-entrypoint");
+  });
+}

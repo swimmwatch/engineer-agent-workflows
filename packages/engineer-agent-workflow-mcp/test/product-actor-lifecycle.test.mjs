@@ -8,7 +8,9 @@ import test from "node:test";
 import { clearTimeout } from "node:timers";
 import { setTimeout as delay } from "node:timers/promises";
 import { URL } from "node:url";
-import { createQualificationScope } from "./support/product-e2e-harness.mjs";
+import { Client } from "@modelcontextprotocol/client";
+import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { actor, createQualificationScope } from "./support/product-e2e-harness.mjs";
 import { createTemporaryDirectory } from "./support/temporary-directory.mjs";
 
 test("qualification cleanup owns a temporary directory before allocation settles", async () => {
@@ -163,6 +165,54 @@ try {
       await exited;
       await delay(20);
       await rm(directory, { recursive: true, force: true });
+    }
+  });
+}
+
+for (const mode of ["sdk-errors", "pid-observation", "child-exit-check"]) {
+  test(`I11-N5: actual actor close preserves ${mode} identity and precedence`, { timeout: 10_000 }, async () => {
+    const hooks = [], lines = [], attempts = [];
+    const originals = { connect: Client.prototype.connect, callTool: Client.prototype.callTool,
+      clientClose: Client.prototype.close, start: StdioClientTransport.prototype.start,
+      transportClose: StdioClientTransport.prototype.close, kill: process.kill };
+    const transportError = Object.assign(new Error("PRIVATE_TRANSPORT"), { code: "EPERM" });
+    const clientError = Object.assign(new Error("PRIVATE_CLIENT"), { code: "EBUSY" });
+    const observationError = Object.assign(new Error("PRIVATE_OBSERVATION"), { code: "EACCES" });
+    try {
+      // Controlled SDK/process-observation boundary only; real child lifecycle is covered above.
+      StdioClientTransport.prototype.start = async function () { this._process = { pid: process.pid, spawnargs: [process.execPath, "controlled.mjs"] }; };
+      Client.prototype.connect = async function (transport) { await transport.start(); };
+      Client.prototype.callTool = async () => ({ structuredContent: {} });
+      StdioClientTransport.prototype.close = async () => { attempts.push("transport"); throw transportError; };
+      Client.prototype.close = async () => { attempts.push("client"); throw clientError; };
+      process.kill = (pid, signal) => {
+        assert.equal(pid, process.pid); assert.equal(signal, 0);
+        if (mode === "pid-observation") throw observationError;
+        if (mode === "child-exit-check") return true;
+        throw Object.assign(new Error("gone"), { code: "ESRCH" });
+      };
+      const scope = createQualificationScope({ after(fn) { hooks.push(fn); }, diagnostic(line) { lines.push(JSON.parse(line)); } });
+      const owned = actor(scope, { name: "product-reviewer-qualification", root: "unused-controlled-root", calls: [], entrypoint: "controlled.mjs" });
+      await owned.raw("controlled", {});
+      await assert.rejects(hooks[0](), outer => {
+        assert.equal(outer.errors.length, 1);
+        if (mode === "pid-observation") assert.equal(outer.errors[0], observationError, "PID observation must escape unchanged ahead of recorded SDK errors");
+        else {
+          assert.equal(outer.errors[0].errors[0], transportError);
+          assert.equal(outer.errors[0].errors[1], clientError);
+          assert.equal(outer.errors[0].errors.length, mode === "child-exit-check" ? 3 : 2);
+        }
+        return true;
+      });
+      assert.deepEqual(attempts, ["transport", "client"]);
+      assert.ok(lines.some(line => line.boundary === "transport-close" && line.error.code === "EPERM"));
+      assert.ok(lines.some(line => line.boundary === "client-close" && line.error.code === "EBUSY"));
+      if (mode !== "sdk-errors") assert.ok(lines.some(line => line.boundary === mode), "actual failing actor boundary must be identified");
+      assert.doesNotMatch(JSON.stringify(lines), /PRIVATE|controlled|unused/);
+    } finally {
+      Client.prototype.connect = originals.connect; Client.prototype.callTool = originals.callTool;
+      Client.prototype.close = originals.clientClose; StdioClientTransport.prototype.start = originals.start;
+      StdioClientTransport.prototype.close = originals.transportClose; process.kill = originals.kill;
     }
   });
 }

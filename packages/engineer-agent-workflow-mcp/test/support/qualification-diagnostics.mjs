@@ -20,7 +20,7 @@ export function createQualificationDiagnostics(t, qualification = "packed") {
   }
   const aborted = () => publish("aborted");
   t.signal.addEventListener("abort", aborted, { once: true });
-  t.after(() => { t.signal.removeEventListener("abort", aborted); publish("test-teardown"); });
+  t.after(() => { t.signal.removeEventListener("abort", aborted); publish("test-teardown"); }, { resource: "diagnostics", boundary: "scope-disposer" });
   return {
     async phase(name, run) {
       phase = safe(name, phases);
@@ -59,4 +59,49 @@ export function createQualificationDiagnostics(t, qualification = "packed") {
       }
     },
   };
+}
+
+const resources = new Set(["product-workflow", "actor", "temporary-root", "packed-root", "packed-smoke", "diagnostics"]);
+const boundaries = new Set(["scope-disposer", "transport-close", "client-close", "pid-observation", "child-exit-check", "filesystem-remove"]);
+const nativeCodes = new Set(["EACCES", "EPERM", "EBUSY", "ENOTEMPTY", "ENOENT", "ESRCH"]);
+const countLimit = 10_000;
+
+function ownValue(value, key) {
+  try { return Object.getOwnPropertyDescriptor(value, key)?.value; }
+  catch { return undefined; }
+}
+
+function cleanupError(error, depth, seen, budget) {
+  const result = { kind: "non-error", code: "other", truncated: false };
+  if (budget.remaining-- <= 0) return { ...result, truncated: true };
+  try {
+    result.kind = error instanceof AggregateError ? "aggregate" : error instanceof Error ? "error" : "non-error";
+    const code = ownValue(error, "code");
+    result.code = nativeCodes.has(code) ? code : "other";
+    if (result.kind !== "aggregate") return result;
+    const children = ownValue(error, "errors");
+    const length = Array.isArray(children) ? ownValue(children, "length") : undefined;
+    if (!Number.isSafeInteger(length) || length < 0) return { ...result, truncated: true };
+    result.count = Math.min(length, countLimit);
+    result.children = [];
+    if (seen.has(error) || depth >= 4) return { ...result, truncated: true };
+    seen.add(error);
+    for (let index = 0; index < Math.min(length, 8) && budget.remaining > 0; index += 1) {
+      result.children.push(cleanupError(ownValue(children, String(index)), depth + 1, seen, budget));
+    }
+    result.truncated = result.children.length < length || result.children.some(child => child.truncated);
+    seen.delete(error);
+  } catch { result.truncated = true; }
+  return result;
+}
+
+// Only owner-supplied finite metadata and safe native codes cross the TAP boundary.
+export function reportCleanupFailure(t, identity, error, index = 0, truncated = false) {
+  try {
+    const event = { event: "cleanup-failed", resource: safe(ownValue(identity, "resource"), resources),
+      actor: safe(ownValue(identity, "actor"), actors), boundary: safe(ownValue(identity, "boundary"), boundaries),
+      index: Number.isSafeInteger(index) && index >= 0 ? Math.min(index, countLimit) : 0,
+      error: cleanupError(error, 0, new Set(), { remaining: 64 }), truncated: truncated === true };
+    t.diagnostic?.(JSON.stringify(event));
+  } catch { /* Diagnostics never change cleanup results or later disposal. */ }
 }

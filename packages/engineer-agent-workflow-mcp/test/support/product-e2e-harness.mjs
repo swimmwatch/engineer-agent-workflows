@@ -11,6 +11,7 @@ import { promisify } from "node:util";
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { createTemporaryDirectory } from "./temporary-directory.mjs";
+import { reportCleanupFailure } from "./qualification-diagnostics.mjs";
 
 const executeFile = promisify(execFile);
 const server = fileURLToPath(new URL("../../dist/main.js", import.meta.url));
@@ -142,13 +143,25 @@ export function actor(t, { name, root, calls, entrypoint = server, onProgress })
         // Explicit transport close also cancels SDK negotiation before client ownership.
         const results = await Promise.allSettled([ownedTransport?.close(), active?.close()]);
         const errors = results.filter((result) => result.status === "rejected").map((result) => result.reason);
+        for (const [index, result] of results.entries()) {
+          if (result.status === "rejected") reportCleanupFailure(t, { resource: "actor", actor: name,
+            boundary: index === 0 ? "transport-close" : "client-close" }, result.reason);
+        }
         const isAlive = (pid) => {
           try { process.kill(pid, 0); return true; }
-          catch (error) { if (error.code === "ESRCH") return false; throw error; }
+          catch (error) {
+            if (error.code === "ESRCH") return false;
+            reportCleanupFailure(t, { resource: "actor", actor: name, boundary: "pid-observation" }, error);
+            throw error;
+          }
         };
         // SDK close may return just after signalling; wait for actual owned process exit.
         for (let attempt = 0; attempt < 200 && launches.some(({ pid }) => isAlive(pid)); attempt += 1) await delay(10);
-        if (launches.some(({ pid }) => isAlive(pid))) errors.push(new Error("qualification actor child did not exit"));
+        if (launches.some(({ pid }) => isAlive(pid))) {
+          const error = new Error("qualification actor child did not exit");
+          errors.push(error);
+          reportCleanupFailure(t, { resource: "actor", actor: name, boundary: "child-exit-check" }, error);
+        }
         if (errors.length) throw new AggregateError(errors, "qualification actor cleanup failed");
       } finally {
         client = undefined;
@@ -187,7 +200,7 @@ export function actor(t, { name, root, calls, entrypoint = server, onProgress })
   t.after(async () => {
     try { await close(); }
     finally { t.signal?.removeEventListener("abort", onAbort); }
-  });
+  }, { resource: "actor", actor: name, boundary: "scope-disposer" });
   return {
     context: () => context,
     launches: () => launches.map(({ pid, spawnargs }) => ({ pid, spawnargs: [...spawnargs] })),
@@ -1075,14 +1088,21 @@ export function createQualificationScope(t) {
   t.after(() => {
     disposed = true;
     cleanup ??= (async () => {
-      const errors = [];
-      for (const dispose of disposers.reverse()) {
-        try { await dispose(); } catch (error) { errors.push(error); }
+      const errors = [], failures = [];
+      for (const [index, { dispose, identity }] of disposers.reverse().entries()) {
+        try { await dispose(); }
+        catch (error) {
+          errors.push(error);
+          if (failures.length < 16) failures.push({ identity, error, index });
+        }
+      }
+      for (const { identity, error, index } of failures) {
+        reportCleanupFailure(t, identity, error, index, errors.length > failures.length);
       }
       if (errors.length) throw new AggregateError(errors, "qualification cleanup failed");
     })();
     return cleanup;
-  });
+  }, { resource: "product-workflow", boundary: "scope-disposer" });
   return {
     signal: t.signal,
     checkActive() {
@@ -1091,9 +1111,9 @@ export function createQualificationScope(t) {
       if (disposed) throw new Error("qualification fixture is already disposed");
     },
     diagnostic: (message) => t.diagnostic?.(message),
-    after(dispose) {
+    after(dispose, identity) {
       if (disposed) throw new Error("qualification fixture already disposed");
-      disposers.push(dispose);
+      disposers.push({ dispose, identity });
     },
   };
 }
