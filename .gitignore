@@ -36,3 +36,8 @@ artifacts/
 *.tgz
 *.zip
 *.tar.gz
+
+# Local workstation reports
+/laptop-diagnostic-problems.md
+/laptop-diagnostic-report.md
+/ubuntu-26.04-lts-upgrade-risk-report.md
