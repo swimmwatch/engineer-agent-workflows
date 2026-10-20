@@ -16,9 +16,7 @@ Separate requested changes from behavior to preserve. Verify material baseline
 claims with scoped source evidence or an executable probe before making them
 compatibility requirements; keep unresolved runtime assumptions explicit.
 
-First select the task boundary and confirm depth and profiles through
-`references/adaptive-scope.md`. Revisit its boundary triage for a material new
-outcome during interviewing, before expanding research or profile reads. Then ask
+First confirm depth and profiles through `references/adaptive-scope.md`. Then ask
 only unresolved decisions that materially change behavior, interfaces, data,
 state, security, compatibility, external effects, quality, or acceptance. Apply
 the confirmed depth to interview breadth and use active profile references for
@@ -118,8 +116,6 @@ After compaction, handoff, or user edit:
 
 1. Use `specification_open`, `scope_get` and bounded decision queries; read
    the current behavioral `spec.md`, not workflow YAML.
-   Recover saved boundary choices and deferrals before continuing; when present,
-   follow `references/scope-boundaries.md`. An unanswered selection stays pending.
 2. Select the highest non-superseded revision for each decision ID.
 3. Treat user edits in `spec.md` as authoritative. Reconcile material differences
    into new decision revisions instead of overwriting them from old ledger state.

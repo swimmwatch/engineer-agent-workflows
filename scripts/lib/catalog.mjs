@@ -9,7 +9,6 @@ export const APPROVED_SKILL_NAMES = Object.freeze([
   "code-review-and-quality",
   "code-simplification",
   "context-engineering",
-  "context-scouting",
   "design-planning",
   "documentation-and-adrs",
   "doubt-driven-development",

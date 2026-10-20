@@ -70,19 +70,6 @@ Use the serial mode to diagnose shared-state or ordering failures:
 npm run test:serial
 ```
 
-## Verify the serving runtime
-
-On the MCP connection that will run the workflow, call read-only
-`workflow_runtime_info` with `{}`. Compare its `identity_status`, `build_id`,
-`contract_id`, `contract_digest` and `capabilities` with the intended built
-artifact. `package_version` alone cannot distinguish two development builds.
-Identity is captured on process load: replacing files or switching `current`
-does not relabel a process already serving requests. An `unavailable` identity
-and its `reason`/`refresh_requirement` require investigation; do not report the
-intended build as loaded. A fresh connection after an authorized runtime refresh
-must be checked again. Building and passing local tests does not itself install
-or verify the globally registered MCP.
-
 ## First installation
 
 Choose the newly created `<build-id>` from `artifacts/dev/`. The commands below

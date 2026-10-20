@@ -6,7 +6,7 @@ import { dirname } from "node:path";
 
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
-import { loadGeneration, readGenerationMetadata, readObject, saveObject } from "./storage.js";
+import { loadGeneration, readObject, saveObject } from "./storage.js";
 import { validateProductRecord } from "./schemas.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
@@ -57,10 +57,8 @@ const SCENARIOS = new Set([
   "product_document_accept_edits",
   "product_review_start",
   "product_review_record",
-  "product_review_record_batch",
   "product_review_consistency_record",
   "product_review_complete",
-  "product_review_scope_expand",
   "product_amendment_activate",
   "product_amendment_prepare",
   "product_amendment_rebase",
@@ -138,7 +136,6 @@ export interface ProductMutationPlan {
   readonly saveObjects?: (mode: "start" | "resume") => Promise<void>;
   readonly saveLocalBinding?: () => Promise<void>;
   readonly verifyTargets?: () => Promise<void>;
-  readonly verifyReviewSources?: () => Promise<void>;
   checkpoint?: (phase: CheckpointPhase) => Promise<void>;
 }
 
@@ -147,18 +144,6 @@ export interface PersistedMutationReplay {
   readonly replayed: true;
   readonly revision: string;
   readonly result: Record<string, unknown>;
-}
-
-async function verifyPlannedGeneration(plan: ProductMutationPlan): Promise<void> {
-  if (plan.verifyReviewSources === undefined) {
-    await loadGeneration(plan.root, plan.productId, plan.nextRevision);
-    return;
-  }
-  if (plan.expectedRevision !== plan.nextRevision || ![
-    "product_review_record", "product_review_record_batch", "product_review_consistency_record",
-  ].includes(plan.scenario)) return fail("INVALID_INPUT", "Staged verification is limited to same-generation review writes.");
-  await readGenerationMetadata(plan.root, plan.productId, plan.nextRevision);
-  await plan.verifyReviewSources();
 }
 
 export interface ProductMutationOutcome {
@@ -749,7 +734,6 @@ async function continueOperation(
 ): Promise<ProductMutationOutcome> {
   let operation = initial;
   try {
-    if (mode === "resume") await loadGeneration(plan.root, plan.productId, plan.nextRevision);
     if (operation.phase === "prepared") {
       await plan.saveObjects?.(mode);
       operation = { ...operation, phase: "objects_saved", blocker: null };
@@ -771,7 +755,6 @@ async function continueOperation(
         plan.nextRevision,
         plan.operationId,
         plan.sessionId,
-        () => verifyPlannedGeneration(plan),
       );
       await checkpoint(plan, "head_written");
       operation = { ...operation, phase: "published", blocker: null };
@@ -796,7 +779,7 @@ async function continueOperation(
       if (headTarget === undefined || headTarget.after !== digest(head.bytes)) {
         return fail("CONFLICT", "Published product head no longer matches operation evidence.");
       }
-      await verifyPlannedGeneration(plan);
+      await loadGeneration(plan.root, plan.productId, plan.nextRevision);
       const savedResult = await saveObject(plan.root, {
         productId: plan.productId,
         kind: "record",
@@ -837,7 +820,7 @@ async function startUnderLock(
   const head = await readHead(plan.root, plan.productId);
   const currentRevision = head?.record.generation ?? null;
   if (currentRevision !== plan.expectedRevision) return fail("CONFLICT", "Product head changed since the mutation was prepared.");
-  await verifyPlannedGeneration(plan);
+  await loadGeneration(plan.root, plan.productId, plan.nextRevision);
   const intentObject = await saveObject(plan.root, {
     productId: plan.productId,
     kind: "record",
@@ -999,31 +982,6 @@ export async function replayProductMutationResult(input: {
   return { operationRef: input.operationId, replayed: true, revision: nextRevision, result: typed };
 }
 
-// Read-only eligibility for a retained session request. It never acquires, deletes or recovers a lock.
-export async function inspectCompletedProductReplay(input: {
-  readonly root: string; readonly productId: string; readonly operationId: string;
-  readonly scenario: string; readonly intent: unknown;
-}): Promise<PersistedMutationReplay> {
-  assertUuid(input.productId, "Product identity");
-  assertUuid(input.operationId, "Operation identity");
-  const original = await readOperation(input.root, input.productId, input.operationId);
-  const inspected = await inspectOperation(input.root, input.productId, input.operationId);
-  if (original === null || inspected.state !== "applied" || inspected.phase !== "complete") return fail("RECOVERY_REQUIRED", "Exact completed operation evidence is required for session replay.");
-  if (await readLock(input.root, input.productId) !== null) return fail("RECOVERY_REQUIRED", "Product lock ownership must be resolved by its existing owner before session replay.");
-  const replay = await replayProductMutationResult(input);
-  const operation = await readOperation(input.root, input.productId, input.operationId);
-  if (operation === null || operation.record.phase !== "complete" || !operation.bytes.equals(original.bytes)) return fail("RECOVERY_REQUIRED", "Completed operation evidence changed during session inspection.");
-  for (const target of operation.record.targets) {
-    if (target.root !== "store" || target.binding_id !== null) return fail("RECOVERY_REQUIRED", "This session replay contract does not support external operation targets.");
-    const current = await readMutable(input.root, target.relative_path);
-    if (current === null || digest(current) !== target.after) return fail("RECOVERY_REQUIRED", "Actual product effects changed since the retained operation; explicitly reconcile the current state.");
-  }
-  const final = await readOperation(input.root, input.productId, input.operationId);
-  if (final === null || !final.bytes.equals(original.bytes)) return fail("RECOVERY_REQUIRED", "Completed operation evidence changed during session effect inspection.");
-  if (await readLock(input.root, input.productId) !== null) return fail("RECOVERY_REQUIRED", "Product lock changed during session effect inspection.");
-  return replay;
-}
-
 export async function publishHead(
   root: string,
   productId: string,
@@ -1031,7 +989,6 @@ export async function publishHead(
   nextRevision: string,
   operationId: string,
   sessionId: string,
-  verifyGeneration?: () => Promise<void>,
 ): Promise<HeadRecord> {
   const lock = await readLock(root, productId);
   if (
@@ -1044,15 +1001,13 @@ export async function publishHead(
   }
   const current = await readHead(root, productId);
   if (current?.record.generation === nextRevision && current.record.operation_id === operationId) {
-    if (verifyGeneration === undefined) await loadGeneration(root, productId, nextRevision);
-    else await verifyGeneration();
+    await loadGeneration(root, productId, nextRevision);
     return current.record;
   }
   if ((current?.record.generation ?? null) !== expectedRevision) {
     return fail("CONFLICT", "Product head changed before publication.");
   }
-  if (verifyGeneration === undefined) await loadGeneration(root, productId, nextRevision);
-  else await verifyGeneration();
+  await loadGeneration(root, productId, nextRevision);
   const next: HeadRecord = {
     schema_version: 1,
     kind: "head",

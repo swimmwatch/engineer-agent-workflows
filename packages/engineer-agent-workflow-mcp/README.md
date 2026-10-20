@@ -34,48 +34,6 @@ client and Node's test runner, including real stdio and packed-package runs.
 Packing tests resolve workspace ancestor dependencies, not a clean registry
 installation. Model sessions and live Penpot are not part of npm tests.
 
-## Product reliability tools
-
-The [product workflow guide](../../docs/product-workflows.md) owns the executable
-examples and recovery rules. Prefer MCP tools for workflow state; shell commands
-are needed only to build/test the package or start its normal stdio connection.
-There is no session CLI or general operation-repair endpoint.
-
-- Read a saved draft decision/research record with
-  `product_candidate_record_get`, the candidate reference and exact kind/ID/revision;
-  consume every text continuation before parsing or judging it.
-- Discover registered subjects with `product_document_list` (`limit` 1–50),
-  rather than guessing a document name. Read structured validation diagnostics
-  and current `tools/list` schemas before correcting a call.
-- Use `product_session_open/call/next/status/resume` as separate callable tool
-  names for candidate-bound context, complete delivery and bounded recovery.
-  Only advertised `supported_scenarios` can run. Unknown effects remain blocked;
-  sessions neither choose review verdicts nor manage global installation.
-- After a successful review, use `product_review_start` with `mode: "recheck"`
-  and its successful `parent_review_ref`, without `fixes`, for eligible changed
-  blocks. Independent judgment and fresh final consistency remain required.
-- Request `representation: "explicit-v1"` on supported review readers to separate
-  source snapshot/content/object digests from `verdict_object_sha256`. The legacy
-  consistency `object_sha256` remains the verdict digest alias.
-- Query `workflow_runtime_info` on the serving connection. Its captured `build_id`
-  and `contract_digest` distinguish same-version builds; rebuilding on disk does
-  not refresh an already loaded process. An unavailable identity stays unverified.
-
-Local build and fixture passes do not establish global installation or live host
-behavior. The historical required macOS/Windows jobs failed actual acceptance and
-downstream native qualification was skipped. Runtime support is unchanged, and
-each changed input snapshot still requires actual native qualification; see
-[proof limits](../../docs/product-workflows.md#proof-limits-and-compatibility).
-
-Headroom is an external tool, not a repository dependency. Headroom qualification
-is outside repository acceptance. Q14 is cancelled and no longer required, never passed.
-This does not claim an external compressor fix. Preserve schemas, opaque contexts,
-cursors, source references, hashes and receipts losslessly. Obtain exact content
-through the owning retrieval path and verify its schema, selected source identity,
-revision and digest with complete continuations. If unavailable or inconsistent,
-stop the affected read and dependent mutation. Keep MCP response limits and safe
-recovery; a summary, truncated JSON or unresolved marker is not an exact response.
-
 ## Scenario contract
 
 The machine-readable tool contract is generated from the executable input
@@ -86,8 +44,6 @@ current client; do not hard-code a generated namespace.
 - Open/discover: `specification_list`, `specification_open`, `scope_get`.
 - Scope: `scope_propose` saves the proposal and exact confirmation question;
   `scope_confirm` builds the manifest only from its actual recorded confirmation.
-  Select `design_tokens` together with `shared_design` to explicitly declare
-  `design/system/tokens.tokens.json`; `shared_design` alone does not add tokens.
 - Interview: `question_prepare`, `question_record_answer`,
   `question_record_no_answer`, `decision_record_fact`,
   `decision_record_assumption`, `decision_link_requirements`,

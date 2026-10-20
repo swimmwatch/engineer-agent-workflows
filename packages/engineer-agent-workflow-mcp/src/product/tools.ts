@@ -4,7 +4,6 @@ import Ajv from "ajv";
 
 import type { WorkflowTool } from "../api.js";
 import { fail } from "../state.js";
-import { productValidationDiagnostics } from "../diagnostics.js";
 import { resolveProductRoot } from "./config.js";
 import {
   findProductDecisions,
@@ -47,7 +46,6 @@ import {
   recordProductNoAnswer,
   recordProductObservation,
   recordProductResearch,
-  readCandidateRecord,
   resumeProductInterview,
 } from "./interview.js";
 import {
@@ -60,23 +58,19 @@ import {
   activateAmendment,
   checkProductCandidate,
   completeProductReview,
-  expandProductReviewScope,
   getProductReviewStatus,
   inspectAmendmentImpact,
   prepareAmendment,
   readProductReviewConsistency,
   readProductReviewItem,
-  readProductReviewBatch,
   rebaseAmendment,
   recordProductReviewConsistency,
   recordProductVerdict,
-  recordProductVerdictBatch,
   startProductReview,
 } from "./review.js";
 import { validateProductRecord } from "./schemas.js";
 import {
-  checkTaskInputsSummary,
-  readTaskInputDetails,
+  checkTaskInputs,
   completeTaskPacket,
   recordSafetyBlock,
   registerTaskSpecificationCopy,
@@ -84,7 +78,6 @@ import {
   resolveSafetyBlock,
   startTaskPacket,
 } from "./tasks.js";
-import { productSessionHandlers } from "./sessions.js";
 import { defineTechnicalElement } from "./technical.js";
 
 interface ProductSchema {
@@ -144,8 +137,7 @@ function productTool(
   inputDefinition: string,
   outputDefinition: "Success_Capabilities" | "Success_OpenResult" | "Success_Page" | "Success_InterviewResume"
   | "Success_MutationResult" | "Success_EditResult" | "Success_Portion" | "Success_ContextSelection"
-  | "Success_ReviewStatus" | "Success_ReviewPortion" | "Success_ReviewBatch" | "Success_CheckResult" | "Success_TaskCheckResult"
-  | "Success_SessionResult" | "Success_TaskCheckSummary" | "Success_TaskInputDetails" | "Success_CandidateRecordPortion",
+  | "Success_ReviewStatus" | "Success_ReviewPortion" | "Success_CheckResult" | "Success_TaskCheckResult",
   write: boolean,
   run: (input: Record<string, unknown>) => Promise<Record<string, unknown>>,
   destructive = false,
@@ -160,8 +152,7 @@ function productTool(
     write,
     destructive,
     async run(input): Promise<Record<string, unknown>> {
-      if (!validateInput(input)) return fail("INVALID_INPUT", "Use the published parameters for this product scenario.",
-        productValidationDiagnostics(validateInput.errors ?? [], selfContainedSchema(inputDefinition)));
+      if (!validateInput(input)) return fail("INVALID_INPUT", "Use the published parameters for this product scenario.");
       const output = await run(input as Record<string, unknown>);
       return await validateProductRecord(outputDefinition, output);
     },
@@ -190,7 +181,7 @@ export const productTools: WorkflowTool[] = [
     "product_capabilities_input",
     "Success_Capabilities",
     false,
-    async (input) => envelope(await productCapabilities({ root: resolveProductRoot(), ...(input.representation === undefined ? {} : { representation: input.representation as "explicit-v1" }) })),
+    async () => envelope(await productCapabilities({ root: resolveProductRoot() })),
   ),
   productTool(
     "product_open",
@@ -271,18 +262,6 @@ export const productTools: WorkflowTool[] = [
       root: resolveProductRoot(),
       context: String(input.context),
       candidateRef: input.candidate_ref as { product_id: string; candidate_id: string },
-    })),
-  ),
-  productTool(
-    "product_candidate_record_get",
-    "Read one exact retained candidate decision or research record without activation or writes; follow every continuation for complete canonical JSON.",
-    "product_candidate_record_get_input",
-    "Success_CandidateRecordPortion",
-    false,
-    async (input) => envelope(await readCandidateRecord({
-      root: resolveProductRoot(), context: String(input.context), candidateRef: input.candidate_ref as never,
-      recordRef: input.record_ref as never,
-      ...(input.cursor === undefined ? {} : { cursor: input.cursor as string }),
     })),
   ),
   productTool(
@@ -795,19 +774,10 @@ export const productTools: WorkflowTool[] = [
       root: resolveProductRoot(),
       context: String(input.context),
       candidateRef: input.candidate_ref as { product_id: string; candidate_id: string },
-      mode: input.mode as "full" | "followup" | "recheck",
+      mode: input.mode as "full" | "followup",
       ...(typeof input.parent_review_ref === "string" ? { parentReviewRef: input.parent_review_ref } : {}),
       ...(Array.isArray(input.fixes) ? { fixes: input.fixes as never[] } : {}),
     })),
-  ),
-  productTool(
-    "product_review_scope_expand",
-    "Expand a current pending recheck to exact reviewer-selected blocks; inherited results become pending and fresh consistency is required. Exact retries are safe.",
-    "product_review_scope_expand_input",
-    "Success_ReviewStatus",
-    true,
-    async (input) => envelope(await expandProductReviewScope({ root: resolveProductRoot(), context: String(input.context),
-      reviewRef: String(input.review_ref), itemKeys: input.item_keys as string[], reason: String(input.reason) })),
   ),
   productTool(
     "product_review_status",
@@ -833,7 +803,6 @@ export const productTools: WorkflowTool[] = [
       reviewRef: String(input.review_ref),
       itemIndex: Number(input.item_index),
       ...(typeof input.cursor === "string" ? { cursor: input.cursor } : {}),
-      ...(input.representation === undefined ? {} : { representation: input.representation as "explicit-v1" }),
     })),
   ),
   productTool(
@@ -850,26 +819,8 @@ export const productTools: WorkflowTool[] = [
     })),
   ),
   productTool(
-    "product_review_get_batch",
-    "Read up to 20 exact frozen review blocks within the response byte budget; finish partial blocks using product_review_get before recording verdicts.",
-    "product_review_get_batch_input", "Success_ReviewBatch", false,
-    async (input) => envelope(await readProductReviewBatch({ root: resolveProductRoot(), context: String(input.context),
-      reviewRef: String(input.review_ref), startIndex: Number(input.start_index),
-      ...(input.limit === undefined ? {} : { limit: Number(input.limit) }),
-      ...(input.representation === undefined ? {} : { representation: input.representation as "explicit-v1" }),
-    })),
-  ),
-  productTool(
-    "product_review_record_batch",
-    "Atomically record 1–20 independently justified block verdicts with complete-read receipts; reject overlap and invalid members, and replay the exact saved request without duplicate writes.",
-    "product_review_record_batch_input", "Success_MutationResult", true,
-    async (input) => envelope(await recordProductVerdictBatch({ root: resolveProductRoot(), context: String(input.context),
-      reviewRef: String(input.review_ref), items: input.items as never[],
-    })),
-  ),
-  productTool(
     "product_review_consistency_get",
-    "Read final consistency in bounded portions; legacy object_sha256 hashes the saved verdict. Opt-in explicit-v1 separates source and verdict digest domains.",
+    "Read the exact whole-current-artifact consistency input for a corrections-only followup in bounded portions.",
     "product_review_consistency_get_input",
     "Success_ReviewPortion",
     false,
@@ -878,12 +829,11 @@ export const productTools: WorkflowTool[] = [
       context: String(input.context),
       reviewRef: String(input.review_ref),
       ...(typeof input.cursor === "string" ? { cursor: input.cursor } : {}),
-      ...(input.representation === undefined ? {} : { representation: input.representation as "explicit-v1" }),
     })),
   ),
   productTool(
     "product_review_consistency_record",
-    "Record the mandatory final consistency verdict for semantic full review or corrections-only followup; this does not complete or activate the review.",
+    "Record the mandatory whole-current-artifact consistency verdict for a corrections-only followup.",
     "product_review_consistency_record_input",
     "Success_MutationResult",
     true,
@@ -1012,29 +962,15 @@ export const productTools: WorkflowTool[] = [
   ),
   productTool(
     "task_inputs_check",
-    "Check all task inputs without starting implementation; return bounded status, versions, counts and issue preview. Read exact evidence with task_inputs_details_get and check_ref.",
+    "Read current task, Approved reviewed specification, selected packet plan and safety evidence; reports exact pins without starting implementation.",
     "task_inputs_check_input",
-    "Success_TaskCheckSummary",
+    "Success_TaskCheckResult",
     false,
-    async (input) => envelope(await checkTaskInputsSummary({
+    async (input) => envelope(await checkTaskInputs({
       root: resolveProductRoot(),
       context: String(input.context),
       taskId: String(input.task_id),
       ...(typeof input.packet_id === "string" ? { packetId: input.packet_id } : {}),
-    })),
-  ),
-  productTool(
-    "task_inputs_details_get",
-    "Read bounded issues, product pins or plan pins for one exact task check. Repeat task_inputs_check after SOURCE_CHANGED; partial product pins continue element_ids via cursor.",
-    "task_inputs_details_get_input",
-    "Success_TaskInputDetails",
-    false,
-    async (input) => envelope(await readTaskInputDetails({
-      root: resolveProductRoot(), context: String(input.context), taskId: String(input.task_id),
-      checkRef: String(input.check_ref), section: input.section as "issues" | "product_pins" | "plan_pins",
-      ...(typeof input.packet_id === "string" ? { packetId: input.packet_id } : {}),
-      ...(typeof input.cursor === "string" ? { cursor: input.cursor } : {}),
-      ...(typeof input.limit === "number" ? { limit: input.limit } : {}),
     })),
   ),
   productTool(
@@ -1111,18 +1047,3 @@ export const productTools: WorkflowTool[] = [
     })),
   ),
 ];
-
-const sessions = productSessionHandlers(productTools);
-for (const [name, description, write, run] of [
-  ["product_session_open", "Open one candidate-bound logical session with the exact current context; returns supported scenarios and never chooses answers or verdicts.", true,
-    async (input: Record<string, unknown>) => sessions.open(resolveProductRoot(), String(input.context), input.candidate_ref as { product_id: string; candidate_id: string })],
-  ["product_session_call", "Execute one caller-selected supported scenario with the session context; persist exact identity before dispatch and deliver bounded JSON portions. Unknown outcomes require explicit recovery.", true,
-    async (input: Record<string, unknown>) => sessions.call(resolveProductRoot(), input as { session_ref: string; expected_revision: number; request_id: string; scenario: string; arguments: Record<string, unknown> })],
-  ["product_session_next", "Deliver the next exact JSON portion or registered source continuation for the matching read_ref; completion requires every portion. Never aggregate an unbounded record.", true,
-    async (input: Record<string, unknown>) => sessions.next(resolveProductRoot(), input as { session_ref: string; expected_revision: number; read_ref: string })],
-  ["product_session_resume", "Inspect one retained logical session request; replay at most once only with exact completed supported operation evidence. Uncertain effects and active or unknown claims remain blocked.", true,
-    async (input: Record<string, unknown>) => sessions.resume(resolveProductRoot(), input as { session_ref: string; expected_revision: number })],
-  ["product_session_status", "Read logical session revision, freshness, request acknowledgement and safe effects without writing or silently refreshing contexts.", false,
-    async (input: Record<string, unknown>) => sessions.status(resolveProductRoot(), String(input.session_ref))],
-] as const) productTools.push(productTool(name, description, `${name}_input`, "Success_SessionResult", write,
-  async (input) => ({ protocol_version: 2, context: null, result: await run(input), replayed: false, operation_ref: null })));

@@ -16,36 +16,24 @@ independently verifiable task packets. The current contract is:
 - [Confirmed specification scope](docs/specs/cross-client-skill-distribution/manifest.yaml)
 - [Delivery checklist](docs/specs/cross-client-skill-distribution/tasks/todo.md)
 
-The maintained collection contains 17 explicit-only workflows:
+The maintained collection contains 16 explicit-only workflows:
 
 1. `code-review-and-quality`
 2. `code-simplification`
 3. `context-engineering`
-4. `context-scouting`
-5. `design-planning`
-6. `documentation-and-adrs`
-7. `doubt-driven-development`
-8. `idea-refine`
-9. `incremental-implementation`
-10. `interview-me`
-11. `performance-optimization`
-12. `planning-and-task-breakdown`
-13. `product-definition`
-14. `product-roadmap`
-15. `security-and-hardening`
-16. `spec-driven-development`
-17. `technical-design`
-
-`context-scouting` is standalone and applies only when explicitly invoked for the
-current task. The main agent chooses direct lookup or useful bounded discovery,
-requests a native inspection-only scout, then verifies decisive findings. Codex
-requests `gpt-6-luna`; Claude Code requests the `haiku` alias. Unsupported
-delegation uses bounded direct lookup; cancellation stops dependent discovery.
-Read-only instructions do not themselves enforce a sandbox, and savings remain
-unmeasured. The old global Codex delegation section was removed; generated
-artifacts are not proof of installation. See the
-[context-scouting guide](docs/context-scouting.md) for invocation, runtime evidence
-and operating limits.
+4. `design-planning`
+5. `documentation-and-adrs`
+6. `doubt-driven-development`
+7. `idea-refine`
+8. `incremental-implementation`
+9. `interview-me`
+10. `performance-optimization`
+11. `planning-and-task-breakdown`
+12. `product-definition`
+13. `product-roadmap`
+14. `security-and-hardening`
+15. `spec-driven-development`
+16. `technical-design`
 
 `design-planning` runs separately after the main plan when the confirmed manifest
 requires design outputs. It delegates Penpot operations to separately installed
@@ -89,10 +77,6 @@ Codex suggests Sol for authoring/review, Terra for implementation, and Astra for
 difficult cases; Claude suggests Opus for authoring/review and Sonnet for
 implementation. Lite changes normally keep existing contracts inline instead
 of creating an extra contract file solely because a profile is active.
-
-Those author/reviewer/implementation suggestions are advisory. Context-scouting's
-named scout selection is an operational request through the supported native
-tool, subject to a supported explicit user override and bounded fallback.
 
 For installation metadata, `spec-driven-development` is standalone,
 `planning-and-task-breakdown` depends on the matching specification workflow,

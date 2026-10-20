@@ -26,12 +26,6 @@
       "dependencies": []
     },
     {
-      "name": "context-scouting",
-      "description": "Delegate useful multi-step context discovery to bounded, read-only native scouts when explicitly invoked for the current task. Verify concise findings and use minimal direct lookup when delegation is unavailable.",
-      "classification": "standalone",
-      "dependencies": []
-    },
-    {
       "name": "design-planning",
       "description": "Prepare manifest-scoped UI design after an implementation plan, on explicit request. Use separately installed Penpot skills, save validated design contracts and snapshots, and update affected handoffs; do not implement.",
       "classification": "bundle-required",

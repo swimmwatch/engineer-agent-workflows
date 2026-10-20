@@ -164,11 +164,10 @@ technology choices, relevant quality/security/privacy/operation constraints,
 compatibility and migration intent, risks, alternatives, rationale and revisit
 conditions. Ground current implementation claims in repository evidence.
 Choose technologies using applicable current evidence and actual constraints.
-Separate current implementation, accepted targets (either product-global or
-scoped to active named stages), and hypothetical future options. A global
-target does not require a Roadmap stage. Exact existing contracts remain at
-their single authoritative location; local modules, algorithms and execution
-order belong to the task's planning stage.
+Separate current implementation, accepted target for a named stage and a
+hypothetical future option. Exact existing contracts remain at their single
+authoritative location; local modules, algorithms and execution order belong
+to the task's planning stage.
 
 Acceptance: two task implementers can retrieve the same relevant shared rule,
 its PRD justification and current applicability. The result does not require

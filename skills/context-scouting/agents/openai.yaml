@@ -1,5 +1,0 @@
-interface:
-  display_name: "Context Scouting"
-  short_description: "Delegate useful multi-step context discovery to bounded, read-only native scouts when explicitly invoked for the current task. Verify concise findings and use minimal direct lookup when delegation is unavailable."
-policy:
-  allow_implicit_invocation: false

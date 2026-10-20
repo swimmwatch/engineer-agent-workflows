@@ -1,0 +1,25 @@
+schema_version: 1
+spec_slug: product-review-efficiency
+decisions:
+  - category: implementation_authority
+    state: instructed
+    provenance: user
+    instruction:
+      text: "Implement product review efficiency in five verified checkpoints: baseline and specification; deterministic semantic blocks and indexed Review v2 storage; bounded atomic batch APIs; workflow skill sequencing; correctness, recovery, performance and isolated author/reviewer qualification. Preserve required semantic coverage, concurrency, legacy review contracts and exact retries. Verify used data per call and all sources/results at open/resume/restart/completion/activation. Do not install globally, publish, commit, or change consuming-product data."
+      source: User explicitly approved the complete Product Review efficiency implementation plan and selected semantic blocks, staged integrity for verdicts and sources, and atomic legacy migration on first authorized write.
+      kind: initial_request
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 8eb2ba2e-84eb-490e-995f-a4b96a039162
+    revision: 1
+    supersedes_revision: null
+extensions:
+  workflow_mcp_receipts:
+    - id: b4dd362366e5e3e07a2611ee01da2b6df94c40d6db198db13e67e0a9675e5543
+      result:
+        decision_ref:
+          id: 8eb2ba2e-84eb-490e-995f-a4b96a039162
+          revision: 1
+        state: instructed

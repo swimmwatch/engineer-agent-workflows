@@ -1,0 +1,45 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - One specification covers all nine issues, as explicitly selected by the user, with distinct repository and external-environment acceptance.
+  - Deep is warranted by public MCP contract evolution, persisted review reuse, recovery from unknown mutation outcomes and an external compression boundary.
+  - Retain Codex and Claude Code packaging, Node.js >=22.20.0 and the documented Linux x64 local-development verification boundary; no new platform support.
+  - Cover fixes 1–2 and regression protection; review after pass; complete draft record reads; actionable diagnostics; scenario client; explicit source/verdict hashes; architecture checkpoints; lossless transport/restore verification.
+  - "Planning artifacts: contracts/mcp.md and quality/scenarios.yaml. Existing canonical data schemas remain authoritative; do not duplicate them."
+  - Specification first; implementation, global installation/configuration, commits and publication excluded. External Headroom changes require their own owner and evidence; repository checks alone cannot establish their completion.
+profiles:
+  - id: core
+    reason: Review invariants, workflow client and generated Codex/Claude Code skill behavior.
+    state: active
+  - id: backend
+    reason: Versioned MCP scenario interfaces and structured diagnostics; no HTTP service.
+    state: active
+  - id: data
+    reason: Immutable records, exact revisions, source/verdict digests and persisted review compatibility.
+    state: active
+  - id: operations
+    reason: Recovery, bounded retries, pagination/completeness, running MCP identity and external compression qualification.
+    state: active
+  - id: ui
+    reason: No visual user interface or Penpot work.
+    state: not_applicable
+  - id: events
+    reason: No broker or separately published event contract.
+    state: not_applicable
+  - id: security
+    reason: Existing trust/privacy safeguards remain mandatory; no new authentication or authorization system.
+    state: not_applicable
+  - id: cross-surface
+    reason: Host portability remains a core packaging contract; no new multi-surface product flow.
+    state: not_applicable
+planning_artifacts:
+  - contracts/mcp.md
+  - quality/scenarios.yaml
+extensions:
+  workflow_mcp_receipts:
+    - id: 9cf4c58f9c6be776510d852541d3c2283cba2d3cd87f7540ab2b9117c213c4bd
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.

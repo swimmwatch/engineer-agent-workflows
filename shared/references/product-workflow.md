@@ -64,16 +64,6 @@ planning artifacts, then call read-only
 never call `task_packet_start`. Manifest-declared `design-planning` remains a
 separate explicit invocation.
 
-`task_inputs_check` returns a bounded summary, counts and `check_ref`, not all
-source pins. A passing summary is sufficient for this gate; do not reread every
-pin merely to reproduce the check. For diagnosis or exact evidence, use
-`task_inputs_details_get` with the same task, packet (if supplied), context and
-`check_ref`; choose `issues`, `product_pins` or `plan_pins` and follow its cursor.
-Large product pins may span `element_ids` portions at the same item index; their
-`element_offset` and `complete` fields distinguish portions from complete pins.
-On `SOURCE_CHANGED`, repeat the check rather than combining different snapshots.
-`packet_id` selects the packet to validate, not a smaller verification scope.
-
 ### Implementation role
 
 Prepare selected context with purpose `implementation` and the exact task ID,
@@ -127,50 +117,12 @@ new subject only when useful with `product_document_create_subject`; use the
 begin, inspect and accept edit sequence only for an explicitly needed direct
 Markdown edit. Never create empty subjects merely to satisfy a template.
 
-Resolve material choices and stabilize upstream pins before final review. Call
-`product_candidate_check` and correct authoring gaps without weakening the
-contract. The author starts `product_review_start`, then gives its exact candidate,
-source and review references to an independent reviewer. The author observes
-through read-only `product_review_status`; parallel read-only calls are allowed.
-Unavailable independent review leaves a disclosed draft, not a ready artifact.
-
-### Independent product review
-
-Use the returned `inventory_contract`. New full reviews use `semantic-v2`: each
-block contains its primary source atoms and relevant shared decisions, relations
-and upstream constraints. Judge that whole meaning once, not every technical
-atom separately. Deterministic coverage and structural validation do not replace
-semantic judgment: check contradictions, omissions and whether the evidence
-actually supports the block. Legacy `atomic-v1` and followups of it retain their
-original item contract; never reinterpret or copy atomic verdicts into blocks.
-
-Read a bounded page with `product_review_get_batch` (at most 20 items and 24 KiB
-per response). Follow an incomplete item's cursor with `product_review_get`;
-only its final complete portion provides a usable read receipt. Judge fully read
-blocks and persist them with `product_review_record_batch` (1–20 verdicts, at most
-131072 UTF-8 argument bytes). Checkpoint after each bounded page; do not accumulate
-the whole review in context or defer every verdict until the end. Single-item
-tools remain valid for a targeted reread. Never synthesize receipts or mark unseen
-content covered. The batch must pass validation as a whole before any verdict is
-saved.
-
-Use the context of each successful response. If a response is lost, inspect the
-operation and status; retry only the exact saved batch input when the contract
-permits it. A reordered or overlapping batch is not an exact retry. On `CONFLICT`,
-stop writes, reopen and inspect current source and retained verdicts. Do not
-blindly repeat or automatically rebase a write. On `RECOVERY_REQUIRED`, preserve
-the operation reference and stop affected writes for owner/operator recovery.
-The current runtime has no general operation-inspection or resume tool; do not
-invent one from a schema name or clear a lock yourself.
-
-After all semantic blocks, use `product_review_consistency_get` and
-`product_review_consistency_record` for the final cross-block judgment. A full
-semantic review supplies a coverage/result ledger, not a second complete copy
-of the sources; use the exact blocks already read and reread missing context.
-Corrections-only followup still requires local rechecking plus consistency of the
-whole current artifact. Only the independent reviewer records verdicts and calls
-`product_review_complete`. Changed scope, uncertain impact or new requirements
-require a new full review; eligible corrections use the published followup rules.
+Call `product_candidate_check` before review. Correct authoring gaps without
+weakening the contract. The author may call `product_review_start`, but an
+independent reviewer must consume every frozen item and consistency input,
+record verdicts and call `product_review_complete`. The author must not forge
+review evidence. Changed source requires a current review; unavailable
+independent review leaves a disclosed draft, not a ready artifact.
 
 Report exact source pins, readiness, unresolved questions and the next available
 stage. Do not invoke the next skill, create task specifications, implement code,

@@ -105,88 +105,17 @@ it is never replaced with the latest text. A parent change can make a downstream
 artifact non-current for new work without deleting the accepted historical
 version.
 
-## Read saved draft evidence
-
-Ready-source readers (`product_element_get`, `product_decision_get`) select pinned
-ready evidence. Use the read-only `product_candidate_record_get` to inspect a
-saved candidate decision or research record by exact kind, ID and revision.
-Replace placeholders with the returned candidate and record references:
-
-<!-- product-tool-example: product_candidate_record_get -->
-
-```json
-{
-  "context": "latest-opaque-product-context",
-  "candidate_ref": {
-    "product_id": "11111111-1111-1111-1111-111111111111",
-    "candidate_id": "22222222-2222-2222-2222-222222222222"
-  },
-  "record_ref": {
-    "kind": "decision",
-    "id": "33333333-3333-3333-3333-333333333333",
-    "revision": 1
-  }
-}
-```
-
-For research use `kind: "research"`. Append every `result.text` in order, checking
-`offset`, `total_characters` and the same `source_object_sha256`. Keep selectors
-unchanged and pass `next_cursor` as `cursor` until `complete: true` and
-`next_cursor: null`. Offsets count Unicode code points. Parse the assembled
-`canonical-json-utf8` record only after complete delivery. This does not activate
-the draft or substitute a newer revision. Changed sources require a fresh read.
-
-List documents before choosing a `subject`. Use an exact registered subject,
-such as `Overview` when present; an invented `Architecture` subject is not
-automatically created. This request accepts `limit` from 1 to 50 (default 20):
-
-<!-- product-tool-example: product_document_list -->
-
-```json
-{
-  "context": "latest-opaque-product-context",
-  "artifact": "technical-design",
-  "limit": 50
-}
-```
-
-Complete the inventory continuation. Other tools have their own bounds. Invalid
-calls can return structured field paths, expected constraints and recovery
-guidance; subject errors can expose bounded registered-document choices.
-Diagnostics neither apply corrections nor authorize new documents. Check the
-current advertised schema before retrying the corrected call.
-
 ## Review lifecycle
 
 Product artifact review and specification completeness review are different
 protocols.
 
-For a product candidate, `product_review_start` starts a full semantic-block
-review or an eligible finding-linked followup. The canonical atom ledger still
-covers every selected element, decision, relation, scope and prose fragment.
-Each atom has one primary block; shared evidence remains related context in every
-affected block. Structural checks never replace independent semantic judgment.
-
-Read bounded pages with `product_review_get_batch` (1–20 portions, at most 24 KiB).
-Finish partial blocks through `product_review_get` cursors. Judge complete blocks
-and checkpoint with `product_review_record_batch` (1–20 verdicts, at most 131072
-UTF-8 argument bytes). An invalid member rejects the entire batch. Exact retry
-recovers the same operation, but reordered or overlapping input is not a retry.
-Legacy single-item APIs and existing atomic inventories remain supported.
-
-After the blocks, record final cross-block consistency and complete the review.
-Full semantic reviews return the membership/result ledger for this judgment,
-without requiring a second delivery of all source text. A corrections-only
-followup still checks the whole current artifact and inherits only unchanged
-evidence with bounded impact. New instructions, changed scope, uncertain influence
-or missing historical evidence require a new full review.
-
-Review storage v2 indexes immutable verdict objects. Used evidence is verified
-on each call; full audits run on open/resume, first process access, completion,
-activation and use as a followup parent. Corruption of untouched objects may be
-detected later, never accepted at the final gate. Legacy storage migrates
-atomically on the first actual write, retaining inventory semantics and object
-identities. Read-only status and exact no-op retries do not migrate anything.
+For a product candidate, `product_review_start` starts `full` review or an
+eligible finding-linked `followup`. Read every portion from `product_review_get`,
+record detailed verdicts, read and record the whole-artifact consistency result,
+then complete the review. A followup may inherit only unchanged evidence whose
+impact is bounded; new instructions, changed scope, uncertain influence or
+missing historical evidence require a new full review.
 
 <!-- product-tool-example: product_review_start -->
 
@@ -200,58 +129,6 @@ identities. Read-only status and exact no-op retries do not migrate anything.
   "mode": "full"
 }
 ```
-
-After a successful product review, `product_review_start` accepts
-`mode: "recheck"` with `parent_review_ref` and no `fixes`. This differs from
-`followup`, which requires an earlier completed review with gaps and
-finding-linked fixes. Recheck verifies retained parent evidence, unchanged sources
-and bounded change impact, inherits eligible unchanged verdicts and leaves
-affected blocks pending. An independent reviewer and a new final consistency
-verdict are still required. Scope changes, uncertain impact or unavailable history
-require a new full review; a small edit is not automatically harmless.
-
-<!-- product-tool-example: product_review_start -->
-
-```json
-{
-  "context": "latest-opaque-product-context",
-  "candidate_ref": {
-    "product_id": "11111111-1111-1111-1111-111111111111",
-    "candidate_id": "22222222-2222-2222-2222-222222222222"
-  },
-  "mode": "recheck",
-  "parent_review_ref": "44444444-4444-4444-4444-444444444444"
-}
-```
-
-Product-wide accepted architecture may use `global: true, stage_refs: []` before
-a Roadmap exists; do not relabel an accepted target as a hypothesis to bypass
-validation. Decision source pins may have empty `element_ids`.
-
-### Source and verdict digests
-
-Opt into `representation: "explicit-v1"` on supported review readers and keep it
-unchanged through continuations:
-
-<!-- product-tool-example: product_review_consistency_get -->
-
-```json
-{
-  "context": "latest-opaque-product-context",
-  "review_ref": "44444444-4444-4444-4444-444444444444",
-  "representation": "explicit-v1"
-}
-```
-
-`source_version_sha256` identifies the candidate snapshot.
-`source_content_sha256` hashes exact review-item UTF-8 text without an added
-newline; `source_object_sha256` hashes retained immutable object bytes. Their
-identity and canonicalization fields define each comparison domain.
-`verdict_object_sha256` hashes the saved verdict. The legacy `object_sha256` in
-the consistency result remains an alias for that verdict hash, not a document
-hash. A new verdict can change it while its source is unchanged. Omit the
-representation for the legacy wire shape; never infer a source hash from a
-missing explicit field.
 
 For task specifications, legacy full review remains supported. An enhanced full review
 explicitly requests the final whole-specification consistency gate; a
@@ -305,126 +182,10 @@ reconcile against current applicable product state.
 }
 ```
 
-`task_inputs_check` returns a compact check summary, exact source versions,
-`check_ref`, pin counts and at most five issue previews. Its verdict still covers
-all task inputs. In particular, `packet_id: "P01"` validates that packet's presence
-without narrowing the pinned plan. It does not expose the formerly unbounded
-`product_pins` and `plan_pins` arrays in the check response.
-
-Read exact evidence only when needed using `task_inputs_details_get`: pass the
-same `context`, `task_id`, optional `packet_id`, returned `check_ref`, and a
-`section` of `issues`, `product_pins` or `plan_pins`. `limit` accepts 1–100 (default
-20); byte limits may shorten a page. Each entry retains its original `index`.
-For a large product pin, concatenate `value.element_ids` in `element_offset`
-order until its entry reports `complete: true`. The response's `complete` applies
-to the entire section. Follow `next_cursor` without changing the selected check.
-Changed source, plan, task or safety state rejects old details with `SOURCE_CHANGED`;
-repeat the check instead of mixing versions. Both tools are read-only. Packet
-start/completion still use the full internal evidence, not the public summary.
-
 Each packet still needs its own explicit invocation. Review, commit and push are
 separate actions and are not packet-completion gates. Completion records the
 product version actually implemented, which may differ from the current product
 head.
-
-## Logical sessions and complete delivery
-
-Prefer MCP scenario tools. `product_session_open` creates a candidate-bound
-logical session with the current context and returns `supported_scenarios`.
-It tracks context for those scenarios; it does not choose answers, verdicts or
-the next workflow. Arbitrary commands, nested sessions and lifecycle operations
-are excluded. No product-session CLI is provided. Use the normal stdio executable
-when connecting an MCP client requires a command; build/test commands remain
-ordinary shell commands.
-
-<!-- product-tool-example: product_session_open -->
-
-```json
-{
-  "context": "latest-opaque-product-context",
-  "candidate_ref": {
-    "product_id": "11111111-1111-1111-1111-111111111111",
-    "candidate_id": "22222222-2222-2222-2222-222222222222"
-  }
-}
-```
-
-Pass the returned `session_ref` and `session_revision` as `expected_revision`.
-Use a new request UUID only for a new intent. The session supplies its context;
-omit `context` inside `arguments`. Replace the references in this supported read:
-
-<!-- product-tool-example: product_session_call -->
-
-```json
-{
-  "session_ref": "opaque-session-from-open",
-  "expected_revision": 0,
-  "request_id": "55555555-5555-5555-5555-555555555555",
-  "scenario": "product_candidate_record_get",
-  "arguments": {
-    "candidate_ref": {
-      "product_id": "11111111-1111-1111-1111-111111111111",
-      "candidate_id": "22222222-2222-2222-2222-222222222222"
-    },
-    "record_ref": {
-      "kind": "decision",
-      "id": "33333333-3333-3333-3333-333333333333",
-      "revision": 1
-    }
-  }
-}
-```
-
-Append `delivery.text` until `delivery.complete`, then parse that one JSON
-scenario response. Reset the accumulator between complete JSON responses: a
-source reader can require several responses for its own continuations. Follow
-`product_session_next` until outer `complete` is true, always using the latest
-`session_revision` and the same `read_ref`. Do not begin another scenario before
-complete delivery. Large records remain bounded rather than silently truncated.
-
-<!-- product-tool-example: product_session_next -->
-
-```json
-{
-  "session_ref": "opaque-session-from-open",
-  "expected_revision": 1,
-  "read_ref": "opaque-read-ref-from-call"
-}
-```
-
-Observe acknowledgement and freshness without writing:
-
-<!-- product-tool-example: product_session_status -->
-
-```json
-{
-  "session_ref": "opaque-session-from-open"
-}
-```
-
-After an interrupted response, inspect status and use its exact revision for
-explicit recovery:
-
-<!-- product-tool-example: product_session_resume -->
-
-```json
-{
-  "session_ref": "opaque-session-from-open",
-  "expected_revision": 1
-}
-```
-
-Resume may recover retained delivery. A supported uncertain candidate write is
-replayed at most once only when exact completed operation evidence establishes
-safe replay. Unknown effects, active or unknown claims, missing evidence and
-changed review state remain blocked with `RECOVERY_REQUIRED`. Preserve references
-and inspect the owning operation; a new request ID is not recovery. This is not
-a general operation-repair API.
-
-After an independent reviewer writes, the author's old context/session can be
-stale. Reopen the workspace, inspect candidate and review effects, obtain the
-current candidate context and explicitly open a reconciled session. Status and
-diagnostics do not silently refresh author state or erase uncertainty.
 
 ## Recovery and safety
 
@@ -464,67 +225,13 @@ model actually read externally compressed text. Hashes, counters and eligibility
 checks do not prove harmlessness or reviewer independence. Failed or unavailable
 checks remain unverified.
 
-The runtime declares Node.js >=22.20.0 and Linux, macOS and Windows support.
-Retained local qualification passed on Linux with Node.js 24.14.0 (887 tests) and
-Node.js 22.20.0 (109 focused tests). A later actual-tree Node.js 24.14.0 rebuild
-matched all 83 retained runtime package members and passed 20 focused tests.
-These are distinct evidence scopes, not a fresh full-suite result after every
-documentation edit. The four macOS 15 / Windows 2025 combinations at Node.js
-22.20.0 / 24.14.0 are required again. In
-[run 38942838354](https://github.com/swimmwatch/engineer-agent-workflows/actions/runs/38942838354),
-the four required native jobs failed actual acceptance; build, generation and
-lint passed, while downstream native qualification was skipped, not passed.
-Linux checks do not substitute for those failures. At that historical snapshot,
-a bounded local fixture/packed-launch correction was being prepared; the consumed
-one-commit/four-job grant did not authorize another public delivery/native rerun.
-Runtime support is unchanged.
-
-Headroom is an external tool, not a repository dependency. Headroom qualification
-is outside repository acceptance. Q14 is cancelled and no longer required, never passed.
-This scope decision does not claim that an external compressor was fixed or
-qualified. Full I11/Q16 remains incomplete even when documentation examples pass;
-each changed input snapshot still requires its own actual native results.
-
-Preserve tool schemas, opaque contexts, cursors, source references, hashes and
-receipts losslessly outside compressed display text. A `<<ccr:...>>` marker or
-truncated JSON is not an exact response. Obtain the retained original through the
-owning retrieval path and verify its schema, selected source identity, revision
-and digest with complete continuations before consumption. If unavailable or inconsistent, stop the
-affected read/verdict and dependent mutation. Keep the MCP response limits; do not
-replace an exact response with a summary or another unresolved marker. The MCP
-cannot guarantee that an external compressor retains or restores its bytes.
+The implemented runtime supports Node.js 22.20.0 or newer on Linux, macOS and
+Windows. P17 executed Linux with Node.js 24.20.0. macOS and Windows were not executed by that qualification; additional Node.js combinations were not executed either. None may be reported as passed.
 
 The store is local-only: there is no network service, cross-computer
 collaboration guarantee, automatic migration, automatic cleanup or power-loss
 durability guarantee. Missing MCP capability blocks affected workflow state;
 manual YAML edits and shell readers are not fallbacks.
-
-## Loaded runtime identity
-
-Call this read-only diagnostic on the same MCP connection that will execute the
-workflow:
-
-<!-- product-tool-example: workflow_runtime_info -->
-
-```json
-{}
-```
-
-`package_version` is not a unique build identity. Compare `build_id`,
-`contract_id`, `contract_digest`, `identity_status` and advertised `capabilities`.
-Identity is captured when that server process loads. Building files, packing an
-archive or changing a path does not replace the loaded process. A same-version
-build can have different executable bytes. `identity_status: "unavailable"` and
-its `reason`/`refresh_requirement` preserve uncertainty; they do not establish
-that the client uses the intended build. Refresh through the host's normal
-process/configuration lifecycle only with required authorization, then query the
-new connection. A local build pass is not a global installation or verification
-of the current registered MCP.
-
-For an architectural task, check material technology choices, component
-boundaries, data flows, state/database ownership and unconfirmed integrations
-before review. Record alternatives, evidence and unresolved choices; a diagram
-or mechanical checklist does not replace independent semantic review.
 
 ## Operator checklist
 

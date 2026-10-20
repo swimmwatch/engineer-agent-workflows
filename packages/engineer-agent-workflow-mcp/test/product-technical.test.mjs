@@ -68,9 +68,7 @@ function applicability(state, stageRefs = []) {
   };
 }
 
-async function fixture(t, {
-  readyPrd = true, includePrdDecisionPin = false, includeRoadmap = true, newline = "\n",
-} = {}) {
+async function fixture(t, { readyPrd = true, newline = "\n" } = {}) {
   const temporaryRoot = await temporaryDirectory(t);
   const root = join(temporaryRoot, "product-data");
   const workspace = join(temporaryRoot, "workspace");
@@ -106,10 +104,8 @@ async function fixture(t, {
     "prd/overview.md": "# Overview\n\n### PRD-0001: Shared authoring\n\n#### Outcome\n\nTwo agents retrieve the same shared rule.\n",
     "technical-design/index.md": "# Technical Design\n\n- [Overview](overview.md)\n",
     "technical-design/overview.md": "# Overview\n",
-    ...(includeRoadmap ? {
-      "roadmap/index.md": "# Roadmap\n\n- [Overview](overview.md)\n",
-      "roadmap/overview.md": "# Overview\n\n### STAGE-0001: MVP\n\n#### Outcome\n\nValidate the shared workflow.\n",
-    } : {}),
+    "roadmap/index.md": "# Roadmap\n\n- [Overview](overview.md)\n",
+    "roadmap/overview.md": "# Overview\n\n### STAGE-0001: MVP\n\n#### Outcome\n\nValidate the shared workflow.\n",
   };
   const documents = [];
   for (const [relativePath, rawSource] of Object.entries(sources)) {
@@ -147,43 +143,19 @@ async function fixture(t, {
         provenance: [],
         state: "active",
       },
-      ...(includeRoadmap ? [{
+      {
         ref: f.stageRef,
         semantic_type: "Stage",
         applicability: applicability("current"),
         provenance: [],
         state: "active",
-      }] : []),
+      },
     ],
   };
   const registryObject = await saveObject(root, {
     productId: f.productId,
     kind: "record",
     bytes: bytes(registry),
-  });
-  const prdDecisionRef = { product_id: f.productId, artifact: "prd", id: randomUUID(), revision: 1 };
-  const prdDecision = {
-    schema_version: 1,
-    kind: "decision",
-    ref: prdDecisionRef,
-    state: "observed",
-    category: "scope",
-    question: null,
-    text: "The ready PRD decision is retained as evidence.",
-    source: "synthetic PRD fixture",
-    selected_ids: [],
-    predecessors: [],
-    affected_refs: [f.prdRef],
-    reconsider_when: null,
-    candidate_id: f.candidateId,
-  };
-  const savedPrdDecision = await saveObject(root, {
-    productId: f.productId,
-    kind: "decision",
-    artifact: "prd",
-    decisionId: prdDecisionRef.id,
-    revision: prdDecisionRef.revision,
-    bytes: bytes(prdDecision),
   });
   const base = await saveGeneration(root, {
     schema_version: 1,
@@ -192,7 +164,7 @@ async function fixture(t, {
     parent: null,
     registry: { id: f.registryId, object_sha256: registryObject.sha256 },
     ready_artifacts: [],
-    decision_heads: [{ decision_ref: prdDecisionRef, object_sha256: savedPrdDecision.sha256 }],
+    decision_heads: [],
     relations: [],
   });
   const prdDocument = documents.find((document) => document.id === documentIds.prdOverview);
@@ -206,16 +178,6 @@ async function fixture(t, {
     element_ids: [f.prdRef.element_id],
     decision_ref: null,
   };
-  const prdDecisionPin = {
-    product_id: f.productId,
-    artifact: "prd",
-    source_kind: "decision",
-    source_id: prdDecisionRef.id,
-    generation: base.sha256,
-    object_sha256: savedPrdDecision.sha256,
-    element_ids: [],
-    decision_ref: prdDecisionRef,
-  };
   const generation = readyPrd ? await saveGeneration(root, {
     schema_version: 1,
     kind: "generation",
@@ -226,7 +188,7 @@ async function fixture(t, {
       artifact: "prd",
       source_version: digest("ready prd fixture"),
       review_id: randomUUID(),
-      upstream_pins: [prdPin, ...(includePrdDecisionPin ? [prdDecisionPin] : [])],
+      upstream_pins: [],
     }],
     decision_heads: [],
     relations: [],
@@ -271,7 +233,7 @@ async function fixture(t, {
       confirmed_answer: null,
     },
     registry: { id: f.registryId, object_sha256: registryObject.sha256 },
-    upstream_pins: readyPrd ? [prdPin, ...(includePrdDecisionPin ? [prdDecisionPin] : [])] : [],
+    upstream_pins: readyPrd ? [prdPin] : [],
     decision_heads: [{ decision_ref: f.evidenceRef, object_sha256: savedDecision.sha256 }],
     relations: [],
   };
@@ -310,75 +272,6 @@ test("P08 publishes strict Technical Design scenario tools", () => {
     assert.equal(tool.outputSchema.type, "object");
     assert.equal(tool.write, true);
     assert.equal(tool.destructive, true);
-  }
-});
-
-test("Q19 regression: Technical Design verifies decision and Markdown PRD pins distinctly", async (t) => {
-  const defineBoundary = (f) => defineTechnicalElement({
-    root: f.root,
-    context: f.context,
-    candidateRef: f.candidateRef,
-    subject: "Overview",
-    semanticType: "TechnicalBoundary",
-    value: {
-      title: "Workflow state boundary",
-      provenance: [f.evidenceRef],
-      applicability: applicability("current"),
-      purpose: "Own durable product workflow state.",
-      inputs: ["Typed scenario requests."],
-      outputs: ["Version-bound scenario results."],
-      ownership: "The workflow MCP owns persistence; host skills own orchestration.",
-      dependencies: [],
-      data_flows: ["Typed request -> validated immutable object -> candidate generation."],
-      errors: ["Reject stale context before new effects."],
-      prd_refs: [f.prdRef],
-    },
-  });
-
-  const f = await fixture(t, { includePrdDecisionPin: true });
-  const accepted = await defineBoundary(f);
-  const candidate = JSON.parse(await readFile(f.candidatePath, "utf8"));
-  const registry = JSON.parse(Buffer.from(await readObject(f.root, {
-    productId: f.productId,
-    kind: "record",
-    sha256: candidate.registry.object_sha256,
-  })).toString("utf8"));
-  assert.ok(candidate.relations.some((relation) => (
-    relation.kind === "derived_from" && relation.to.element_id === f.prdRef.element_id
-  )));
-  assert.ok(registry.element_metadata.some((entry) => (
-    entry.ref.element_id === accepted.result.changed_refs[0].element_id
-      && entry.semantic_type === "TechnicalBoundary"
-      && entry.applicability.state === "current"
-  )));
-  assert.match(await readFile(f.technicalDocument, "utf8"), /### TD-0001: Workflow state boundary/u);
-
-  const invalidPins = [
-    ["empty semantic Markdown pin", (pins) => pins.map((pin) => (
-      pin.source_kind === "markdown" ? { ...pin, element_ids: [] } : pin
-    ))],
-    ["changed decision digest", (pins) => pins.map((pin) => (
-      pin.source_kind === "decision" ? { ...pin, object_sha256: digest("changed decision") } : pin
-    ))],
-    ["foreign decision identity", (pins) => pins.map((pin) => (
-      pin.source_kind === "decision"
-        ? { ...pin, decision_ref: { ...pin.decision_ref, product_id: randomUUID() } }
-        : pin
-    ))],
-    ["decision pin outside lineage", (pins) => pins.map((pin) => (
-      pin.source_kind === "decision" ? { ...pin, generation: digest("outside selected lineage") } : pin
-    ))],
-  ];
-  for (const [name, mutatePins] of invalidPins) {
-    const invalid = await fixture(t, { includePrdDecisionPin: true });
-    const candidateValue = JSON.parse(await readFile(invalid.candidatePath, "utf8"));
-    candidateValue.upstream_pins = mutatePins(candidateValue.upstream_pins);
-    candidateValue.source_version = candidateVersion(candidateValue);
-    await writeFile(invalid.candidatePath, bytes(candidateValue));
-    invalid.context = context(invalid, candidateValue);
-    const before = await snapshot(invalid.root);
-    await assert.rejects(defineBoundary(invalid), expectCode("SOURCE_CHANGED"), name);
-    assert.deepEqual(await snapshot(invalid.root), before, name);
   }
 });
 
@@ -489,87 +382,6 @@ test("Q19: Technical Design retains PRD justification and exact applicability", 
   assert.deepEqual(await snapshot(f.root), beforeReplay);
 });
 
-test("Q19 regression: product-global accepted targets precede Roadmap stages", async (t) => {
-  const targetApplicability = {
-    ...applicability("accepted_target"),
-    reason: "Accepted for the product as a whole.",
-  };
-  const defineTarget = (f, overrides = {}) => defineTechnicalElement({
-    root: f.root,
-    context: f.context,
-    candidateRef: f.candidateRef,
-    subject: "Overview",
-    semanticType: "TechnologyChoice",
-    value: {
-      title: "Accepted product runtime",
-      provenance: [f.evidenceRef],
-      applicability: targetApplicability,
-      choice: "Use the repository-pinned runtime.",
-      alternatives: [],
-      rationale: "The ready PRD requires this product-wide target.",
-      evidence_refs: [],
-      prd_refs: [f.prdRef],
-      revisit_when: "The pinned runtime cannot satisfy a measured requirement.",
-      ...overrides,
-    },
-  });
-
-  const f = await fixture(t, { includePrdDecisionPin: true, includeRoadmap: false });
-  const originalCandidate = JSON.parse(await readFile(f.candidatePath, "utf8"));
-  const accepted = await defineTarget(f);
-  f.context = accepted.context;
-  const candidate = JSON.parse(await readFile(f.candidatePath, "utf8"));
-  const registry = JSON.parse(Buffer.from(await readObject(f.root, {
-    productId: f.productId,
-    kind: "record",
-    sha256: candidate.registry.object_sha256,
-  })).toString("utf8"));
-  const metadata = registry.element_metadata.find((entry) => (
-    entry.ref.element_id === accepted.result.changed_refs[0].element_id
-  ));
-  assert.deepEqual(metadata.applicability, targetApplicability);
-  assert.deepEqual(metadata.provenance, [f.evidenceRef]);
-  assert.deepEqual(candidate.upstream_pins, originalCandidate.upstream_pins);
-  assert.equal(registry.documents.some((document) => document.artifact === "roadmap"), false);
-  assert.equal(registry.element_metadata.some((entry) => entry.ref.artifact === "roadmap"), false);
-  assert.equal((await snapshot(f.root)).some(([path]) => path.includes("/documents/roadmap/")), false);
-
-  const invalidTargets = [
-    ["global and stage-scoped", {
-      applicability: { ...targetApplicability, stage_refs: [f.stageRef] },
-    }, "INVALID_INPUT"],
-    ["empty non-global applicability", {
-      applicability: { ...targetApplicability, global: false },
-    }, "INVALID_INPUT"],
-    ["unresolved scoped stage", {
-      applicability: applicability("accepted_target", [f.stageRef]),
-    }, "BROKEN_REFERENCE"],
-    ["non-roadmap scoped reference", {
-      applicability: applicability("accepted_target", [f.prdRef]),
-    }, "BROKEN_REFERENCE"],
-    ["stale target provenance", {
-      provenance: [{ ...f.evidenceRef, revision: f.evidenceRef.revision + 1 }],
-    }, "CONFLICT"],
-  ];
-  for (const [name, overrides, code] of invalidTargets) {
-    const before = await snapshot(f.root);
-    await assert.rejects(defineTarget(f, overrides), expectCode(code), name);
-    assert.deepEqual(await snapshot(f.root), before, name);
-  }
-
-  const foreignStage = await fixture(t);
-  const beforeForeignStage = await snapshot(foreignStage.root);
-  await assert.rejects(defineTarget(foreignStage, {
-    applicability: applicability("accepted_target", [{ ...foreignStage.stageRef, product_id: randomUUID() }]),
-  }), expectCode("BROKEN_REFERENCE"), "foreign identity of an existing scoped stage");
-  assert.deepEqual(await snapshot(foreignStage.root), beforeForeignStage);
-
-  const missingPrd = await fixture(t, { readyPrd: false, includeRoadmap: false });
-  const beforeMissingPrd = await snapshot(missingPrd.root);
-  await assert.rejects(defineTarget(missingPrd), expectCode("PREREQUISITE_REQUIRED"));
-  assert.deepEqual(await snapshot(missingPrd.root), beforeMissingPrd);
-});
-
 test("P08 rejects missing PRD lineage and stale or foreign references without effects", async (t) => {
   const missing = await fixture(t, { readyPrd: false });
   const value = {
@@ -597,7 +409,7 @@ test("P08 rejects missing PRD lineage and stale or foreign references without ef
   assert.deepEqual(await snapshot(missing.root), beforeMissing);
 
   const f = await fixture(t, { newline: "\r\n" });
-  const beforeUnassignedTarget = await snapshot(f.root);
+  const beforeUnnamedTarget = await snapshot(f.root);
   await assert.rejects(defineTechnicalElement({
     root: f.root,
     context: f.context,
@@ -605,18 +417,18 @@ test("P08 rejects missing PRD lineage and stale or foreign references without ef
     subject: "Overview",
     semanticType: "TechnologyChoice",
     value: {
-      title: "Unassigned target",
+      title: "Unnamed target",
       provenance: [f.evidenceRef],
-      applicability: { ...applicability("accepted_target"), global: false },
+      applicability: applicability("accepted_target"),
       choice: "A future runtime.",
       alternatives: [],
-      rationale: "Neither product-global applicability nor a named stage was supplied.",
+      rationale: "No named stage was supplied.",
       evidence_refs: [],
       prd_refs: [f.prdRef],
-      revisit_when: "Applicability is selected.",
+      revisit_when: "A stage is selected.",
     },
   }), expectCode("INVALID_INPUT"));
-  assert.deepEqual(await snapshot(f.root), beforeUnassignedTarget);
+  assert.deepEqual(await snapshot(f.root), beforeUnnamedTarget);
 
   const foreign = {
     ...value,

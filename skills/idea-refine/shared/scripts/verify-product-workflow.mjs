@@ -12,9 +12,6 @@ export const PRODUCT_WORKFLOW_SKILL_CHAIN = Object.freeze([
   "product-roadmap",
 ]);
 const MARKER_PARTS = Object.freeze(["shared", "product-workflow.sha256"]);
-export const PRODUCT_WORKFLOW_SKILL_REFERENCES = Object.freeze({
-  "technical-design": Object.freeze(["references/technology-decisions.md"]),
-});
 const PROTOCOL_PARTS = Object.freeze([
   "shared",
   "references",
@@ -83,10 +80,6 @@ export function layoutPaths(fromSkillDir, pathAPI = path) {
     document: pathAPI.join(skillsRoot, name, "SKILL.md"),
     marker: pathAPI.join(skillsRoot, name, ...MARKER_PARTS),
     protocol: pathAPI.join(skillsRoot, name, ...PROTOCOL_PARTS),
-    references: (PRODUCT_WORKFLOW_SKILL_REFERENCES[name] ?? []).map(relativePath => ({
-      relativePath,
-      path: pathAPI.join(skillsRoot, name, ...relativePath.split("/")),
-    })),
   }));
   return {
     callerSkill: fromSkillDir,
@@ -173,9 +166,6 @@ export function productWorkflowDigest(protocol, profiles, skillDocuments) {
       `skills/${document.name}/SKILL.md`,
       document.bytes,
     ]),
-    ...skillDocuments.flatMap(document => (document.references ?? []).map(reference => [
-      `skills/${document.name}/${reference.relativePath}`, reference.bytes,
-    ])),
   ];
   for (const [relativePath, bytes] of entries) {
     hash.update(relativePath, "utf8");
@@ -208,10 +198,6 @@ export async function verifyProductWorkflowBundle(fromSkillDir) {
       document: await regularFile(asset.document),
       marker: await regularFile(asset.marker),
       protocol: await regularFile(asset.protocol),
-      references: await Promise.all(asset.references.map(async reference => ({
-        relativePath: reference.relativePath,
-        bytes: await regularFile(reference.path),
-      }))),
     })),
   );
   const profiles = await Promise.all(
@@ -232,7 +218,6 @@ export async function verifyProductWorkflowBundle(fromSkillDir) {
     const skillDocuments = assets.slice(0, index + 1).map(current => ({
       name: current.name,
       bytes: current.document,
-      references: current.references,
     }));
     return markerDigest(asset.marker) !== productWorkflowDigest(
       asset.protocol,

@@ -547,7 +547,7 @@ function generationBytes(generation: Generation): Uint8Array {
   }
 }
 
-export async function readGenerationMetadata(root: string, productId: string, digest: string): Promise<Generation> {
+async function readGenerationMetadata(root: string, productId: string, digest: string): Promise<Generation> {
   const relativePath = generationRelativePath(productId, digest);
   const value = await readRelative(root, relativePath, digest);
   const parsed = parseStructured(value);

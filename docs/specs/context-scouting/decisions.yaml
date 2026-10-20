@@ -1,0 +1,1802 @@
+schema_version: 1
+spec_slug: context-scouting
+decisions:
+  - category: intent
+    state: instructed
+    provenance: user
+    instruction:
+      text: "Я хотел бы сделать скилл, который применял бы правило из нашего AGENTS.md: если для работы нужно что-то поискать, собрать контекст или найти нужные файлы, это следует поручать сабагентам на слабых моделях, чтобы не тратить токены основной модели. Я хотел бы убрать это правило из системного AGENTS.md и перенести его в скилл, который мы поставляем в нашей пачке скиллов."
+      source: User message in this chat invoking idea-refine
+      kind: initial_request
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140
+    revision: 1
+    supersedes_revision: null
+  - category: invocation
+    state: instructed
+    provenance: user
+    instruction:
+      text: Явно пользователем
+      source: 'Native request_user_input answer to "Как должен включаться новый скилл после удаления правила из глобального AGENTS.md? Сейчас коллекция разрешает только явный вызов скиллов." Selected option description: "Вы подключаете скилл к конкретной задаче; действующие правила коллекции сохраняются."'
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 584be602-cb6e-4304-b598-a3c8a06aedf0
+    revision: 1
+    supersedes_revision: null
+  - category: skill_boundary
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай первый вариант.
+      source: "User reply choosing the first proposed variant: a separate context-scouting skill in the collection, rather than extending context-engineering."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 106f0eca-8858-417b-bd78-700fd8bf3565
+    revision: 1
+    supersedes_revision: null
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: prepared
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - "Предлагаю Standard + core: отдельный явно вызываемый context-scouting для текущей задачи, с контрактами выбора сабагентов, моделей, результатов и отказов."
+        - "Поддержка Codex и Claude Code следует действующим правилам коллекции: общий исходный скилл и раздельные артефакты хостов."
+        - Правило из глобального AGENTS.md переносится по назначению в скилл; границы последующего удаления уточняются в требованиях. Эта стадия создаёт только спецификацию и журнал решений, без изменения глобальной конфигурации.
+        - UI, сервер, новые API, хранение данных, установка и публикация исключены. Отдельные проектные контрактные или дизайн-артефакты не нужны; требования остаются в spec.md.
+      profiles:
+        - id: core
+          reason: One explicitly invoked context-scouting skill, with host-specific native delegation, model selection, bounded read-only discovery and recovery behavior.
+          state: active
+        - id: ui
+          reason: No visual interface.
+          state: not_applicable
+        - id: backend
+          reason: No new service or network API.
+          state: not_applicable
+        - id: events
+          reason: No event contract.
+          state: not_applicable
+        - id: data
+          reason: No product data persistence or migration.
+          state: not_applicable
+        - id: operations
+          reason: Existing collection packaging; no deployment infrastructure or configuration automation.
+          state: not_applicable
+        - id: security
+          reason: Read-only, privacy and authority constraints covered in core; no new security subsystem.
+          state: not_applicable
+        - id: cross-surface
+          reason: No UI-to-service interaction; host portability is a core skill contract.
+          state: not_applicable
+      planning_artifacts: []
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: answered
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer:
+      text: Подтвердить (Recommended)
+      selected_ids:
+        - confirm
+    status: answered
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - "Предлагаю Standard + core: отдельный явно вызываемый context-scouting для текущей задачи, с контрактами выбора сабагентов, моделей, результатов и отказов."
+        - "Поддержка Codex и Claude Code следует действующим правилам коллекции: общий исходный скилл и раздельные артефакты хостов."
+        - Правило из глобального AGENTS.md переносится по назначению в скилл; границы последующего удаления уточняются в требованиях. Эта стадия создаёт только спецификацию и журнал решений, без изменения глобальной конфигурации.
+        - UI, сервер, новые API, хранение данных, установка и публикация исключены. Отдельные проектные контрактные или дизайн-артефакты не нужны; требования остаются в spec.md.
+      profiles:
+        - id: core
+          reason: One explicitly invoked context-scouting skill, with host-specific native delegation, model selection, bounded read-only discovery and recovery behavior.
+          state: active
+        - id: ui
+          reason: No visual interface.
+          state: not_applicable
+        - id: backend
+          reason: No new service or network API.
+          state: not_applicable
+        - id: events
+          reason: No event contract.
+          state: not_applicable
+        - id: data
+          reason: No product data persistence or migration.
+          state: not_applicable
+        - id: operations
+          reason: Existing collection packaging; no deployment infrastructure or configuration automation.
+          state: not_applicable
+        - id: security
+          reason: Read-only, privacy and authority constraints covered in core; no new security subsystem.
+          state: not_applicable
+        - id: cross-surface
+          reason: No UI-to-service interaction; host portability is a core skill contract.
+          state: not_applicable
+      planning_artifacts: []
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: scope.manifest
+      revision: 1
+    answer_source: request_user_input; Russian rendering of the saved scope confirmation question; actual selected label
+    answered_question:
+      id: scope.manifest
+      revision: 1
+  - category: model_policy
+    state: needs_user
+    provenance: user
+    question:
+      text: Как выбирать модель сабагента для поиска контекста? Например, брать доступную экономичную модель хоста или строго заданную вами.
+      kind: single_choice
+      options:
+        - id: economical
+          label: Экономичная доступная (Recommended)
+        - id: fixed
+          label: Фиксированные модели
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 1
+  - category: delegation_failure
+    state: needs_user
+    provenance: user
+    question:
+      text: Что делать, если сабагент или подходящая экономичная модель недоступны либо поиск завершился без пригодного результата?
+      kind: single_choice
+      options:
+        - id: bounded_fallback
+          label: Ограниченный поиск основной моделью (Recommended)
+        - id: stop
+          label: Остановить зависимую работу
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+      revision: 1
+  - category: global_migration
+    state: needs_user
+    provenance: user
+    question:
+      text: Как включить удаление старого правила из глобального AGENTS.md в будущую реализацию? Сейчас мы только готовим спецификацию.
+      kind: single_choice
+      options:
+        - id: manual_after_validation
+          label: Отдельный шаг после проверки (Recommended)
+        - id: same_delivery
+          label: Вместе с реализацией
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+      revision: 1
+  - category: model_policy
+    state: answered
+    provenance: user
+    question:
+      text: Как выбирать модель сабагента для поиска контекста? Например, брать доступную экономичную модель хоста или строго заданную вами.
+      kind: single_choice
+      options:
+        - id: economical
+          label: Экономичная доступная (Recommended)
+        - id: fixed
+          label: Фиксированные модели
+    answer:
+      text: Экономичная доступная (Recommended)
+      selected_ids:
+        - economical
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 1
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 1
+  - category: delegation_failure
+    state: answered
+    provenance: user
+    question:
+      text: Что делать, если сабагент или подходящая экономичная модель недоступны либо поиск завершился без пригодного результата?
+      kind: single_choice
+      options:
+        - id: bounded_fallback
+          label: Ограниченный поиск основной моделью (Recommended)
+        - id: stop
+          label: Остановить зависимую работу
+    answer:
+      text: Ограниченный поиск основной моделью (Recommended)
+      selected_ids:
+        - bounded_fallback
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+      revision: 1
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+      revision: 1
+  - category: global_migration
+    state: answered
+    provenance: user
+    question:
+      text: Как включить удаление старого правила из глобального AGENTS.md в будущую реализацию? Сейчас мы только готовим спецификацию.
+      kind: single_choice
+      options:
+        - id: manual_after_validation
+          label: Отдельный шаг после проверки (Recommended)
+        - id: same_delivery
+          label: Вместе с реализацией
+    answer:
+      text: Вместе с реализацией
+      selected_ids:
+        - same_delivery
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+      revision: 1
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+      revision: 1
+  - category: baseline_delegation
+    state: observed
+    provenance: repository
+    fact: "The user-supplied global 'Context Gathering And Delegation' rule delegates bounded multi-step searches across unfamiliar files/sources only when benefit exceeds dispatch/verification overhead and runtime rules permit, including any requirement for independent parallel work. Known files, short checks and existing evidence use direct lookup. Start one scout; add another only for substantial independent work. Model defaults apply to scouts, not reviewers/implementers. Missing delegation/settings causes one disclosure and bounded local research; do not substitute user-visible tasks or nested CLI sessions. Prefer fresh context; pass exact question, roots/sources, facts, applicable instructions, scope, stopping condition and quick/medium/thorough search depth distinct from reasoning. Scouts inspect only: no edits, external mutations or child agents; restrict tools when supported. Preserve RTK, CodeGraph, source verification and required instruction reads; narrow from files to symbols/usages and passages, reuse analogues where useful. Stop when answered or blocked. Return evidence paths/symbols/line ranges or links and gaps, normally within 300 words, distinguishing facts/hypotheses and retaining decisive excerpts and caveats. The main agent owns decisions, edits and validation, reads decisive passages without repeating the whole search, reuses scouts for targeted follow-ups and claims savings only with measurement. Current hard-coded model defaults are superseded by the user's available-economical-model policy."
+    evidence:
+      - Host-supplied global AGENTS.md, Context Gathering And Delegation, lines 158-190; exact current block inspected read-only in this session.
+    question: null
+    answer: null
+    id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+    revision: 1
+    supersedes_revision: null
+  - category: collection_contract
+    state: observed
+    provenance: repository
+    fact: The collection distributes one canonical template into isolated Codex and Claude Code artifacts, with explicit-only invocation. context-engineering audits/repairs guidance rather than acting as a discovery scout. Existing host model placeholders cover author, implementation and review, not scouts. New descriptions must fit 240 Unicode code points and SKILL.md 4096 UTF-8 bytes. Existing packaging/validation conventions remain authoritative; no new lifecycle CLI or automatic global installer is needed.
+    evidence:
+      - "AGENTS.md: Golden Rules and Portability And Generation (active project instructions)"
+      - catalog/skills.json:6
+      - skills/context-engineering/SKILL.md:10-13
+      - scripts/lib/distribution.mjs:43-59
+    question: null
+    answer: null
+    id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+    revision: 1
+    supersedes_revision: null
+  - category: host_capabilities
+    state: observed
+    provenance: repository
+    fact: Current official Codex documentation permits applicable skill instructions to request subagents, supports model/effort selection and notes inherited settings when unspecified. Current Claude Code documentation describes isolated subagent context, selectable model aliases/IDs and tool restrictions. These documented possibilities do not establish actual client/account availability. Native schema and effective settings must be checked at invocation; prompt constraints are not a technical read-only sandbox.
+    evidence:
+      - https://learn.chatgpt.com/docs/agent-configuration/subagents (inspected 2026-10-07, delegation/model sections)
+      - https://code.claude.com/docs/en/sub-agents (inspected 2026-10-07, context/frontmatter/tools/model sections)
+    question: null
+    answer: null
+    id: db1a486f-6871-4711-9641-b4144d0a9df4
+    revision: 1
+    supersedes_revision: null
+  - category: model_policy
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай в скеле явно укажем название моделей для каждого провайдера, чтобы модель меньше думала, когда выбирала.
+      source: User follow-up during specification interview; replaces dynamic economical-model selection with explicitly named provider models.
+      kind: follow_up
+    related_decisions:
+      - id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+        revision: 2
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 65b70d1a-e8a6-4c18-93e7-918951e9f779
+    revision: 1
+    supersedes_revision: null
+  - category: model_policy
+    state: needs_user
+    provenance: user
+    question:
+      text: Какие имена моделей записать в скилле? Предлагаю Codex/OpenAI — gpt-6-luna; Claude Code/Anthropic — haiku. haiku — поддерживаемый псевдоним Claude Code, его конкретная версия зависит от провайдера и настроек.
+      kind: single_choice
+      options:
+        - id: named_defaults
+          label: gpt-6-luna и haiku (Recommended)
+        - id: custom_models
+          label: Указать другую пару
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 3
+  - category: model_policy
+    state: answered
+    provenance: user
+    question:
+      text: Какие имена моделей записать в скилле? Предлагаю Codex/OpenAI — gpt-6-luna; Claude Code/Anthropic — haiku. haiku — поддерживаемый псевдоним Claude Code, его конкретная версия зависит от провайдера и настроек.
+      kind: single_choice
+      options:
+        - id: named_defaults
+          label: gpt-6-luna и haiku (Recommended)
+        - id: custom_models
+          label: Указать другую пару
+    answer:
+      text: gpt-6-luna и haiku (Recommended)
+      selected_ids:
+        - named_defaults
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+    revision: 4
+    supersedes_revision: 3
+    question_origin:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 3
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 3
+  - category: host_capabilities
+    state: observed
+    provenance: repository
+    fact: Current official Codex documentation supports skill-requested native subagents and names gpt-6-luna for lightweight lower-cost scans. Claude Code documents haiku as a supported subagent model alias; the resolved model depends on provider, client version and configuration. Native capabilities include isolated context and, when exposed, tool restrictions. Documentation does not establish actual client/account availability. Invocation must use exposed schemas and distinguish requested from observed effective settings; a read-only prompt is not a technical sandbox.
+    evidence:
+      - https://learn.chatgpt.com/docs/agent-configuration/subagents (inspected 2026-10-07, delegation/model sections)
+      - https://code.claude.com/docs/en/sub-agents (inspected 2026-10-07, context/frontmatter sections)
+      - https://code.claude.com/docs/en/model-config (inspected 2026-10-07, model aliases/provider mapping)
+    question: null
+    answer: null
+    id: db1a486f-6871-4711-9641-b4144d0a9df4
+    revision: 2
+    supersedes_revision: 1
+  - category: baseline_delegation
+    state: observed
+    provenance: repository
+    fact: "The user-supplied global 'Context Gathering And Delegation' rule delegates bounded multi-step searches across unfamiliar files/sources only when benefit exceeds dispatch/verification overhead and runtime rules permit, including any requirement for independent parallel work. Known files, short checks and existing evidence use direct lookup. Start one scout; add another only for substantial independent work. Model defaults apply to scouts, not reviewers/implementers. Missing delegation/settings causes one disclosure and bounded local research; do not substitute user-visible tasks or nested CLI sessions. Prefer fresh context; pass exact question, roots/sources, facts, applicable instructions, scope, stopping condition and quick/medium/thorough search depth distinct from reasoning. Scouts inspect only: no edits, external mutations or child agents; restrict tools when supported. Preserve RTK, CodeGraph, source verification and required instruction reads; narrow from files to symbols/usages and passages, reuse analogues where useful. Stop when answered or blocked. Return evidence paths/symbols/line ranges or links and gaps, normally within 300 words, distinguishing facts/hypotheses and retaining decisive excerpts and caveats. The main agent owns decisions, edits and validation, reads decisive passages without repeating the whole search, reuses scouts for targeted follow-ups and claims savings only with measurement. Original model defaults are replaced by the user's latest explicit model-policy answer; the rest of this baseline rule is preserved subject to the agreed task-scoped invocation."
+    evidence:
+      - Host-supplied global AGENTS.md, Context Gathering And Delegation, lines 158-190; exact current block inspected read-only in this session.
+    question: null
+    answer: null
+    id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+    revision: 2
+    supersedes_revision: 1
+  - category: skill_boundary
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай первый вариант.
+      source: "User reply choosing the first proposed variant: a separate context-scouting skill in the collection, rather than extending context-engineering."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids:
+      - CS-001
+      - CS-009
+    question: null
+    answer: null
+    id: 106f0eca-8858-417b-bd78-700fd8bf3565
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: global_migration
+    state: answered
+    provenance: user
+    question:
+      text: Как включить удаление старого правила из глобального AGENTS.md в будущую реализацию? Сейчас мы только готовим спецификацию.
+      kind: single_choice
+      options:
+        - id: manual_after_validation
+          label: Отдельный шаг после проверки (Recommended)
+        - id: same_delivery
+          label: Вместе с реализацией
+    answer:
+      text: Вместе с реализацией
+      selected_ids:
+        - same_delivery
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - CS-010
+    id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+      revision: 1
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+      revision: 1
+  - category: delegation_failure
+    state: answered
+    provenance: user
+    question:
+      text: Что делать, если сабагент или подходящая экономичная модель недоступны либо поиск завершился без пригодного результата?
+      kind: single_choice
+      options:
+        - id: bounded_fallback
+          label: Ограниченный поиск основной моделью (Recommended)
+        - id: stop
+          label: Остановить зависимую работу
+    answer:
+      text: Ограниченный поиск основной моделью (Recommended)
+      selected_ids:
+        - bounded_fallback
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - CS-008
+    id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+      revision: 1
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+      revision: 1
+  - category: baseline_delegation
+    state: observed
+    provenance: repository
+    fact: "The user-supplied global 'Context Gathering And Delegation' rule delegates bounded multi-step searches across unfamiliar files/sources only when benefit exceeds dispatch/verification overhead and runtime rules permit, including any requirement for independent parallel work. Known files, short checks and existing evidence use direct lookup. Start one scout; add another only for substantial independent work. Model defaults apply to scouts, not reviewers/implementers. Missing delegation/settings causes one disclosure and bounded local research; do not substitute user-visible tasks or nested CLI sessions. Prefer fresh context; pass exact question, roots/sources, facts, applicable instructions, scope, stopping condition and quick/medium/thorough search depth distinct from reasoning. Scouts inspect only: no edits, external mutations or child agents; restrict tools when supported. Preserve RTK, CodeGraph, source verification and required instruction reads; narrow from files to symbols/usages and passages, reuse analogues where useful. Stop when answered or blocked. Return evidence paths/symbols/line ranges or links and gaps, normally within 300 words, distinguishing facts/hypotheses and retaining decisive excerpts and caveats. The main agent owns decisions, edits and validation, reads decisive passages without repeating the whole search, reuses scouts for targeted follow-ups and claims savings only with measurement. Original model defaults are replaced by the user's latest explicit model-policy answer; the rest of this baseline rule is preserved subject to the agreed task-scoped invocation."
+    evidence:
+      - Host-supplied global AGENTS.md, Context Gathering And Delegation, lines 158-190; exact current block inspected read-only in this session.
+    question: null
+    answer: null
+    id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+    revision: 3
+    supersedes_revision: 2
+    context_reason: null
+    requirement_ids:
+      - CS-002
+      - CS-003
+      - CS-004
+      - CS-005
+      - CS-006
+      - CS-007
+      - CS-008
+      - CS-011
+  - category: invocation
+    state: instructed
+    provenance: user
+    instruction:
+      text: Явно пользователем
+      source: 'Native request_user_input answer to "Как должен включаться новый скилл после удаления правила из глобального AGENTS.md? Сейчас коллекция разрешает только явный вызов скиллов." Selected option description: "Вы подключаете скилл к конкретной задаче; действующие правила коллекции сохраняются."'
+      kind: follow_up
+    related_decisions: []
+    requirement_ids:
+      - CS-001
+    question: null
+    answer: null
+    id: 584be602-cb6e-4304-b598-a3c8a06aedf0
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: model_policy
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай в скеле явно укажем название моделей для каждого провайдера, чтобы модель меньше думала, когда выбирала.
+      source: User follow-up during specification interview; replaces dynamic economical-model selection with explicitly named provider models.
+      kind: follow_up
+    related_decisions:
+      - id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+        revision: 2
+    requirement_ids:
+      - CS-003
+    question: null
+    answer: null
+    id: 65b70d1a-e8a6-4c18-93e7-918951e9f779
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: collection_contract
+    state: observed
+    provenance: repository
+    fact: The collection distributes one canonical template into isolated Codex and Claude Code artifacts, with explicit-only invocation. context-engineering audits/repairs guidance rather than acting as a discovery scout. Existing host model placeholders cover author, implementation and review, not scouts. New descriptions must fit 240 Unicode code points and SKILL.md 4096 UTF-8 bytes. Existing packaging/validation conventions remain authoritative; no new lifecycle CLI or automatic global installer is needed.
+    evidence:
+      - "AGENTS.md: Golden Rules and Portability And Generation (active project instructions)"
+      - catalog/skills.json:6
+      - skills/context-engineering/SKILL.md:10-13
+      - scripts/lib/distribution.mjs:43-59
+    question: null
+    answer: null
+    id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - CS-001
+      - CS-009
+  - category: intent
+    state: instructed
+    provenance: user
+    instruction:
+      text: "Я хотел бы сделать скилл, который применял бы правило из нашего AGENTS.md: если для работы нужно что-то поискать, собрать контекст или найти нужные файлы, это следует поручать сабагентам на слабых моделях, чтобы не тратить токены основной модели. Я хотел бы убрать это правило из системного AGENTS.md и перенести его в скилл, который мы поставляем в нашей пачке скиллов."
+      source: User message in this chat invoking idea-refine
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - CS-001
+      - CS-002
+      - CS-003
+      - CS-010
+      - CS-011
+    question: null
+    answer: null
+    id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: model_policy
+    state: answered
+    provenance: user
+    question:
+      text: Какие имена моделей записать в скилле? Предлагаю Codex/OpenAI — gpt-6-luna; Claude Code/Anthropic — haiku. haiku — поддерживаемый псевдоним Claude Code, его конкретная версия зависит от провайдера и настроек.
+      kind: single_choice
+      options:
+        - id: named_defaults
+          label: gpt-6-luna и haiku (Recommended)
+        - id: custom_models
+          label: Указать другую пару
+    answer:
+      text: gpt-6-luna и haiku (Recommended)
+      selected_ids:
+        - named_defaults
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - CS-003
+    id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+    revision: 5
+    supersedes_revision: 4
+    question_origin:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 3
+    answer_source: request_user_input actual selected label
+    answered_question:
+      id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+      revision: 3
+  - category: host_capabilities
+    state: observed
+    provenance: repository
+    fact: Current official Codex documentation supports skill-requested native subagents and names gpt-6-luna for lightweight lower-cost scans. Claude Code documents haiku as a supported subagent model alias; the resolved model depends on provider, client version and configuration. Native capabilities include isolated context and, when exposed, tool restrictions. Documentation does not establish actual client/account availability. Invocation must use exposed schemas and distinguish requested from observed effective settings; a read-only prompt is not a technical sandbox.
+    evidence:
+      - https://learn.chatgpt.com/docs/agent-configuration/subagents (inspected 2026-10-07, delegation/model sections)
+      - https://code.claude.com/docs/en/sub-agents (inspected 2026-10-07, context/frontmatter sections)
+      - https://code.claude.com/docs/en/model-config (inspected 2026-10-07, model aliases/provider mapping)
+    question: null
+    answer: null
+    id: db1a486f-6871-4711-9641-b4144d0a9df4
+    revision: 3
+    supersedes_revision: 2
+    context_reason: null
+    requirement_ids:
+      - CS-003
+      - CS-004
+      - CS-005
+      - CS-008
+      - CS-009
+  - category: formatting_maintenance
+    state: instructed
+    provenance: user
+    instruction:
+      text: Да, давай.
+      source: User reply to "Вы имеете в виду «давай исправим форматирование»?"; authorization to repair the formatting integration and the existing specification journal, without changing context-scouting behavior.
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: a9dee053-bb67-4740-804a-bcebed2739cd
+    revision: 1
+    supersedes_revision: null
+  - category: formatting_maintenance
+    state: instructed
+    provenance: user
+    instruction:
+      text: Да, давай.
+      source: User reply to "Вы имеете в виду «давай исправим форматирование»?"; authorization to repair the formatting integration and the existing specification journal, without changing context-scouting behavior.
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: a9dee053-bb67-4740-804a-bcebed2739cd
+    revision: 2
+    supersedes_revision: 1
+    context_reason: Repository maintenance authorization to align MCP YAML formatting with the existing Prettier check and repair the saved journal; it changes no behavior, scope, model choice, or acceptance requirement of context-scouting.
+extensions:
+  workflow_mcp_receipts:
+    - id: b421bfdf8475c4215547049bf9dd4a09ac47b435b5d46e08252b3ecf81aa4672
+      result:
+        decision_ref:
+          id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140
+          revision: 1
+        state: instructed
+    - id: 2479aa53fb8a69735bc6d5451470789160b1f073594b887d0bb632d815e6ec26
+      result:
+        decision_ref:
+          id: 584be602-cb6e-4304-b598-a3c8a06aedf0
+          revision: 1
+        state: instructed
+    - id: b2f99d9b887b902b7fdc09282b791e3fb476e962bfbf34881bfebba3aa5616ba
+      result:
+        decision_ref:
+          id: 106f0eca-8858-417b-bd78-700fd8bf3565
+          revision: 1
+        state: instructed
+    - id: 669e9e426cc9338ab58614030e6db53a7f8c4f50f76635fffdb1174c1fca9dc2
+      result:
+        question_ref:
+          id: scope.manifest
+          revision: 1
+        question:
+          text: Confirm this exact scope proposal, or request a correction.
+          kind: single_choice
+          options:
+            - id: confirm
+              label: Confirm this proposal
+            - id: change
+              label: Change the proposal
+        proposal:
+          schema_version: 1
+          depth: standard
+          confirmed: false
+          rationale:
+            - "Предлагаю Standard + core: отдельный явно вызываемый context-scouting для текущей задачи, с контрактами выбора сабагентов, моделей, результатов и отказов."
+            - "Поддержка Codex и Claude Code следует действующим правилам коллекции: общий исходный скилл и раздельные артефакты хостов."
+            - Правило из глобального AGENTS.md переносится по назначению в скилл; границы последующего удаления уточняются в требованиях. Эта стадия создаёт только спецификацию и журнал решений, без изменения глобальной конфигурации.
+            - UI, сервер, новые API, хранение данных, установка и публикация исключены. Отдельные проектные контрактные или дизайн-артефакты не нужны; требования остаются в spec.md.
+          profiles:
+            - id: core
+              reason: One explicitly invoked context-scouting skill, with host-specific native delegation, model selection, bounded read-only discovery and recovery behavior.
+              state: active
+            - id: ui
+              reason: No visual interface.
+              state: not_applicable
+            - id: backend
+              reason: No new service or network API.
+              state: not_applicable
+            - id: events
+              reason: No event contract.
+              state: not_applicable
+            - id: data
+              reason: No product data persistence or migration.
+              state: not_applicable
+            - id: operations
+              reason: Existing collection packaging; no deployment infrastructure or configuration automation.
+              state: not_applicable
+            - id: security
+              reason: Read-only, privacy and authority constraints covered in core; no new security subsystem.
+              state: not_applicable
+            - id: cross-surface
+              reason: No UI-to-service interaction; host portability is a core skill contract.
+              state: not_applicable
+          planning_artifacts: []
+        next: Ask this saved question with the host-native question tool; then record the actual answer.
+    - id: f566d0513a7e9d065a1b32855da81a09ef2e06b7797e4b9175eb59dc6c931cd2
+      result:
+        decision_ref:
+          id: scope.manifest
+          revision: 2
+        state: answered
+    - id: a0467eee1e34c334067836618ded7880ed174a19996df9391996c0b341cfd88c
+      result:
+        question_ref:
+          id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+          revision: 1
+        question:
+          text: Как выбирать модель сабагента для поиска контекста? Например, брать доступную экономичную модель хоста или строго заданную вами.
+          kind: single_choice
+          options:
+            - id: economical
+              label: Экономичная доступная (Recommended)
+            - id: fixed
+              label: Фиксированные модели
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 80172470c514fc0a4757a67b67005b90df487ee037d7e7e6f4b0c56e5bbb676d
+      result:
+        question_ref:
+          id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+          revision: 1
+        question:
+          text: Что делать, если сабагент или подходящая экономичная модель недоступны либо поиск завершился без пригодного результата?
+          kind: single_choice
+          options:
+            - id: bounded_fallback
+              label: Ограниченный поиск основной моделью (Recommended)
+            - id: stop
+              label: Остановить зависимую работу
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 9418d05ec226874121d8ca66d588a3dd25dd7108404635135ce11caef5223c70
+      result:
+        question_ref:
+          id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+          revision: 1
+        question:
+          text: Как включить удаление старого правила из глобального AGENTS.md в будущую реализацию? Сейчас мы только готовим спецификацию.
+          kind: single_choice
+          options:
+            - id: manual_after_validation
+              label: Отдельный шаг после проверки (Recommended)
+            - id: same_delivery
+              label: Вместе с реализацией
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 8981aade82746937ef47aeef03f5febe6a492b970730d1bfcc345fc46424f7ef
+      result:
+        decision_ref:
+          id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+          revision: 2
+        state: answered
+    - id: e8313945cb42afdb840d2a2341e86d48d12092fad6f8bc41eeff41c8c32c478f
+      result:
+        decision_ref:
+          id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+          revision: 2
+        state: answered
+    - id: e414e3aaf59c36c7ffa95bb511f1e7b8ebc205d68c78d9748b81a675e964cbe8
+      result:
+        decision_ref:
+          id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+          revision: 2
+        state: answered
+    - id: d071ed2bb30e1a7b90d6b6741b75193e87b00d5511b023ee074e7a94995b2bbd
+      result:
+        decision_ref:
+          id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+          revision: 1
+        state: observed
+    - id: b7397b1dc116eb3e4384689007d730c691e8151cecebc28d3ea37bea852e1c83
+      result:
+        decision_ref:
+          id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+          revision: 1
+        state: observed
+    - id: c2bc2f7b196f428fe4392bafd86d90eb0d85569f928ff7a52227eca5ec203172
+      result:
+        decision_ref:
+          id: db1a486f-6871-4711-9641-b4144d0a9df4
+          revision: 1
+        state: observed
+    - id: 2a3c9e78aa001bcf63ea73952d04ea138a212beeb655094084081fb851e7467f
+      result:
+        decision_ref:
+          id: 65b70d1a-e8a6-4c18-93e7-918951e9f779
+          revision: 1
+        state: instructed
+    - id: e7f7fccbb38814edf78756abc781fb5ecd9a9658f705f3c801eed9e39c566210
+      result:
+        question_ref:
+          id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+          revision: 3
+        question:
+          text: Какие имена моделей записать в скилле? Предлагаю Codex/OpenAI — gpt-6-luna; Claude Code/Anthropic — haiku. haiku — поддерживаемый псевдоним Claude Code, его конкретная версия зависит от провайдера и настроек.
+          kind: single_choice
+          options:
+            - id: named_defaults
+              label: gpt-6-luna и haiku (Recommended)
+            - id: custom_models
+              label: Указать другую пару
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 927452666e1fca0d9a54aaf119632af9b0681daf89ca6f90ec7cd3308dc9bcd7
+      result:
+        decision_ref:
+          id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+          revision: 4
+        state: answered
+    - id: 74655050df7347e09f1472e10bd70dd6671070cda1540e18977559fdcffd166a
+      result:
+        decision_ref:
+          id: db1a486f-6871-4711-9641-b4144d0a9df4
+          revision: 2
+        state: observed
+    - id: be7a5dd9816dbe3245767dc9b5ef65d0edf3dafad90955af0cd557ebf4805eeb
+      result:
+        decision_ref:
+          id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+          revision: 2
+        state: observed
+    - id: 7092310e5c94291d2533a74b7aa7e1d261273fa578f2e8c2024b9c3b9bd07093
+      result:
+        items:
+          - decision_ref:
+              id: 106f0eca-8858-417b-bd78-700fd8bf3565
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - CS-001
+              - CS-009
+            removed: []
+            requirement_ids:
+              - CS-001
+              - CS-009
+            operation_applied: true
+          - decision_ref:
+              id: 3593b6a4-9f3a-432c-9a7c-034435c0e339
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - CS-010
+            removed: []
+            requirement_ids:
+              - CS-010
+            operation_applied: true
+          - decision_ref:
+              id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - CS-008
+            removed: []
+            requirement_ids:
+              - CS-008
+            operation_applied: true
+          - decision_ref:
+              id: 5444e67b-0be3-4416-b49a-8f598bd83f1f
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - CS-002
+              - CS-003
+              - CS-004
+              - CS-005
+              - CS-006
+              - CS-007
+              - CS-008
+              - CS-011
+            removed: []
+            requirement_ids:
+              - CS-002
+              - CS-003
+              - CS-004
+              - CS-005
+              - CS-006
+              - CS-007
+              - CS-008
+              - CS-011
+            operation_applied: true
+          - decision_ref:
+              id: 584be602-cb6e-4304-b598-a3c8a06aedf0
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - CS-001
+            removed: []
+            requirement_ids:
+              - CS-001
+            operation_applied: true
+          - decision_ref:
+              id: 65b70d1a-e8a6-4c18-93e7-918951e9f779
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - CS-003
+            removed: []
+            requirement_ids:
+              - CS-003
+            operation_applied: true
+          - decision_ref:
+              id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - CS-001
+              - CS-009
+            removed: []
+            requirement_ids:
+              - CS-001
+              - CS-009
+            operation_applied: true
+          - decision_ref:
+              id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - CS-001
+              - CS-002
+              - CS-003
+              - CS-010
+              - CS-011
+            removed: []
+            requirement_ids:
+              - CS-001
+              - CS-002
+              - CS-003
+              - CS-010
+              - CS-011
+            operation_applied: true
+          - decision_ref:
+              id: 8d862af5-82e2-4f15-8a1f-117797c34fd2
+              revision: 5
+            previous_requirement_ids: []
+            added:
+              - CS-003
+            removed: []
+            requirement_ids:
+              - CS-003
+            operation_applied: true
+          - decision_ref:
+              id: db1a486f-6871-4711-9641-b4144d0a9df4
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - CS-003
+              - CS-004
+              - CS-005
+              - CS-008
+              - CS-009
+            removed: []
+            requirement_ids:
+              - CS-003
+              - CS-004
+              - CS-005
+              - CS-008
+              - CS-009
+            operation_applied: true
+        operation_applied: true
+    - id: c695414a82baa3d6476f8cca686497475cda0a811468220249082dafe21be90d
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        source_version: d8136484b01b465ede5406575a1e07aea7ef9e0471af5428712357da558424cf
+        total_items: 24
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: c01956bc68b39820824398d4ff6a6a32be12871e4f7c0c0fbaca44b3d7890906
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        items:
+          - item_index: 0
+            item_key: source:8151e2e6-46f0-47b7-8b24-8d3c15c11140
+            verdict: covered
+          - item_index: 1
+            item_key: source:584be602-cb6e-4304-b598-a3c8a06aedf0
+            verdict: covered
+          - item_index: 2
+            item_key: source:106f0eca-8858-417b-bd78-700fd8bf3565
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+          - item_index: 4
+            item_key: source:8d862af5-82e2-4f15-8a1f-117797c34fd2
+            verdict: covered
+          - item_index: 5
+            item_key: source:39efa87e-52ce-4dce-a005-f8f20ca08cf4
+            verdict: covered
+          - item_index: 6
+            item_key: source:3593b6a4-9f3a-432c-9a7c-034435c0e339
+            verdict: covered
+          - item_index: 7
+            item_key: source:5444e67b-0be3-4416-b49a-8f598bd83f1f
+            verdict: covered
+          - item_index: 8
+            item_key: source:7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+            verdict: covered
+          - item_index: 9
+            item_key: source:db1a486f-6871-4711-9641-b4144d0a9df4
+            verdict: covered
+        batch_size: 10
+        recorded_items: 10
+    - id: f7f90d5b4bf996ab1b52676d52121d05948fd6731c7159c7bd8623f8fd4b0a16
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        items:
+          - item_index: 10
+            item_key: source:65b70d1a-e8a6-4c18-93e7-918951e9f779
+            verdict: covered
+          - item_index: 11
+            item_key: requirement:CS-001
+            verdict: covered
+          - item_index: 12
+            item_key: requirement:CS-002
+            verdict: covered
+          - item_index: 13
+            item_key: requirement:CS-003
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:CS-004
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:CS-005
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:CS-006
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:CS-007
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:CS-008
+            verdict: covered
+          - item_index: 19
+            item_key: requirement:CS-009
+            verdict: covered
+          - item_index: 20
+            item_key: requirement:CS-010
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:CS-011
+            verdict: covered
+          - item_index: 22
+            item_key: profile:core
+            verdict: covered
+        batch_size: 13
+        recorded_items: 23
+    - id: 47bdddd5323aeaad51e4103a8bf684df60c9181d5f8e0cfbab54e7a11d312313
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        consistency_status: consistent
+    - id: e88064d3b7fd484afe2936017648ddbf1218ef4179fdb2879577a9622e054927
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        coverage_status: reviewed
+        source_version: d8136484b01b465ede5406575a1e07aea7ef9e0471af5428712357da558424cf
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: 56d3c3e6552d3e0a4e1ad614b6ec4a0fa70e19c578d7f5b3543a13600c5e4a45
+      result:
+        review_ref: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+        approval_observed: true
+    - id: 5cc3915389caf86604b13a5b08afdb7510c752f281d376fdd0b73f5b79cdfbf9
+      result:
+        decision_ref:
+          id: a9dee053-bb67-4740-804a-bcebed2739cd
+          revision: 1
+        state: instructed
+    - id: 6c41ba1944b54a028308ca58001956c4f6cbaa5e369be322574dfd9a215d88c4
+      result:
+        decision_ref:
+          id: a9dee053-bb67-4740-804a-bcebed2739cd
+          revision: 2
+        classification: context
+    - id: e223e10061fb33311c136cefb61a0130662262c76f5f61df5d104fbbf1e5d097
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        source_version: 24915e1971002d58ec790420af4034f89ae1f355fcdc987227aac2f19e0c9732
+        total_items: 25
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 333fe5ae5b5ee1f1c8b335485bb653f23adf4918061360691c5d63e200244938
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        items:
+          - item_index: 0
+            item_key: source:8151e2e6-46f0-47b7-8b24-8d3c15c11140
+            verdict: covered
+          - item_index: 1
+            item_key: source:584be602-cb6e-4304-b598-a3c8a06aedf0
+            verdict: covered
+          - item_index: 2
+            item_key: source:106f0eca-8858-417b-bd78-700fd8bf3565
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+          - item_index: 4
+            item_key: source:8d862af5-82e2-4f15-8a1f-117797c34fd2
+            verdict: covered
+          - item_index: 5
+            item_key: source:39efa87e-52ce-4dce-a005-f8f20ca08cf4
+            verdict: covered
+          - item_index: 6
+            item_key: source:3593b6a4-9f3a-432c-9a7c-034435c0e339
+            verdict: covered
+          - item_index: 7
+            item_key: source:5444e67b-0be3-4416-b49a-8f598bd83f1f
+            verdict: covered
+          - item_index: 8
+            item_key: source:7f7a6222-5ccb-45b7-8956-5fb00ff03c25
+            verdict: covered
+        batch_size: 9
+        recorded_items: 9
+    - id: 79937c7965efaf90ee0e0cbb4c35a6fa55c0c47311c003a1938490975a484fb5
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        items:
+          - item_index: 9
+            item_key: source:db1a486f-6871-4711-9641-b4144d0a9df4
+            verdict: covered
+          - item_index: 10
+            item_key: source:65b70d1a-e8a6-4c18-93e7-918951e9f779
+            verdict: covered
+          - item_index: 11
+            item_key: source:a9dee053-bb67-4740-804a-bcebed2739cd
+            verdict: not_applicable
+          - item_index: 12
+            item_key: requirement:CS-001
+            verdict: covered
+          - item_index: 13
+            item_key: requirement:CS-002
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:CS-003
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:CS-004
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:CS-005
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:CS-006
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:CS-007
+            verdict: covered
+        batch_size: 10
+        recorded_items: 19
+    - id: 808d989598465d6a3476e86200393d8337d030880823925d5e84adbbd98bb2d3
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        items:
+          - item_index: 19
+            item_key: requirement:CS-008
+            verdict: covered
+          - item_index: 20
+            item_key: requirement:CS-009
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:CS-010
+            verdict: covered
+          - item_index: 22
+            item_key: requirement:CS-011
+            verdict: covered
+          - item_index: 23
+            item_key: profile:core
+            verdict: covered
+        batch_size: 5
+        recorded_items: 24
+    - id: 80e5583cff76bd22f65ad01e0e3e91d96ac444cb391f0516bb89b2830c947748
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        consistency_status: consistent
+    - id: 8487b43f5c75872fcd7a76fc67efd6ad6b9f0a38b6d7f7a42b9eac0b5ab0bde4
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        coverage_status: reviewed
+        source_version: 24915e1971002d58ec790420af4034f89ae1f355fcdc987227aac2f19e0c9732
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: 0b07161b35813bffec2f16d5927148f39d0ca149011e2c87da3960b7d11a3738
+      result:
+        review_ref: 590cd413-dba5-4a88-b1c4-e790755556ac
+        approval_observed: true
+specification_reviews:
+  version: 1
+  runs:
+    - id: 0206bcf1-c5e3-47bf-99ef-60a85db3b066
+      source_version: d8136484b01b465ede5406575a1e07aea7ef9e0471af5428712357da558424cf
+      specification_version: 992dfdc963c5307a6e1333a1057c133f91f766fb2adb9626d0c28d10e23b1942
+      status_at_start: Draft
+      created_at: 2026-10-07T19:31:11.824Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:8151e2e6-46f0-47b7-8b24-8d3c15c11140,
+            verdict: covered,
+            explanation: CS-001 and CS-002 transfer task-relevant discovery into a separate explicitly invoked skill with the existing useful-delegation threshold. CS-003 preserves smaller named scout models after the user's later selection. CS-010 includes the targeted global-rule removal in future authorized implementation. CS-011 preserves the efficiency objective without inventing savings.,
+            requirement_ids: [CS-001, CS-002, CS-003, CS-010, CS-011],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:584be602-cb6e-4304-b598-a3c8a06aedf0,
+            verdict: covered,
+            explanation: "CS-001 confines activation to the user's explicit invocation for one task, preserves other instructions and authority limits, and tests absent, repeated and new-task invocations.",
+            requirement_ids: [CS-001],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:106f0eca-8858-417b-bd78-700fd8bf3565,
+            verdict: covered,
+            explanation: CS-001 establishes the separate context-scouting skill; CS-009 prohibits expanding context-engineering and preserves the matching collection delivery.,
+            requirement_ids: [CS-001, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "CS-001 through CS-009 define the confirmed Standard/core interface: explicit task scope, native read-only scouts, named models, results, verification and fallback. CS-010 keeps global changes in future implementation. CS-009 preserves the two-host packaging boundary and excludes installation, publication and new lifecycle tools.",
+            requirement_ids:
+              [
+                CS-001,
+                CS-002,
+                CS-003,
+                CS-004,
+                CS-005,
+                CS-006,
+                CS-007,
+                CS-008,
+                CS-009,
+                CS-010,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:8d862af5-82e2-4f15-8a1f-117797c34fd2,
+            verdict: covered,
+            explanation: "CS-003 preserves the latest explicit gpt-6-luna/haiku choice, intentionally superseding the earlier generic economical-model answer; it explains the haiku alias and uses actual native schemas without silent substitution.",
+            requirement_ids: [CS-003],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:39efa87e-52ce-4dce-a005-f8f20ca08cf4,
+            verdict: covered,
+            explanation: "CS-008 implements the chosen minimum authorized discovery in the main context when delegation, required settings or results fail, retaining partial evidence and disclosing limitations without repeated unsupported attempts.",
+            requirement_ids: [CS-008],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:3593b6a4-9f3a-432c-9a7c-034435c0e339,
+            verdict: covered,
+            explanation: "CS-010 places targeted removal in the future authorized implementation delivery after replacement validation, rather than deferring it to a separate user migration step; it preserves unrelated guidance and verifies safe recovery.",
+            requirement_ids: [CS-010],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:5444e67b-0be3-4416-b49a-8f598bd83f1f,
+            verdict: covered,
+            explanation: "CS-002 retains the delegation threshold, direct-lookup exceptions, one-first-scout rule and independent additional work; CS-003 keeps the supported medium effort preference and separate scout model scope. CS-004 and CS-005 retain native read-only delegation, no children, fresh bounded input, applicable tools and source rules. CS-006 retains compact evidence and caveats; CS-007 preserves main-agent ownership and targeted verification/reuse; CS-008 keeps bounded fallback; CS-011 requires measured claims. Only model defaults and task activation change under explicit later answers.",
+            requirement_ids:
+              [CS-002, CS-003, CS-004, CS-005, CS-006, CS-007, CS-008, CS-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:7f7a6222-5ccb-45b7-8956-5fb00ff03c25,
+            verdict: covered,
+            explanation: "CS-001 preserves separation from context-engineering. CS-009 preserves a canonical source, isolated host artifacts, explicit-only invocation, byte/description limits and existing packaging/lifecycle rules.",
+            requirement_ids: [CS-001, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: source:db1a486f-6871-4711-9641-b4144d0a9df4,
+            verdict: covered,
+            explanation: "CS-003 requires supported native model fields, requested-versus-effective reporting and the selected model names. CS-004 distinguishes prompt-only restrictions from enforced isolation; CS-005 prefers fresh context. CS-008 and CS-009 handle unavailable actual client capabilities rather than treating documentation as runtime proof.",
+            requirement_ids: [CS-003, CS-004, CS-005, CS-008, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 10,
+            item_key: source:65b70d1a-e8a6-4c18-93e7-918951e9f779,
+            verdict: covered,
+            explanation: "CS-003 names gpt-6-luna and haiku and explicitly prohibits model-shopping, pricing research and silent substitution during ordinary invocation, faithfully replacing the earlier dynamic policy while preserving explicit user override authority.",
+            requirement_ids: [CS-003],
+            source_refs: [],
+          },
+          {
+            item_index: 11,
+            item_key: requirement:CS-001,
+            verdict: covered,
+            explanation: "The initial request, explicit per-task invocation answer, separate-skill answer and collection contract support the standalone explicit-only boundary. Repeat/cancel behavior makes that task boundary observable without granting new authority.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 584be602-cb6e-4304-b598-a3c8a06aedf0, revision: 2 },
+                { id: 106f0eca-8858-417b-bd78-700fd8bf3565, revision: 2 },
+                { id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25, revision: 2 },
+              ],
+          },
+          {
+            item_index: 12,
+            item_key: requirement:CS-002,
+            verdict: covered,
+            explanation: "The original transfer request and preserved baseline rule support the benefit threshold, direct-lookup exceptions, one-first-scout policy, bounded depth and independent parallel work. No broader research or unconditional delegation is added.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+              ],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:CS-003,
+            verdict: covered,
+            explanation: "The user's named-model amendment and latest exact model pair support the fixed host names and absence of dynamic shopping. Baseline and host-capability sources support medium effort only when exposed, fresh context, scout-only scope and honest effective-setting reporting. Explicit task overrides preserve the user's authority rather than introduce autonomous substitution.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 8d862af5-82e2-4f15-8a1f-117797c34fd2, revision: 5 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+                { id: 65b70d1a-e8a6-4c18-93e7-918951e9f779, revision: 2 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:CS-004,
+            verdict: covered,
+            explanation: "The baseline prohibits child agents, edits, external mutations and substitutes for native agents. The host-capability source supports conditional tool restrictions and the explicit distinction between prompt instructions and an enforced sandbox.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:CS-005,
+            verdict: covered,
+            explanation: "The baseline supports exact bounded assignments, fresh context, stopping conditions and applicable lookup/source rules. The host-capability source supports isolated context only when available; clarification and sensitive-input boundaries preserve scoped safe discovery without introducing a new subsystem.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:CS-006,
+            verdict: covered,
+            explanation: "The baseline supports compact evidence-linked findings, fact/hypothesis separation and essential caveats. No-match limits and transcript/privacy restrictions clarify the established evidence and collection-secret boundaries rather than introduce a new product feature.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 }],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:CS-007,
+            verdict: covered,
+            explanation: "The baseline expressly keeps consequential verification, edits and required validation with the main agent and prefers targeted scout follow-ups over duplicated search. Staleness handling and actual check states make that ownership observable.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 }],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:CS-008,
+            verdict: covered,
+            explanation: "The explicit fallback answer and baseline support bounded main-context recovery and one limitation disclosure. Host capability limits support unsupported-setting handling. Cancellation, late-result qualification and resumption preserve the explicitly task-scoped authority under the active core lifecycle obligations.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4, revision: 3 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:CS-009,
+            verdict: covered,
+            explanation: "The separate-skill decision and collection contract support canonical host-isolated delivery, explicit invocation, size limits and existing lifecycle rules. Host-capability evidence supports client/schema fallback and distinction between simulations and live checks; no additional installation or workflow authority is claimed.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 106f0eca-8858-417b-bd78-700fd8bf3565, revision: 2 },
+                { id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25, revision: 2 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:CS-010,
+            verdict: covered,
+            explanation: "The initial removal request and explicit same-delivery answer support targeted removal in future implementation. Validation ordering, scoped readback, concurrent-edit protection, no-op repeat and recoverable writes are directly relevant core migration safeguards for that authorized future mutation; installation remains separately authorized.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 3593b6a4-9f3a-432c-9a7c-034435c0e339, revision: 3 },
+              ],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:CS-011,
+            verdict: covered,
+            explanation: "The initial efficiency objective and baseline measurement condition justify main-context reduction as a goal while forbidding unsupported savings guarantees. Accounting for dispatch, scout work, verification and fallback is a faithful measurable treatment of that objective.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+              ],
+          },
+          {
+            item_index: 22,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "The core profile is applicable to this host-native developer-tool skill. CS-001/002 define consumers, invocation, authority, selection and repeat behavior; CS-003 defines supported inputs/defaults and unavailable settings; CS-004/005 enforce read-only and trust boundaries; CS-006/007 define evidence outputs and verification; CS-008 handles unavailable, partial, interrupted and resumed execution. CS-009 retains existing generation and client-schema compatibility rather than inventing a new CLI/configuration interface. CS-010 covers the concrete global-guidance migration, idempotence, concurrent edits and recovery; CS-011 bounds efficiency claims. No new public CLI, persistent schema, deployment or OS-specific subsystem is in confirmed scope, so their conditional profile details do not warrant extra requirements or artifacts.",
+            requirement_ids:
+              [
+                CS-001,
+                CS-002,
+                CS-003,
+                CS-004,
+                CS-005,
+                CS-006,
+                CS-007,
+                CS-008,
+                CS-009,
+                CS-010,
+                CS-011,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 23,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "The complete specification and all 23 detailed outcomes are consistent. The outcome paragraph delegates only appropriate discovery as defined by CS-002, while CS-001 confines it to explicit current-task invocation. Host/provider prose is qualified by actual exposed capability and CS-003/008/009; it does not guarantee runtime model availability or isolation. The named model amendment replaces only the former defaults, retaining the baseline search, evidence, read-only and main-agent verification conditions in CS-002 through CS-008 and CS-011. The non-goals align with native inspection-only scouts and existing collection delivery. CS-010 includes validated targeted global-rule removal in future authorized implementation, while all scope/stage prose excludes changing global configuration now and preserves separate installation/release authority. Every material normative promise is carried by CS-001 through CS-011 or the preserved collection contract; no contradictory permission, identifier, negative obligation or lifecycle ordering was found.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 39241ecc65564621c439111945919245f5d62c480f560f9409cf509dc41bbecc
+      consistency:
+        verdict: consistent
+        explanation: The complete specification and all 23 detailed outcomes are consistent. The outcome paragraph delegates only appropriate discovery as defined by CS-002, while CS-001 confines it to explicit current-task invocation. Host/provider prose is qualified by actual exposed capability and CS-003/008/009; it does not guarantee runtime model availability or isolation. The named model amendment replaces only the former defaults, retaining the baseline search, evidence, read-only and main-agent verification conditions in CS-002 through CS-008 and CS-011. The non-goals align with native inspection-only scouts and existing collection delivery. CS-010 includes validated targeted global-rule removal in future authorized implementation, while all scope/stage prose excludes changing global configuration now and preserves separate installation/release authority. Every material normative promise is carried by CS-001 through CS-011 or the preserved collection contract; no contradictory permission, identifier, negative obligation or lifecycle ordering was found.
+      approval_observed: true
+    - id: 590cd413-dba5-4a88-b1c4-e790755556ac
+      source_version: 24915e1971002d58ec790420af4034f89ae1f355fcdc987227aac2f19e0c9732
+      specification_version: 992dfdc963c5307a6e1333a1057c133f91f766fb2adb9626d0c28d10e23b1942
+      status_at_start: Draft
+      created_at: 2026-10-07T19:41:37.163Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:8151e2e6-46f0-47b7-8b24-8d3c15c11140,
+            verdict: covered,
+            explanation: "The original transfer request is retained: a separate explicit task-scoped scout skill delegates useful bounded searches to named smaller-model choices, with honest measurement and targeted removal of the old global rule in future implementation. Later explicit invocation and model decisions refine, rather than discard, the original objective.",
+            requirement_ids: [CS-001, CS-002, CS-003, CS-010, CS-011],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:584be602-cb6e-4304-b598-a3c8a06aedf0,
+            verdict: covered,
+            explanation: "The explicit user answer is reflected in explicit invocation, current-task lifetime, repeat-use behavior, and absence of implicit or standing cross-task activation.",
+            requirement_ids: [CS-001],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:106f0eca-8858-417b-bd78-700fd8bf3565,
+            verdict: covered,
+            explanation: "The chosen first variant is a distinct context-scouting collection skill; context-engineering is not expanded, and matching host artifacts follow the existing generation contract.",
+            requirement_ids: [CS-001, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "The confirmed Standard/core scope is represented by the standalone task-scoped native scout contract, named-model and failure behavior, portable host packaging and later targeted migration. The specification stage grants no implementation or global-write authority, excludes installation and publication, and introduces no separate contract artifact.",
+            requirement_ids: [CS-001, CS-003, CS-004, CS-008, CS-009, CS-010],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:8d862af5-82e2-4f15-8a1f-117797c34fd2,
+            verdict: covered,
+            explanation: "The latest explicit answer supersedes the earlier economical-selection answer with Codex gpt-6-luna and Claude haiku. CS-003 preserves exact requested names, alias semantics, supported selection, no model shopping and no silent substitution.",
+            requirement_ids: [CS-003],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:39efa87e-52ce-4dce-a005-f8f20ca08cf4,
+            verdict: covered,
+            explanation: "Unavailable native delegation, model/settings or usable output causes one disclosure and minimum authorized main-agent discovery, retaining partial evidence and blockers without blind retries or silent escalation.",
+            requirement_ids: [CS-008],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:3593b6a4-9f3a-432c-9a7c-034435c0e339,
+            verdict: covered,
+            explanation: "The selected same-delivery removal occurs in the future authorized implementation after artifact checks, with targeted current-section removal, readback and recovery. It is not deferred to a separately requested migration and does not execute during specification.",
+            requirement_ids: [CS-010],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:5444e67b-0be3-4416-b49a-8f598bd83f1f,
+            verdict: covered,
+            explanation: "All independent baseline obligations are preserved: benefit and runtime gating, direct-lookup exceptions, one scout before independent expansion, role-scoped settings, fresh bounded assignments and depths, read-only native delegation, no child agents or substitute tasks, applicable RTK/CodeGraph and source rules, evidence-rich compact findings, targeted main verification and followups, once-disclosed fallback, and measured savings. Only model defaults and invocation lifetime change under explicit decisions.",
+            requirement_ids:
+              [CS-002, CS-003, CS-004, CS-005, CS-006, CS-007, CS-008, CS-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:7f7a6222-5ccb-45b7-8956-5fb00ff03c25,
+            verdict: covered,
+            explanation: "One canonical source, separate isolated host packaging, explicit-only metadata, size bounds and existing validation/lifecycle rules are retained. The skill is separate from context-engineering and neither introduces a lifecycle CLI nor modifies consuming-project skills.",
+            requirement_ids: [CS-001, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: source:db1a486f-6871-4711-9641-b4144d0a9df4,
+            verdict: covered,
+            explanation: "The cited host-capability constraints survive in CS-003/004/005/008/009: supported native schemas, requested versus observed model identity, alias uncertainty, fresh context and conditional tool restrictions, no sandbox overclaim, and local fallback when capability is absent.",
+            requirement_ids: [CS-003, CS-004, CS-005, CS-008, CS-009],
+            source_refs: [],
+          },
+          {
+            item_index: 10,
+            item_key: source:65b70d1a-e8a6-4c18-93e7-918951e9f779,
+            verdict: covered,
+            explanation: "CS-003 implements the explicit refinement from dynamic model choice to named per-host choices and prohibits ordinary model-shopping, while preserving explicit future user overrides.",
+            requirement_ids: [CS-003],
+            source_refs: [],
+          },
+          {
+            item_index: 11,
+            item_key: source:a9dee053-bb67-4740-804a-bcebed2739cd,
+            verdict: not_applicable,
+            explanation: This source explicitly authorizes repository formatting maintenance and journal repair without changing context-scouting behavior. Treating it as non-product context is justified; it neither cancels nor adds a scout feature.,
+            requirement_ids: [],
+            source_refs: [],
+          },
+          {
+            item_index: 12,
+            item_key: requirement:CS-001,
+            verdict: covered,
+            explanation: "The initial request, explicit-invocation answer, separate-skill choice and collection contract justify the standalone task-scoped invocation and unchanged authority boundary. Repeat use and task completion clarify that boundary without extending scope.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 584be602-cb6e-4304-b598-a3c8a06aedf0, revision: 2 },
+                { id: 106f0eca-8858-417b-bd78-700fd8bf3565, revision: 2 },
+                { id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25, revision: 2 },
+              ],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:CS-002,
+            verdict: covered,
+            explanation: "The original goal and preserved baseline justify benefit-gated unfamiliar searches, direct-lookup exceptions, one initial scout, independent expansion and distinct search depths; no new delegation mandate is introduced.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:CS-003,
+            verdict: covered,
+            explanation: "The latest named-model answer and explicit naming instruction justify gpt-6-luna/haiku and no ordinary model shopping. Baseline and host-capability sources justify scout-only settings, medium where supported, fresh context, native schemas and honest effective-model reporting.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 8d862af5-82e2-4f15-8a1f-117797c34fd2, revision: 5 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+                { id: 65b70d1a-e8a6-4c18-93e7-918951e9f779, revision: 2 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:CS-004,
+            verdict: covered,
+            explanation: "The baseline directly requires native inspection-only scouts without edits, mutations, children or task/CLI substitutes. Host capability evidence justifies conditional restrictions and the explicit distinction between instruction and enforced sandbox.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:CS-005,
+            verdict: covered,
+            explanation: "Baseline assignment, source-verification and stopping rules justify all required inputs and bounded search ordering; host isolation explains fresh-context preference. Privacy and untrusted-source constraints preserve existing authority rather than adding a new product subsystem.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:CS-006,
+            verdict: covered,
+            explanation: "The baseline establishes concise evidence-rich output, facts versus hypotheses, caveats and gaps. Scope-limited no-match reporting and exclusion of secrets/transcripts from shipped artifacts faithfully make those obligations observable.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 }],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:CS-007,
+            verdict: covered,
+            explanation: "The baseline assigns consequential verification, edits and validation to the main agent and requests targeted reuse instead of duplicated searches. Stale/conflicting-result handling and fallback preserve that ownership.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 }],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:CS-008,
+            verdict: covered,
+            explanation: "The explicit bounded-main-agent fallback answer and preserved baseline justify one limitation disclosure and minimum authorized discovery. Cancellation, partial output, stopped capabilities and resumed evidence remain within the confirmed current-task authority and observable native-host failure contract.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 39efa87e-52ce-4dce-a005-f8f20ca08cf4, revision: 3 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:CS-009,
+            verdict: covered,
+            explanation: "The separate-skill choice and existing collection contract support isolated generated host artifacts, metadata/size limits, unchanged lifecycle rules and no context-engineering expansion. Capability evidence supports fallback for unsupported native schemas and honest labeling of simulations or unverified live checks.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 106f0eca-8858-417b-bd78-700fd8bf3565, revision: 2 },
+                { id: 7f7a6222-5ccb-45b7-8956-5fb00ff03c25, revision: 2 },
+                { id: db1a486f-6871-4711-9641-b4144d0a9df4, revision: 3 },
+              ],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:CS-010,
+            verdict: covered,
+            explanation: "The original transfer request plus the explicit same-delivery answer justify targeted future global-section removal after replacement checks. Scoped readback, preservation, no-op repetition and recoverable failure make that authorized migration safe without implying installation or specification-stage writes.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 3593b6a4-9f3a-432c-9a7c-034435c0e339, revision: 3 },
+              ],
+          },
+          {
+            item_index: 22,
+            item_key: requirement:CS-011,
+            verdict: covered,
+            explanation: "The original efficiency objective and baseline measurement rule support distinguishing main-context reduction from total consumption and cost, with complete comparable accounting for any numerical savings and explicit unmeasured status otherwise.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 8151e2e6-46f0-47b7-8b24-8d3c15c11140, revision: 2 },
+                { id: 5444e67b-0be3-4416-b49a-8f598bd83f1f, revision: 3 },
+              ],
+          },
+          {
+            item_index: 23,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "Core is relevant because this is a developer skill with a public explicit invocation, native delegation inputs, compact evidence output and a targeted guidance migration. CS-001/002/005/006 define invocation, defaults, input validity, scope and output; CS-003/004 establish model and trust boundaries; CS-007/008 cover stale, failed, partial, repeated and cancelled use; CS-009 retains authoritative collection generation/version/lifecycle contracts; CS-010 handles no-op, interrupted migration and rollback. There is no new CLI, service, config schema or persistent product data to require unrelated stdout/exit-code, reload or data-migration contracts. Host schemas and existing platform conventions are preserved without assuming universal model availability. No material uncovered core scenario was found.",
+            requirement_ids:
+              [
+                CS-001,
+                CS-002,
+                CS-003,
+                CS-004,
+                CS-005,
+                CS-006,
+                CS-007,
+                CS-008,
+                CS-009,
+                CS-010,
+                CS-011,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 24,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "The full specification and 24 detailed outcomes are consistent. The introduction and supported-environment statements map to CS-001/003/009; all normative behavior is covered by CS-001–011 or preserved collection rules. Named models remain subject to native capability and bounded fallback, inspection-only scout authority does not grant implementation authority, and future targeted global-rule removal does not authorize present-stage mutation or installation. Non-goals preserve these boundaries. No contradictory lifecycle ordering, unsupported normative promise or lost source obligation was found.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 68b70bc87bc2d44269a3b46afb71285c5be3ff79a221392d91f04882d4ce23ca
+      consistency:
+        verdict: consistent
+        explanation: The full specification and 24 detailed outcomes are consistent. The introduction and supported-environment statements map to CS-001/003/009; all normative behavior is covered by CS-001–011 or preserved collection rules. Named models remain subject to native capability and bounded fallback, inspection-only scout authority does not grant implementation authority, and future targeted global-rule removal does not authorize present-stage mutation or installation. Non-goals preserve these boundaries. No contradictory lifecycle ordering, unsupported normative promise or lost source obligation was found.
+      approval_observed: true

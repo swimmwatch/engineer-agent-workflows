@@ -19,11 +19,3 @@ test("model recommendation placeholders preserve strict rejection of unknown rol
   assert.throws(() => renderHostTemplate("{{HOST_UNKNOWN_MODEL}}", "codex", "SKILL.md"),
     /unknown host template variable/);
 });
-
-test("scout models render exact native names without changing other model roles", () => {
-  for (const [host, model] of [["codex", "gpt-6-luna"], ["claude-code", "haiku"]]) {
-    assert.equal(renderHostTemplate("{{HOST_SCOUT_MODEL}}", host, "SKILL.md").toString(), model);
-    assert.equal(renderHostTemplate(`${template}\nScout: {{HOST_SCOUT_MODEL}}`, host, "SKILL.md").toString(),
-      `${renderHostTemplate(template, host, "SKILL.md")}\nScout: ${model}`);
-  }
-});

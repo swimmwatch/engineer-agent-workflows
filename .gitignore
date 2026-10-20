@@ -33,7 +33,6 @@ Thumbs.db
 # Local release/build output
 packages/*/dist/
 artifacts/
-.local/product-review-efficiency-baseline/
 *.tgz
 *.zip
 *.tar.gz

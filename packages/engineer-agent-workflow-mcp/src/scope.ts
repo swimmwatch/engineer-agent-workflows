@@ -54,14 +54,13 @@ export async function requireDesign(context: Context, kind: "catalog" | "experie
   return manifest;
 }
 const profile = z.enum(["core", "ui", "backend", "events", "data", "operations", "security", "cross-surface"]);
-const artifact = z.enum(["core_contract", "api_contract", "mcp_contract", "event_contract", "data_schemas", "quality_scenarios", "architecture_model", "shared_design", "screen_design", "design_tokens"]);
+const artifact = z.enum(["core_contract", "api_contract", "mcp_contract", "event_contract", "data_schemas", "quality_scenarios", "architecture_model", "shared_design", "screen_design"]);
 const artifacts: Record<z.infer<typeof artifact>, { profile: string; path: string }> = {
   core_contract: { profile: "core", path: "core/contracts.yaml" }, api_contract: { profile: "backend", path: "contracts/openapi.yaml" },
   mcp_contract: { profile: "backend", path: "contracts/mcp.md" },
   event_contract: { profile: "events", path: "contracts/asyncapi.yaml" }, data_schemas: { profile: "data", path: "contracts/schemas/data.schema.json" },
   quality_scenarios: { profile: "operations", path: "quality/scenarios.yaml" }, architecture_model: { profile: "cross-surface", path: "architecture/model.dsl" },
   shared_design: { profile: "ui", path: "design/system/catalog.yaml" }, screen_design: { profile: "ui", path: "" },
-  design_tokens: { profile: "ui", path: "design/system/tokens.tokens.json" },
 };
 export const scopeTools = [
   tool("specification_list", "List specification names in one project, with bounded paging.", z.object({ project: text, query: text.optional(), cursor: text.optional(), limit: z.number().int().min(1).max(50).default(20) }).strict(), false, async (a) => {
@@ -84,16 +83,14 @@ export const scopeTools = [
     const { extensions: _extensions, ...scope } = manifest; void _extensions;
     return result(context, { manifest: scope, pending: pending ? ref(pending) : null });
   }),
-  tool("scope_propose", "Save a scope proposal and its confirmation question, not an approved manifest. Select design_tokens with shared_design for an explicit shared token export.", z.object({ ...contextInput, depth: z.enum(["lite", "standard", "deep"]), rationale: texts.min(1), profiles: z.array(z.object({ id: profile, reason: text }).strict()).min(1).max(8), exclusions: z.array(z.object({ id: profile, reason: text }).strict()).max(8).default([]), artifacts: z.array(artifact).max(artifact.options.length).default([]) }).strict(), true, async (a) => mutate(a.context, "decisions", "scope_propose", a, (value, context) => {
+  tool("scope_propose", "Save a scope proposal and its confirmation question, not an approved manifest.", z.object({ ...contextInput, depth: z.enum(["lite", "standard", "deep"]), rationale: texts.min(1), profiles: z.array(z.object({ id: profile, reason: text }).strict()).min(1).max(8), exclusions: z.array(z.object({ id: profile, reason: text }).strict()).max(8).default([]), artifacts: z.array(artifact).max(8).default([]) }).strict(), true, async (a) => mutate(a.context, "decisions", "scope_propose", a, (value, context) => {
     unique([...a.profiles, ...a.exclusions], "profiles");
     if (new Set(a.artifacts).size !== a.artifacts.length) fail("INVALID_INPUT", "Artifact selections must be unique.");
-    if (a.artifacts.includes("design_tokens") && !a.artifacts.includes("shared_design")) fail("INVALID_INPUT", "Design tokens require the shared design library declaration.");
     const planning: string[] = [], project: string[] = [];
     for (const requested of a.artifacts) {
       const contract = artifacts[requested];
       if (!a.profiles.some((p) => p.id === contract.profile || (requested === "quality_scenarios" && p.id === "security"))) fail("INVALID_INPUT", "Selected artifact requires its matching active profile.", { artifact: requested });
       if (requested === "shared_design") project.push(contract.path, "design/system/library.penpot");
-      else if (requested === "design_tokens") project.push(contract.path);
       else if (requested === "screen_design") project.push(`design/specs/${context.specification}/experience.yaml`, `design/specs/${context.specification}/screens.penpot`);
       else planning.push(contract.path);
     }

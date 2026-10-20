@@ -28,7 +28,6 @@ import {
 import {
   PRODUCT_WORKFLOW_PROFILE_PATHS,
   PRODUCT_WORKFLOW_SKILL_CHAIN,
-  PRODUCT_WORKFLOW_SKILL_REFERENCES,
   productWorkflowDigest,
 } from "../../shared/scripts/verify-product-workflow.mjs";
 
@@ -48,7 +47,6 @@ const HOST_TEMPLATE_VALUES = Object.freeze({
     "{{HOST_AUTHOR_MODEL}}": "Sol; Astra for difficult or disputed cases",
     "{{HOST_IMPLEMENTATION_MODEL}}": "Terra",
     "{{HOST_REVIEW_MODEL}}": "Sol; Astra for difficult or disputed cases",
-    "{{HOST_SCOUT_MODEL}}": "gpt-6-luna",
   }),
   "claude-code": Object.freeze({
     "{{HOST_DISPLAY_NAME}}": "Claude Code",
@@ -57,7 +55,6 @@ const HOST_TEMPLATE_VALUES = Object.freeze({
     "{{HOST_AUTHOR_MODEL}}": "Opus",
     "{{HOST_IMPLEMENTATION_MODEL}}": "Sonnet",
     "{{HOST_REVIEW_MODEL}}": "Opus",
-    "{{HOST_SCOUT_MODEL}}": "haiku",
   }),
 });
 
@@ -435,15 +432,7 @@ function productWorkflowMarker(source, catalog, sharedManual, callerName, host) 
       const bytes = host === "codex"
         ? renderCodexSkillDocument(entry, skill.document, relativePath)
         : render(skill.document, relativePath);
-      const references = (PRODUCT_WORKFLOW_SKILL_REFERENCES[name] ?? []).map(referencePath => {
-        const source = skill.assets.get(referencePath);
-        if (source === undefined) throw new ValidationError(
-          "E_INVALID_MANIFEST", "product workflow reference is unavailable",
-          { relativePath: `skills/${name}/${referencePath}` },
-        );
-        return { relativePath: referencePath, bytes: render(source, `skills/${name}/${referencePath}`) };
-      });
-      return { name, bytes, references };
+      return { name, bytes };
     });
   const digest = productWorkflowDigest(protocol, profiles, skillDocuments);
   return Buffer.from(`${digest}\n`, "ascii");

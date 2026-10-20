@@ -105,9 +105,7 @@ host-generated MCP namespace. Keep the latest returned context and object IDs.
    Describe purpose/accessibility/content through `component_describe`;
    set allowed overrides through `component_set_allowed_overrides`.
    If tokens are in scope, register their actual JSON export through
-   `design_system_register_tokens` with `filename: "tokens.tokens.json"` for
-   the declared `design/system/tokens.tokens.json` path, then bind
-   `component_set_tokens`. Do not rely on the legacy `tokens.json` default.
+   `design_system_register_tokens`, then bind `component_set_tokens`.
 4. Use `screen_create` with a real board and initial state. Add/correct behavior
    through `screen_add_state`, `screen_update_state`,
    `screen_add_transition` and `screen_update_transition`.

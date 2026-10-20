@@ -23,7 +23,7 @@ test("canonical catalog contains the approved ordered inventory", async () => {
     catalog.skills.map((entry) => entry.name),
     APPROVED_SKILL_NAMES,
   );
-  assert.equal(catalog.skills.length, 17);
+  assert.equal(catalog.skills.length, 16);
   for (const entry of catalog.skills) {
     assert.ok([...entry.description].length <= 240);
     assert.equal(entry.policies.codex.allowImplicitInvocation, false);

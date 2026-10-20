@@ -1,0 +1,3098 @@
+schema_version: 1
+spec_slug: workflow-reliability-remediation
+decisions:
+  - category: scope-boundary
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай составим план по исправлению данных косяков. План должен содержать проверки, чтобы их больше не возникало. И также при реализации важно проверять корректность работ.
+      source: Current user request
+      kind: initial_request
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 01a41053-b81d-4066-95df-b767970d6475
+    revision: 1
+    supersedes_revision: null
+  - category: scope-boundary
+    state: needs_user
+    provenance: user
+    question:
+      text: Keep all nine reported issues in one reliability-remediation specification, with separate ownership and acceptance for repository changes and external Headroom behavior, or split them into independently accepted specifications and begin with MCP issues 1–7?
+      kind: single_choice
+      options:
+        - id: all-nine
+          label: One specification for all nine items
+        - id: split
+          label: Separate MCP, skill, and environment specifications
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+      revision: 1
+  - category: scope-boundary
+    state: answered
+    provenance: user
+    question:
+      text: Keep all nine reported issues in one reliability-remediation specification, with separate ownership and acceptance for repository changes and external Headroom behavior, or split them into independently accepted specifications and begin with MCP issues 1–7?
+      kind: single_choice
+      options:
+        - id: all-nine
+          label: One specification for all nine items
+        - id: split
+          label: Separate MCP, skill, and environment specifications
+    answer:
+      text: Одна спецификация на все 9 пунктов (рекомендую)
+      selected_ids:
+        - all-nine
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+      revision: 1
+    answer_source: "request_user_input_async: explicit user selection"
+    answered_question:
+      id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+      revision: 1
+  - category: platform-support
+    state: observed
+    provenance: repository
+    fact: The repository targets separate Codex and Claude Code skill distributions. MCP and maintenance scripts require Node.js >=22.20.0. Local Codex development is verified for Linux x64. This remediation preserves established support; no new OS, host, deployment, installation, or publishing scope is requested.
+    evidence:
+      - "AGENTS.md: Golden Rules and Portability And Generation"
+      - packages/engineer-agent-workflow-mcp/package.json:7-9
+      - docs/local-development.md:3-6
+    question: null
+    answer: null
+    id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+    revision: 1
+    supersedes_revision: null
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: prepared
+    scope:
+      schema_version: 1
+      depth: deep
+      confirmed: false
+      rationale:
+        - One specification covers all nine issues, as explicitly selected by the user, with distinct repository and external-environment acceptance.
+        - Deep is warranted by public MCP contract evolution, persisted review reuse, recovery from unknown mutation outcomes and an external compression boundary.
+        - Retain Codex and Claude Code packaging, Node.js >=22.20.0 and the documented Linux x64 local-development verification boundary; no new platform support.
+        - Cover fixes 1–2 and regression protection; review after pass; complete draft record reads; actionable diagnostics; scenario client; explicit source/verdict hashes; architecture checkpoints; lossless transport/restore verification.
+        - "Planning artifacts: contracts/mcp.md and quality/scenarios.yaml. Existing canonical data schemas remain authoritative; do not duplicate them."
+        - Specification first; implementation, global installation/configuration, commits and publication excluded. External Headroom changes require their own owner and evidence; repository checks alone cannot establish their completion.
+      profiles:
+        - id: core
+          reason: Review invariants, workflow client and generated Codex/Claude Code skill behavior.
+          state: active
+        - id: backend
+          reason: Versioned MCP scenario interfaces and structured diagnostics; no HTTP service.
+          state: active
+        - id: data
+          reason: Immutable records, exact revisions, source/verdict digests and persisted review compatibility.
+          state: active
+        - id: operations
+          reason: Recovery, bounded retries, pagination/completeness, running MCP identity and external compression qualification.
+          state: active
+        - id: ui
+          reason: No visual user interface or Penpot work.
+          state: not_applicable
+        - id: events
+          reason: No broker or separately published event contract.
+          state: not_applicable
+        - id: security
+          reason: Existing trust/privacy safeguards remain mandatory; no new authentication or authorization system.
+          state: not_applicable
+        - id: cross-surface
+          reason: Host portability remains a core packaging contract; no new multi-surface product flow.
+          state: not_applicable
+      planning_artifacts:
+        - contracts/mcp.md
+        - quality/scenarios.yaml
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: answered
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer:
+      text: Подтверждаю этот объём (рекомендую)
+      selected_ids:
+        - confirm
+    status: answered
+    scope:
+      schema_version: 1
+      depth: deep
+      confirmed: false
+      rationale:
+        - One specification covers all nine issues, as explicitly selected by the user, with distinct repository and external-environment acceptance.
+        - Deep is warranted by public MCP contract evolution, persisted review reuse, recovery from unknown mutation outcomes and an external compression boundary.
+        - Retain Codex and Claude Code packaging, Node.js >=22.20.0 and the documented Linux x64 local-development verification boundary; no new platform support.
+        - Cover fixes 1–2 and regression protection; review after pass; complete draft record reads; actionable diagnostics; scenario client; explicit source/verdict hashes; architecture checkpoints; lossless transport/restore verification.
+        - "Planning artifacts: contracts/mcp.md and quality/scenarios.yaml. Existing canonical data schemas remain authoritative; do not duplicate them."
+        - Specification first; implementation, global installation/configuration, commits and publication excluded. External Headroom changes require their own owner and evidence; repository checks alone cannot establish their completion.
+      profiles:
+        - id: core
+          reason: Review invariants, workflow client and generated Codex/Claude Code skill behavior.
+          state: active
+        - id: backend
+          reason: Versioned MCP scenario interfaces and structured diagnostics; no HTTP service.
+          state: active
+        - id: data
+          reason: Immutable records, exact revisions, source/verdict digests and persisted review compatibility.
+          state: active
+        - id: operations
+          reason: Recovery, bounded retries, pagination/completeness, running MCP identity and external compression qualification.
+          state: active
+        - id: ui
+          reason: No visual user interface or Penpot work.
+          state: not_applicable
+        - id: events
+          reason: No broker or separately published event contract.
+          state: not_applicable
+        - id: security
+          reason: Existing trust/privacy safeguards remain mandatory; no new authentication or authorization system.
+          state: not_applicable
+        - id: cross-surface
+          reason: Host portability remains a core packaging contract; no new multi-surface product flow.
+          state: not_applicable
+      planning_artifacts:
+        - contracts/mcp.md
+        - quality/scenarios.yaml
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: scope.manifest
+      revision: 1
+    answer_source: "request_user_input_async: explicit user selection"
+    answered_question:
+      id: scope.manifest
+      revision: 1
+  - category: reported-issues
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        Две ошибки действительно блокировали работу и уже исправлены. Остальные пункты — неудобства инструментов, диагностики и выполнения скиллов.
+
+        1. **Валидатор отклонял корректные ссылки на решения PRD.**
+        Для источников `decision` допустим пустой `element_ids`, но валидатор требовал элементы у всех источников. В результате Technical Design получал `SOURCE_CHANGED` при корректном PRD.
+        **Исправлено:** проверка разделена по `source_kind`, добавлены отрицательные регрессионные случаи.
+
+        2. **Принятая архитектура требовала предварительного Roadmap.**
+        `accepted_target` без этапа отклонялся сообщением `Accepted Technical Design targets require at least one named stage`. При этом порядок скиллов предполагает Technical Design перед Roadmap. Подмена принятого решения состоянием `hypothesis` искажала смысл.
+        **Исправлено:** разрешена общая архитектура продукта с `global: true, stage_refs: []`.
+        Оба исправления находятся в рабочем дереве. Сборка и 5 профильных тестов прошли. Коммит, публикация и глобальная установка не выполнялись.
+
+        3. **Маленькая правка после успешного ревью требует повторить всё ревью.**
+        Замена одного символа в Mermaid-схеме потребовала заново проверить 119 блоков и итоговую согласованность. `followup` разрешён только после завершённого ревью с `gaps`.
+        **Предложение:** отдельный режим повторной проверки после успешного ревью — с проверкой изменённых блоков, неизменности остальных источников и общей согласованности. Независимого рецензента сохранить.
+
+        4. **Не хватало удобного чтения сохранённых черновых свидетельств.**
+        Запись research/decision подтверждалась, но читатели закреплённых ready-источников не подходили для проверки тела черновой записи. Приходилось сохранять ответы MCP и разбирать доступные сценарии.
+        **Предложение:** явный read-only сценарий чтения записи по кандидату, идентификатору и ревизии, с полным содержимым и продолжениями.
+
+        5. **Диагностика недостаточно помогает исправить вызов.**
+        Я передал незарегистрированный `subject: Architecture` вместо `Overview` и `limit: 100` при максимуме 50. Это мои ошибки вызова. Но сообщения и описание инструментов могли сразу показывать допустимые документы, поле ошибки и диапазон значения.
+        **Предложение:** конкретные структурированные диагностики и примеры корректных вызовов.
+
+        6. **Слишком много ручной работы с контекстами и продолжениями.**
+        После мутаций нужно передавать новый opaque context; после работы рецензента контекст автора уже нельзя считать актуальным. Понадобился отдельный клиент для последовательных вызовов, сохранения результатов и восстановления состояния.
+        **Предложение:** штатный клиент для workflow-сценариев, который ведёт контекст, пагинацию, повторные запросы и контроль полноты. Также полезна диагностика фактически запущенной версии MCP после исправлений.
+
+        7. **Название `object_sha256` неоднозначно.**
+        В итоговой согласованности это хеш сохранённого verdict, а не исходного документа. При новом ревью изменились все 119 таких хешей, хотя почти все источники остались прежними. Пришлось отдельно устанавливать семантику поля.
+        **Предложение:** явно различать хеш источника и хеш verdict в названиях и документации.
+
+        8. **На первом проходе я недостаточно явно согласовал технологии и показал архитектуру.**
+        Это ошибка моего выполнения; не доказанный дефект скилла. Вам пришлось отдельно запросить выбор технологий, схему компонентов и владение базой данных.
+        **Предложение для скилла:** контрольный список перед ревью архитектурной задачи: материальные технологические решения, границы компонентов, потоки данных, владельцы состояния и неподтверждённые интеграции.
+
+        9. **Сжатие вывода мешало работать с контрактами инструментов.**
+        Headroom иногда заменял данные маркерами `<<ccr:…>>`; усечение больших выводов ломало разбор JSON. Это проблема окружения, отдельно от инженерного MCP.
+        **Предложение:** сохранять без потерь схемы инструментов, контексты, cursors, ссылки, хеши и receipts; сжимать пояснительный текст, предоставляя надёжное получение оригинала.
+      source: "User-provided report: verbatim prose excerpts; file-link annotations omitted to avoid persisting personal machine paths. Repository references are recorded separately as verified facts."
+      kind: initial_request
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: cc1efab1-0272-40e6-89b8-6951820124c2
+    revision: 1
+    supersedes_revision: null
+  - category: verified-baseline
+    state: observed
+    provenance: repository
+    fact: "Both reported Technical Design fixes exist in the current dirty worktree. Fresh package npm run build exited 0. Then node ../../scripts/run-tests.mjs test/product-technical.test.mjs exited 0: 5 tests passed, 0 failed. This is targeted current baseline evidence, not a RED/PROVE record, full-suite result, running installed-server verification, commit or installation."
+    evidence:
+      - packages/engineer-agent-workflow-mcp/src/product/technical.ts
+      - packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs
+      - packages/engineer-agent-workflow-mcp/package.json
+    question: null
+    answer: null
+    id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60
+    revision: 1
+    supersedes_revision: null
+  - category: client-delivery
+    state: needs_user
+    provenance: user
+    question:
+      text: "What should the supported workflow client cover? Recommended: a reusable client with a thin command runner for product scenarios from this report, managing contexts, bounded pagination and safe recovery; no installer, lifecycle manager or semantic reviewer. Alternative: include all specification/design scenarios now, or expose only improved MCP scenarios without a new client artifact."
+      kind: single_choice
+      options:
+        - id: library-runner
+          label: Reusable client library and thin command runner for product scenarios
+        - id: all-workflows
+          label: Reusable client covering product and specification/design scenarios
+        - id: mcp-only
+          label: Server-side scenarios and agent instructions only, no client artifact
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+      revision: 1
+  - category: verified-contracts
+    state: observed
+    provenance: repository
+    fact: Current product followup requires a completed gaps parent over an earlier source and corrections covering every finding; unchanged eligible results may be inherited and final consistency is fresh. Product decision readers select generation lineage, not a draft candidate. Product input validation currently emits a generic message while non-product workflow diagnostics already expose bounded validation paths and limits. The server advertises a constant 0.0.0-development version. Technical Design already requires material technology choices before review, but the requested explicit architecture presentation checklist is not fully stated.
+    evidence:
+      - packages/engineer-agent-workflow-mcp/src/product/review.ts:1581
+      - packages/engineer-agent-workflow-mcp/src/product/context.ts:719
+      - packages/engineer-agent-workflow-mcp/src/product/tools.ts:140
+      - packages/engineer-agent-workflow-mcp/src/diagnostics.ts:76
+      - packages/engineer-agent-workflow-mcp/src/server.ts:96
+      - skills/technical-design/SKILL.md
+      - skills/technical-design/references/technology-decisions.md
+    question: null
+    answer: null
+    id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242
+    revision: 1
+    supersedes_revision: null
+  - category: platform-support
+    state: observed
+    provenance: repository
+    fact: The published product runtime contract supports Node.js >=22.20.0 on Linux, macOS and Windows. The cited P17 qualification executed Linux only; this turn ran only the current Linux environment. Preserving existing support must not be described as having executed macOS, Windows, or other runtime combinations. No platform expansion is part of remediation.
+    evidence:
+      - docs/product-workflows.md:263
+      - packages/engineer-agent-workflow-mcp/package.json:7
+    question: null
+    answer: null
+    id: cdaf714e-d286-4228-baad-c090105b3a38
+    revision: 1
+    supersedes_revision: null
+  - category: client-delivery
+    state: answered
+    provenance: user
+    question:
+      text: "What should the supported workflow client cover? Recommended: a reusable client with a thin command runner for product scenarios from this report, managing contexts, bounded pagination and safe recovery; no installer, lifecycle manager or semantic reviewer. Alternative: include all specification/design scenarios now, or expose only improved MCP scenarios without a new client artifact."
+      kind: single_choice
+      options:
+        - id: library-runner
+          label: Reusable client library and thin command runner for product scenarios
+        - id: all-workflows
+          label: Reusable client covering product and specification/design scenarios
+        - id: mcp-only
+          label: Server-side scenarios and agent instructions only, no client artifact
+    answer:
+      text: Давай по возможности использовать MCP, но если нужна команда, то давай использовать команды.
+      selected_ids: []
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+      revision: 1
+    answer_source: "request_user_input_async: actual free-text answer"
+    answered_question:
+      id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+      revision: 1
+  - category: scope-boundary
+    state: instructed
+    provenance: user
+    instruction:
+      text: Давай составим план по исправлению данных косяков. План должен содержать проверки, чтобы их больше не возникало. И также при реализации важно проверять корректность работ.
+      source: Current user request
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - WR-001
+      - WR-013
+    question: null
+    answer: null
+    id: 01a41053-b81d-4066-95df-b767970d6475
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: platform-support
+    state: observed
+    provenance: repository
+    fact: The repository targets separate Codex and Claude Code skill distributions. MCP and maintenance scripts require Node.js >=22.20.0. Local Codex development is verified for Linux x64. This remediation preserves established support; no new OS, host, deployment, installation, or publishing scope is requested.
+    evidence:
+      - "AGENTS.md: Golden Rules and Portability And Generation"
+      - packages/engineer-agent-workflow-mcp/package.json:7-9
+      - docs/local-development.md:3-6
+    question: null
+    answer: null
+    id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - WR-001
+      - WR-014
+  - category: verified-contracts
+    state: observed
+    provenance: repository
+    fact: Current product followup requires a completed gaps parent over an earlier source and corrections covering every finding; unchanged eligible results may be inherited and final consistency is fresh. Product decision readers select generation lineage, not a draft candidate. Product input validation currently emits a generic message while non-product workflow diagnostics already expose bounded validation paths and limits. The server advertises a constant 0.0.0-development version. Technical Design already requires material technology choices before review, but the requested explicit architecture presentation checklist is not fully stated.
+    evidence:
+      - packages/engineer-agent-workflow-mcp/src/product/review.ts:1581
+      - packages/engineer-agent-workflow-mcp/src/product/context.ts:719
+      - packages/engineer-agent-workflow-mcp/src/product/tools.ts:140
+      - packages/engineer-agent-workflow-mcp/src/diagnostics.ts:76
+      - packages/engineer-agent-workflow-mcp/src/server.ts:96
+      - skills/technical-design/SKILL.md
+      - skills/technical-design/references/technology-decisions.md
+    question: null
+    answer: null
+    id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - WR-004
+      - WR-005
+      - WR-006
+      - WR-009
+      - WR-010
+      - WR-011
+  - category: verified-baseline
+    state: observed
+    provenance: repository
+    fact: "Both reported Technical Design fixes exist in the current dirty worktree. Fresh package npm run build exited 0. Then node ../../scripts/run-tests.mjs test/product-technical.test.mjs exited 0: 5 tests passed, 0 failed. This is targeted current baseline evidence, not a RED/PROVE record, full-suite result, running installed-server verification, commit or installation."
+    evidence:
+      - packages/engineer-agent-workflow-mcp/src/product/technical.ts
+      - packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs
+      - packages/engineer-agent-workflow-mcp/package.json
+    question: null
+    answer: null
+    id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - WR-002
+      - WR-003
+      - WR-013
+  - category: client-delivery
+    state: answered
+    provenance: user
+    question:
+      text: "What should the supported workflow client cover? Recommended: a reusable client with a thin command runner for product scenarios from this report, managing contexts, bounded pagination and safe recovery; no installer, lifecycle manager or semantic reviewer. Alternative: include all specification/design scenarios now, or expose only improved MCP scenarios without a new client artifact."
+      kind: single_choice
+      options:
+        - id: library-runner
+          label: Reusable client library and thin command runner for product scenarios
+        - id: all-workflows
+          label: Reusable client covering product and specification/design scenarios
+        - id: mcp-only
+          label: Server-side scenarios and agent instructions only, no client artifact
+    answer:
+      text: Давай по возможности использовать MCP, но если нужна команда, то давай использовать команды.
+      selected_ids: []
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - WR-007
+      - WR-008
+    id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+      revision: 1
+    answer_source: "request_user_input_async: actual free-text answer"
+    answered_question:
+      id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+      revision: 1
+  - category: reported-issues
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        Две ошибки действительно блокировали работу и уже исправлены. Остальные пункты — неудобства инструментов, диагностики и выполнения скиллов.
+
+        1. **Валидатор отклонял корректные ссылки на решения PRD.**
+        Для источников `decision` допустим пустой `element_ids`, но валидатор требовал элементы у всех источников. В результате Technical Design получал `SOURCE_CHANGED` при корректном PRD.
+        **Исправлено:** проверка разделена по `source_kind`, добавлены отрицательные регрессионные случаи.
+
+        2. **Принятая архитектура требовала предварительного Roadmap.**
+        `accepted_target` без этапа отклонялся сообщением `Accepted Technical Design targets require at least one named stage`. При этом порядок скиллов предполагает Technical Design перед Roadmap. Подмена принятого решения состоянием `hypothesis` искажала смысл.
+        **Исправлено:** разрешена общая архитектура продукта с `global: true, stage_refs: []`.
+        Оба исправления находятся в рабочем дереве. Сборка и 5 профильных тестов прошли. Коммит, публикация и глобальная установка не выполнялись.
+
+        3. **Маленькая правка после успешного ревью требует повторить всё ревью.**
+        Замена одного символа в Mermaid-схеме потребовала заново проверить 119 блоков и итоговую согласованность. `followup` разрешён только после завершённого ревью с `gaps`.
+        **Предложение:** отдельный режим повторной проверки после успешного ревью — с проверкой изменённых блоков, неизменности остальных источников и общей согласованности. Независимого рецензента сохранить.
+
+        4. **Не хватало удобного чтения сохранённых черновых свидетельств.**
+        Запись research/decision подтверждалась, но читатели закреплённых ready-источников не подходили для проверки тела черновой записи. Приходилось сохранять ответы MCP и разбирать доступные сценарии.
+        **Предложение:** явный read-only сценарий чтения записи по кандидату, идентификатору и ревизии, с полным содержимым и продолжениями.
+
+        5. **Диагностика недостаточно помогает исправить вызов.**
+        Я передал незарегистрированный `subject: Architecture` вместо `Overview` и `limit: 100` при максимуме 50. Это мои ошибки вызова. Но сообщения и описание инструментов могли сразу показывать допустимые документы, поле ошибки и диапазон значения.
+        **Предложение:** конкретные структурированные диагностики и примеры корректных вызовов.
+
+        6. **Слишком много ручной работы с контекстами и продолжениями.**
+        После мутаций нужно передавать новый opaque context; после работы рецензента контекст автора уже нельзя считать актуальным. Понадобился отдельный клиент для последовательных вызовов, сохранения результатов и восстановления состояния.
+        **Предложение:** штатный клиент для workflow-сценариев, который ведёт контекст, пагинацию, повторные запросы и контроль полноты. Также полезна диагностика фактически запущенной версии MCP после исправлений.
+
+        7. **Название `object_sha256` неоднозначно.**
+        В итоговой согласованности это хеш сохранённого verdict, а не исходного документа. При новом ревью изменились все 119 таких хешей, хотя почти все источники остались прежними. Пришлось отдельно устанавливать семантику поля.
+        **Предложение:** явно различать хеш источника и хеш verdict в названиях и документации.
+
+        8. **На первом проходе я недостаточно явно согласовал технологии и показал архитектуру.**
+        Это ошибка моего выполнения; не доказанный дефект скилла. Вам пришлось отдельно запросить выбор технологий, схему компонентов и владение базой данных.
+        **Предложение для скилла:** контрольный список перед ревью архитектурной задачи: материальные технологические решения, границы компонентов, потоки данных, владельцы состояния и неподтверждённые интеграции.
+
+        9. **Сжатие вывода мешало работать с контрактами инструментов.**
+        Headroom иногда заменял данные маркерами `<<ccr:…>>`; усечение больших выводов ломало разбор JSON. Это проблема окружения, отдельно от инженерного MCP.
+        **Предложение:** сохранять без потерь схемы инструментов, контексты, cursors, ссылки, хеши и receipts; сжимать пояснительный текст, предоставляя надёжное получение оригинала.
+      source: "User-provided report: verbatim prose excerpts; file-link annotations omitted to avoid persisting personal machine paths. Repository references are recorded separately as verified facts."
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - WR-001
+      - WR-002
+      - WR-003
+      - WR-004
+      - WR-005
+      - WR-006
+      - WR-007
+      - WR-008
+      - WR-009
+      - WR-010
+      - WR-011
+      - WR-012
+      - WR-013
+      - WR-014
+    question: null
+    answer: null
+    id: cc1efab1-0272-40e6-89b8-6951820124c2
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+  - category: platform-support
+    state: observed
+    provenance: repository
+    fact: The published product runtime contract supports Node.js >=22.20.0 on Linux, macOS and Windows. The cited P17 qualification executed Linux only; this turn ran only the current Linux environment. Preserving existing support must not be described as having executed macOS, Windows, or other runtime combinations. No platform expansion is part of remediation.
+    evidence:
+      - docs/product-workflows.md:263
+      - packages/engineer-agent-workflow-mcp/package.json:7
+    question: null
+    answer: null
+    id: cdaf714e-d286-4228-baad-c090105b3a38
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - WR-014
+  - category: scope-boundary
+    state: answered
+    provenance: user
+    question:
+      text: Keep all nine reported issues in one reliability-remediation specification, with separate ownership and acceptance for repository changes and external Headroom behavior, or split them into independently accepted specifications and begin with MCP issues 1–7?
+      kind: single_choice
+      options:
+        - id: all-nine
+          label: One specification for all nine items
+        - id: split
+          label: Separate MCP, skill, and environment specifications
+    answer:
+      text: Одна спецификация на все 9 пунктов (рекомендую)
+      selected_ids:
+        - all-nine
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - WR-001
+    id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+      revision: 1
+    answer_source: "request_user_input_async: explicit user selection"
+    answered_question:
+      id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+      revision: 1
+  - category: platform-qualification-scope
+    state: instructed
+    provenance: user
+    instruction:
+      text: Не нужно проверять ничего на macOS и Windows, только на Linux.
+      source: Direct human follow-up in the current Codex conversation on 2026-10-16; actual user instruction, not a fixture or inferred answer.
+      kind: follow_up
+    related_decisions:
+      - id: cdaf714e-d286-4228-baad-c090105b3a38
+        revision: 2
+    requirement_ids:
+      - WR-014
+      - WR-013
+    question: null
+    answer: null
+    id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+    revision: 1
+    supersedes_revision: null
+  - category: qualification-delivery-authorization
+    state: instructed
+    provenance: user
+    instruction:
+      text: Разрешаю коммит, push новой ветки и четыре CI-проверки
+      source: "Actual direct human answer in the current Codex conversation to this exact saved question: «Разрешаете создать один изолированный коммит проверенного снимка (112 отличий от HEAD, включая указанные зависимости) и отправить новую ветку feature/workflow-reliability-qualification в публичный swimmwatch/engineer-agent-workflows? Push запустит четыре проверки: macOS 15 / Windows 2025 × Node 22.20.0 / 24.14.0. Состав зафиксирован в resume16-ci-correction/report.md и included-files.md.»."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 83a4e79d-4f6e-4653-834d-253db672367b
+    revision: 1
+    supersedes_revision: null
+  - category: qualification-delivery-authorization
+    state: instructed
+    provenance: user
+    instruction:
+      text: Разрешаю коммит, push новой ветки и четыре CI-проверки
+      source: "Actual direct human answer in the current Codex conversation to this exact saved question: «Разрешаете создать один изолированный коммит проверенного снимка (112 отличий от HEAD, включая указанные зависимости) и отправить новую ветку feature/workflow-reliability-qualification в публичный swimmwatch/engineer-agent-workflows? Push запустит четыре проверки: macOS 15 / Windows 2025 × Node 22.20.0 / 24.14.0. Состав зафиксирован в resume16-ci-correction/report.md и included-files.md.»."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: 83a4e79d-4f6e-4653-834d-253db672367b
+    revision: 2
+    supersedes_revision: 1
+    context_reason: One-time delivery authorization for exactly the previously reviewed resume16-ci-correction snapshot (112 HEAD differences and listed prerequisites), one isolated commit and new feature/workflow-reliability-qualification branch push to the named repository, launching four native jobs. This is execution authority, not a change to product/runtime behavior or a blanket publication/global-install grant. Current planning preserves the exact bounds; native acceptance is separately restored by the actual platform instruction.
+  - category: external-test-authorization
+    state: instructed
+    provenance: user
+    instruction:
+      text: Разрешаю дополнительные 9 пар
+      source: "Actual direct human answer in the current Codex conversation to this exact saved question: «Разрешаете ещё до 9 синтетических compress и 9 retrieve для записей, чьи подтверждения потерялись при прерывании? Общий предел с учётом всех возможных прежних вызовов — 47 пар и 140 081 байт. Побочные эффекты общего кэша те же; перезапуск и изменение конфигурации исключены.»."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: bc874d5e-412c-4846-9d43-5c5b075e0aac
+    revision: 1
+    supersedes_revision: null
+  - category: external-test-authorization
+    state: instructed
+    provenance: user
+    instruction:
+      text: Разрешаю дополнительные 9 пар
+      source: "Actual direct human answer in the current Codex conversation to this exact saved question: «Разрешаете ещё до 9 синтетических compress и 9 retrieve для записей, чьи подтверждения потерялись при прерывании? Общий предел с учётом всех возможных прежних вызовов — 47 пар и 140 081 байт. Побочные эффекты общего кэша те же; перезапуск и изменение конфигурации исключены.»."
+      kind: follow_up
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: bc874d5e-412c-4846-9d43-5c5b075e0aac
+    revision: 2
+    supersedes_revision: 1
+    context_reason: One bounded qualification-test authorization, not a new product contract or a relaxation of WR-012/WR-013. The actual saved question limits this extra batch to at most9 compress and9 retrieve, cumulative47 pairs/140081 bytes including all possible prior calls, with existing shared-cache side effects and no restart/configuration change. Current planning records these limits and separate execution ownership; passing explicit pairs does not prove the automatic compression path or registered-MCP identity.
+  - category: platform-qualification-scope
+    state: instructed
+    provenance: user
+    instruction:
+      text: Вернуть четыре проверки macOS/Windows и разрешённую отправку ветки
+      source: Actual direct human clarification in the current Codex conversation after the author explicitly raised the conflict between the earlier Linux-only qualification instruction and the later CI delivery authorization.
+      kind: follow_up
+    related_decisions:
+      - id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+        revision: 1
+      - id: 83a4e79d-4f6e-4653-834d-253db672367b
+        revision: 2
+    requirement_ids:
+      - WR-014
+      - WR-013
+    question: null
+    answer: null
+    id: 30bf0846-fd2c-4744-89fc-f741e4660bda
+    revision: 1
+    supersedes_revision: null
+  - category: scope-amendment
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        Question: Исключаем внешнюю квалификацию Headroom (Q14) из задачи, сохранив проверки целостности ответов MCP? Q14 осталась в ранее согласованном плане по пункту 9; для закрытия плана нужно явно убрать это требование.
+        Answer: Исключить Headroom из задачи
+      source: Actual user answer on 2026-10-19 to request_user_input_async call_8efc07cf9eba4527b72de94c8549980b, question item 0. The question and answer below are quoted exactly; no new scope confirmation, public action, or service-test consent is inferred.
+      kind: follow_up
+    related_decisions:
+      - id: cc1efab1-0272-40e6-89b8-6951820124c2
+        revision: 2
+      - id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+        revision: 3
+    requirement_ids:
+      - WR-001
+      - WR-012
+      - WR-013
+      - WR-014
+    question: null
+    answer: null
+    id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9
+    revision: 1
+    supersedes_revision: null
+extensions:
+  workflow_mcp_receipts:
+    - id: 438f22f60a4c44dceada235054cc689ba600adc5d8ee0bf13d0b53f2671b7ae1
+      result:
+        decision_ref:
+          id: 01a41053-b81d-4066-95df-b767970d6475
+          revision: 1
+        state: instructed
+    - id: 5348835140aeefe79c3fd94f1798c16b4c0be365e31fef11b09084a6643f2b6b
+      result:
+        question_ref:
+          id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+          revision: 1
+        question:
+          text: Keep all nine reported issues in one reliability-remediation specification, with separate ownership and acceptance for repository changes and external Headroom behavior, or split them into independently accepted specifications and begin with MCP issues 1–7?
+          kind: single_choice
+          options:
+            - id: all-nine
+              label: One specification for all nine items
+            - id: split
+              label: Separate MCP, skill, and environment specifications
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 06f2930966ec4dabb6f2585fe9205e2a73a0ed39077761054c4746df6a282232
+      result:
+        decision_ref:
+          id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+          revision: 2
+        state: answered
+    - id: e110f5155b49789da47b8b6410645b50a61f510275429cf6fefee8073d850954
+      result:
+        decision_ref:
+          id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+          revision: 1
+        state: observed
+    - id: 775f420478fd75590382e455fefb93fda370463b526b30a29cee90efe8c79779
+      result:
+        question_ref:
+          id: scope.manifest
+          revision: 1
+        question:
+          text: Confirm this exact scope proposal, or request a correction.
+          kind: single_choice
+          options:
+            - id: confirm
+              label: Confirm this proposal
+            - id: change
+              label: Change the proposal
+        proposal:
+          schema_version: 1
+          depth: deep
+          confirmed: false
+          rationale:
+            - One specification covers all nine issues, as explicitly selected by the user, with distinct repository and external-environment acceptance.
+            - Deep is warranted by public MCP contract evolution, persisted review reuse, recovery from unknown mutation outcomes and an external compression boundary.
+            - Retain Codex and Claude Code packaging, Node.js >=22.20.0 and the documented Linux x64 local-development verification boundary; no new platform support.
+            - Cover fixes 1–2 and regression protection; review after pass; complete draft record reads; actionable diagnostics; scenario client; explicit source/verdict hashes; architecture checkpoints; lossless transport/restore verification.
+            - "Planning artifacts: contracts/mcp.md and quality/scenarios.yaml. Existing canonical data schemas remain authoritative; do not duplicate them."
+            - Specification first; implementation, global installation/configuration, commits and publication excluded. External Headroom changes require their own owner and evidence; repository checks alone cannot establish their completion.
+          profiles:
+            - id: core
+              reason: Review invariants, workflow client and generated Codex/Claude Code skill behavior.
+              state: active
+            - id: backend
+              reason: Versioned MCP scenario interfaces and structured diagnostics; no HTTP service.
+              state: active
+            - id: data
+              reason: Immutable records, exact revisions, source/verdict digests and persisted review compatibility.
+              state: active
+            - id: operations
+              reason: Recovery, bounded retries, pagination/completeness, running MCP identity and external compression qualification.
+              state: active
+            - id: ui
+              reason: No visual user interface or Penpot work.
+              state: not_applicable
+            - id: events
+              reason: No broker or separately published event contract.
+              state: not_applicable
+            - id: security
+              reason: Existing trust/privacy safeguards remain mandatory; no new authentication or authorization system.
+              state: not_applicable
+            - id: cross-surface
+              reason: Host portability remains a core packaging contract; no new multi-surface product flow.
+              state: not_applicable
+          planning_artifacts:
+            - contracts/mcp.md
+            - quality/scenarios.yaml
+        next: Ask this saved question with the host-native question tool; then record the actual answer.
+    - id: 8ed481114f44ff32b4e92603ed958978e5385d015211895f6a75dc6847aa15c0
+      result:
+        decision_ref:
+          id: scope.manifest
+          revision: 2
+        state: answered
+    - id: 7bd0b8c5bb7e17fd1bc3aec7315c1dc6ab522ea057ef380873a6bbdfa31807b9
+      result:
+        decision_ref:
+          id: cc1efab1-0272-40e6-89b8-6951820124c2
+          revision: 1
+        state: instructed
+    - id: 8cf1e241e84b172a63494cfa2f5008351eff82c3d37cc21e15f650b824d47a9b
+      result:
+        decision_ref:
+          id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60
+          revision: 1
+        state: observed
+    - id: d2708e2c7c4274f38be3ec633fa7833a010ceb57e8351697c89ec47c155a51c8
+      result:
+        question_ref:
+          id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+          revision: 1
+        question:
+          text: "What should the supported workflow client cover? Recommended: a reusable client with a thin command runner for product scenarios from this report, managing contexts, bounded pagination and safe recovery; no installer, lifecycle manager or semantic reviewer. Alternative: include all specification/design scenarios now, or expose only improved MCP scenarios without a new client artifact."
+          kind: single_choice
+          options:
+            - id: library-runner
+              label: Reusable client library and thin command runner for product scenarios
+            - id: all-workflows
+              label: Reusable client covering product and specification/design scenarios
+            - id: mcp-only
+              label: Server-side scenarios and agent instructions only, no client artifact
+        next: Ask the saved question with the callable host-native question tool.
+    - id: d1c8587d530235979f9f4f0214fd162bb95316bb1e3f78d62d124eb588ece175
+      result:
+        decision_ref:
+          id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242
+          revision: 1
+        state: observed
+    - id: b8016fdb6d8aca086ef806a413a1ad22b004ea0aabb28e5408e5a4efb2b208c6
+      result:
+        decision_ref:
+          id: cdaf714e-d286-4228-baad-c090105b3a38
+          revision: 1
+        state: observed
+    - id: ad8e536380eead4c4b742475507b15e3d81e2e491f89fe25e5b334173397f6b3
+      result:
+        decision_ref:
+          id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+          revision: 2
+        state: answered
+    - id: 5743888d79351c0059fa03362047cf549d17c82715e791917ea7a022530195d8
+      result:
+        items:
+          - decision_ref:
+              id: 01a41053-b81d-4066-95df-b767970d6475
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-001
+              - WR-013
+            removed: []
+            requirement_ids:
+              - WR-001
+              - WR-013
+            operation_applied: true
+          - decision_ref:
+              id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-001
+              - WR-014
+            removed: []
+            requirement_ids:
+              - WR-001
+              - WR-014
+            operation_applied: true
+          - decision_ref:
+              id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-004
+              - WR-005
+              - WR-006
+              - WR-009
+              - WR-010
+              - WR-011
+            removed: []
+            requirement_ids:
+              - WR-004
+              - WR-005
+              - WR-006
+              - WR-009
+              - WR-010
+              - WR-011
+            operation_applied: true
+          - decision_ref:
+              id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-002
+              - WR-003
+              - WR-013
+            removed: []
+            requirement_ids:
+              - WR-002
+              - WR-003
+              - WR-013
+            operation_applied: true
+          - decision_ref:
+              id: afe9ce7e-d954-484b-91b8-a1b2ef698f00
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - WR-007
+              - WR-008
+            removed: []
+            requirement_ids:
+              - WR-007
+              - WR-008
+            operation_applied: true
+          - decision_ref:
+              id: cc1efab1-0272-40e6-89b8-6951820124c2
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-001
+              - WR-002
+              - WR-003
+              - WR-004
+              - WR-005
+              - WR-006
+              - WR-007
+              - WR-008
+              - WR-009
+              - WR-010
+              - WR-011
+              - WR-012
+              - WR-013
+              - WR-014
+            removed: []
+            requirement_ids:
+              - WR-001
+              - WR-002
+              - WR-003
+              - WR-004
+              - WR-005
+              - WR-006
+              - WR-007
+              - WR-008
+              - WR-009
+              - WR-010
+              - WR-011
+              - WR-012
+              - WR-013
+              - WR-014
+            operation_applied: true
+          - decision_ref:
+              id: cdaf714e-d286-4228-baad-c090105b3a38
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - WR-014
+            removed: []
+            requirement_ids:
+              - WR-014
+            operation_applied: true
+          - decision_ref:
+              id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - WR-001
+            removed: []
+            requirement_ids:
+              - WR-001
+            operation_applied: true
+        operation_applied: true
+    - id: da235048e739e14ddf592cc6e733c3915dc0287e8455ed609588f4dca9f22c57
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        source_version: 345c12557dec017f7dba829464bd36932d866eea21f42c37a1f18b40e8e988b1
+        total_items: 28
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 8f95244e57153cd0866af3d9f5add7d829b539b3d964a723d6f86e8564224989
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        items:
+          - item_index: 0
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475
+            verdict: covered
+          - item_index: 1
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+            verdict: covered
+          - item_index: 2
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+          - item_index: 4
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2
+            verdict: covered
+          - item_index: 5
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60
+            verdict: covered
+          - item_index: 6
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00
+            verdict: covered
+          - item_index: 7
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242
+            verdict: covered
+          - item_index: 8
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38
+            verdict: covered
+        batch_size: 9
+        recorded_items: 9
+    - id: d60e34dabfe5cba188f67b8acb830754203aae7488b18924e988aaa4020feca0
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        items:
+          - item_index: 9
+            item_key: requirement:WR-001
+            verdict: covered
+          - item_index: 10
+            item_key: requirement:WR-002
+            verdict: covered
+          - item_index: 11
+            item_key: requirement:WR-003
+            verdict: covered
+          - item_index: 12
+            item_key: requirement:WR-004
+            verdict: covered
+          - item_index: 13
+            item_key: requirement:WR-005
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:WR-006
+            verdict: covered
+        batch_size: 6
+        recorded_items: 15
+    - id: 96d5705c262237e07bf6422dc357edf67ca8efeb54109f6558960ccb0135a2ae
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        items:
+          - item_index: 15
+            item_key: requirement:WR-007
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:WR-008
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:WR-009
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:WR-010
+            verdict: covered
+          - item_index: 19
+            item_key: requirement:WR-011
+            verdict: covered
+          - item_index: 20
+            item_key: requirement:WR-012
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:WR-013
+            verdict: covered
+          - item_index: 22
+            item_key: requirement:WR-014
+            verdict: covered
+        batch_size: 8
+        recorded_items: 23
+    - id: 2bbd5bf63dcb985fb0a75ab4a139f5e88b96f8127c06a8e64d4417ca54ff4a39
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        items:
+          - item_index: 23
+            item_key: profile:core
+            verdict: covered
+          - item_index: 24
+            item_key: profile:backend
+            verdict: covered
+          - item_index: 25
+            item_key: profile:data
+            verdict: covered
+          - item_index: 26
+            item_key: profile:operations
+            verdict: covered
+        batch_size: 4
+        recorded_items: 27
+    - id: 544c33e346c904d779ef2c072e0c8602a95613822ef5ffbfd4570a3448f9ab77
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        consistency_status: consistent
+    - id: ef75c69c5cf6f0cdc1e579cd49a22b7a16672b9fe3519aa7e2ec61dd7c04507a
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        coverage_status: reviewed
+        source_version: 345c12557dec017f7dba829464bd36932d866eea21f42c37a1f18b40e8e988b1
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: 1315c3e8d4194296869af9aeb33c5401d1f498425b0f619f4adc3ec8b502e10f
+      result:
+        review_ref: b4668494-2caa-41fe-ae73-d756aa6082e0
+        approval_observed: true
+    - id: 93eb97a6638df4bc4c080ae9bab8c4e025afa5afc383e22fea443d791e2c79d4
+      result:
+        decision_ref:
+          id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+          revision: 1
+        state: instructed
+    - id: 2999e72e1c5437e7721cb7c5dcaf783d0f1361779605808f046eaf05ec5a5fb8
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        source_version: 4fc6fb3d5c4c5546402c4faf7e047da0fe1e634ba54d5505934429efc06bbcd7
+        total_items: 29
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: afe64ea5a2ce492d949e9c2b6c2b7198445a5aa781a2faa3055ac9010457b876
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        item_index: 0
+        verdict: covered
+        recorded_items: 1
+    - id: 43edd3bc005447af78af4eb2d7024688685a8ef8e5c183222120f1f6a9a026e4
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 1
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+            verdict: covered
+          - item_index: 2
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+        batch_size: 3
+        recorded_items: 4
+    - id: 834b0ca5ba56dfce401642b20f55884c9d55a277741dec94b09c2b6099ef9f97
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 4
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2
+            verdict: covered
+          - item_index: 5
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60
+            verdict: covered
+        batch_size: 2
+        recorded_items: 6
+    - id: 664f60fbd763358d68f06f1857f98f31398e9883b005f87a8e1adc27d98268fe
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 6
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00
+            verdict: covered
+          - item_index: 7
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242
+            verdict: covered
+        batch_size: 2
+        recorded_items: 8
+    - id: d0765f74e14a500768dd279b69e53b9f2720f643e0ace67d45e3b338f2e40ec9
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 8
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38
+            verdict: covered
+          - item_index: 9
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+            verdict: covered
+        batch_size: 2
+        recorded_items: 10
+    - id: 9d66dfb1fd4cfcee5e09de7599216ad955aa1045f29b45a17aaf2f3abbc0d5d0
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 10
+            item_key: requirement:WR-001
+            verdict: covered
+          - item_index: 11
+            item_key: requirement:WR-002
+            verdict: covered
+          - item_index: 12
+            item_key: requirement:WR-003
+            verdict: covered
+          - item_index: 13
+            item_key: requirement:WR-004
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:WR-005
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:WR-006
+            verdict: covered
+        batch_size: 6
+        recorded_items: 16
+    - id: a1d5634dd941f1397d7b9ea4efeff5e57ea79d4c205212db87a78aa2fb42c8af
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 16
+            item_key: requirement:WR-007
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:WR-008
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:WR-009
+            verdict: covered
+          - item_index: 19
+            item_key: requirement:WR-010
+            verdict: covered
+        batch_size: 4
+        recorded_items: 20
+    - id: e977f39bb388d94db2960bfcc75d9ffbd4e0b378a9cb1e3d3f99be4f63aa9c21
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 20
+            item_key: requirement:WR-011
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:WR-012
+            verdict: covered
+          - item_index: 22
+            item_key: requirement:WR-013
+            verdict: covered
+          - item_index: 23
+            item_key: requirement:WR-014
+            verdict: covered
+        batch_size: 4
+        recorded_items: 24
+    - id: be10b177a3746bc524e3165b1ee492e41ce448062197d5bce54988f08f01ca46
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        items:
+          - item_index: 24
+            item_key: profile:core
+            verdict: covered
+          - item_index: 25
+            item_key: profile:backend
+            verdict: covered
+          - item_index: 26
+            item_key: profile:data
+            verdict: covered
+          - item_index: 27
+            item_key: profile:operations
+            verdict: covered
+        batch_size: 4
+        recorded_items: 28
+    - id: 77b3ee14af4eb3dd1f6e1a321957830138d3ec425a38828cbd103714c8421d3d
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        consistency_status: consistent
+    - id: b51e4f623c802ecefc7955a504c52b523fc172d032da14d55012d4f8dde171a1
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        coverage_status: reviewed
+        source_version: 4fc6fb3d5c4c5546402c4faf7e047da0fe1e634ba54d5505934429efc06bbcd7
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: 4f64458ad60c5da5a7cbdbd01c8b3c24b860280050a9e5768f88c15e1bacafd9
+      result:
+        review_ref: b369706b-206d-44ce-aa44-7b8210cef5e7
+        approval_observed: true
+    - id: 63fa4f5cdfa779714dd34ac6b26a98984591b34c15267946918dd0e2a321fcb1
+      result:
+        decision_ref:
+          id: 83a4e79d-4f6e-4653-834d-253db672367b
+          revision: 1
+        state: instructed
+    - id: db0dfa7ba1c85593069766cd7fd0f1aecd6367258c16d882ef3cf823b24ffcd1
+      result:
+        decision_ref:
+          id: 83a4e79d-4f6e-4653-834d-253db672367b
+          revision: 2
+        classification: context
+    - id: 5f6cb39d7cca0ab2151288ebacf411ce2f1a1af366a93053cd370e29e78b45a5
+      result:
+        decision_ref:
+          id: bc874d5e-412c-4846-9d43-5c5b075e0aac
+          revision: 1
+        state: instructed
+    - id: ae2f3cc1d5774f7923ece7a814e04aaa1359d829eae75365749b7bb288370147
+      result:
+        decision_ref:
+          id: bc874d5e-412c-4846-9d43-5c5b075e0aac
+          revision: 2
+        classification: context
+    - id: 73ac0f96d7c2c963434723e2aec833e4d4fd903c09429f17cdb2e40450d2a15d
+      result:
+        decision_ref:
+          id: 30bf0846-fd2c-4744-89fc-f741e4660bda
+          revision: 1
+        state: instructed
+    - id: 9ecf6ecc8853c60c6afaf8442475e6e0f55c2ed947fa8690a70674ec42365b46
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        source_version: 80aaa57b348e0c17731b6f9f23f9d92cd0826a3d1fe0ada37a9806e1edd30767
+        total_items: 32
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 24408452b355e6b17f78af255a21cc8a1fadec14fb46403243ab6327b438395c
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 0
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475
+            verdict: covered
+          - item_index: 1
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+            verdict: covered
+          - item_index: 2
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+          - item_index: 4
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2
+            verdict: covered
+        batch_size: 5
+        recorded_items: 5
+    - id: da6c1da625b1caabdb6390c2f934f19a4296a7fde9297cba45c05e0189a2b93a
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 5
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60
+            verdict: covered
+          - item_index: 6
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00
+            verdict: covered
+          - item_index: 7
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242
+            verdict: covered
+          - item_index: 8
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38
+            verdict: covered
+        batch_size: 4
+        recorded_items: 9
+    - id: 1f23fdafa56733c674a39cc9efd9e57dfd4e3cd4a9f843f531e87fdc4c7bf670
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 9
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+            verdict: covered
+          - item_index: 10
+            item_key: source:83a4e79d-4f6e-4653-834d-253db672367b
+            verdict: not_applicable
+          - item_index: 11
+            item_key: source:bc874d5e-412c-4846-9d43-5c5b075e0aac
+            verdict: not_applicable
+          - item_index: 12
+            item_key: source:30bf0846-fd2c-4744-89fc-f741e4660bda
+            verdict: covered
+        batch_size: 4
+        recorded_items: 13
+    - id: a91451147258db1eb3a624b6eff28fc73523e2e2129d1b174cc6634516805325
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 13
+            item_key: requirement:WR-001
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:WR-002
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:WR-003
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:WR-004
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:WR-005
+            verdict: covered
+        batch_size: 5
+        recorded_items: 18
+    - id: 5827356b21c84518e301cb07026dad9b27803dc73ccd782d92c15230b81ab86c
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 18
+            item_key: requirement:WR-006
+            verdict: covered
+          - item_index: 19
+            item_key: requirement:WR-007
+            verdict: covered
+          - item_index: 20
+            item_key: requirement:WR-008
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:WR-009
+            verdict: covered
+          - item_index: 22
+            item_key: requirement:WR-010
+            verdict: covered
+          - item_index: 23
+            item_key: requirement:WR-011
+            verdict: covered
+        batch_size: 6
+        recorded_items: 24
+    - id: 9aa0ce9cb6eeb85c001fe036b8b4a6f5b58c34e151873313c8a849ff277ad551
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        items:
+          - item_index: 24
+            item_key: requirement:WR-012
+            verdict: covered
+          - item_index: 25
+            item_key: requirement:WR-013
+            verdict: covered
+          - item_index: 26
+            item_key: requirement:WR-014
+            verdict: covered
+          - item_index: 27
+            item_key: profile:core
+            verdict: covered
+          - item_index: 28
+            item_key: profile:backend
+            verdict: covered
+          - item_index: 29
+            item_key: profile:data
+            verdict: covered
+          - item_index: 30
+            item_key: profile:operations
+            verdict: covered
+        batch_size: 7
+        recorded_items: 31
+    - id: d4e9ca21592030c0b8157f404fda5583e1fb3cd3f19e10f0c768cb729197acb5
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        consistency_status: consistent
+    - id: 52f07975915199e7cb42bf393b3eea5a0881e29ce9209aab5fcbbe4e9ddfd25a
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        coverage_status: reviewed
+        source_version: 80aaa57b348e0c17731b6f9f23f9d92cd0826a3d1fe0ada37a9806e1edd30767
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: a1fb5afeab229a6229b4cd25ac63e21d8b2acd79a8503593553d5510e4be6903
+      result:
+        review_ref: 8090f5b2-5a46-4511-9774-32295157cf1f
+        approval_observed: true
+    - id: fc6e211e2255e0a7ef7129a5d036b435eb91f77690dc27295fc5b2abee291887
+      result:
+        decision_ref:
+          id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9
+          revision: 1
+        state: instructed
+    - id: 3d3161fcd1e3b8caa64396b71c11bba4f14e8fc6e1ce4393569cc5946f60bcc1
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        source_version: d6499cf2486dbf002516f0977d1f9f951a9bce97eadc44e553f99d035561aae4
+        total_items: 33
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: b1d1fb74281d12d1207edb189b32c6e2262a51878ed71722f0a80d9fc3542302
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 0
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475
+            verdict: covered
+          - item_index: 1
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400
+            verdict: covered
+          - item_index: 2
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3
+            verdict: covered
+          - item_index: 3
+            item_key: source:scope.manifest
+            verdict: covered
+        batch_size: 4
+        recorded_items: 4
+    - id: e2be8423ceb25aa0100cee86217d26f3a396d37bb49589f90a77230711da6688
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 4
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2
+            verdict: covered
+          - item_index: 5
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60
+            verdict: covered
+          - item_index: 6
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00
+            verdict: covered
+          - item_index: 7
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242
+            verdict: covered
+          - item_index: 8
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38
+            verdict: covered
+        batch_size: 5
+        recorded_items: 9
+    - id: cf0a4b7fb465f3c5ff1d9718829681986d31ccba3b614c289d6d9f015937e32e
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 9
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47
+            verdict: covered
+          - item_index: 10
+            item_key: source:83a4e79d-4f6e-4653-834d-253db672367b
+            verdict: not_applicable
+          - item_index: 11
+            item_key: source:bc874d5e-412c-4846-9d43-5c5b075e0aac
+            verdict: not_applicable
+          - item_index: 12
+            item_key: source:30bf0846-fd2c-4744-89fc-f741e4660bda
+            verdict: covered
+          - item_index: 13
+            item_key: source:2271a03b-18e7-4e43-b2fc-716f09f9b8e9
+            verdict: covered
+        batch_size: 5
+        recorded_items: 14
+    - id: 25e929230b5dd29ba1a835687e12b836aba114bc8eaa8f3b62389ba305966600
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 14
+            item_key: requirement:WR-001
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:WR-002
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:WR-003
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:WR-004
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:WR-005
+            verdict: covered
+          - item_index: 19
+            item_key: requirement:WR-006
+            verdict: covered
+        batch_size: 6
+        recorded_items: 20
+    - id: 7ca11434e86951110f94bbb580038bc97d5515198eac26fff2311d531fe82220
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 20
+            item_key: requirement:WR-007
+            verdict: covered
+          - item_index: 21
+            item_key: requirement:WR-008
+            verdict: covered
+          - item_index: 22
+            item_key: requirement:WR-009
+            verdict: covered
+          - item_index: 23
+            item_key: requirement:WR-010
+            verdict: covered
+          - item_index: 24
+            item_key: requirement:WR-011
+            verdict: covered
+          - item_index: 25
+            item_key: requirement:WR-012
+            verdict: covered
+        batch_size: 6
+        recorded_items: 26
+    - id: 51d161b2d7a6997f88e2d5c41643a2eb94233e578502f75f03d92fdabb77e8e8
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        items:
+          - item_index: 26
+            item_key: requirement:WR-013
+            verdict: covered
+          - item_index: 27
+            item_key: requirement:WR-014
+            verdict: covered
+          - item_index: 28
+            item_key: profile:core
+            verdict: covered
+          - item_index: 29
+            item_key: profile:backend
+            verdict: covered
+          - item_index: 30
+            item_key: profile:data
+            verdict: covered
+          - item_index: 31
+            item_key: profile:operations
+            verdict: covered
+        batch_size: 6
+        recorded_items: 32
+    - id: a9d5086f78fad2cf013684d2ef8d453ebba1c1dae03ee8893d57ad2a9ffaf945
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        consistency_status: consistent
+    - id: 244cac8e82cbfd1974eaacee25ac8217545f8b440083f77a5b6025d53785346b
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        coverage_status: reviewed
+        source_version: d6499cf2486dbf002516f0977d1f9f951a9bce97eadc44e553f99d035561aae4
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: b847333b00ce2e62a701ee326c835a8013f1554ac72e8ea1d26a8a7720e3a32f
+      result:
+        review_ref: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+        approval_observed: true
+specification_reviews:
+  version: 1
+  runs:
+    - id: b4668494-2caa-41fe-ae73-d756aa6082e0
+      source_version: 345c12557dec017f7dba829464bd36932d866eea21f42c37a1f18b40e8e988b1
+      specification_version: c1b8042c6009a8a5522f9d5e79a5f25cd10f3104aa980f6aa02886eef49f1efa
+      status_at_start: Draft
+      created_at: 2026-10-11T11:30:02.463Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475,
+            verdict: covered,
+            explanation: "WR-001 retains one remediation specification and separates this stage from implementation. WR-013 requires planning-to-check traceability, discriminating RED/PROVE evidence, final-state checks and truthful handling of failed or unavailable checks, preserving both requested regression protection and implementation verification.",
+            requirement_ids: [WR-001, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400,
+            verdict: covered,
+            explanation: The actual answer selects one specification for all nine issues. WR-001 retains all nine and separate ownership; WR-012 retains the external compression issue with distinct live qualification and does not count repository tests as its completion. No source-authorized split is invented.,
+            requirement_ids: [WR-001, WR-012],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3,
+            verdict: covered,
+            explanation: WR-001 excludes platform expansion and installation/publication. WR-014 preserves Node.js >=22.20.0 and distinct host distributions while labeling local qualification and executed checks Linux-only; the separately inventoried published-platform fact explains the retained cross-platform runtime support.,
+            requirement_ids: [WR-001, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "The confirmed Deep scope, four active profiles, all nine issues and two declared planning artifacts are represented by WR-001 through WR-014. WR-001 preserves canonical schema ownership and stage boundaries; WR-012 separates external ownership/evidence; WR-014 retains runtime/host support without implying broader executed qualification. The immutable proposal's confirmed:false is not the current manifest state.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2,
+            verdict: covered,
+            explanation: "All nine reported conditions have explicit observable coverage: WR-002 distinguishes valid decision pins from Markdown pins; WR-003 preserves accepted global architecture before Roadmap; WR-004 adds independent post-pass recheck with verified inheritance and fresh consistency; WR-005 reconstructs exact draft records; WR-006 supplies actual field/subject/bound diagnostics and examples; WR-007/008 manage contexts, complete continuations, checkpoints and safe recovery; WR-009 identifies the serving build; WR-010 separates source and verdict digests; WR-011 presents technology/component/state/integration checkpoints; WR-012 preserves exact compressed-channel machine data and original retrieval. WR-013 adds regression proof and WR-014 preserves compatibility. The report's prior passing targeted tests are not promoted into RED/PROVE or live external evidence.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60,
+            verdict: covered,
+            explanation: "The two already-present fixes remain behavioral requirements with negative provenance/applicability checks. WR-013 explicitly treats their existing passing tests as insufficient RED evidence and requires isolated PROVE for both original defects, preserving unrelated worktree changes and distinguishing build/tests from installation or broader completion.",
+            requirement_ids: [WR-002, WR-003, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00,
+            verdict: covered,
+            explanation: "The actual free-text answer prefers MCP and permits commands only when needed; it does not select the proposed library/runner option. WR-007 follows that preference, makes a separate client/CLI optional, and retains supported session handling. WR-008 adds exact continuation and bounded safe recovery without broadening into all workflow orchestration.",
+            requirement_ids: [WR-007, WR-008],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242,
+            verdict: covered,
+            explanation: The requirements preserve established full/gaps review and generation-reader contracts while adding post-pass review and draft readers. Diagnostics reuse the existing model; serving-build identity resolves the generic development version; architecture presentation augments the existing material-technology checkpoint. WR-010 makes the documented verdict hash meaning additive and explicit rather than changing historical semantics.,
+            requirement_ids: [WR-004, WR-005, WR-006, WR-009, WR-010, WR-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38,
+            verdict: covered,
+            explanation: WR-014 preserves the published Linux/macOS/Windows Node.js runtime support and explicitly distinguishes it from Linux-only executed qualification. Its acceptance requires reporting unexecuted combinations and forbids treating simulated path cases as executed OS runs.,
+            requirement_ids: [WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: requirement:WR-001,
+            verdict: covered,
+            explanation: "WR-001 is justified by the original remediation request, the explicit all-nine boundary answer, the confirmed scope and the reported issue list. It preserves specification-stage limits and makes external acceptance visible without adding installation or publication authority.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400, revision: 3 },
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+              ],
+          },
+          {
+            item_index: 10,
+            item_key: requirement:WR-002,
+            verdict: covered,
+            explanation: "WR-002 faithfully preserves the reported source-kind correction: empty decision elements are valid, empty semantic Markdown elements are not. Identity, digest, lineage and ready-PRD safeguards are retained, and negative tests must prove rejection has no durable effects. The verified baseline supports treating this as an existing fix requiring regression proof.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 11,
+            item_key: requirement:WR-003,
+            verdict: covered,
+            explanation: "WR-003 preserves the reported accepted global architecture form before Roadmap, including global:true and empty stage_refs, without the misleading hypothesis downgrade. Invalid mixed applicability and existing provenance/PRD safeguards remain excluded; readback and absence checks directly verify the intended correction.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 12,
+            item_key: requirement:WR-004,
+            verdict: covered,
+            explanation: "WR-004 implements the requested post-pass recheck while preserving independent judgment, unchanged-source verification and fresh whole-artifact consistency. Parent attribution, dependency-sensitive eligibility, deletion/move reconciliation and full-review fallback make the requested optimization safe without changing the separate specification-review workflow or existing gaps followup.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:WR-005,
+            verdict: covered,
+            explanation: "WR-005 implements the exact candidate/record/revision read-only scenario requested for both draft research and decision evidence. Complete persisted content, continuation snapshot binding and failure for missing/foreign/corrupt evidence prevent the reported need to infer body content from mutation receipts or ready-generation readers.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:WR-006,
+            verdict: covered,
+            explanation: "WR-006 directly covers the reported invalid subject and excessive limit examples, with actual registered alternatives, field paths and applicable bounds. Stable codes, redaction, bounded discovery and no-write rejection are compatible safeguards for the requested actionable diagnostic and correct-call examples.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:WR-007,
+            verdict: covered,
+            explanation: "WR-007 is grounded in the reported context/continuation burden and the actual MCP-first free-text answer. It specifies supported session behavior without requiring the unselected library/CLI option, preserves opaque identities, reconciles other-writer changes and prevents session automation from supplying semantic decisions or user consent.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:WR-008,
+            verdict: covered,
+            explanation: "WR-008 makes the requested pagination, saved-result and restart handling observable: exact complete portions, request/effect checkpoints, one contract-supported exact recovery replay and stops for unknown effects or locks. These safeguards directly address the reported workflow reliability problem without adding a general store, lifecycle manager or automatic lock recovery.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:WR-009,
+            verdict: covered,
+            explanation: "WR-009 resolves the requested actual-running-version diagnostic and the verified constant development-version limitation. Loaded-build identity, capability disclosure and restart-sensitive acceptance distinguish the serving process from a rebuilt checkout, without authorizing global installation or restart.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:WR-010,
+            verdict: covered,
+            explanation: WR-010 faithfully distinguishes the report's original-source hash from the saved verdict object hash. Defining hash domains and preserving object_sha256 through additive compatibility protects current and historical consumers; no source condition authorizes silently changing existing meaning or rewriting retained evidence.,
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:WR-011,
+            verdict: covered,
+            explanation: "WR-011 preserves the report's technology, component, data-flow, state-owner and unverified-integration checkpoint. Existing choices and actual user answers remain authoritative; proportionality and justified non-applicability prevent expansion into unrequested infrastructure. The requirement correctly distinguishes instruction quality from proof of live model execution.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:WR-012,
+            verdict: covered,
+            explanation: "WR-012 retains every listed critical machine-data class and permits prose compression only with exact availability or bounded original retrieval. Snapshot identity, intact serialization, marker/truncation failures and separate real-path acceptance directly address the reported compression boundary without claiming repository-only work fixes the external installation.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 }],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:WR-013,
+            verdict: covered,
+            explanation: "WR-013 derives from the explicit regression/correctness request and the known already-applied fixes. Planning traceability, discriminating RED/PROVE, final-state checks and honest incomplete outcomes make the requested protection verifiable; isolated defect reintroduction avoids treating the existing passing baseline as discriminating proof.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 22,
+            item_key: requirement:WR-014,
+            verdict: covered,
+            explanation: "WR-014 preserves the inventoried runtime/host contracts and relevant immutable evidence, read-only and privacy boundaries. Its cross-platform support statement is justified by the explicit published-platform fact, while executed qualification remains Linux-only. Compatibility and rollback safeguards preserve existing scope rather than adding platforms or a deployment guarantee.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: cdaf714e-d286-4228-baad-c090105b3a38, revision: 2 },
+              ],
+          },
+          {
+            item_index: 23,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "Core is material because independently consumed MCP tools and generated host skills are changing. The requirements define observable review/read/session inputs and identities, errors and no-write effects, exact ordering and repeat/recovery behavior, compatible digest evolution and host generation checks. WR-007 conditionally defines command stdout/stderr/status/cancellation without mandating an unselected CLI. WR-014 retains existing configuration and platform boundaries; no new configuration schema or lifecycle installer is in scope. The declared MCP contract and scenarios provide the planning handoff without choosing internal modules. No further material uncovered core scenario was found.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-010,
+                WR-011,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 24,
+            item_key: profile:backend,
+            verdict: covered,
+            explanation: "Backend applies to local MCP RPC, not a new HTTP service. Inputs, validation, success/state effects, exact snapshot pagination, stable diagnostic codes, concurrency/context handling and replay/unknown-outcome recovery are specified across the affected operations. Lost responses, interrupted portions and incompatible capabilities have explicit observable failure and recovery acceptance. Existing process-permission, locking and reference boundaries remain authoritative under WR-014, so new authentication, network rate limits or service availability targets would be unsupported additions. Additive fields and old-client/historical-state checks cover independently deployed consumers. No additional material backend gap was found.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 25,
+            item_key: profile:data,
+            verdict: covered,
+            explanation: "Data is material because immutable source records, exact revisions, retained review attribution and checkpoints participate in reuse/recovery. Requirements specify identity/digest/lineage invariants, allowed applicability transitions, no-write invalid paths, duplicate and concurrent-change outcomes, conservative inheritance and corrupt/missing evidence rejection. WR-010/014 preserve old records and consumers, forbid migration during reads and require explicit recoverable writable transitions and non-destructive rollback. WR-008 limits checkpoint retention to task-relevant non-sensitive evidence; automatic deletion, new retention migration and power-loss guarantees are explicitly outside this delivery. Normal, invalid, repeated, interrupted and retained-state recovery are observable. No further material data gap was found.",
+            requirement_ids:
+              [WR-002, WR-003, WR-004, WR-005, WR-008, WR-010, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 26,
+            item_key: profile:operations,
+            verdict: covered,
+            explanation: "Operations is material because server/consumer drift, unknown mutation outcomes and an external compression path can yield false completion. Bounded redacted diagnostics, serving-loaded-build identity, capabilities, continuation integrity, checkpoints, one safe exact replay and explicit stop/recovery conditions provide outcome evidence. Cancellation, lost replies, checkpoint failure, stale author context, old/new serving processes, compatible rollback and isolated-platform qualification are covered. WR-012 requires a real configured-path round trip and separate external ownership/version evidence; repository tests cannot close that dependency. No traffic, availability or latency commitment in confirmed scope warrants invented SLOs. No further material operational gap was found.",
+            requirement_ids:
+              [WR-001, WR-006, WR-007, WR-008, WR-009, WR-012, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 27,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "Read the complete current specification and all 27 saved detailed outcomes after following every final-item continuation. The introduction and verified-baseline section add no unsupported completion claim: the existing two fixes and targeted Linux baseline remain distinct from planned RED/PROVE, full-suite, live runtime and external compression evidence. WR-001 through WR-014 consistently preserve all nine issues, the confirmed four-profile scope and two planning artifacts. Public identifiers and their semantics agree: decision element_ids remain kind-specific, accepted_target global applicability precedes Roadmap without removing PRD provenance, product post-pass review remains separate from specification review, and object_sha256 retains its verdict-object meaning. Optional commands do not contradict MCP-first delivery or the lifecycle-CLI exclusion. Complete reads, immutable snapshot pins, independent fresh consistency, safe exact replay, unknown-outcome stops and non-mutating diagnostics are mutually compatible. WR-012's external unverified state and WR-014's Linux-only executed evidence prevent broader false completion claims. No cross-section contradiction or untraced material promise was found.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 5a5f5c2f5c5a4e9247fc930db7e27ecdb31d4195994f1f9784e1612e711edfb0
+      consistency:
+        verdict: consistent
+        explanation: "Read the complete current specification and all 27 saved detailed outcomes after following every final-item continuation. The introduction and verified-baseline section add no unsupported completion claim: the existing two fixes and targeted Linux baseline remain distinct from planned RED/PROVE, full-suite, live runtime and external compression evidence. WR-001 through WR-014 consistently preserve all nine issues, the confirmed four-profile scope and two planning artifacts. Public identifiers and their semantics agree: decision element_ids remain kind-specific, accepted_target global applicability precedes Roadmap without removing PRD provenance, product post-pass review remains separate from specification review, and object_sha256 retains its verdict-object meaning. Optional commands do not contradict MCP-first delivery or the lifecycle-CLI exclusion. Complete reads, immutable snapshot pins, independent fresh consistency, safe exact replay, unknown-outcome stops and non-mutating diagnostics are mutually compatible. WR-012's external unverified state and WR-014's Linux-only executed evidence prevent broader false completion claims. No cross-section contradiction or untraced material promise was found."
+      approval_observed: true
+    - id: b369706b-206d-44ce-aa44-7b8210cef5e7
+      source_version: 4fc6fb3d5c4c5546402c4faf7e047da0fe1e634ba54d5505934429efc06bbcd7
+      specification_version: 4e4946edefb474e15ca69289cf4a463625059ecbdd4402ec7ca6d554b16f72cf
+      status_at_start: Draft
+      created_at: 2026-10-16T17:14:24.057Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475,
+            verdict: covered,
+            explanation: "WR-001 keeps one bounded remediation for all nine issues and declares planning ownership without implementing it. WR-013 requires per-requirement discriminating executable checks, RED/GREEN/PROVE as applicable, final-state pass evidence and explicit incomplete results, preserving the user's prevention and correctness conditions.",
+            requirement_ids: [WR-001, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400,
+            verdict: covered,
+            explanation: "The exact boundary question and all three source revisions show the explicit all-nine selection. WR-001 preserves the complete joint delivery and separates MCP, Technical Design and external Headroom ownership; no reported class is deferred or dropped.",
+            requirement_ids: [WR-001],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3,
+            verdict: covered,
+            explanation: "WR-001 excludes new platform/installation/publishing scope. WR-014 preserves the existing Node.js >=22.20.0 runtime and separate host distributions and confines required qualification to Linux, with macOS/Windows cancellation explicitly separated from retained published runtime support.",
+            requirement_ids: [WR-001, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "The current confirmed manifest matches the saved explicit Deep proposal and active core/backend/data/operations set; scope.confirmed:false belongs only to the immutable proposal. WR-001 preserves both declared planning artifacts and canonical schema ownership; WR-002–WR-012 cover the listed outcomes, WR-013 defines verification and WR-014 preserves host/runtime boundaries. No implementation/global/external mutation authority is inferred.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2,
+            verdict: covered,
+            explanation: "Read the full nine-issue report and predecessor. Issue 1's decision-vs-Markdown validation/provenance is WR-002; issue 2's accepted global architecture before Roadmap without hypothesis substitution is WR-003. WR-004 preserves independent changed-block plus whole-artifact review after success with verified inheritance and full-review fallback. WR-005 supplies exact revision-bound complete draft research/decision reads. WR-006 covers subject/bounds diagnostics and valid examples. WR-007/008 cover sequential returned contexts, post-review reconciliation, pagination, checkpoints and bounded safe replay; WR-009 identifies the loaded serving build. WR-010 preserves object_sha256's verdict meaning while exposing source digests. WR-011 requires technology decisions, components/flows/state owners and assumptions before review, without claiming the report proves a skill defect. WR-012 requires exact data and reliable original retrieval across the real external boundary, separate from repository proof; WR-013 defines regression/correctness proof and WR-014 retains compatibility. All nine independent obligations survive.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60,
+            verdict: covered,
+            explanation: "WR-002/003 retain the two existing corrected behaviors. WR-013 explicitly requires isolated PROVE for these already-implemented fixes and disallows import/harness failures as evidence, avoiding a retrospective RED claim. The dated Verified baseline is limited to the historical targeted build/five-test evidence; it does not claim current full-suite, installed runtime, commit or installation verification.",
+            requirement_ids: [WR-002, WR-003, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00,
+            verdict: covered,
+            explanation: "The actual free-text answer prioritizes MCP and permits needed commands; it did not select a mandatory library/runner. WR-007 reflects exactly that choice while preserving the requested context/session flow. WR-008 covers complete pagination, checkpoints and safe bounded retries/recovery; the conditional command stdout/stderr/exit/cancellation contract does not force an unnecessary CLI.",
+            requirement_ids: [WR-007, WR-008],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242,
+            verdict: covered,
+            explanation: WR-004 adds post-pass product review without replacing existing gaps followup; WR-005 adds draft-bound readers while preserving generation readers; WR-006 reuses bounded diagnostics where applicable. WR-009 requires loaded executable identity rather than the reported generic version. WR-010 clarifies existing verdict hash semantics compatibly. WR-011 strengthens the stated architecture presentation checkpoint without claiming historical skill execution has been proven correct.,
+            requirement_ids: [WR-004, WR-005, WR-006, WR-009, WR-010, WR-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38,
+            verdict: covered,
+            explanation: WR-014 retains the published Linux/macOS/Windows Node.js runtime contract and explicitly distinguishes it from executed qualification. It neither expands support nor reports unexecuted OS/runtime checks as passed; Linux-only acceptance is authorized by the later source rather than inferred from historical Linux evidence.,
+            requirement_ids: [WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47,
+            verdict: covered,
+            explanation: "The direct human follow-up cancels qualification on macOS and Windows and requires Linux-only checking; it does not withdraw published runtime support or external/host requirements. WR-014 explicitly cancels those OS checks, excludes them as prerequisites and forbids false passed results, while retaining runtime/portable-path/host/store guarantees. WR-013's required-check rule is scoped by this cancellation, preserving all retained Linux and other still-required verification.",
+            requirement_ids: [WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 10,
+            item_key: requirement:WR-001,
+            verdict: covered,
+            explanation: "WR-001 faithfully preserves the initial prevention/correctness request, explicit all-nine boundary, platform non-expansion and issue report. Ownership and excluded implementation/global/publication work match the confirmed scope; external failure cannot disappear behind a repository pass.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400, revision: 3 },
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+              ],
+          },
+          {
+            item_index: 11,
+            item_key: requirement:WR-002,
+            verdict: covered,
+            explanation: "WR-002 implements the reported source-kind distinction without weakening source identity, digest, lineage or ready provenance. Its negative cases and before/after state comparison preserve the existing trust boundary while excluding the original false SOURCE_CHANGED rejection.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 12,
+            item_key: requirement:WR-003,
+            verdict: covered,
+            explanation: "WR-003 expresses the reported global accepted_target fix faithfully: accepted state and PRD/decision provenance survive before Roadmap; exactly one global/stage form is allowed. Absence of Roadmap writes and invalid applicability rejection are observable.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:WR-004,
+            verdict: covered,
+            explanation: "WR-004 derives from the successful-review issue and known product followup constraints. It adds a distinct explicit product mode, exact parent/current pins, independent changed/affected judgments, verified unchanged inheritance, fresh consistency and full fallback. It preserves prior modes and does not authorize standalone specification changes or fabricated verdicts.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:WR-005,
+            verdict: covered,
+            explanation: "WR-005 derives from the missing draft reader issue and existing generation-based boundary. It defines exact candidate/record/revision provenance, bounded reconstructable full content, snapshot-bound cursors and explicit missing/corrupt/foreign failure; non-mutation and no activation preserve existing consumers.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:WR-006,
+            verdict: covered,
+            explanation: "WR-006 derives from the concrete subject and limit errors and established diagnostics. It specifies useful schema/state-aware bounded details, permitted subject discovery, privacy, examples matching schemas, corrected success and no invalid-call writes. It introduces no unauthorized auto-correction or subject creation.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:WR-007,
+            verdict: covered,
+            explanation: "WR-007 is faithful to report issue 6 and the actual free-text MCP-first answer. It requires supported sequential context/exact-read/checkpoint/recovery handling but leaves a command conditional, preserving the user choice rather than imposing the original recommended library. Identity separation, reopen-after-review, actor-owned decisions and valid command channels bound the consumer contract.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:WR-008,
+            verdict: covered,
+            explanation: "WR-008 is justified by issue 6's pagination/retry/completeness/recovery request and confirmed operations/data scope. It makes complete acknowledgement versus partial/unknown effects explicit, bounds automatic mutation recovery to one evidence-supported exact attempt, and requires stopping with an actionable checkpoint on unresolved effects. No new shared store or unrequested cleanup is imposed.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:WR-009,
+            verdict: covered,
+            explanation: "WR-009 directly addresses issue 6's serving-version diagnostic request and the recorded generic-version limitation. Loaded executable identity, explicit unavailable/incompatible states, isolated-restart acceptance and unchanged global configuration prevent the false inference that a checkout rebuild updates a registered process.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:WR-010,
+            verdict: covered,
+            explanation: "WR-010 preserves issue 7's exact object_sha256 verdict semantics and explicitly separates source/verdict digest objects and canonicalization. Additive representation, retained aliases/history and old-consumer acceptance meet compatibility without authorizing silent migration or a breaking field reinterpretation.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:WR-011,
+            verdict: covered,
+            explanation: "WR-011 follows report issue 8 and the existing Technical Design obligation: reuse accepted constraints, resolve material choices with actual answers, then show component responsibilities/dependencies/data flows/state owners and assumptions before review. Proportional non-applicability avoids inventing a stack; host-correct questions and independent judgments preserve portability and actor ownership.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:WR-012,
+            verdict: covered,
+            explanation: "WR-012 faithfully covers report issue 9's exact schema/context/cursor/reference/hash/receipt requirements and reliable originals. It explicitly rejects another marker, wrong revision or truncation, bounds retrieval and separates repository contracts from real external round-trip evidence. It keeps external changes separately scoped and makes missing owner/version/evidence visibly unverified.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 }],
+          },
+          {
+            item_index: 22,
+            item_key: requirement:WR-013,
+            verdict: covered,
+            explanation: "WR-013 grounds preventive checks and correctness in the initial instruction and nine-issue source, with explicit PROVE for the recorded pre-existing fixes rather than fabricated RED. It defines observable negative checks, public boundaries and final-state pass/incomplete reporting. The later Linux-only instruction changes which OS checks are required via WR-014, without weakening retained verification or making optional independent reviews gates.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+              ],
+          },
+          {
+            item_index: 23,
+            item_key: requirement:WR-014,
+            verdict: covered,
+            explanation: "WR-014 preserves the original host/runtime/storage/privacy contracts and uses the explicit later human instruction only to cancel macOS/Windows qualification. Linux remains the required qualification environment; preserved published runtime support is explicitly separate. Read-only/nonactivation/history, recoverable writable transitions, rollback and isolated-home checks maintain the unchanged trust boundary without promising new platform support.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: cdaf714e-d286-4228-baad-c090105b3a38, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+              ],
+          },
+          {
+            item_index: 24,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "Applied the confirmed core reference to the actual scope: WR-001 identifies consumer/ownership and non-goals; WR-004/007/008 define review/session interfaces, opaque identities, ordering/repeat/interruption/recovery and conditional command channels; WR-010/014 preserve version/host/data compatibility; WR-011 covers host-correct questions. No new configuration schema or unconditional CLI is introduced, so reload/CLI option catalogues are not required. Required Linux qualification is explicitly distinct from retained runtime support. The stated tests observe invalid/repeated/interrupted/mixed-consumer outcomes; no additional material core gap found.",
+            requirement_ids:
+              [WR-001, WR-004, WR-007, WR-008, WR-010, WR-011, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 25,
+            item_key: profile:backend,
+            verdict: covered,
+            explanation: "Applied the backend reference to local MCP scenarios, with no HTTP service or new authentication system. Exact actors/pins and ready/source validation are preserved in WR-002–005; WR-005/008 bound pagination/snapshots, incomplete/unknown effects, concurrency and recovery; WR-006/009 define stable actionable errors/capability failure. WR-007 serializes dependent writes without silently rebasing. WR-010/014 preserve independently deployed consumers and legacy data. Timeout/lost-response behavior is covered as unknown outcome requiring safe recovery, not successful transport. Rate-limit/SLO machinery is not established as material for this bounded local scenario change. No further material gap found.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 26,
+            item_key: profile:data,
+            verdict: covered,
+            explanation: "Applied the data reference to persisted exact records and review reuse. WR-002–005/007 establish identity/lineage/candidate/revision and valid transitions; WR-004 preserves attributed immutable history and rejects false inherited current coverage; WR-005/008/012 require complete exact reconstruction and explicit corrupt/partial/concurrent failure. WR-008 minimizes sensitive checkpoint data without introducing retention migration/deletion. WR-010/014 retain compatible historical reads, explicit recoverable writable transitions and non-destructive rollback. Linux encoding/path acceptance preserves invariants without requiring cancelled native OS tests. No new export/backfill/deletion feature or material missing data obligation is justified by the confirmed scope.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-007,
+                WR-008,
+                WR-010,
+                WR-012,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 27,
+            item_key: profile:operations,
+            verdict: covered,
+            explanation: "Applied the operations reference to bounded retries, serving identity and external compression. WR-007/008 define restart/checkpoint/cancellation/concurrent-source and unknown-effect recovery with no unsafe lock removal or unlimited replay. WR-009 separates loaded process artifacts from checkout/build and requires explicit compatible capability diagnostics; controlled isolated restart does not authorize changing real clients. WR-012/013 require separate live external evidence and honest incomplete results; WR-014 bounds Linux qualification and cancels macOS/Windows runs while preserving support. No new availability/latency/throughput target or deployment system is in scope. Remaining external execution evidence is an implementation/qualification gate, not an omitted specification scenario.",
+            requirement_ids:
+              [WR-001, WR-007, WR-008, WR-009, WR-012, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 28,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "Read all 28 acknowledged detailed outcomes and the full exact current specification/confirmed manifest in the terminal consistency source. The complete Markdown matches the previously read current file. Outcome prose is bounded by WR-001 and historical baseline is explicitly dated and limited, not current installed-runtime proof. All nine issue obligations retain owned requirements; WR-004's product-only post-pass review does not alter this specification review lifecycle. WR-007's MCP-first choice and conditional command contract agree with the actual answer; WR-008's exact one-attempt replay and stop-on-unknown rules agree with actor-owned semantic decisions. Source versus verdict hashes, read-only exact draft access and immutable history remain consistent across WR-005/010/014. WR-011 preserves actual user decisions before readiness and independent review. WR-012/013 distinguish repository tests, live external compression, serving-process evidence and simulated skill fixtures without turning one pass into another. WR-014 explicitly cancels only macOS/Windows qualification, retains published runtime support and Linux acceptance, and therefore narrows WR-013's required-check set without a false OS pass or cancellation of retained Linux/external obligations. The four active profiles and two planning artifacts match confirmed scope; no unsupported normative promise, lifecycle contradiction or material whole-spec gap was found. This is specification completeness only, not implementation, live qualification or author approval.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 575fabedd308099029d4f64569a318a5607ad67fecb58a89a84168f9d2d18d3b
+      consistency:
+        verdict: consistent
+        explanation: Read all 28 acknowledged detailed outcomes and the full exact current specification/confirmed manifest in the terminal consistency source. The complete Markdown matches the previously read current file. Outcome prose is bounded by WR-001 and historical baseline is explicitly dated and limited, not current installed-runtime proof. All nine issue obligations retain owned requirements; WR-004's product-only post-pass review does not alter this specification review lifecycle. WR-007's MCP-first choice and conditional command contract agree with the actual answer; WR-008's exact one-attempt replay and stop-on-unknown rules agree with actor-owned semantic decisions. Source versus verdict hashes, read-only exact draft access and immutable history remain consistent across WR-005/010/014. WR-011 preserves actual user decisions before readiness and independent review. WR-012/013 distinguish repository tests, live external compression, serving-process evidence and simulated skill fixtures without turning one pass into another. WR-014 explicitly cancels only macOS/Windows qualification, retains published runtime support and Linux acceptance, and therefore narrows WR-013's required-check set without a false OS pass or cancellation of retained Linux/external obligations. The four active profiles and two planning artifacts match confirmed scope; no unsupported normative promise, lifecycle contradiction or material whole-spec gap was found. This is specification completeness only, not implementation, live qualification or author approval.
+      approval_observed: true
+    - id: 8090f5b2-5a46-4511-9774-32295157cf1f
+      source_version: 80aaa57b348e0c17731b6f9f23f9d92cd0826a3d1fe0ada37a9806e1edd30767
+      specification_version: 113ef10ec396f650c5d6f66d93e7dedc131faf1c1512717f54ec5da756a63dfd
+      status_at_start: Draft
+      created_at: 2026-10-16T17:50:11.360Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475,
+            verdict: covered,
+            explanation: "The original instruction requires one prevention/correctness plan. WR-001 preserves specification/planning ownership and all-nine scope; WR-013 requires discriminating checks, applicable RED/GREEN/PROVE, final pass evidence and explicit incomplete checks. Restored platform requirements are included through WR-014 rather than omitted from the required-check rule.",
+            requirement_ids: [WR-001, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400,
+            verdict: covered,
+            explanation: "The complete boundary question and actual all-nine answer retain one delivery with separate repository/skill/external ownership. WR-001 preserves all nine issues, includes external evidence and disallows treating a local result as an external fix. The later qualification reversal does not split or defer any issue.",
+            requirement_ids: [WR-001],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3,
+            verdict: covered,
+            explanation: "WR-001 retains no new platforms, host/deployment/install/publish scope; WR-014 preserves existing Node >=22.20.0 and host distributions. Linux qualification and restored native pairs concern existing support. Their execution is not inferred from the historical Linux development fact.",
+            requirement_ids: [WR-001, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "The current scope_get manifest remains confirmed Deep with exactly core/backend/data/operations and two planning artifacts. The historical proposal's confirmed:false remains a proposal field. WR-001 preserves artifact ownership and exclusions; WR-002–WR-012 cover all nine selected problem classes, WR-013 verification and WR-014 existing-platform compatibility/qualification. Later one-off execution grants do not redefine this reusable behavioral scope.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2,
+            verdict: covered,
+            explanation: The full original report and predecessor retain nine separate obligations. WR-002 distinguishes valid decision versus Markdown elements with provenance; WR-003 preserves accepted global architecture before Roadmap. WR-004 provides independent changed/affected review after pass plus verified inheritance and fresh consistency. WR-005 supplies complete draft evidence by candidate/id/revision; WR-006 actionable subject/range diagnostics and examples. WR-007/008 retain MCP-first context/pagination/checkpoint/retry completeness; WR-009 identifies loaded runtime. WR-010 separates source/verdict digests without redefining object_sha256. WR-011 requires material choices/components/flows/state owners before review. WR-012 requires lossless external exact channels/retrieval and separate live evidence; WR-013 preventive proof and WR-014 compatibility/required platforms preserve shared constraints. No reported material condition is lost.,
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60,
+            verdict: covered,
+            explanation: "WR-002/003 preserve the reported two existing fixes with provenance and no-write rejection checks. WR-013 requires explicit isolated PROVE for tests that postdate these fixes, not invented retrospective RED. The dated baseline is bounded to the original targeted build/five tests and explicitly excludes full-suite/current-installed-runtime proof.",
+            requirement_ids: [WR-002, WR-003, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00,
+            verdict: covered,
+            explanation: "The actual free-text answer prioritizes MCP but allows needed commands, without selecting a mandatory client library. WR-007 matches that choice and session/context identity behavior; WR-008 covers complete continuations, checkpoints and bounded safe replay. Conditional stdout/stderr/exit/cancellation rules constrain an optional needed command rather than expanding into a new lifecycle CLI.",
+            requirement_ids: [WR-007, WR-008],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242,
+            verdict: covered,
+            explanation: "WR-004 retains existing full/gaps behavior while adding post-pass product review; WR-005 preserves generation readers while adding complete draft-bound reads. WR-006 reuses actionable diagnostics, WR-009 requires serving executable identity instead of a generic version, WR-010 preserves existing verdict-hash semantics and compatibility, and WR-011 makes architecture presentation/choices explicit without asserting past live skill correctness.",
+            requirement_ids: [WR-004, WR-005, WR-006, WR-009, WR-010, WR-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38,
+            verdict: covered,
+            explanation: "WR-014 preserves the published Node>=22.20.0 Linux/macOS/Windows support contract and separate host distributions. Required Linux22.20/24.14 plus restored four native pairs are execution acceptance, not evidence that those OS runs occurred. Missing native results explicitly leave qualification incomplete, so the historical Linux-only execution evidence cannot establish a native pass.",
+            requirement_ids: [WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47,
+            verdict: covered,
+            explanation: "The earlier direct Linux-only instruction remains exact historical evidence. The later explicit platform clarification in source30bf0846 resolves its conflict; WR-014 expressly supersedes only that qualification exclusion, preserves runtime support, and disallows an unexecuted pass. WR-013 retains the required-check rule for the now-restored acceptance set. The old instruction is not silently erased or treated as current scope.",
+            requirement_ids: [WR-014, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 10,
+            item_key: source:83a4e79d-4f6e-4653-834d-253db672367b,
+            verdict: not_applicable,
+            explanation: "The complete actual question/answer authorizes one operational delivery of the already reviewed112-HEAD-difference snapshot, its listed prerequisites, one isolated commit and one new named branch push to the named repository, launching four jobs. It does not request new reusable product behavior, platform support or general publication/global authority. Its context classification is justified only for that exact one-off execution scope, which remains binding on the execution owner. Native acceptance is separately behavioral in source30bf0846/WR-014. Excluding this grant from product requirements neither cancels it nor widens it.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+          {
+            item_index: 11,
+            item_key: source:bc874d5e-412c-4846-9d43-5c5b075e0aac,
+            verdict: not_applicable,
+            explanation: "Read the full original bounded question and actual answer: at most9 additional compress plus9 retrieve, cumulative47 pairs/140081 bytes including all possible earlier calls, existing shared-cache effects, no restart/configuration change. This is one external qualification batch authorization, not a reusable behavior change or a relaxation of WR-012/013. Its execution limits remain binding outside the product specification. Explicit pair success cannot establish registered-MCP identity or automatic-path qualification; authorization alone cannot be a pass.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+          {
+            item_index: 12,
+            item_key: source:30bf0846-fd2c-4744-89fc-f741e4660bda,
+            verdict: covered,
+            explanation: "The direct conflict-resolution answer explicitly restores the four macOS15/Windows2025×Node22.20.0/24.14.0 checks plus the already bounded branch delivery. WR-014 restores exactly those four native acceptance combinations, retains Linux22.20/24.14 and runtime support, explicitly supersedes the earlier Linux-only exclusion, and requires pending/unexecuted results to stay incomplete. WR-013 supplies the required-check evidence rule. The branch-delivery portion is preserved as source83a4e79d's one-off execution context, not dropped or turned into a runtime promise.",
+            requirement_ids: [WR-014, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:WR-001,
+            verdict: covered,
+            explanation: "WR-001 is supported by the initial prevention instruction, explicit all-nine answer, established platform boundary and full issue report. It preserves separate MCP/skill/external ownership, canonical contracts and stage-specific exclusions. A separately scoped one-off delivery does not turn the specification itself into an implementation/publication action.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400, revision: 3 },
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:WR-002,
+            verdict: covered,
+            explanation: "WR-002 faithfully addresses report issue1 and the recorded existing fix: empty decision elements are valid, Markdown elements required, and identity/digest/lineage/readiness remain mandatory. Negative rejection and durable-state comparison make the intended preservation independently observable.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:WR-003,
+            verdict: covered,
+            explanation: "WR-003 faithfully addresses report issue2 and baseline: accepted product-global architecture precedes Roadmap without hypothesis substitution or Roadmap writes. The global/stage exclusivity and preserved PRD provenance prevent the fix from weakening stage/source validation.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:WR-004,
+            verdict: covered,
+            explanation: "WR-004 directly addresses report issue3 and the existing gaps-followup boundary. Its distinct post-pass product mode requires independent changed/affected judgments, verified attributed inheritance, current pins and fresh consistency, with full-review fallback and retained old modes. It does not broaden this standalone specification-review lifecycle.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:WR-005,
+            verdict: covered,
+            explanation: "WR-005 directly addresses report issue4 and existing generation readers. It defines complete read-only candidate/id/revision access, exact provenance, reconstructable bounded continuations, snapshot-bound cursors and explicit corrupt/foreign/stale failure without activation or migration.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:WR-006,
+            verdict: covered,
+            explanation: "WR-006 is supported by the concrete subject/limit errors and existing diagnostics. Field paths, categories, types/ranges, bounded registered-subject discovery, redaction and executable schema/state-correct examples preserve actionable failure without unauthorized auto-correction or durable effects.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:WR-007,
+            verdict: covered,
+            explanation: "WR-007 matches the actual MCP-first answer and report issue6. Sequential returned contexts, isolated identities, post-review reopen/effect inspection and recoverable interruption address the stated burden; command delivery remains conditional, and actor-owned answers/verdicts cannot be manufactured.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:WR-008,
+            verdict: covered,
+            explanation: "WR-008 derives from issue6 and confirmed data/operations risk: complete exact continuations, distinct acknowledged/partial/unknown effects, one evidence-supported exact replay and explicit stop/recovery on unresolved drift/locks. It avoids unrequested new retention/cleanup/storage machinery while making false completion and duplicate writes testable.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:WR-009,
+            verdict: covered,
+            explanation: "WR-009 addresses issue6's actual-serving-version request and reported generic version. It distinguishes loaded executable identity from mutable checkout or rebuilt disk, explicitly blocks dependent incompatible capability use and confines controlled restart acceptance to isolated testing without changing real global clients.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 22,
+            item_key: requirement:WR-010,
+            verdict: covered,
+            explanation: "WR-010 faithfully clarifies issue7: existing object_sha256 remains the saved verdict-object digest, source pins stay separate and canonicalization/object identity is defined. Additive outputs, legacy aliases, unchanged historical records and old-consumer acceptance preserve compatibility rather than silently migrating or reinterpreting stored evidence.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 23,
+            item_key: requirement:WR-011,
+            verdict: covered,
+            explanation: "WR-011 follows issue8 and existing Technical Design obligations with actual material technology choices, proportionate components/dependencies/flows/state owners and explicit assumptions before review. It requires real user decisions where reserved, host-correct question tools and independent judgments, without making fixture/document checks proof of live skill execution.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 24,
+            item_key: requirement:WR-012,
+            verdict: covered,
+            explanation: "WR-012 follows issue9's exact schemas/contexts/cursors/refs/hashes/receipts and reliable original retrieval. It rejects truncation, unresolved replacement markers and wrong revisions, keeps bounded response handling and separates repository checks from the live external path. The one-off extra-pair grant changes permitted execution only; it does not remove identity/version/configuration/evidence prerequisites or auto-pass Q14.",
+            requirement_ids: [],
+            source_refs:
+              [{ id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 }],
+          },
+          {
+            item_index: 25,
+            item_key: requirement:WR-013,
+            verdict: covered,
+            explanation: "WR-013 remains faithful to the prevention/correctness request, full report and baseline, with applicable RED/GREEN/PROVE and required-final-state pass/incomplete reporting. Its links retain both historical Linux-only and explicit restoration instructions; WR-014 resolves their ordering. The now-restored native combinations remain required until actual qualifying evidence; CI/Headroom authorization alone does not meet this rule.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+                { id: 30bf0846-fd2c-4744-89fc-f741e4660bda, revision: 1 },
+              ],
+          },
+          {
+            item_index: 26,
+            item_key: requirement:WR-014,
+            verdict: covered,
+            explanation: "WR-014 faithfully preserves existing Node>=22.20.0 Linux/macOS/Windows runtime support, host isolation, portable storage/privacy/rollback safeguards and non-goals. The actual later answer restores exactly macOS15/Windows2025×Node22.20.0/24.14.0 while retaining Linux22.20/24.14. The earlier exclusion is explicitly historical/superseded; native absence remains incomplete and Linux cannot substitute. No published support expansion or false execution/pass is introduced.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: cdaf714e-d286-4228-baad-c090105b3a38, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+                { id: 30bf0846-fd2c-4744-89fc-f741e4660bda, revision: 1 },
+              ],
+          },
+          {
+            item_index: 27,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "Applied the unchanged confirmed core reference to review/session/host interfaces. WR-001 owns boundaries; WR-004/007/008 define exact identities, sequencing, repeat/interruption/recovery and conditional command channels; WR-010/014 preserve compatible consumers and generated host isolation. WR-014 now requires real restored native combinations for material OS/runtime/path/cancellation differences. No new configuration schema, general CLI or lifecycle command is requested; conditional configuration/CLI catalogues would add unsupported scope. No further material core omission found.",
+            requirement_ids:
+              [WR-001, WR-004, WR-007, WR-008, WR-010, WR-011, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 28,
+            item_key: profile:backend,
+            verdict: covered,
+            explanation: "Applied the confirmed backend reference to local MCP rather than a new HTTP service. Exact actor/source/ready validation, bounded snapshot pagination, stable actionable diagnostics, serial dependent writes, lost/partial/unknown effects and safe restart are defined across WR-002–009. WR-010/014 preserve independently deployed/legacy consumers and require the restored server OS/runtime evidence. No new authentication, capacity/rate-limit/SLO system is established as material. No additional relevant backend gap found.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 29,
+            item_key: profile:data,
+            verdict: covered,
+            explanation: "Applied the confirmed data reference to exact durable records and review attribution. Candidate/revision/lineage validity, immutable history, compatible additive outputs, non-mutating reads, partial/corrupt/concurrent rejection, explicit recoverable writable transitions and non-destructive rollback are covered. WR-008 minimizes sensitive checkpoint data without inventing new retention/deletion. WR-014 now requires relevant path/Unicode/cancellation preservation across Linux and all restored native pairs. No new export/backfill/deletion operation justifies extra artifacts or requirements.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-007,
+                WR-008,
+                WR-010,
+                WR-012,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 30,
+            item_key: profile:operations,
+            verdict: covered,
+            explanation: "Applied the confirmed operations reference to interrupted exact deliveries, loaded runtime identity and the external compression boundary. WR-007/008 specify bounded replay, checkpoints and stop-on-unknown recovery; WR-009 distinguishes serving versus built identity; WR-012/013 keep external evidence/capability failures explicit. WR-014 restores required native qualification without implying job success. The one-off CI and capped extra-pair grants are execution context with full bounds, not product SLOs or permission to restart/configure/install globally. No material operational scenario is omitted; actual pending/failed qualification remains execution work.",
+            requirement_ids:
+              [WR-001, WR-007, WR-008, WR-009, WR-012, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 31,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "Read the exact final complete current specification and confirmed manifest after all31 detailed outcomes were acknowledged; it matches the independently fully read current Draft. The nine-issue outcome and dated baseline remain bounded and do not imply current installed/external execution. All material promises have WR-001–014 ownership. The latest actual platform clarification explicitly supersedes the earlier Linux-only qualification exclusion: WR-014 restores the four exact native pairs, retains Linux22.20/24.14 and published support, and WR-013 requires actual pass evidence for all required checks. Historical Linux-only evidence is preserved without becoming current scope or a substitute native pass. The exact CI snapshot/one-commit/new-branch grant and capped Headroom9compress/9retrieve grant are correctly excluded from reusable product requirements as one-off execution context; that classification retains their112-HEAD-difference snapshot boundary, cumulative47pairs/140081bytes and no restart/configuration limits rather than waiving them. WR-001's specification-stage nonimplementation/publication boundary does not prohibit separately authorized delivery outside this workflow. WR-012/013 still require live exact external evidence plus unresolved identity/configuration/automatic-path proof; neither grants nor explicit-pair success auto-complete Q14/fullI11. Product versus standalone review modes, source/verdict digest domains, read-only drafts/history, actor-owned choices and proportional architecture are mutually consistent. Profiles/artifacts remain the confirmed unchanged set. No material whole-spec gap, unsupported promise or cross-section contradiction found; implementation/CI/external outcomes remain separate from specification completeness.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 6cf620f08a1327874f0a7d5ee72c1b97fb045b69f27481e4f4b1eaa52771dfc2
+      consistency:
+        verdict: consistent
+        explanation: "Read the exact final complete current specification and confirmed manifest after all31 detailed outcomes were acknowledged; it matches the independently fully read current Draft. The nine-issue outcome and dated baseline remain bounded and do not imply current installed/external execution. All material promises have WR-001–014 ownership. The latest actual platform clarification explicitly supersedes the earlier Linux-only qualification exclusion: WR-014 restores the four exact native pairs, retains Linux22.20/24.14 and published support, and WR-013 requires actual pass evidence for all required checks. Historical Linux-only evidence is preserved without becoming current scope or a substitute native pass. The exact CI snapshot/one-commit/new-branch grant and capped Headroom9compress/9retrieve grant are correctly excluded from reusable product requirements as one-off execution context; that classification retains their112-HEAD-difference snapshot boundary, cumulative47pairs/140081bytes and no restart/configuration limits rather than waiving them. WR-001's specification-stage nonimplementation/publication boundary does not prohibit separately authorized delivery outside this workflow. WR-012/013 still require live exact external evidence plus unresolved identity/configuration/automatic-path proof; neither grants nor explicit-pair success auto-complete Q14/fullI11. Product versus standalone review modes, source/verdict digest domains, read-only drafts/history, actor-owned choices and proportional architecture are mutually consistent. Profiles/artifacts remain the confirmed unchanged set. No material whole-spec gap, unsupported promise or cross-section contradiction found; implementation/CI/external outcomes remain separate from specification completeness."
+      approval_observed: true
+    - id: e5bb7cd9-cd51-42a3-bb29-0ff4acc5b383
+      source_version: d6499cf2486dbf002516f0977d1f9f951a9bce97eadc44e553f99d035561aae4
+      specification_version: b070eb5dd558d766ddfa61945c90e53d9b586a07d90a4ee8795d21b68b61fa28
+      status_at_start: Draft
+      created_at: 2026-10-19T08:24:42.464Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:01a41053-b81d-4066-95df-b767970d6475,
+            verdict: covered,
+            explanation: "WR-001 retains one owned remediation and declared contracts; WR-013 requires discriminating checks, meaningful RED/GREEN/PROVE and actual final-state evidence. Explicit cancellation affects only external Q14.",
+            requirement_ids: [WR-001, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 1,
+            item_key: source:d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400,
+            verdict: covered,
+            explanation: The single specification is retained. WR-001 names the later explicit exclusion of external Headroom qualification while preserving MCP integrity and native checks; it does not silently split the remaining delivery.,
+            requirement_ids: [WR-001],
+            source_refs: [],
+          },
+          {
+            item_index: 2,
+            item_key: source:094f04bf-a4bd-48ba-aca1-59f6c3949ae3,
+            verdict: covered,
+            explanation: "WR-014 retains Node >=22.20.0 and separate hosts, portable data/process behavior and isolated stores. The later explicit instruction adds the four native qualification combinations without promising new runtime support.",
+            requirement_ids: [WR-001, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 3,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "Confirmed Deep and core/backend/data/operations scope and the two declared planning artifacts are preserved. WR-001 makes historical rationale non-reinstating for cancelled Q14; all other contract, ownership and stage boundaries remain.",
+            requirement_ids: [WR-001, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 4,
+            item_key: source:cc1efab1-0272-40e6-89b8-6951820124c2,
+            verdict: covered,
+            explanation: "All nine report conditions have behavioral coverage: source-kind provenance; global accepted architecture; independently bounded post-pass review plus fresh consistency; exact draft reads; structured actionable diagnostics/examples; MCP-first contexts/checkpoints and safe recovery; loaded runtime identity; separate digest domains; material architecture decisions/state ownership; and exact critical MCP data. WR-013 supplies discriminating regression/PROVE checks. The later explicit instruction cancels only external Headroom qualification, stated in WR-001/012.",
+            requirement_ids:
+              [
+                WR-001,
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-011,
+                WR-012,
+                WR-013,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 5,
+            item_key: source:51cec6a6-6f95-4d08-bf72-a4506ba10a60,
+            verdict: covered,
+            explanation: "Both existing fixes retain positive and negative provenance/applicability cases in WR-002/003. WR-013 explicitly requires isolated reintroduction PROVE, avoiding treating already-passing build/targeted tests as pre-change RED or installed-runtime evidence.",
+            requirement_ids: [WR-002, WR-003, WR-013],
+            source_refs: [],
+          },
+          {
+            item_index: 6,
+            item_key: source:afe9ce7e-d954-484b-91b8-a1b2ef698f00,
+            verdict: covered,
+            explanation: "The actual free-text answer takes precedence over unselected proposed client choices: MCP scenarios are preferred, commands allowed when needed and a separate library/CLI is not required. Context sequencing, exact pagination, non-sensitive restart checkpoints and bounded evidence-based replay are observable without authorizing an installer or automatic semantic reviewer.",
+            requirement_ids: [WR-007, WR-008],
+            source_refs: [],
+          },
+          {
+            item_index: 7,
+            item_key: source:0e83a5f7-35cf-40bf-ab01-50d253c9d242,
+            verdict: covered,
+            explanation: The historical contract identifies the affected boundaries. WR-004 adds post-success product review without altering gaps-followup or standalone semantics; WR-005 adds draft access; WR-006 reuses diagnostics while redacting; WR-009 distinguishes loaded builds; WR-010 preserves legacy hash meaning; WR-011 adds the explicit architecture presentation and real decision checkpoint.,
+            requirement_ids: [WR-004, WR-005, WR-006, WR-009, WR-010, WR-011],
+            source_refs: [],
+          },
+          {
+            item_index: 8,
+            item_key: source:cdaf714e-d286-4228-baad-c090105b3a38,
+            verdict: covered,
+            explanation: "Published runtime support remains Linux/macOS/Windows with Node >=22.20.0. WR-014 distinguishes existing support from executed proof, requires pinned Linux plus four native runs under the later instruction, and excludes fixture/Linux substitution for native evidence.",
+            requirement_ids: [WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 9,
+            item_key: source:1c4eaa25-a4f3-479c-ad99-3ff4ba068f47,
+            verdict: covered,
+            explanation: WR-014 explicitly marks the earlier Linux-only exclusion superseded by the actual later clarification. Linux qualification remains required; historical Linux-only results are preserved without substituting for the restored native matrix.,
+            requirement_ids: [WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 10,
+            item_key: source:83a4e79d-4f6e-4653-834d-253db672367b,
+            verdict: not_applicable,
+            explanation: "Explicitly classified one-time execution authority for a specific historical snapshot/branch delivery, not product behavior. This specification does not widen or renew it; WR-001 preserves the no-publication boundary of specification work.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+          {
+            item_index: 11,
+            item_key: source:bc874d5e-412c-4846-9d43-5c5b075e0aac,
+            verdict: not_applicable,
+            explanation: "Explicitly classified bounded historical external-test authority, not a behavioral requirement. It does not authorize further service calls and the later user cancellation removes external Q14 from current acceptance without claiming the automatic path passed.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+          {
+            item_index: 12,
+            item_key: source:30bf0846-fd2c-4744-89fc-f741e4660bda,
+            verdict: covered,
+            explanation: "WR-014 restores exactly macOS 15 / Windows 2025 by Node 22.20.0 / 24.14.0, retains Linux tests and requires actual native execution. WR-013 forbids converting failed/unavailable checks into passes; restored qualification is distinct from bounded delivery authority.",
+            requirement_ids: [WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 13,
+            item_key: source:2271a03b-18e7-4e43-b2fc-716f09f9b8e9,
+            verdict: covered,
+            explanation: "The exact new answer excludes external Headroom qualification Q14. WR-001 explicitly cancels it without a pass, excludes service ownership/connection identity/causal capture and preserves historical limitations. WR-012 retains critical machine-data, response-budget, exact reconstruction and damaged-payload detection; WR-013 keeps implementation evidence honest and WR-014 leaves native checks unchanged.",
+            requirement_ids: [WR-001, WR-012, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:WR-001,
+            verdict: covered,
+            explanation: "Single retained specification and declared planning artifacts follow the original request, scope answer and repository ownership; exact Q14 cancellation is directly authorized by the new user instruction. No implementation/publication or new platform promise is inferred.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: d7fcfedf-3f51-43b6-8d54-3ff2bfc3e400, revision: 3 },
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9, revision: 1 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:WR-002,
+            verdict: covered,
+            explanation: Source-kind separation and exact provenance checks implement reported issue 1 and preserve established prerequisites; positive decision/negative Markdown and corrupt/foreign cases have observable no-write acceptance.,
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:WR-003,
+            verdict: covered,
+            explanation: Product-wide accepted applicability directly follows issue 2 while preserving stage-scoped validation; read-back plus absence of Roadmap artifacts make the ordering and no-hypothesis guarantees testable.,
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+              ],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:WR-004,
+            verdict: covered,
+            explanation: "Post-pass independent changed-block review and unchanged-source verification follow issue 3; retaining history, impact expansion, full fallback and fresh consistency preserve the existing review trust boundary.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:WR-005,
+            verdict: covered,
+            explanation: "Candidate/id/revision read-only draft access follows issue 4 and the observed generation-reader limitation; exact bounded reconstruction, provenance and no-publication effects retain established data boundaries.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: requirement:WR-006,
+            verdict: covered,
+            explanation: "Structured field/range/subject diagnostics and validated examples follow issue 5 and the existing diagnostic model. Privacy, bounds and no side effects preserve compatibility rather than creating a new diagnostic subsystem.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: requirement:WR-007,
+            verdict: covered,
+            explanation: "MCP-first session handling faithfully implements the actual free-text answer and issue 6 without forcing an unselected client artifact. Opaque contexts, separation of identities, reconciliation and script-safe conditional command behavior preserve the actor/trust boundary.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 21,
+            item_key: requirement:WR-008,
+            verdict: covered,
+            explanation: "Complete continuations, checkpoint outcome distinctions and bounded replay operationalize requested context/recovery handling. Stopping on unknown effects or incompatible replay protects existing mutations; no new store/retention feature is invented.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: afe9ce7e-d954-484b-91b8-a1b2ef698f00, revision: 3 },
+              ],
+          },
+          {
+            item_index: 22,
+            item_key: requirement:WR-009,
+            verdict: covered,
+            explanation: Loaded process/build/capability identity directly addresses issue 6 and observed generic development version. Isolated old/new process evidence distinguishes runtime state without authorizing registered-client mutation.,
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 23,
+            item_key: requirement:WR-010,
+            verdict: covered,
+            explanation: "Separate source and persisted-verdict domains directly address issue 7. Additive aliases, retained history and explicit incompatibility avoid silent reinterpretation or read migrations.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 24,
+            item_key: requirement:WR-011,
+            verdict: covered,
+            explanation: "Architecture choices, components, flows, state owners and assumptions directly address issue 8. Real user decisions and proportionate non-applicability preserve existing workflow semantics without requiring an exhaustive stack.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 0e83a5f7-35cf-40bf-ab01-50d253c9d242, revision: 2 },
+              ],
+          },
+          {
+            item_index: 25,
+            item_key: requirement:WR-012,
+            verdict: covered,
+            explanation: "Exact schemas/opaque fields, bounded original retrieval, source identity and fault detection retain issue 9's generic MCP contract. External round-trip/connection/capture removal is precisely authorized by the 2026-10-19 amendment; it cannot imply Q14 passed or weaken no-false-completion.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9, revision: 1 },
+              ],
+          },
+          {
+            item_index: 26,
+            item_key: requirement:WR-013,
+            verdict: covered,
+            explanation: "The request explicitly requires recurrence prevention and correct implementation checks. WR-013 distinguishes relevant RED, GREEN, isolated original-defect PROVE and actual final-state/public-boundary results. It preserves dirty work, failure honesty and native requirements; only the newly cancelled external qualification is no longer an open gate.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 01a41053-b81d-4066-95df-b767970d6475, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: 51cec6a6-6f95-4d08-bf72-a4506ba10a60, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+                { id: 30bf0846-fd2c-4744-89fc-f741e4660bda, revision: 1 },
+                { id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9, revision: 1 },
+              ],
+          },
+          {
+            item_index: 27,
+            item_key: requirement:WR-014,
+            verdict: covered,
+            explanation: "Original platform facts and the explicit restored-native instruction justify unchanged runtime support with exact pinned Linux and four native checks. Store/history/locking, privacy and no-read-migration safeguards preserve the existing public compatibility boundaries. New Headroom cancellation does not cancel native qualification.",
+            requirement_ids: [],
+            source_refs:
+              [
+                { id: 094f04bf-a4bd-48ba-aca1-59f6c3949ae3, revision: 2 },
+                { id: cc1efab1-0272-40e6-89b8-6951820124c2, revision: 2 },
+                { id: cdaf714e-d286-4228-baad-c090105b3a38, revision: 2 },
+                { id: 1c4eaa25-a4f3-479c-ad99-3ff4ba068f47, revision: 1 },
+                { id: 30bf0846-fd2c-4744-89fc-f741e4660bda, revision: 1 },
+                { id: 2271a03b-18e7-4e43-b2fc-716f09f9b8e9, revision: 1 },
+              ],
+          },
+          {
+            item_index: 28,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "Core is applicable to MCP consumers, conditional command handling, generated skills and compatibility. WR-007/008 define public contexts, output/error/cancel/recovery behavior and deterministic continuation; WR-004/011 retain actor ownership and stage boundaries; WR-006/013/014 cover validation, tests and host portability. No new general CLI or configuration system is within scope, so profile guidance does not mandate one.",
+            requirement_ids:
+              [WR-001, WR-004, WR-006, WR-007, WR-008, WR-011, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 29,
+            item_key: profile:backend,
+            verdict: covered,
+            explanation: "Backend applies to versioned MCP RPC scenarios rather than HTTP. Requirements give exact actors/inputs/state effects, bounded results, stable validation and incompatible capabilities, snapshot-bound cursors, concurrency/cancellation and evidence-based single replay. Existing process-permission trust boundary is retained; no new HTTP authentication/rate-limit system is warranted.",
+            requirement_ids:
+              [
+                WR-002,
+                WR-003,
+                WR-004,
+                WR-005,
+                WR-006,
+                WR-007,
+                WR-008,
+                WR-009,
+                WR-010,
+                WR-012,
+                WR-014,
+              ],
+            source_refs: [],
+          },
+          {
+            item_index: 30,
+            item_key: profile:data,
+            verdict: covered,
+            explanation: "Data applies to immutable draft evidence, pins and review history. Exact identity/revision/lineage, source-versus-verdict digests, snapshot continuations and no false inheritance define consistency. WR-008/014 bound checkpoints, recovery, retained data and explicit writable transitions; reads cannot migrate/delete. New store, retention policy or backfill is not required by this additive scope.",
+            requirement_ids:
+              [WR-002, WR-003, WR-004, WR-005, WR-008, WR-010, WR-012, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 31,
+            item_key: profile:operations,
+            verdict: covered,
+            explanation: "Operations remains applicable to process identity, bounded redacted diagnostics, partial/unknown outcomes, cancellation and operator recovery. WR-008/009 stop incompatible/unknown work with actionable evidence; WR-013/014 require truthful exact-environment verification. WR-001/012 explicitly cancel external compression qualification while retaining generic MCP response integrity. No quantitative latency SLO, new deployment, global mutation or external service ownership is promised.",
+            requirement_ids:
+              [WR-001, WR-006, WR-007, WR-008, WR-009, WR-012, WR-013, WR-014],
+            source_refs: [],
+          },
+          {
+            item_index: 32,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "The full current Draft and all 32 detailed outcomes are semantically consistent. The user-authorized amendment cancels external Q14, its service owner/connection attestation and causal capture only; it neither represents those checks as passed nor requires more Headroom actions. WR-012 continues exact machine-data availability, bounded original reconstruction, damaged-payload rejection and stopping dependent work; WR-008 retains safe recovery and WR-009 retains workflow MCP loaded-build diagnostics. WR-013 preserves real regression evidence and honest failure reporting; unchanged WR-014 retains Linux and all four actual native combinations. Historical scope rationale and baseline observations are explicitly historical, not renewed external acceptance or proof of installed state. Requirements retain stable identifiers, public legacy digest meaning, immutable history, no read migration and independent semantic judgment. No material normative promise lacks a requirement or preserved-contract reference, and no unsupported new delivery/publication authority is introduced.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: 6efefb052daefcf44ec4b8478d072f95b1707c48342aebb002e893a2a757975f
+      consistency:
+        verdict: consistent
+        explanation: The full current Draft and all 32 detailed outcomes are semantically consistent. The user-authorized amendment cancels external Q14, its service owner/connection attestation and causal capture only; it neither represents those checks as passed nor requires more Headroom actions. WR-012 continues exact machine-data availability, bounded original reconstruction, damaged-payload rejection and stopping dependent work; WR-008 retains safe recovery and WR-009 retains workflow MCP loaded-build diagnostics. WR-013 preserves real regression evidence and honest failure reporting; unchanged WR-014 retains Linux and all four actual native combinations. Historical scope rationale and baseline observations are explicitly historical, not renewed external acceptance or proof of installed state. Requirements retain stable identifiers, public legacy digest meaning, immutable history, no read migration and independent semantic judgment. No material normative promise lacks a requirement or preserved-contract reference, and no unsupported new delivery/publication authority is introduced.
+      approval_observed: true
