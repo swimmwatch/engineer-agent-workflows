@@ -89,6 +89,7 @@ test("P16 incremental lifecycle pins, verifies and completes one packet", async 
   assertOrdered(protocol, [
     "purpose `implementation`",
     "product_context_next",
+    "product_sources_get_batch",
     "product_element_get",
     "product_decision_get",
     "task_inputs_check",

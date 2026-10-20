@@ -1,0 +1,109 @@
+{
+  "transport": "stdio",
+  "mode": "full",
+  "elements": 30,
+  "representative": true,
+  "review": "b11a2d5a-1c01-5122-b103-d3f84ece8e7c",
+  "blocks": 212,
+  "atoms": 814,
+  "delivered": 212,
+  "portions": 452,
+  "consistencyPortions": 31,
+  "inherited": 0,
+  "elapsed_ms": 182896.04896,
+  "calls": 745,
+  "response_bytes": 5704890,
+  "result_bytes": 2658161,
+  "per_tool": {
+    "product_amendment_activate": {
+      "calls": 2,
+      "elapsed_ms_sum": 11431.761513999983,
+      "median_ms": 5715.880756999992,
+      "response_bytes": 5198
+    },
+    "product_amendment_prepare": {
+      "calls": 1,
+      "elapsed_ms_sum": 3565.010202999998,
+      "median_ms": 3565.010202999998,
+      "response_bytes": 10286
+    },
+    "product_document_accept_edits": {
+      "calls": 1,
+      "elapsed_ms_sum": 3737.9865480000008,
+      "median_ms": 3737.9865480000008,
+      "response_bytes": 3362
+    },
+    "product_document_begin_edit": {
+      "calls": 1,
+      "elapsed_ms_sum": 3042.9231089999957,
+      "median_ms": 3042.9231089999957,
+      "response_bytes": 4152
+    },
+    "product_document_inspect_edits": {
+      "calls": 1,
+      "elapsed_ms_sum": 720.3847570000071,
+      "median_ms": 720.3847570000071,
+      "response_bytes": 2960
+    },
+    "product_review_complete": {
+      "calls": 1,
+      "elapsed_ms_sum": 4103.716449,
+      "median_ms": 4103.716449,
+      "response_bytes": 2544
+    },
+    "product_review_consistency_get": {
+      "calls": 31,
+      "elapsed_ms_sum": 51121.356475000066,
+      "median_ms": 1628.4994970000116,
+      "response_bytes": 376490
+    },
+    "product_review_consistency_record": {
+      "calls": 1,
+      "elapsed_ms_sum": 2186.0451729999913,
+      "median_ms": 2186.0451729999913,
+      "response_bytes": 2892
+    },
+    "product_review_get": {
+      "calls": 240,
+      "elapsed_ms_sum": 14923.524957000132,
+      "median_ms": 58.558888499988825,
+      "response_bytes": 2283891
+    },
+    "product_review_get_batch": {
+      "calls": 154,
+      "elapsed_ms_sum": 11272.920694999819,
+      "median_ms": 59.075129499993636,
+      "response_bytes": 2177563
+    },
+    "product_review_record_batch": {
+      "calls": 154,
+      "elapsed_ms_sum": 50264.685402999996,
+      "median_ms": 321.2622704999958,
+      "response_bytes": 441672
+    },
+    "product_review_start": {
+      "calls": 1,
+      "elapsed_ms_sum": 3255.486100000009,
+      "median_ms": 3255.486100000009,
+      "response_bytes": 2532
+    },
+    "product_review_status": {
+      "calls": 154,
+      "elapsed_ms_sum": 5532.526685000426,
+      "median_ms": 34.462498500004585,
+      "response_bytes": 379958
+    },
+    "roadmap_retire_task": {
+      "calls": 1,
+      "elapsed_ms_sum": 6078.634762999995,
+      "median_ms": 6078.634762999995,
+      "response_bytes": 4038
+    },
+    "roadmap_unlink_dependency": {
+      "calls": 2,
+      "elapsed_ms_sum": 11621.027619,
+      "median_ms": 5810.5138095,
+      "response_bytes": 7352
+    }
+  }
+}

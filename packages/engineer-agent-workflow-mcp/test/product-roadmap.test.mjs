@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { link, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -9,9 +9,16 @@ import {
   defineRoadmapElement,
   linkRoadmapDependency,
   recordRoadmapStageOutcome,
+  retireRoadmapTask,
   splitRoadmapTask,
+  unlinkRoadmapDependency,
 } from "../dist/product/roadmap.js";
 import { readObject, saveGeneration, saveObject } from "../dist/product/storage.js";
+import {
+  activateAmendment, checkProductCandidate, completeProductReview, readProductReviewConsistency, readProductReviewItem,
+  recordProductReviewConsistency, recordProductVerdict, startProductReview,
+} from "../dist/product/review.js";
+import { renameProductDocument } from "../dist/product/documents.js";
 import { workflowTools } from "../dist/server.js";
 
 const digest = (value) => createHash("sha256").update(value).digest("hex");
@@ -78,6 +85,9 @@ async function fixture(t, {
   answerState = "answered",
   answerStoredRef = null,
   answerAffectedRefs = null,
+  answerTaskIds = ["TASK-0002", "TASK-0003"],
+  newline = "\n",
+  roadmapPath = "roadmap/overview.md",
 } = {}) {
   const temporaryRoot = await temporaryDirectory(t);
   const root = join(temporaryRoot, "product-data");
@@ -116,6 +126,12 @@ async function fixture(t, {
     "roadmap/index.md": "# Roadmap\n\n- [Overview](overview.md)\n",
     "roadmap/overview.md": "# Overview\n",
   };
+  if (roadmapPath !== "roadmap/overview.md") {
+    sources[roadmapPath] = sources["roadmap/overview.md"];
+    delete sources["roadmap/overview.md"];
+    sources["roadmap/index.md"] = `# Roadmap\n\n- [Overview](${roadmapPath.split("/").at(-1)})\n`;
+  }
+  for (const path of Object.keys(sources)) sources[path] = sources[path].replaceAll("\n", newline);
   const documents = [];
   for (const [relativePath, source] of Object.entries(sources)) {
     const saved = await saveObject(root, { productId: f.productId, kind: "markdown", bytes: Buffer.from(source) });
@@ -198,10 +214,7 @@ async function fixture(t, {
     source: "synthetic customer answer",
     selected_ids: [],
     predecessors: [],
-    affected_refs: answerAffectedRefs ?? [
-      { product_id: f.productId, artifact: "roadmap", element_id: "TASK-0002" },
-      { product_id: f.productId, artifact: "roadmap", element_id: "TASK-0003" },
-    ],
+    affected_refs: answerAffectedRefs ?? answerTaskIds.map((element_id) => ({ product_id: f.productId, artifact: "roadmap", element_id })),
     reconsider_when: null,
     candidate_id: f.candidateId,
   };
@@ -251,7 +264,7 @@ async function fixture(t, {
   f.context = context(f, candidate);
   f.candidateRef = { product_id: f.productId, candidate_id: f.candidateId };
   f.candidatePath = join(draft, "candidate.yaml");
-  f.roadmapDocument = join(draft, "documents", "roadmap", "overview.md");
+  f.roadmapDocument = join(draft, "documents", ...roadmapPath.split("/"));
   return f;
 }
 
@@ -296,7 +309,9 @@ test("P09 publishes strict roadmap scenario tools", () => {
     "roadmap_define_task",
     "roadmap_link_dependency",
     "roadmap_record_stage_outcome",
+    "roadmap_retire_task",
     "roadmap_split_task",
+    "roadmap_unlink_dependency",
   ];
   const tools = workflowTools.filter((tool) => expected.includes(tool.name));
   assert.deepEqual(tools.map((tool) => tool.name).sort(), expected);
@@ -601,4 +616,339 @@ test("P09 rejects missing ready PRD and Technical Design inputs without effects"
     semanticType: "Stage", value: stageValue("Blocked stage", 0),
   }), expectCode("PREREQUISITE_REQUIRED"));
   assert.deepEqual(await snapshot(f.root), before);
+});
+
+
+async function taskChangeFixture(t, options = {}) {
+  const f = await fixture(t, { answerTaskIds: ["TASK-0001", "TASK-0002", "TASK-0003"], ...options });
+  let current = await defineRoadmapElement({ root: f.root, context: f.context, candidateRef: f.candidateRef,
+    subject: "Overview", semanticType: "Stage", value: stageValue("Pilot", 0) });
+  f.stageRef = current.result.changed_refs[0];
+  f.tasks = [];
+  for (let index = 1; index <= 3; index += 1) {
+    current = await defineRoadmapElement({ root: f.root, context: current.context, candidateRef: f.candidateRef,
+      subject: "Overview", semanticType: "Task", value: taskValue(f, `Task ${index}`, f.stageRef) });
+    f.tasks.push(current.result.changed_refs[0]);
+  }
+  f.context = current.context;
+  f.retire = { root: f.root, context: f.context, candidateRef: f.candidateRef, taskRef: f.tasks[2],
+    redistributedTo: [f.tasks[0]], answerRef: f.answerRef, reason: "Remove duplicate work; the existing first task owns the template audit." };
+  f.unlink = { root: f.root, context: f.context, candidateRef: f.candidateRef,
+    taskRef: f.tasks[1], requiresTaskRef: f.tasks[2], answerRef: f.answerRef,
+    reason: "The consumer uses the existing template directly and no longer needs the duplicate prerequisite." };
+  return f;
+}
+
+async function candidateRegistry(f) {
+  const candidate = JSON.parse(await readFile(f.candidatePath, "utf8"));
+  const registry = JSON.parse(Buffer.from(await readObject(f.root, {
+    productId: f.productId, kind: "record", sha256: candidate.registry.object_sha256,
+  })).toString("utf8"));
+  return { candidate, registry };
+}
+
+async function writeTaskBinding(f, taskId, state) {
+  const value = {
+    schema_version: 1, kind: "task_binding", product_id: f.productId, task_id: taskId,
+    specification_id: randomUUID(), specification_slug: "historical-task", workspace_id: f.workspaceId,
+    reservation_operation: randomUUID(), state, owner_session: state === "started" ? randomUUID() : null,
+    current_packet: state === "started" ? "P01" : null,
+    product_pins: (await candidateRegistry(f)).candidate.upstream_pins,
+    product_source_version: digest("frozen product"), specification_source_version: digest("frozen specification"),
+    specification_version: digest("approved specification"), specification_review_ref: randomUUID(),
+    plan_pins: [{ relative_path: "docs/specs/historical-task/tasks/plan.md", sha256: digest("frozen plan") }],
+    safety_blocks: [], completed_packets: state === "completed" ? [{ packet_id: "P01", evidence_refs: ["fixture:test-pass"], operation_id: randomUUID() }] : [],
+  };
+  const path = join(f.root, "products", f.productId, "tasks", `${taskId}.yaml`);
+  await mkdir(join(f.root, "products", f.productId, "tasks"), { recursive: true });
+  await writeFile(path, bytes(value));
+  return path;
+}
+
+test("retirement requires explicit consumer resolution and preserves immutable history and existing identities", async (t) => {
+  const f = await taskChangeFixture(t);
+  const linked = await linkRoadmapDependency({ ...f.unlink, context: f.context });
+  const headPath = join(f.root, "products", f.productId, "head.yaml");
+  const readyGeneration = JSON.parse(await readFile(headPath, "utf8")).generation;
+  const historical = await candidateRegistry(f);
+  const historicalDocument = await readFile(f.roadmapDocument);
+  const before = await snapshot(f.root);
+  await assert.rejects(retireRoadmapTask({ ...f.retire, context: linked.context }), expectCode("CONFLICT"));
+  assert.deepEqual(await snapshot(f.root), before);
+  const unlinked = await unlinkRoadmapDependency({ ...f.unlink, context: linked.context });
+  const replay = await unlinkRoadmapDependency({ ...f.unlink, context: linked.context });
+  assert.equal(replay.replayed, true);
+  assert.equal(replay.context, unlinked.context);
+  await assert.rejects(unlinkRoadmapDependency({ ...f.unlink, context: unlinked.context }), expectCode("NOT_FOUND"));
+  await assert.rejects(retireRoadmapTask(f.retire), expectCode("CONFLICT"));
+  const bindingPath = await writeTaskBinding(f, "TASK-0003", "completed");
+  const frozen = await readFile(bindingPath);
+  const retired = await retireRoadmapTask({ ...f.retire, context: unlinked.context });
+  const after = await candidateRegistry(f);
+  assert.deepEqual(after.registry.element_metadata.map((entry) => entry.ref.element_id), historical.registry.element_metadata.map((entry) => entry.ref.element_id));
+  assert.equal(after.registry.element_metadata.find((entry) => entry.ref.element_id === "TASK-0003").state, "retired");
+  assert.ok(after.registry.element_metadata.find((entry) => entry.ref.element_id === "TASK-0003").provenance
+    .some((ref) => ref.id === f.answerRef.id));
+  assert.equal(after.candidate.relations.some((edge) => edge.from.element_id === "TASK-0003" || edge.to.element_id === "TASK-0003"), false);
+  assert.doesNotMatch(await readFile(f.roadmapDocument, "utf8"), /### TASK-0003:/u);
+  assert.deepEqual(await readFile(bindingPath), frozen);
+  assert.equal(JSON.parse(await readFile(headPath, "utf8")).generation, readyGeneration);
+  const oldDoc = historical.registry.documents.find((entry) => entry.relative_path === "roadmap/overview.md");
+  assert.deepEqual(Buffer.from(await readObject(f.root, { productId: f.productId, kind: "markdown", sha256: oldDoc.object_sha256 })), historicalDocument);
+  const eventHead = after.candidate.decision_heads.find((head) => head.decision_ref.id === retired.result.decision_ref.id);
+  const event = JSON.parse(Buffer.from(await readObject(f.root, { productId: f.productId, kind: "decision", artifact: "roadmap",
+    decisionId: eventHead.decision_ref.id, revision: 1, sha256: eventHead.object_sha256 })).toString("utf8"));
+  assert.equal(event.text, f.retire.reason);
+  assert.deepEqual(event.predecessors, [f.answerRef]);
+  assert.deepEqual(event.selected_ids, ["TASK-0001"]);
+  const beforeReplay = await snapshot(f.root);
+  assert.equal((await retireRoadmapTask({ ...f.retire, context: unlinked.context })).replayed, true);
+  assert.deepEqual(await snapshot(f.root), beforeReplay);
+  await assert.rejects(retireRoadmapTask({ ...f.retire, context: retired.context }), expectCode("BROKEN_REFERENCE"));
+  const next = await defineRoadmapElement({ root: f.root, context: retired.context, candidateRef: f.candidateRef,
+    subject: "Overview", semanticType: "Task", value: taskValue(f, "Next independent task", f.stageRef) });
+  assert.equal(next.result.task_id, "TASK-0004");
+});
+
+test("task changes reject non-answers, foreign refs, closed candidates and every unfinished binding without side effects", async (t) => {
+  for (const state of ["reserved", "specified", "planned", "started", "blocked"]) {
+    const f = await taskChangeFixture(t);
+    await writeTaskBinding(f, "TASK-0003", state);
+    const before = await snapshot(f.root);
+    await assert.rejects(retireRoadmapTask(f.retire), expectCode("CONFLICT"));
+    assert.deepEqual(await snapshot(f.root), before);
+  }
+  const observed = await taskChangeFixture(t, { answerState: "observed" });
+  await assert.rejects(retireRoadmapTask(observed.retire), expectCode("ANSWER_REQUIRED"));
+  const missing = await taskChangeFixture(t, { answerAffectedRefs: [] });
+  await assert.rejects(retireRoadmapTask(missing.retire), expectCode("ANSWER_REQUIRED"));
+  const f = await taskChangeFixture(t);
+  await assert.rejects(retireRoadmapTask({ ...f.retire, redistributedTo: [f.tasks[2]] }), expectCode("INVALID_INPUT"));
+  await assert.rejects(retireRoadmapTask({ ...f.retire, redistributedTo: [f.tasks[0], f.tasks[0]] }), expectCode("INVALID_INPUT"));
+  await assert.rejects(retireRoadmapTask({ ...f.retire, taskRef: { ...f.tasks[2], product_id: randomUUID() } }), expectCode("BROKEN_REFERENCE"));
+  await assert.rejects(retireRoadmapTask({ ...f.retire, reason: " " }), expectCode("INVALID_INPUT"));
+  const linked = await linkRoadmapDependency(f.unlink);
+  const path = await writeTaskBinding(f, "TASK-0002", "started");
+  const frozen = await readFile(path);
+  await assert.rejects(unlinkRoadmapDependency({ ...f.unlink, context: linked.context }), expectCode("CONFLICT"));
+  assert.deepEqual(await readFile(path), frozen);
+  const candidate = (await candidateRegistry(f)).candidate;
+  for (const state of ["activated", "abandoned"]) {
+    const closed = { ...candidate, state };
+    closed.source_version = candidateVersion(closed);
+    await writeFile(f.candidatePath, bytes(closed));
+    await assert.rejects(retireRoadmapTask({ ...f.retire, context: context(f, closed) }), expectCode("CONFLICT"));
+  }
+});
+
+test("interrupted retirement exposes no ready change and resumes the exact journaled transaction", async (t) => {
+  const f = await taskChangeFixture(t);
+  const original = await candidateRegistry(f);
+  const headPath = join(f.root, "products", f.productId, "head.yaml");
+  const head = await readFile(headPath);
+  let operationRef;
+  await assert.rejects(retireRoadmapTask(f.retire, { afterChange: async (path) => {
+    if (path.endsWith("overview.md")) throw new Error("Synthetic interruption after a document write.");
+  } }), (error) => {
+    assert.equal(error.code, "RECOVERY_REQUIRED");
+    operationRef = error.details.operation_ref;
+    assert.ok(operationRef);
+    return true;
+  });
+  assert.deepEqual(await readFile(headPath), head);
+  assert.equal((await candidateRegistry(f)).candidate.source_version, original.candidate.source_version);
+  await assert.rejects(retireRoadmapTask(f.retire), expectCode("RECOVERY_REQUIRED"));
+  await assert.rejects(retireRoadmapTask({ ...f.retire, resumeOperationRef: operationRef, reason: "Changed intent" }), expectCode("CONFLICT"));
+  const resumed = await retireRoadmapTask({ ...f.retire, resumeOperationRef: operationRef });
+  assert.equal(resumed.result.operation_ref, operationRef);
+  const after = await candidateRegistry(f);
+  assert.equal(after.registry.element_metadata.find((entry) => entry.ref.element_id === "TASK-0003").state, "retired");
+  const document = after.registry.documents.find((entry) => entry.relative_path === "roadmap/overview.md");
+  assert.equal(digest(await readFile(f.roadmapDocument)), document.object_sha256);
+  assert.equal(after.candidate.relations.some((edge) => edge.from.element_id === "TASK-0003" || edge.to.element_id === "TASK-0003"), false);
+  assert.equal((await retireRoadmapTask({ ...f.retire, resumeOperationRef: operationRef })).replayed, true);
+});
+
+
+test("a binding created after retirement blocks candidate activation readiness", async (t) => {
+  const f = await taskChangeFixture(t);
+  const retired = await retireRoadmapTask(f.retire);
+  const path = await writeTaskBinding(f, "TASK-0003", "started");
+  const frozen = await readFile(path);
+  const checked = await checkProductCandidate({ root: f.root, context: retired.context, candidateRef: f.candidateRef });
+  assert.equal(checked.result.status, "fail");
+  assert.ok(checked.result.issues.some((issue) => issue.code === "CONFLICT"));
+  assert.deepEqual(await readFile(path), frozen);
+});
+
+test("recovery never overwrites unknown document bytes after an interrupted retirement", async (t) => {
+  const f = await taskChangeFixture(t);
+  let operationRef;
+  await assert.rejects(retireRoadmapTask(f.retire, { afterChange: async () => { throw new Error("Synthetic stop"); } }), (error) => {
+    operationRef = error.details.operation_ref;
+    return error.code === "RECOVERY_REQUIRED";
+  });
+  await writeFile(f.roadmapDocument, "# Unexpected external edit\n");
+  const before = await snapshot(f.root);
+  await assert.rejects(retireRoadmapTask({ ...f.retire, resumeOperationRef: operationRef }), expectCode("CONFLICT"));
+  assert.deepEqual(await snapshot(f.root), before);
+});
+
+
+test("unlink recovery is exact and cancellation permits no redistribution recipients", async (t) => {
+  const f = await taskChangeFixture(t);
+  const linked = await linkRoadmapDependency(f.unlink);
+  let operationRef;
+  const request = { ...f.unlink, context: linked.context };
+  await assert.rejects(unlinkRoadmapDependency(request, { afterChange: async () => { throw new Error("Synthetic stop"); } }), (error) => {
+    operationRef = error.details.operation_ref;
+    return error.code === "RECOVERY_REQUIRED";
+  });
+  const resumed = await unlinkRoadmapDependency({ ...request, resumeOperationRef: operationRef });
+  assert.equal(resumed.result.operation_ref, operationRef);
+  assert.equal((await candidateRegistry(f)).candidate.relations.some((edge) => edge.kind === "depends_on"), false);
+  const retired = await retireRoadmapTask({ ...f.retire, context: resumed.context, redistributedTo: [] });
+  assert.deepEqual(retired.result.changed_refs, [f.tasks[2]]);
+  await assert.rejects(defineRoadmapElement({ root: f.root, context: retired.context, candidateRef: f.candidateRef,
+    subject: "Overview", semanticType: "Task", elementRef: f.tasks[2], value: taskValue(f, "Attempted resurrection", f.stageRef) }), expectCode("NOT_FOUND"));
+  const after = await candidateRegistry(f);
+  const malformed = { ...after.candidate, relations: [...after.candidate.relations,
+    { from: f.tasks[1], kind: "depends_on", to: f.tasks[2] }] };
+  malformed.source_version = candidateVersion(malformed);
+  await writeFile(f.candidatePath, bytes(malformed));
+  const checked = await checkProductCandidate({ root: f.root, context: context(f, malformed), candidateRef: f.candidateRef });
+  assert.equal(checked.result.status, "fail");
+  assert.ok(checked.result.issues.some((issue) => issue.code === "BROKEN_REFERENCE"));
+});
+
+
+async function completeSyntheticReview(f) {
+  const started = await startProductReview({ root: f.root, context: f.context, candidateRef: f.candidateRef, mode: "full" });
+  let selected = started.context;
+  for (let index = 0; index < started.result.total_items; index += 1) {
+    let cursor;
+    let item;
+    do {
+      item = (await readProductReviewItem({ root: f.root, context: selected, reviewRef: started.result.review_ref,
+        itemIndex: index, ...(cursor === undefined ? {} : { cursor }) })).result;
+      cursor = item.next_cursor ?? undefined;
+    } while (cursor !== undefined);
+    const recorded = await recordProductVerdict({ root: f.root, context: selected, reviewRef: started.result.review_ref, value: {
+      item_key: item.item_key, verdict: "covered", explanation: "Synthetic protocol fixture only.", counterexample: null,
+      evidence_refs: [], evidence_sources: [], read_receipt: item.read_receipt, inherited_from: null,
+    } });
+    selected = recorded.context;
+  }
+  let consistency = await readProductReviewConsistency({ root: f.root, context: selected, reviewRef: started.result.review_ref });
+  while (consistency.result.next_cursor !== null) {
+    consistency = await readProductReviewConsistency({ root: f.root, context: selected,
+      reviewRef: started.result.review_ref, cursor: consistency.result.next_cursor });
+  }
+  const consistent = await recordProductReviewConsistency({ root: f.root, context: selected,
+    reviewRef: started.result.review_ref, readReceipt: consistency.result.read_receipt,
+    verdict: "covered", explanation: "Synthetic protocol fixture only.", counterexample: null });
+  const completed = await completeProductReview({ root: f.root, context: consistent.context, reviewRef: started.result.review_ref });
+  assert.equal(completed.result.coverage_status, "reviewed");
+  return { context: completed.context, reviewRef: started.result.review_ref };
+}
+
+test("an interrupted task change must be recovered before reviewing or editing its candidate", async (t) => {
+  for (const action of ["check", "review", "edit", "document", "activation"]) {
+    await t.test(action, async (t) => {
+      const f = await taskChangeFixture(t);
+      const reviewed = action === "activation" ? await completeSyntheticReview(f) : null;
+      await assert.rejects(retireRoadmapTask({ ...f.retire, context: reviewed?.context ?? f.context }, { afterChange: async (path) => {
+        if (path.endsWith(action === "activation" ? "/overview.md" : "/candidate.yaml")) throw new Error("Synthetic interrupted candidate operation.");
+      } }), expectCode("RECOVERY_REQUIRED"));
+      const current = (await candidateRegistry(f)).candidate;
+      const selected = context(f, current);
+      const before = await snapshot(f.root);
+      if (action === "check") {
+        const checked = await checkProductCandidate({ root: f.root, context: selected, candidateRef: f.candidateRef });
+        assert.ok(checked.result.issues.some((issue) => issue.code === "RECOVERY_REQUIRED"));
+      } else if (action === "review") {
+        await assert.rejects(startProductReview({ root: f.root, context: selected, candidateRef: f.candidateRef, mode: "full" }), expectCode("RECOVERY_REQUIRED"));
+      } else if (action === "document") {
+        const document = (await candidateRegistry(f)).registry.documents.find((entry) => entry.relative_path === "roadmap/overview.md");
+        await assert.rejects(renameProductDocument({ root: f.root, context: selected, candidateRef: f.candidateRef,
+          documentId: document.id, subject: "Renamed", title: "Renamed" }), expectCode("RECOVERY_REQUIRED"));
+      } else if (action === "activation") {
+        await assert.rejects(activateAmendment({ root: f.root, context: selected, candidates: [f.candidateRef], reviewRefs: [reviewed.reviewRef] }),
+          expectCode("PREREQUISITE_REQUIRED"));
+      } else {
+        await assert.rejects(defineRoadmapElement({ root: f.root, context: selected, candidateRef: f.candidateRef,
+          subject: "Overview", semanticType: "Task", elementRef: f.tasks[0], value: taskValue(f, "Changed after interruption", f.stageRef) }), expectCode("RECOVERY_REQUIRED"));
+      }
+      assert.deepEqual(await snapshot(f.root), before);
+    });
+  }
+});
+
+test("an unchanged historical retirement must not block an unrelated amendment with frozen work", async (t) => {
+  const f = await taskChangeFixture(t);
+  await retireRoadmapTask(f.retire);
+  const { candidate } = await candidateRegistry(f);
+  const base = await saveGeneration(f.root, {
+    schema_version: 1, kind: "generation", product_id: f.productId, parent: candidate.base_generation,
+    registry: candidate.registry, ready_artifacts: [], decision_heads: candidate.decision_heads, relations: candidate.relations,
+  });
+  const next = { ...candidate, base_generation: base.sha256 };
+  next.source_version = candidateVersion(next);
+  await writeFile(f.candidatePath, bytes(next));
+  const bindingPath = await writeTaskBinding(f, "TASK-0003", "started");
+  const frozen = await readFile(bindingPath);
+  const checked = await checkProductCandidate({ root: f.root, context: context(f, next), candidateRef: f.candidateRef });
+  assert.equal(checked.result.issues.some((issue) => issue.code === "CONFLICT"), false);
+  assert.deepEqual(await readFile(bindingPath), frozen);
+});
+
+test("task change reasons honor the schema Unicode code-point limit", async (t) => {
+  const f = await taskChangeFixture(t);
+  const retired = await retireRoadmapTask({ ...f.retire, reason: "🧭".repeat(4096) });
+  assert.equal(retired.result.applied, true);
+});
+
+
+test("retirement preserves CRLF documents and Unicode portable paths", async (t) => {
+  const f = await taskChangeFixture(t, { newline: "\r\n", roadmapPath: "roadmap/план-路线.md" });
+  const oldDocument = await readFile(f.roadmapDocument, "utf8");
+  assert.doesNotMatch(oldDocument, /(?<!\r)\n/u);
+  const retired = await retireRoadmapTask(f.retire);
+  const document = await readFile(f.roadmapDocument, "utf8");
+  assert.doesNotMatch(document, /(?<!\r)\n/u);
+  assert.match(document, /### TASK-0001:/u);
+  assert.match(document, /### TASK-0002:/u);
+  assert.doesNotMatch(document, /### TASK-0003:/u);
+  assert.equal((await retireRoadmapTask(f.retire)).replayed, true);
+  assert.equal(await readFile(f.roadmapDocument, "utf8"), document);
+  assert.equal(retired.result.applied, true);
+});
+
+test("task change binding guards reject hard links and symbolic links without touching their targets", async (t) => {
+  for (const kind of ["hard", "symbolic"]) {
+    await t.test(kind, async (t) => {
+      const f = await taskChangeFixture(t);
+      const path = await writeTaskBinding(f, "TASK-0003", "completed");
+      const external = join(f.workspace, "retained-binding.yaml");
+      const original = await readFile(path);
+      if (kind === "hard") await link(path, external);
+      else {
+        await writeFile(external, original);
+        await rm(path);
+        try {
+          await symlink(external, path, "file");
+        } catch (error) {
+          if (process.platform === "win32" && error.code === "EPERM") {
+            t.skip("Windows requires symbolic-link privileges.");
+            return;
+          }
+          throw error;
+        }
+      }
+      const before = await snapshot(f.root);
+      await assert.rejects(retireRoadmapTask(f.retire), expectCode("UNSAFE_PATH"));
+      assert.deepEqual(await snapshot(f.root), before);
+      assert.deepEqual(await readFile(external), original);
+    });
+  }
 });

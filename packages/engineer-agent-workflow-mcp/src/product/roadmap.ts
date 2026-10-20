@@ -9,10 +9,12 @@ import Ajv from "ajv";
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
 import { listProductDocuments, parseProductDocument } from "./documents.js";
-import { replayProductMutationResult, runProductMutation } from "./operations.js";
+import { inspectExactOperationForResume, replayProductMutationResult, resumeOperation, runProductMutation } from "./operations.js";
+import type { ExactOperationResumeEvidence, ProductMutationPlan } from "./operations.js";
 import { loadGeneration, readObject, saveObject, verifySourcePin } from "./storage.js";
 import type { LoadedGeneration, SourcePin } from "./storage.js";
 import { validateProductRecord } from "./schemas.js";
+import { assertRoadmapTaskBindingsCompatible } from "./tasks.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
 const DIGEST_PATTERN = /^[0-9a-f]{64}$/u;
@@ -109,6 +111,7 @@ interface CandidateRecord {
   readonly decision_heads: readonly { readonly decision_ref: DecisionRef; readonly object_sha256: string }[];
   readonly relations: readonly Relation[];
   readonly source_version: string;
+  readonly change_scope?: { readonly kind: "task_retirement"; readonly task_ref: Ref; readonly redistributed_to: readonly Ref[] };
 }
 
 interface DecisionRecord extends Record<string, unknown> {
@@ -395,7 +398,8 @@ async function validateRegistry(value: unknown, productId: string): Promise<Regi
   return value as RegistryRecord;
 }
 
-async function loadState(root: string, contextText: string, candidateRef: CandidateRef, requireCurrent = true): Promise<CandidateState> {
+async function loadState(root: string, contextText: string, candidateRef: CandidateRef, requireCurrent = true,
+  originals: ReadonlyMap<string, Buffer> = new Map()): Promise<CandidateState> {
   const context = decodeContext(contextText);
   if (
     context.product_id !== candidateRef.product_id || context.workspace_id === null
@@ -404,7 +408,7 @@ async function loadState(root: string, contextText: string, candidateRef: Candid
   ) return fail("INVALID_INPUT", "Roadmap authoring requires the selected candidate context.");
   if (requireCurrent) await listProductDocuments({ root, context: contextText, artifact: "roadmap", limit: 1 });
   const relativeCandidate = candidatePath(candidateRef.product_id, candidateRef.candidate_id);
-  const candidateBytes = await readSafe(root, relativeCandidate, context.canonical_workspace);
+  const candidateBytes = originals.get(relativeCandidate) ?? await readSafe(root, relativeCandidate, context.canonical_workspace);
   if (candidateBytes === null) return fail("NOT_FOUND", "Selected product candidate is unavailable.");
   const candidate = await validateProductRecord("Candidate", parseJson(candidateBytes, "Selected product candidate")) as CandidateRecord;
   if (
@@ -430,7 +434,7 @@ async function loadState(root: string, contextText: string, candidateRef: Candid
   const owners = new Map<string, Artifact>();
   for (const document of registry.documents) {
     const relative = documentPath(candidate.product_id, candidate.candidate_id, document.relative_path);
-    const value = await readSafe(root, relative, context.canonical_workspace);
+    const value = originals.get(relative) ?? await readSafe(root, relative, context.canonical_workspace);
     if (value === null || digest(value) !== document.object_sha256) {
       return fail("SOURCE_CHANGED", "Product draft contains direct or missing document edits.");
     }
@@ -864,12 +868,14 @@ async function replayMutation(
   candidateRef: CandidateRef,
   scenario: string,
   scenarioInput: Record<string, unknown>,
+  resumeOperationRef?: string,
 ): Promise<RoadmapOutcome<MutationResult> | null> {
   const context = decodeContext(contextText);
   if (context.product_id !== candidateRef.product_id || context.candidate_ref?.candidate_id !== candidateRef.candidate_id) {
     return fail("INVALID_INPUT", "Roadmap authoring requires the selected candidate context.");
   }
   const id = operationId(scenario, candidateRef, context.selected_sources_sha256, scenarioInput);
+  if (resumeOperationRef !== undefined && resumeOperationRef !== id) return fail("CONFLICT", "Recovery requires the exact original operation reference.");
   let replay;
   try {
     replay = await replayProductMutationResult({
@@ -881,6 +887,7 @@ async function replayMutation(
     });
   } catch (error) {
     if (error instanceof WorkflowError && error.code === "NOT_FOUND") return null;
+    if (resumeOperationRef !== undefined && error instanceof WorkflowError && error.code === "RECOVERY_REQUIRED") return null;
     throw error;
   }
   const state = await loadState(root, contextText, candidateRef, false);
@@ -903,6 +910,9 @@ interface ExecuteInput {
   readonly documentId: string | null;
   readonly decision?: DecisionRecord;
   readonly next?: string;
+  readonly guard?: () => Promise<void>;
+  readonly recovery?: ExactOperationResumeEvidence;
+  readonly afterChange?: (relativePath: string) => Promise<void>;
 }
 
 async function executeMutation(input: ExecuteInput): Promise<RoadmapOutcome<MutationResult>> {
@@ -956,7 +966,7 @@ async function executeMutation(input: ExecuteInput): Promise<RoadmapOutcome<Muta
     input.scenarioInput,
   );
   const result = mutationResult(id, candidate, input.refs, input.documentId, input.decision?.ref ?? null, input.next);
-  const outcome = await runProductMutation({
+  const plan: ProductMutationPlan = {
     root: input.state.root,
     productId: candidate.product_id,
     operationId: id,
@@ -974,6 +984,17 @@ async function executeMutation(input: ExecuteInput): Promise<RoadmapOutcome<Muta
       after: digest(change.after),
     })),
     saveObjects: async () => {
+      await input.guard?.();
+      for (const change of changes) {
+        const current = await readSafe(input.state.root, change.relativePath, input.state.context.canonical_workspace);
+        if (!current?.equals(change.before) && !current?.equals(change.after)) {
+          return fail("CONFLICT", "Roadmap target changed before the transaction could write its documents.");
+        }
+      }
+      if (["roadmap_retire_task", "roadmap_unlink_dependency"].includes(input.scenario)) {
+        await saveObject(input.state.root, { productId: candidate.product_id, kind: "record", bytes: input.state.candidateBytes });
+        await saveObject(input.state.root, { productId: candidate.product_id, kind: "record", bytes: candidateBytes });
+      }
       for (const document of registry.documents) {
         const value = input.documents.get(document.id)!;
         const saved = await saveObject(input.state.root, { productId: candidate.product_id, kind: "markdown", bytes: value });
@@ -992,15 +1013,26 @@ async function executeMutation(input: ExecuteInput): Promise<RoadmapOutcome<Muta
         });
         if (saved.sha256 !== decisionObject.sha256) return fail("INVALID_STATE", "Stored Roadmap outcome evidence does not match its validated digest.");
       }
-      for (const change of changes) await applyChange(input.state.root, change.relativePath, change.before, change.after, input.state.context.canonical_workspace);
+      for (const change of changes) {
+        await applyChange(input.state.root, change.relativePath, change.before, change.after, input.state.context.canonical_workspace);
+        await input.afterChange?.(change.relativePath);
+      }
     },
     verifyTargets: async () => {
+      await input.guard?.();
       for (const change of changes) {
         const current = await readSafe(input.state.root, change.relativePath, input.state.context.canonical_workspace);
         if (!current?.equals(change.after)) return fail("CONFLICT", "Roadmap targets changed during recovery.");
       }
     },
-  });
+  };
+  let outcome;
+  try {
+    outcome = input.recovery === undefined ? await runProductMutation(plan) : await resumeOperation(plan, input.recovery.inspectionToken);
+  } catch (error) {
+    if (error instanceof WorkflowError) throw new WorkflowError(error.code, error.message, { ...error.details, operation_ref: id });
+    throw error;
+  }
   return {
     context: encodeContext(input.state.context, candidate),
     result: outcome.result as MutationResult,
@@ -1133,6 +1165,159 @@ export async function linkRoadmapDependency(input: {
     candidate: { ...state.candidate, relations },
     refs: [input.taskRef, input.requiresTaskRef],
     documentId: null,
+  });
+}
+
+function sameRef(left: Ref, right: Ref): boolean {
+  return left.product_id === right.product_id && left.artifact === right.artifact && left.element_id === right.element_id;
+}
+
+async function taskChangeDecision(state: CandidateState, scenario: string, scenarioInput: Record<string, unknown>,
+  answerRef: DecisionRef, reason: string, refs: readonly Ref[], recipients: readonly Ref[] = []): Promise<DecisionRecord> {
+  if (["activated", "abandoned"].includes(state.candidate.state)) return fail("CONFLICT", "Closed Roadmap candidates cannot be changed.");
+  if (reason.trim().length === 0 || Array.from(reason).length > 4096 || hasControlCharacter(reason)) {
+    return fail("INVALID_INPUT", "Task change reason must be bounded nonblank plain text.");
+  }
+  assertNonSensitive(reason);
+  const answer = await validateDecisionReference(state, answerRef);
+  if (answer.state !== "answered" || refs.some((ref) => !answer.affected_refs.some((affected) => sameRef(ref, affected)))) {
+    return fail("ANSWER_REQUIRED", "Task change requires a current explicit answer covering every affected task.");
+  }
+  const id = operationId(scenario, { product_id: state.candidate.product_id, candidate_id: state.candidate.candidate_id },
+    state.candidate.source_version, scenarioInput);
+  return {
+    schema_version: 1, kind: "decision",
+    ref: { product_id: state.candidate.product_id, artifact: "roadmap", id: deterministicUuid(`${id}:decision`), revision: 1 },
+    state: "observed", category: scenario, question: null, text: reason,
+    source: `Workflow operation ${id}; user answer ${answerRef.id} revision ${answerRef.revision}.`,
+    selected_ids: recipients.map((ref) => ref.element_id), predecessors: [answerRef], affected_refs: refs,
+    reconsider_when: null, candidate_id: state.candidate.candidate_id,
+  };
+}
+
+function withTaskChangeProvenance(metadata: ElementMetadata, answerRef: DecisionRef, decision: DecisionRecord): ElementMetadata {
+  return { ...metadata, provenance: [...new Map([...metadata.provenance, answerRef, decision.ref]
+    .map((ref) => [`${ref.product_id}:${ref.artifact}:${ref.id}:${ref.revision}`, ref])).values()] };
+}
+
+async function loadTaskChangeState(input: { root: string; context: string; candidateRef: CandidateRef; resumeOperationRef?: string },
+  scenario: string, scenarioInput: Record<string, unknown>): Promise<{ state: CandidateState; recovery?: ExactOperationResumeEvidence }> {
+  if (input.resumeOperationRef === undefined) return { state: await loadState(input.root, input.context, input.candidateRef) };
+  const context = decodeContext(input.context);
+  const id = operationId(scenario, input.candidateRef, context.selected_sources_sha256, scenarioInput);
+  if (id !== input.resumeOperationRef) return fail("CONFLICT", "Recovery requires the exact original task change request and context.");
+  const recovery = await inspectExactOperationForResume({ root: input.root, productId: input.candidateRef.product_id, operationId: id,
+    scenario, intent: { schema_version: 1, kind: "operation_intent", scenario, input: scenarioInput } });
+  const originals = new Map<string, Buffer>();
+  for (const target of recovery.targets ?? []) {
+    if (target.root !== "store" || target.before === null) return fail("RECOVERY_REQUIRED", "Task change recovery target is unsupported.");
+    const current = await readSafe(input.root, target.relative_path, context.canonical_workspace);
+    if (current === null || ![target.before, target.after].includes(digest(current))) {
+      return fail("CONFLICT", "Task change target changed after interruption.");
+    }
+    originals.set(target.relative_path, digest(current) === target.before ? current : Buffer.from(await readObject(input.root, {
+      productId: input.candidateRef.product_id, kind: target.relative_path.endsWith("candidate.yaml") ? "record" : "markdown", sha256: target.before,
+    })));
+  }
+  const state = await loadState(input.root, input.context, input.candidateRef, false, originals);
+  if (state.candidate.source_version !== context.selected_sources_sha256) return fail("CONFLICT", "Recovery snapshot does not match the original context.");
+  return { state, recovery };
+}
+
+async function guardTaskChange(state: CandidateState, taskId: string): Promise<void> {
+  await assertRoadmapTaskBindingsCompatible(state.root, state.candidate.product_id, [taskId]);
+  const bytes = await readSafe(state.root, `products/${state.candidate.product_id}/head.yaml`, state.context.canonical_workspace);
+  if (bytes === null) return fail("CONFLICT", "Product head is unavailable during task change.");
+  const head = await validateProductRecord("Head", parseJson(bytes, "Product head")) as { generation: string };
+  if (head.generation !== state.candidate.base_generation) return fail("CONFLICT", "Product head changed during task change.");
+}
+
+export async function unlinkRoadmapDependency(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly candidateRef: CandidateRef;
+  readonly taskRef: Ref;
+  readonly requiresTaskRef: Ref;
+  readonly answerRef: DecisionRef;
+  readonly reason: string;
+  readonly resumeOperationRef?: string;
+}, hooks: { afterChange?: (relativePath: string) => Promise<void> } = {}): Promise<RoadmapOutcome<MutationResult>> {
+  const scenario = "roadmap_unlink_dependency";
+  const scenarioInput = { candidate_ref: input.candidateRef, task_ref: input.taskRef,
+    requires_task_ref: input.requiresTaskRef, answer_ref: input.answerRef, reason: input.reason };
+  const replay = await replayMutation(input.root, input.context, input.candidateRef, scenario, scenarioInput, input.resumeOperationRef);
+  if (replay !== null) return replay;
+  const { state, recovery } = await loadTaskChangeState(input, scenario, scenarioInput);
+  await requireReadyInputs(state);
+  assertTaskReference(state, input.taskRef);
+  assertTaskReference(state, input.requiresTaskRef);
+  const edge = (relation: Relation): boolean => relation.kind === "depends_on"
+    && sameRef(relation.from, input.taskRef) && sameRef(relation.to, input.requiresTaskRef);
+  if (!state.candidate.relations.some(edge)) return fail("NOT_FOUND", "The selected task dependency does not exist.");
+  const refs = [input.taskRef, input.requiresTaskRef];
+  const decision = await taskChangeDecision(state, scenario, scenarioInput, input.answerRef, input.reason, refs);
+  const guard = (): Promise<void> => guardTaskChange(state, input.taskRef.element_id);
+  await guard();
+  return executeMutation({ state, scenario, scenarioInput,
+    registry: { ...state.registry, element_metadata: state.registry.element_metadata.map((entry) =>
+      sameRef(entry.ref, input.taskRef) ? withTaskChangeProvenance(entry, input.answerRef, decision) : entry) },
+    documents: state.documents,
+    candidate: { ...state.candidate, relations: state.candidate.relations.filter((relation) => !edge(relation)) },
+    refs, documentId: null, decision, guard, ...(recovery === undefined ? {} : { recovery }), ...hooks,
+    next: "Dependency removed. Link any required existing prerequisite explicitly; retire the obsolete task only after all consumers are resolved.",
+  });
+}
+
+export async function retireRoadmapTask(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly candidateRef: CandidateRef;
+  readonly taskRef: Ref;
+  readonly redistributedTo: readonly Ref[];
+  readonly answerRef: DecisionRef;
+  readonly reason: string;
+  readonly resumeOperationRef?: string;
+}, hooks: { afterChange?: (relativePath: string) => Promise<void> } = {}): Promise<RoadmapOutcome<MutationResult>> {
+  const scenario = "roadmap_retire_task";
+  const scenarioInput = { candidate_ref: input.candidateRef, task_ref: input.taskRef,
+    redistributed_to: input.redistributedTo, answer_ref: input.answerRef, reason: input.reason };
+  const replay = await replayMutation(input.root, input.context, input.candidateRef, scenario, scenarioInput, input.resumeOperationRef);
+  if (replay !== null) return replay;
+  const { state, recovery } = await loadTaskChangeState(input, scenario, scenarioInput);
+  await requireReadyInputs(state);
+  const declared = state.candidate.change_scope;
+  if (declared !== undefined && (!sameRef(declared.task_ref, input.taskRef)
+    || JSON.stringify(declared.redistributed_to.map((ref) => ref.element_id).sort()) !== JSON.stringify(input.redistributedTo.map((ref) => ref.element_id).sort()))) {
+    return fail("INVALID_INPUT", "Retirement must preserve the declared task and responsibility recipients; prepare a separately authorized amendment for changed intent.");
+  }
+  assertTaskReference(state, input.taskRef);
+  uniqueRefs(input.redistributedTo, "Task redistribution recipients");
+  for (const ref of input.redistributedTo) {
+    assertTaskReference(state, ref);
+    if (sameRef(ref, input.taskRef)) return fail("INVALID_INPUT", "A retired task cannot receive its own responsibilities.");
+  }
+  const active = state.registry.element_metadata.filter((entry) => entry.state === "active");
+  const consumers = state.candidate.relations.filter((relation) => sameRef(relation.to, input.taskRef)
+    && active.some((entry) => sameRef(entry.ref, relation.from)));
+  if (consumers.length > 0) return fail("CONFLICT", "Task has unresolved active consumers; remove or reassign their relations explicitly.", {
+    dependent_task_ids: [...new Set(consumers.map((relation) => relation.from.element_id))],
+  });
+  const refs = [input.taskRef, ...input.redistributedTo];
+  const decision = await taskChangeDecision(state, scenario, scenarioInput, input.answerRef, input.reason, refs, input.redistributedTo);
+  const guard = (): Promise<void> => guardTaskChange(state, input.taskRef.element_id);
+  await guard();
+  const owner = state.registry.documents.find((document) => document.artifact === "roadmap" && document.role === "semantic"
+    && parseProductDocument(state.documents.get(document.id)!).elements.some((element) => element.id === input.taskRef.element_id));
+  if (owner === undefined) return fail("BROKEN_REFERENCE", "Task source document is unavailable.");
+  const documents = new Map(state.documents);
+  documents.set(owner.id, removeElement(documents.get(owner.id)!, input.taskRef.element_id));
+  return executeMutation({ state, scenario, scenarioInput,
+    registry: { ...state.registry, element_metadata: state.registry.element_metadata.map((entry) => sameRef(entry.ref, input.taskRef)
+      ? { ...withTaskChangeProvenance(entry, input.answerRef, decision), state: "retired" as const } : entry) },
+    documents,
+    candidate: { ...state.candidate, relations: state.candidate.relations.filter((relation) => !sameRef(relation.from, input.taskRef) && !sameRef(relation.to, input.taskRef)) },
+    refs, documentId: owner.id, decision, guard, ...(recovery === undefined ? {} : { recovery }), ...hooks,
+    next: "Task retired without completion or new identities. Review and activate the candidate before the ready Roadmap changes; historical bindings and source objects remain unchanged.",
   });
 }
 

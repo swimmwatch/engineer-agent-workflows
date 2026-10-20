@@ -37,6 +37,29 @@ record explicit non-sensitive answers in the current handoff, and keep affected
 work incomplete until its required answer arrives. A suggestion or tool failure
 is not an answer. Continue only independent, already authorized work meanwhile.
 
+For unreadable or abbreviated tool output, use its published exact retrieval or
+continuation mechanism. Do not count a summary as the required source read. If
+exact content remains unavailable, record that input as unavailable and stop
+dependent work. Do not cycle through encodings, character dumps or alternative
+shell representations to defeat transport compression. Continue only unaffected
+authorized work; output delivery failure does not authorize host reconfiguration.
+
+## Preservation Conflicts
+
+Compare the recorded baseline with actual packet writes, expected native
+workflow transitions and independent external changes. Never require the entire
+checkout to differ only in checklist/handoff files. Verify native binding
+transitions through their owning scenario; do not hand-edit them or exempt the
+whole workflow directory. Preserve external edits, inspect their overlap and
+recheck affected inputs. An overlapping planned write, unknown content delta or
+changed protected data is a blocker; do not silently accept the new baseline.
+Git identity/history and file bytes remain protected. A directory timestamp
+change alone is not evidence that their contents changed.
+
+Correct a disproved check before rerunning it, record why the replacement still
+detects loss, and retain the initial failure and recovery evidence. Do not relax
+a valid check or automatically undo another writer's work.
+
 ## Resume And Handoff
 
 Recheck the packet's pinned completeness version through
@@ -53,7 +76,9 @@ completed slice, assume a stale pass still applies, or trust an unchecked claim
 from the previous agent. Reuse checks only while their inputs remain unchanged.
 If work exists before its check, apply the shared PROVE rule.
 
-Replace the handoff's current state with: packet ID; complete/incomplete state;
+Keep one compact current handoff with links to reusable private evidence, not
+repeated inventories, transcripts or workflow instructions. Preserve executable
+commands and material results. Replace the handoff's current state with: packet ID; complete/incomplete state;
 changed paths; commands and working directories; expected versus actual results;
 RED/GREEN/PROVE evidence; unresolved decisions and blocked prerequisites; and
 the next eligible packet. A missing result remains unknown. Mark completion only

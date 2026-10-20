@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { performance } from "node:perf_hooks";
 import test from "node:test";
+import * as contextOperations from "../dist/product/context.js";
 
 import {
   findProductDecisions,
@@ -27,11 +29,11 @@ function expectCode(code) {
   };
 }
 
-async function fixture(t) {
+async function fixture(t, { taskText = "Select exact inputs." } = {}) {
   const base = await mkdtemp(join(tmpdir(), "eaw-product-context-"));
   t.after(() => rm(base, { recursive: true, force: true }));
   const root = join(base, "product-data");
-  const workspace = join(base, "workspace");
+  const workspace = join(base, "workspace café '[source]'");
   await mkdir(root, { recursive: true });
   await mkdir(workspace, { recursive: true });
 
@@ -98,7 +100,7 @@ async function fixture(t) {
     idea: "# Idea\n\nEstablished problem: preserve exact context.\n",
     prd: "# Product Definition\n\n### PRD-0001: Reliable delivery\n\n#### Outcome\n\nBackend work remains traceable.\n\n### PRD-0002: Global privacy boundary\n\n#### Constraint\n\nNever expose unrelated history.\n\n### PRD-0003: UI dashboard\n\n#### Capability\n\nRender visual analytics.\n",
     technical: "# Technical Design\n\n### TD-0001: Context service\n\n#### Purpose\n\nSelect exact backend inputs.\n\n### TD-0002: Global failure policy\n\n#### Policy\n\nFail closed on missing evidence.\n",
-    roadmap: "# Roadmap\n\n### TASK-0001: Implement backend context\n\n#### Scope\n\nSelect exact inputs.\n\n### TASK-0002: Preserve immutable evidence\n\n#### Scope\n\nRetain required sources.\n\n### TASK-0003: Redesign dashboard\n\n#### Scope\n\nUnrelated UI work.\n",
+    roadmap: `# Roadmap\n\n### TASK-0001: Implement backend context\n\n#### Scope\n\n${taskText}\n\n### TASK-0002: Preserve immutable evidence\n\n#### Scope\n\nRetain required sources.\n\n### TASK-0003: Redesign dashboard\n\n#### Scope\n\nUnrelated UI work.\n`,
   };
   const artifacts = {
     idea: "idea",
@@ -172,6 +174,7 @@ async function fixture(t) {
     root, context, productId, refs, historicalRef, currentRef,
     historicalBytes: bytes(historicalDecision).toString("utf8"), sourceVersion: second.sha256,
     decisionHistoryLines,
+    historicalPath: historicalObject.relativePath,
   };
 }
 
@@ -189,6 +192,141 @@ test("P10 publishes six read-only exact-context tools", () => {
     assert.equal(tool.write, false);
     assert.equal(tool.destructive, false);
   }
+});
+
+test("exact source batches preserve portions, byte bounds and query-bound continuations", async (t) => {
+  const f = await fixture(t);
+  const selection = await prepareProductContext({
+    root: f.root, context: f.context, purpose: "implementation", taskId: f.refs.task.element_id,
+    budgetBytes: 16_384,
+  });
+  const pin = selection.result.required.find((candidate) => candidate.element_ids.includes(f.refs.task.element_id));
+  const requests = [
+    { element_ref: f.refs.task, pin },
+    ...Array.from({ length: 19 }, () => ({ decision_ref: f.historicalRef })),
+  ];
+  const expected = await readProductDecision({ root: f.root, context: f.context, decisionRef: f.historicalRef });
+  let cursor;
+  const items = [];
+  let firstCursor;
+  do {
+    const page = await contextOperations.readProductSourcesBatch({ root: f.root, context: f.context, requests, cursor });
+    assert.ok(Buffer.byteLength(JSON.stringify(page.result)) <= 24 * 1024);
+    assert.ok(Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: JSON.stringify(page) }], structuredContent: page })) <= 64 * 1024);
+    assert.ok(page.result.items.length > 0);
+    items.push(...page.result.items);
+    firstCursor ??= page.result.next_cursor;
+    cursor = page.result.next_cursor ?? undefined;
+    assert.equal(page.result.complete, cursor === undefined);
+  } while (cursor !== undefined);
+  assert.deepEqual(items.map((item) => item.index), requests.map((_, index) => index));
+  assert.match(items[0].portion.text, /### TASK-0001/u);
+  for (const item of items.slice(1)) assert.deepEqual(item.portion, expected.result);
+  assert.ok(firstCursor);
+  const reorderFields = (value) => {
+    if (Array.isArray(value)) return value.map(reorderFields);
+    if (value === null || typeof value !== "object") return value;
+    return Object.fromEntries(Object.entries(value).toReversed().map(([key, entry]) => [key, reorderFields(entry)]));
+  };
+  const reordered = await contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context, requests: reorderFields(requests), cursor: firstCursor,
+  });
+  assert.deepEqual(reordered.result.items, items.slice(reordered.result.items[0].index, reordered.result.items.at(-1).index + 1));
+  const decisionContinuation = await readProductDecision({
+    root: f.root, context: f.context, decisionRef: reorderFields(f.historicalRef), cursor: expected.result.next_cursor,
+  });
+  assert.equal(decisionContinuation.result.offset, Array.from(expected.result.text).length);
+  await assert.rejects(contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context, requests: requests.toReversed(), cursor: firstCursor,
+  }), expectCode("STALE_CURSOR"));
+  await assert.rejects(contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context, requests: [],
+  }), expectCode("INVALID_INPUT"));
+  await assert.rejects(contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context,
+    requests: [{ element_ref: f.refs.unrelatedTask, pin }],
+  }), expectCode("BROKEN_REFERENCE"));
+  const continued = await contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context,
+    requests: [{ decision_ref: f.historicalRef, cursor: expected.result.next_cursor }],
+  });
+  assert.equal(continued.result.items[0].portion.offset, Array.from(expected.result.text).length);
+  await writeFile(join(f.root, f.historicalPath), "corrupt retained decision\n");
+  await assert.rejects(contextOperations.readProductSourcesBatch({
+    root: f.root, context: f.context, requests: [{ decision_ref: f.historicalRef }],
+  }), (error) => ["SOURCE_CHANGED", "INVALID_STATE"].includes(error?.code));
+});
+
+test("element continuations preserve Unicode ranges when JSON fields are reordered", async (t) => {
+  const taskText = "Exact source 👩‍💻 — данные. ".repeat(500);
+  const f = await fixture(t, { taskText });
+  const selection = await prepareProductContext({ root: f.root, context: f.context, purpose: "implementation", taskId: f.refs.task.element_id });
+  const pin = selection.result.required.find((candidate) => candidate.element_ids.includes(f.refs.task.element_id));
+  const first = await readProductElement({ root: f.root, context: f.context, elementRef: f.refs.task, pin });
+  assert.equal(first.result.complete, false);
+  let cursor = first.result.next_cursor;
+  let text = first.result.text;
+  while (cursor !== null) {
+    const next = await readProductElement({
+      root: f.root, context: f.context,
+      elementRef: Object.fromEntries(Object.entries(f.refs.task).toReversed()),
+      pin: Object.fromEntries(Object.entries(pin).toReversed()), cursor,
+    });
+    assert.equal(next.result.offset, Array.from(text).length);
+    text += next.result.text;
+    cursor = next.result.next_cursor;
+  }
+  assert.equal(text, `\n### TASK-0001: Implement backend context\n\n#### Scope\n\n${taskText}\n\n`);
+});
+
+test("packet roots exclude unrelated task dependencies but retain provenance and global policies", async (t) => {
+  const f = await fixture(t);
+  const selection = await prepareProductContext({
+    root: f.root, context: f.context, purpose: "implementation", taskId: f.refs.task.element_id,
+    packetId: "P01", packetRefs: [f.refs.boundary], budgetBytes: 1024,
+  });
+  const pages = [selection.result];
+  while (pages.at(-1).next_cursor !== null) {
+    pages.push((await readContextPage({ root: f.root, context: f.context, cursor: pages.at(-1).next_cursor })).result);
+  }
+  const pins = pages.flatMap((page) => page.required);
+  const ids = new Set(pins.flatMap((pin) => pin.element_ids));
+  assert.deepEqual(ids, new Set([f.refs.task, f.refs.boundary, f.refs.goal, f.refs.constraint, f.refs.policy].map((ref) => ref.element_id)));
+  assert.ok(pins.some((pin) => pin.decision_ref?.revision === f.historicalRef.revision));
+  assert.ok(pins.some((pin) => pin.decision_ref?.revision === f.currentRef.revision));
+});
+
+test("source batches expose a read-only typed tool and measure the same exact reads", async (t) => {
+  const f = await fixture(t);
+  const requests = Array.from({ length: 20 }, () => ({ decision_ref: f.currentRef }));
+  const individualStart = performance.now();
+  const individual = [];
+  for (const request of requests) individual.push((await readProductDecision({ root: f.root, context: f.context, decisionRef: request.decision_ref })).result);
+  const individualMs = performance.now() - individualStart;
+  const tool = workflowTools.find((candidate) => candidate.name === "product_sources_get_batch");
+  assert.ok(tool);
+  assert.equal(tool.write, false);
+  assert.equal(tool.destructive, false);
+  const previousRoot = process.env.EAW_PRODUCT_DATA_DIR;
+  process.env.EAW_PRODUCT_DATA_DIR = f.root;
+  t.after(() => {
+    if (previousRoot === undefined) delete process.env.EAW_PRODUCT_DATA_DIR;
+    else process.env.EAW_PRODUCT_DATA_DIR = previousRoot;
+  });
+  const batchStart = performance.now();
+  let batch = await tool.run({ context: f.context, requests });
+  const items = [...batch.result.items];
+  let pages = 1;
+  while (batch.result.next_cursor !== null) {
+    batch = await tool.run({ context: f.context, requests, cursor: batch.result.next_cursor });
+    items.push(...batch.result.items);
+    pages++;
+  }
+  const batchMs = performance.now() - batchStart;
+  assert.equal(batch.result.complete, true);
+  assert.deepEqual(items.map((item) => item.portion), individual);
+  await assert.rejects(tool.run({ context: f.context, requests: [...requests, requests[0]] }), expectCode("INVALID_INPUT"));
+  t.diagnostic(JSON.stringify({ records: requests.length, pages, individual_ms: Math.round(individualMs), batch_ms: Math.round(batchMs), scope: "synthetic server reads; excludes model time" }));
 });
 
 test("Q22: task context returns only transitive inputs and applicable global constraints", async (t) => {

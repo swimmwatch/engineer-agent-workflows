@@ -1,8 +1,23 @@
 # Adaptive Specification Scope
 
-Read this reference after repository evidence is established and before detailed
-requirements questions. Its output is a user-confirmed scope shared with the
-planning workflow.
+Read before broad repository research or detailed requirements questions. Its
+output is a user-confirmed scope shared with the planning workflow.
+
+## Task Boundary Triage
+
+First use the request, saved decisions and already available project evidence to
+identify the intended outcome. Inspect only additional evidence needed to decide
+its boundary. Several independently acceptable outcomes warrant a split proposal;
+length, screen count and profile count alone do not. UI, API and storage serving
+one outcome normally stay together, including required safety and recovery.
+
+For a compound request, unclear separation, or material expansion during the
+interview, read `references/scope-boundaries.md` before choosing depth or reading
+new profiles. Resolve the boundary choice first, then apply the ordinary scope
+sequence below to the selected work. For an already bounded request, continue
+without a decomposition question or another artifact. Reuse an explicit boundary
+answer; do not ask again without new material evidence. Depth measures risk and
+required detail, not permission to collect unrelated outcomes into one Deep spec.
 
 ## Evidence-First Triage
 
@@ -64,7 +79,7 @@ artifacts in the scope proposal:
 
 Entries are candidates, not mandatory output for an active profile. For a Lite
 change to an established interface, keep the contract in `spec.md` and its task
-packet; use `planning_artifacts: []` unless machine validation, several consumers,
+packet; pass `artifacts: []` to `scope_propose` unless machine validation, several consumers,
 or an explicit requirement needs a separate source. Do not create a contract
 file merely because `core` is active. Preserve an existing authoritative schema.
 

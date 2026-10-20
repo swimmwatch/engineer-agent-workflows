@@ -5,6 +5,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { basename, dirname } from "node:path";
 
 import { fromMarkdown } from "mdast-util-from-markdown";
+import { gfmTableFromMarkdown } from "mdast-util-gfm-table";
+import { gfmTable } from "micromark-extension-gfm-table";
 
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
@@ -432,6 +434,37 @@ export function parseProductDocument(bytes: Uint8Array): ParsedProductDocument {
     return fail("INVALID_MARKDOWN", "Product document contains duplicate semantic element identities.");
   }
   return { source, newline, elements };
+}
+
+/** Inspect rendered table membership, not merely syntactically valid Markdown. */
+export function validateProductTables(source: string, activeTasks: ReadonlySet<string>): void {
+  const tree = fromMarkdown(source, { extensions: [gfmTable()], mdastExtensions: [gfmTableFromMarkdown()] });
+  const taskId = (value: string): string | undefined => {
+    const text = value.trim();
+    return /^TASK-[0-9]{4,}$/u.test(text) ? text : undefined;
+  };
+  const textValue = (node: { type?: string; value?: string; children?: readonly typeof node[] }, ignoreCodePipes = false): string => {
+    if (node.value !== undefined) return ignoreCodePipes && node.type === "inlineCode" ? node.value.replaceAll("|", "") : node.value;
+    return node.children?.map((child) => textValue(child, ignoreCodePipes)).join("") ?? "";
+  };
+  const visit = (node: { type: string; value?: string; children?: readonly typeof node[] }): void => {
+    if (node.type === "code" || node.type === "inlineCode") return;
+    if (node.type === "table") {
+      for (const row of node.children?.slice(1) ?? []) {
+        const cell = row.children?.[0];
+        const id = taskId(cell === undefined ? "" : textValue(cell));
+        if (id !== undefined && !activeTasks.has(id)) fail("BROKEN_REFERENCE", "A task table contains a missing or retired task.");
+      }
+    }
+    if (node.type === "paragraph") {
+      const text = textValue(node, true);
+      if (text.split("\n").some((line) => line.trim().startsWith("|") && taskId(line.trim().split("|")[1] ?? "") !== undefined)) {
+        fail("INVALID_MARKDOWN", "A task table row is rendered outside its table; remove the separating blank line or restore its header.");
+      }
+    }
+    node.children?.forEach(visit);
+  };
+  visit(tree);
 }
 
 interface InventoryBudget {

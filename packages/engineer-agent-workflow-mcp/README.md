@@ -34,6 +34,48 @@ client and Node's test runner, including real stdio and packed-package runs.
 Packing tests resolve workspace ancestor dependencies, not a clean registry
 installation. Model sessions and live Penpot are not part of npm tests.
 
+## Product reliability tools
+
+The [product workflow guide](../../docs/product-workflows.md) owns the executable
+examples and recovery rules. Prefer MCP tools for workflow state; shell commands
+are needed only to build/test the package or start its normal stdio connection.
+There is no session CLI or general operation-repair endpoint.
+
+- Read a saved draft decision/research record with
+  `product_candidate_record_get`, the candidate reference and exact kind/ID/revision;
+  consume every text continuation before parsing or judging it.
+- Discover registered subjects with `product_document_list` (`limit` 1–50),
+  rather than guessing a document name. Read structured validation diagnostics
+  and current `tools/list` schemas before correcting a call.
+- Use `product_session_open/call/next/status/resume` as separate callable tool
+  names for candidate-bound context, complete delivery and bounded recovery.
+  Only advertised `supported_scenarios` can run. Unknown effects remain blocked;
+  sessions neither choose review verdicts nor manage global installation.
+- After a successful review, use `product_review_start` with `mode: "recheck"`
+  and its successful `parent_review_ref`, without `fixes`, for eligible changed
+  blocks. Independent judgment and fresh final consistency remain required.
+- Request `representation: "explicit-v1"` on supported review readers to separate
+  source snapshot/content/object digests from `verdict_object_sha256`. The legacy
+  consistency `object_sha256` remains the verdict digest alias.
+- Query `workflow_runtime_info` on the serving connection. Its captured `build_id`
+  and `contract_digest` distinguish same-version builds; rebuilding on disk does
+  not refresh an already loaded process. An unavailable identity stays unverified.
+
+Local build and fixture passes do not establish global installation or live host
+behavior. The historical required macOS/Windows jobs failed actual acceptance and
+downstream native qualification was skipped. Runtime support is unchanged, and
+each changed input snapshot still requires actual native qualification; see
+[proof limits](../../docs/product-workflows.md#proof-limits-and-compatibility).
+
+Headroom is an external tool, not a repository dependency. Headroom qualification
+is outside repository acceptance. Q14 is cancelled and no longer required, never passed.
+This does not claim an external compressor fix. Preserve schemas, opaque contexts,
+cursors, source references, hashes and receipts losslessly. Obtain exact content
+through the owning retrieval path and verify its schema, selected source identity,
+revision and digest with complete continuations. If unavailable or inconsistent,
+stop the affected read and dependent mutation. Keep MCP response limits and safe
+recovery; a summary, truncated JSON or unresolved marker is not an exact response.
+
 ## Scenario contract
 
 The machine-readable tool contract is generated from the executable input
@@ -44,6 +86,8 @@ current client; do not hard-code a generated namespace.
 - Open/discover: `specification_list`, `specification_open`, `scope_get`.
 - Scope: `scope_propose` saves the proposal and exact confirmation question;
   `scope_confirm` builds the manifest only from its actual recorded confirmation.
+  Select `design_tokens` together with `shared_design` to explicitly declare
+  `design/system/tokens.tokens.json`; `shared_design` alone does not add tokens.
 - Interview: `question_prepare`, `question_record_answer`,
   `question_record_no_answer`, `decision_record_fact`,
   `decision_record_assumption`, `decision_link_requirements`,
@@ -67,6 +111,10 @@ current client; do not hard-code a generated namespace.
   `screen_design_register_export`.
 - Stage checks: `specification_check_state`, `design_system_check`,
   `screen_design_check`. They do not approve a specification or start a skill.
+- Roadmap changes: `roadmap_unlink_dependency` removes an explicit obsolete edge;
+  `roadmap_retire_task` excludes a task after consumer resolution, preserving its
+  identity, reason and user-answer provenance. Both support exact journal recovery
+  with `resume_operation`; see the product workflow guide for bindings and activation.
 
 Slash-separated names above abbreviate distinct tools, not an action parameter.
 Inputs are typed scenario parameters, never arbitrary YAML, JSON Patch, field
@@ -236,3 +284,35 @@ File limits and regular-file/symlink protections apply. Snapshots are flushed
 before publication under the decisions lock; a failed mutation may leave an
 unused snapshot. This does not add a power-loss durability guarantee beyond the
 existing platform filesystem behavior.
+
+## Bounded retirement review and activation inspection
+
+For task removal, use `product_amendment_prepare.change_scope` with
+`kind: task_retirement`, the exact `task_ref` and existing `redistributed_to`
+recipients. This records the actual instruction under a built-in Standard/core
+amendment; it does not inherit or authenticate broader profile consent.
+Preparation returns `review_basis` when the ready generation identifies its
+reviewed candidate. Supply that `parent_candidate_ref` and `parent_review_ref`
+to `product_review_start` in `recheck` mode. Legacy inputs without adequate
+history use full review. `product_review_get_batch.pending_only` omits already
+recorded judgments; explicit rereads and reviewer scope expansion remain valid.
+
+A corrections-only followup can map changed document prose through exact
+`fixes[].changed_item_keys` when a recorded `__consistency__` finding owns the
+correction. Element changes still use `changed_refs`. Always read corrected
+blocks and obtain fresh whole-artifact consistency. The opt-in `compact-v1`
+consistency representation retains the inventory hash, impact and exact verdict
+object hashes without repeating shared source text. Other read representations
+are unchanged.
+
+Before activation, retain its original arguments/context.
+`product_amendment_activation_status` accepts those same arguments, is read-only,
+and distinguishes the operation's published generation from current head.
+Repeat the exact original activation request to retrieve a completed result;
+incomplete or blocked operations remain with their existing owner. This does
+not extend logical-session support to activation or introduce lock removal.
+
+`node scripts/benchmark-roadmap-retirement.mjs OUTPUT full stdio 30 --representative`
+measures the full-review baseline. Replace `full` with `recheck` for bounded
+inheritance and `stdio` with `direct` to separate native scenario execution from
+transport overhead. Outputs use synthetic judgments, not semantic certification.

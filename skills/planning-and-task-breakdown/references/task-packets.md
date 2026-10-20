@@ -52,6 +52,9 @@ Every packet states:
    scoped changes, including staged and untracked files. No clean tree or existing
    commit is required. If Git is unavailable, list the blocked prerequisite;
    planning must not initialize Git or substitute file snapshots.
+   Name required local generators/runners and existing execution authority.
+   Resolve missing runner authority before bulk implementation context reads;
+   a declared command alone does not grant installation permission.
 3. Scope and explicit non-goals, including allowed production paths or bounded
    ownership areas and the required checklist/handoff updates.
 4. Affected and proposed ownership boundaries and language-appropriate
@@ -86,6 +89,21 @@ Every packet states:
    documented; do not downgrade it to optional because the environment cannot
    run it. Review is optional and separately invoked, never a completion or
    next-packet prerequisite.
+
+For product-linked packets, declare `## Product context roots` followed by one
+fenced `json` array of exact native `{product_id, artifact, element_id}` roots
+from the validated task inventory. Include every packet-specific product input;
+the runtime adds task identity, transitive dependencies and global constraints.
+Do not use the task identity alone to hide its dependencies. Missing mappings
+retain legacy full context; implementation must not create or repair the map.
+The frozen packet remains authoritative, without a second editable sidecar.
+
+For import/preservation work, identify expected packet writes, checklist/handoff
+writes and exact scenario-managed workspace transitions before the final check.
+Independent external changes are preserved and inspected for overlap; unknown
+changes or overlap with a pending packet write require disposition. Check
+content and meaningful file attributes; directory mtime alone is not Git data
+loss. Keep private inventories outside published artifacts and reference them.
 
 Restate exact local values and failure behavior. Do not write “implement as
 described elsewhere.” Keep packets small enough that one explicit invocation

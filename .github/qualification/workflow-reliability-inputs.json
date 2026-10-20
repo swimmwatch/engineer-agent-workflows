@@ -1,0 +1,3126 @@
+{
+  "version": 1,
+  "baseline_head": "78573edd13a1ff2a749eb66eb8a3adaf0e3a9c82",
+  "inputs": [
+    {
+      "path": ".agents/plugins/marketplace.json",
+      "sha256": "81b36e9dbcc432b1a3ed7c6c508ddcdcba7f791fe22cae401dc2ab1f2023d408"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "fddff6bcab08dbe8a5e75d44e8fd3776237f662dca803c290a5e616af3aec1c6"
+    },
+    {
+      "path": ".codegraph/.gitignore",
+      "sha256": "47c0dacebca9f56c9020b68584470dfc51f07650a3719904e98f4b447a5dd003"
+    },
+    {
+      "path": ".editorconfig",
+      "sha256": "6c1913610992d3c1377e77c670b3e38c7d2cc70db34c537ea2a5e6532af4bb32"
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "1659ffdaa72474c57c9adf4965f20c421e85fab2a8eb43bbe7c53de8acfedfd4"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug.yml",
+      "sha256": "a4dedd188cb280547f0e245b10145053fcba75566f07e12a0a04d418b53c59a9"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "sha256": "03ad3f38ccbbc8c0eba2d3a8003d6f7618a42a6692ec48e1d31f2438caefff96"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature.yml",
+      "sha256": "31b5376bda581e75eccc659e14a09808272e5b4410aea45bc5cfed4deb3f6d99"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "sha256": "b50b4f472fe0de2d1cbfa3b9e73b223a002235fc8691875c4380a5ea37ff7c97"
+    },
+    {
+      "path": ".github/qualification/verify-workflow-reliability-inputs.mjs",
+      "sha256": "24c38c122ab444924a9ab30d4f579940075b0576d2e3e1a68571e08a35b9ab6f"
+    },
+    {
+      "path": ".github/workflows/lifecycle.yml",
+      "sha256": "2fc7bdc8894edc94727aebed727d82e85ea9f6688f8ec018555ba19e2e6bdcb5"
+    },
+    {
+      "path": ".github/workflows/workflow-reliability-qualification.yml",
+      "sha256": "5684a05af84d6aec6f662cda6a52756dda5bbb658088048cfb772b1ebe4a4701"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "e67abc2ef5813fd7e0c6daa64945b60d397f1dc3a066aa87753f4b06c7fc5db7"
+    },
+    {
+      "path": ".trackerignore",
+      "sha256": "8adfdd75c5a0b0b805095fe2c0e6fafaf4a39618902ca63a35dff2803af3560e"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "095b7750a88fcf13a2c14e0a4ac9fbdd78245275249cd9827088680bafddbcbe"
+    },
+    {
+      "path": "CODE_OF_CONDUCT.md",
+      "sha256": "dd6e77bf96a2165de2e15fcc9d184d8a75467945d37b06fc493a5e9e9526fc59"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "576e82e9ba135ffc7f13f9f78d43a547a3ac86a004cd52a3cad689019da183f5"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "d3d66be8e52b74329b58eb9ad14c55ad019fd2f8f6bb638e5c4cf4d3fb758812"
+    },
+    {
+      "path": "README.md",
+      "sha256": "bcb5228842e888d216e1a6dced9994332cc174817afc9f34bd9acb21c8c5b331"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "aeaa7b4f196ca34fe83325805956321e550f6b1d4a104fe49dfb70d48a90a78a"
+    },
+    {
+      "path": "SUPPORT.md",
+      "sha256": "3d19ca83f0db8dba7b5853f8b32f684c36da952bb704807ff10d9f3724ea145e"
+    },
+    {
+      "path": "catalog/release.json",
+      "sha256": "a844577c6b6f49dd3cf081dfea7c44684c7382f7668f12b9c9dc6e22dd821200"
+    },
+    {
+      "path": "catalog/skills.json",
+      "sha256": "51fe4fa9a3ed7c750cc6a993aa9f5221e8ac54c6ed707f8b72ec339f18397b30"
+    },
+    {
+      "path": "docs/context-scouting.md",
+      "sha256": "4b715c4d07d2623cb18ca597dc2f0c0ae219e131dd4704f71769e5a57e84c78d"
+    },
+    {
+      "path": "docs/evidence/codex-budget-checkpoint.md",
+      "sha256": "cba93a5e91e64abfba71e54daa828d8fb8830ceeec217b3c26c8bd2a0bb02bb3"
+    },
+    {
+      "path": "docs/evidence/decision-ledger-mcp.md",
+      "sha256": "fb0274baa4633894154ae8d353b9135571aa61e49088fd9a7a41f81ee92b3861"
+    },
+    {
+      "path": "docs/evidence/decision-lineage-qualification.md",
+      "sha256": "c2729b0a01f27388684b771d5d7370006c15945fcb3c56c54ba0ee40cb171b36"
+    },
+    {
+      "path": "docs/evidence/design-planning-contracts.md",
+      "sha256": "a495f99200ee414731253fc3ca1e39f3aa8b78b0766a5740d24ab2b2df190028"
+    },
+    {
+      "path": "docs/evidence/native-output-observability.md",
+      "sha256": "5e4a7c07ee970a7b93748368859588fd7e554745bc497c0e1f524dfe9504df3d"
+    },
+    {
+      "path": "docs/evidence/penpot-ui-workflow.md",
+      "sha256": "aa68e9cd2c5967f001e054c4bd63a800bb896faf6d5d8388db27dd586db6d4ba"
+    },
+    {
+      "path": "docs/evidence/platform-support-change-history.md",
+      "sha256": "2a3121a21123517a7dc5568613385953e4fd0ba8944f0baaca773c4d3264dad1"
+    },
+    {
+      "path": "docs/evidence/platform-support-qualification.md",
+      "sha256": "04d55839755f5135a990746dbc07686338044944958e54ca3b41b16d1c617ffd"
+    },
+    {
+      "path": "docs/evidence/product-planning-workflows.md",
+      "sha256": "e607b1c8c8b28b58d4d27d1287450241801c582649fc0b25d546e932a5a43a41"
+    },
+    {
+      "path": "docs/evidence/skills-cli-1.5.20.md",
+      "sha256": "fb1927fed2e4097b184a2d7c8e953fb77c6d1820a9a18c027fae6208b2503ab3"
+    },
+    {
+      "path": "docs/evidence/specification-completeness.md",
+      "sha256": "e4213d96671d2e1d9082bd447445e6d04bcd9ef2e9f73c9db4b51e79663dd29f"
+    },
+    {
+      "path": "docs/evidence/specification-review-followup.md",
+      "sha256": "2c811ce6500e40a308f0d121ecdd06f54861c22aa37215f2ab430029e1aba371"
+    },
+    {
+      "path": "docs/evidence/ui-deep-controls-qualification.md",
+      "sha256": "e07a8f941c878ba194df762b339063b374ed0323653ca6ea980291c74e86efec"
+    },
+    {
+      "path": "docs/evidence/workflow-loop.md",
+      "sha256": "5f3ea96eb893c912d2447c3e47f9941b83ffa33683f80d257dbd21760d2423fa"
+    },
+    {
+      "path": "docs/evidence/workflow-mcp-scenario-tools.md",
+      "sha256": "46d7a0eb641fd3b7360629ad94a1b2889030c645821ba05a05c1c2c09c97ff16"
+    },
+    {
+      "path": "docs/evidence/workflow-qualification.md",
+      "sha256": "c44c9f97a6d177e3b883a8ef8d205720c38e3cf316f9899666dbfe53641a80be"
+    },
+    {
+      "path": "docs/index.md",
+      "sha256": "97a435bd8305b89d9ba1e5de186e4c824a639de771f8e9082be81b2c4e312e98"
+    },
+    {
+      "path": "docs/local-development.md",
+      "sha256": "63a5ec3bf5140d8da704098c8cece1e9309c6da0c8548cb0a642fb5d7e3e9590"
+    },
+    {
+      "path": "docs/product-workflows.md",
+      "sha256": "b7285177456c567716d6d3d0016dff12f08f49e8de38211f83c4625461952630"
+    },
+    {
+      "path": "docs/reports/cdp-review-efficiency-validation.md",
+      "sha256": "ee2a7019dbc33f2873a8cf0c3c9a51f59c23bcbf8f2b7c0f00c2c1a597079d0b"
+    },
+    {
+      "path": "docs/reports/mcp-tool-description-audit-validation.md",
+      "sha256": "64d3056ace42ae339ce98c5dd8e0c3ec6fdd269f5e4c57923ade13db9d1ffb35"
+    },
+    {
+      "path": "docs/reports/workflow-session-bug-report-validation.md",
+      "sha256": "1eb30c8b89b9753587c89b111bc40cc2f558d4dc645b48446ceb76fc1f9fb0f3"
+    },
+    {
+      "path": "docs/research/cognitive-debt.md",
+      "sha256": "32ed39cfb1409e856068852347cc62b1e8bf3799a61de7a45aaeea444c191631"
+    },
+    {
+      "path": "docs/research/product-definition-technical-design-workflow.md",
+      "sha256": "47b08e64ec09c5333ef09f938911fff543160b261786fd9e4664a227b5780db3"
+    },
+    {
+      "path": "docs/specs/context-scouting/spec.md",
+      "sha256": "7123783b659e234339201ee1c6ac155fa0781af68ba8769376d1edc766f3258c"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/.workflow/review-inputs/967629b92c791934f5168f5a66b81cf3826a4801b1cbfe307753631ff7b0c8ae.json",
+      "sha256": "967629b92c791934f5168f5a66b81cf3826a4801b1cbfe307753631ff7b0c8ae"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/manifest.yaml",
+      "sha256": "0a436c86238f1bd2a635ddd7f8d9bab0860b569e14117af6c51d3268da82ec1b"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/spec.md",
+      "sha256": "16a31da8c039cbdab4e742c9c0cff121f201a51c36b05653764d384377ee5c28"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/01_repository_foundation.md",
+      "sha256": "c4c9e31c8dc6320655e5c89a83bc8ac7ac2a6fe43c1601bb4e1032559c5a713d"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/02_engineering_manual_and_planning.md",
+      "sha256": "ef765b58efdff64edf7565786c4e700f9e2ea4ad62b40edb24d25b6744482d98"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/03_specification_and_incremental.md",
+      "sha256": "226fa52a8f6d8aa42247024ed539fc7c616c4b320f2d1abf29c448c58562e406"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/04_code_quality_workflows.md",
+      "sha256": "c909df5f015d06294e95ca738132b1dff40def6d4d239544fcf131bd96b7de4a"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/05_context_and_discovery_workflows.md",
+      "sha256": "e51e7b68aa4fad1a285b799ad87c7469de89f256cd29f4dd2ef519bb31bafcf9"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/06_documentation_workflows.md",
+      "sha256": "e59e0a6f4846dd8bb27d927da9f79b6d0b0cf8f22c4cf4bcf7fdb214b948a0dc"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/07_delivery_workflows.md",
+      "sha256": "1914c98a7094ffd3511d12539279ae478138f41c89d5d21d8f5437004ab9337f"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/08_native_plugin_packaging.md",
+      "sha256": "10005eda9adcd230042150e43fd85033bc75f7ec91bfd4e1e562f6d4d2fbe1f6"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/09_global_lifecycle_isolation.md",
+      "sha256": "bcb86c4039f4e7e49e4ad10ca280dadcadfd36efa73ce1a174d1f39ea5ed0ae5"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/10_host_context_acceptance.md",
+      "sha256": "670371f9daa9b0556d038abc2b4ab7c38bf3223a144ae4f9e82ad81d1d5f6b7e"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/11_documentation_and_operations.md",
+      "sha256": "6d82317dc1d7107eb185525131d6fe2ee9a0bf54d9aab41068f241074c2a7bb5"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/12_ci_release_readiness.md",
+      "sha256": "77b359acfc2976f7dd72606b22a3226198808bc364afca7e4ef4d92cfc3a448f"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/13_adaptive_specification_and_planning.md",
+      "sha256": "bfde9353bc651d85683556f5e44ccbd7f2443722125f41484177c5676521b9a4"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/14_workflow_forward_testing.md",
+      "sha256": "d56dc051215487d33c1a62a486e527af5aad936848a73d120909995fb8e539c3"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/handoff.md",
+      "sha256": "092e1dfe20e8121ec9ebe2137780765db53d5bda3c85c17455525fa4e074c763"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/plan.md",
+      "sha256": "76bc523fd2fb8907d5b9643e88fd98610bf9668414bf599ac8757c649f175839"
+    },
+    {
+      "path": "docs/specs/cross-client-skill-distribution/tasks/todo.md",
+      "sha256": "89ba854953f35eeed44f1437a0476be87d4b789d08ebec66d313ccb9529928a8"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/contracts/mcp.md",
+      "sha256": "1a44c7884987408911bbe248b11ee570fd76c97651fed1a2fa9ab0ef53b4a387"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/decisions.yaml",
+      "sha256": "e868ef1036deac4a906c2f3375a92aaffae4a566408a932c05a72ad0e9444abf"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/manifest.yaml",
+      "sha256": "bcd0d18a9ef4514769a901a208e64938d694cd7d1a64363a3909060f3b1f32f5"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/spec.md",
+      "sha256": "824143408290bb870e6b32ac6884e2f84ea096c289e36ffccadc415e0f385f6c"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/01_reader.md",
+      "sha256": "e892fd35b1a394831aaa1fb23217d3109761f6423db95221a54ca9aa38d59d1a"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/02_transport_and_artifact.md",
+      "sha256": "128e505f717421d64b01fa76e451b4736cad524f8ecce5998ee6b151b5103382"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/03_skill_integration.md",
+      "sha256": "cd94ddc64c9d7a0936102e18f48f2cced2c26fdf44ec65f707a5255da5c2590f"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/handoff.md",
+      "sha256": "2e02dbca0052a189f81ed9b109d3d587c82ec9181128ecaa21856a7367b558d3"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/plan.md",
+      "sha256": "501284c503eb65e635808a8b8de521e147c48233fc9494eb5223ea697d881d55"
+    },
+    {
+      "path": "docs/specs/decision-ledger-mcp/tasks/todo.md",
+      "sha256": "589a9f93b65ebd449b3f6d7f79be119371f875a3bff04b8f64f231b1ac602be4"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/581172a5a07974803946d2f183e8116e4feeabb0472b21d68421e26043fa357b.json",
+      "sha256": "581172a5a07974803946d2f183e8116e4feeabb0472b21d68421e26043fa357b"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/5b655e8d4370154ac09f65d17175334cea638a3770d680d6b0bfee1a96bdc842.json",
+      "sha256": "5b655e8d4370154ac09f65d17175334cea638a3770d680d6b0bfee1a96bdc842"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/5f4461905d33c6e6f5f7fac74e911b8bd0d7bd72d9cfbcd6f334907a542a55db.json",
+      "sha256": "5f4461905d33c6e6f5f7fac74e911b8bd0d7bd72d9cfbcd6f334907a542a55db"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/6bac2dd6b99c37f7c0667b027ee9d505dc14efe214e6e512c86737400724ca1a.json",
+      "sha256": "6bac2dd6b99c37f7c0667b027ee9d505dc14efe214e6e512c86737400724ca1a"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/a9b83f3ce8dd45604a52ce333d178c5a9daa36469260267be17f5b2370fc505c.json",
+      "sha256": "a9b83f3ce8dd45604a52ce333d178c5a9daa36469260267be17f5b2370fc505c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/c3ddc29d3f6aafc27b4c6747bc5477984b26a91462d4a0bc62790ebc72c886df.json",
+      "sha256": "c3ddc29d3f6aafc27b4c6747bc5477984b26a91462d4a0bc62790ebc72c886df"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/.workflow/review-inputs/e029f2ee562fa7d5f0693c03e7602d622504860834d32e2dc9b6b1cf3822abc0.json",
+      "sha256": "e029f2ee562fa7d5f0693c03e7602d622504860834d32e2dc9b6b1cf3822abc0"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/contracts/mcp.md",
+      "sha256": "1c3f050c11e8b3d74c7602125e681020f0c5749ca4831b77db9ddc81b59a543c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/contracts/schemas/data.schema.json",
+      "sha256": "19e4bf28011bf73c90ff83887938150b15e2f5bdbd3b6d20f0b928f24021a393"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/decisions.yaml",
+      "sha256": "7b68050cec90fbdf209f79ef6e99bf5db30abfc0a66e9623eee86993ac59597d"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/manifest.yaml",
+      "sha256": "af7e9d7bc8bc3004edb29e1f8d2c82e133aab201303d5adcc426d0a7d19fee5d"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/quality/scenarios.yaml",
+      "sha256": "27db3637b8dbe6736751f58667d340018946971c68d2832df8fbef7c7a5f2fc2"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/spec.md",
+      "sha256": "3488457cddc46c7b025bef6489d35cf3a9f4fcfa62b56015665bb894cb1bd98c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/01_schema_config_and_paths.md",
+      "sha256": "f7b03168217c8a3ea9890971e6362cba0bd2d2ecdc118008d9bb4702b5072e53"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/02_immutable_sources_and_generations.md",
+      "sha256": "c92cf048672e54d05db8396f186c6cd1b34fc6252638d101b7ceff475a78dc0e"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/03_operations_concurrency_and_recovery.md",
+      "sha256": "3e48e3cb6f57e477f27ac7d6f0f9dcb92548136b98e850c85d22c6b4ac55ccb6"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/04_project_and_workspace_binding.md",
+      "sha256": "3d06304e64703cad6936597be2c97a33b5cfc00fff2734ebb01be5cd62501b51"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/05_multifile_markdown_registry.md",
+      "sha256": "41a09cc66ca618cd84bef2aea32bee386e198e6a42505a1a89c8616d3db5349c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/06_product_interview_and_provenance.md",
+      "sha256": "022260e51e93fe2d73719ab1a9ffdbfcbf706d42d033bbb32586526fba3dea3c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/07_idea_and_prd_scenarios.md",
+      "sha256": "5be173c2b9bd058767b242d5e0530e40b129351f5ec73dea6a4a744c5c9434af"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/08_technical_design_scenarios.md",
+      "sha256": "88d9321b92127ec637b99e561d2861867c8e6ff6129c8271d8a8465c7e13a551"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/09_roadmap_and_task_structure.md",
+      "sha256": "02dc1363fb5902ca06c6964efe1343ffccc23882d5360a39777b29af4eba9e5b"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/10_bounded_context_and_exact_reads.md",
+      "sha256": "dbcd4a6bbd277aa9151a03b76d4f916c2bd7da89a77baf4b2798ecafcfa8c9c6"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/11_independent_review_and_activation.md",
+      "sha256": "f3e501af12a53ce04647d1fa223c59bb9346f2dbd715fce1a75c1e481df68470"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/12_local_task_binding_and_pins.md",
+      "sha256": "af1233d01e08d7b98aa9e5bd66b4c31dee6a932322ccc0869806ab10745fc5b0"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/13_amendments_and_safety_blocks.md",
+      "sha256": "ba5f54594f8b25b2fa2e58e93b0237011875779cf6bf0d22b9e9f641baed4fb5"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/14_idea_and_product_definition_skills.md",
+      "sha256": "8bb552f9bae4c8cf5c9041089b4747370bb647f62075eb76d500702af9c205c3"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/15_technical_and_roadmap_skills.md",
+      "sha256": "a88d72d990701e873ce72c27bf61d70111564aed7f35093ef2126e3f692109dd"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/16_existing_workflow_integration.md",
+      "sha256": "a0af4edffb18298d538729ec5256d942016de909bd31218a23e3c313965f641b"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/17_crossplatform_end_to_end_qualification.md",
+      "sha256": "5d2b58f1c3f790c46bfc7178c1957e4f3c1eb7fbe9eb4c4dfebdc46828f47b49"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/18_developer_documentation.md",
+      "sha256": "695e44518008d1df853b0987494dbceac55177a71c4188b121ffd0960b2203a9"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/19_mcp_tool_discoverability.md",
+      "sha256": "de9307a59280c77e98a5b05e7bb2188778e3dab116fab9203ee3bd2a80fae2b7"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/20_workflow_diagnostics.md",
+      "sha256": "b105942b43214d96bd2ea725d810fcf36bebe6541af3f71ed6bc290a9c111683"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/21_review_verdict_batches.md",
+      "sha256": "313b8326e1857cc4938002312896d8c93eeb59dcdf20338249bc71e1550bed84"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/22_full_review_consistency.md",
+      "sha256": "58fb9609df91704a1d30c28eac6151ed8c8861b85baf085d3c22fa52a1d28863"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/23_structured_correction_review.md",
+      "sha256": "f2551985c1057a16e294eb67a01083c5ded744ddb549c3341a73cff01ceee07d"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/24_review_conflict_causes.md",
+      "sha256": "06381ed68b5e6c0ac7ae8c3599ff9544816989fcb3e3ab6f0b8fa70b01b1dfb8"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/handoff.md",
+      "sha256": "3d44b9ab94f810367356e383d80e1380c0988fca0687a5397fd9e533c39a4844"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/plan.md",
+      "sha256": "63821d92deb27724d1d0b6341c2b861dacf3f4a61a972b282a221204dfdb539c"
+    },
+    {
+      "path": "docs/specs/product-planning-workflows/tasks/todo.md",
+      "sha256": "e586a47924d755be792aa8d7135c3f46b9efa3100cc931cfb8fd2f491f80d06c"
+    },
+    {
+      "path": "docs/specs/product-review-efficiency/contracts/review.md",
+      "sha256": "51bf94ed6da7506b01a24dd07c444d09ad854597768e295778222469ea32ec7d"
+    },
+    {
+      "path": "docs/specs/product-review-efficiency/spec.md",
+      "sha256": "000306b7ab885993115485e62d5d2c5fc08e4331167f2725eb016e4b565fbd2a"
+    },
+    {
+      "path": "docs/specs/specification-completeness/contracts/mcp.md",
+      "sha256": "9d70cb9fbf77b4d904a1be591a547d2f5294de127162cff28d6933bcb753c785"
+    },
+    {
+      "path": "docs/specs/specification-completeness/decisions.yaml",
+      "sha256": "53f16a5f7e37b0c4b6d980db16f20bd8233dd3ca003091fbf659be238a62b666"
+    },
+    {
+      "path": "docs/specs/specification-completeness/manifest.yaml",
+      "sha256": "1ad0321233d4e6c106d5b29009eff4d0918a60a54c9b9dbe40c3fda33ae26dd3"
+    },
+    {
+      "path": "docs/specs/specification-completeness/spec.md",
+      "sha256": "26b5c6a80fcb22b5eb2c4b828a37d178c0fc327571c0aa807ce112fa4d2e5709"
+    },
+    {
+      "path": "docs/specs/specification-completeness/tasks/handoff.md",
+      "sha256": "cfd8764a17e15a8cc24a5b9d32d0e58e929bff2ac0aa66be063cc1cdacb4cea4"
+    },
+    {
+      "path": "docs/specs/specification-completeness/tasks/plan.md",
+      "sha256": "4f7b89fc6825dc84a653ab7681b38ef2abf21b8d66369e14c4f899d6b9a25fd5"
+    },
+    {
+      "path": "docs/specs/specification-completeness/tasks/todo.md",
+      "sha256": "2bc2accaec9c9ddd973c6ee09f0696c08a41e6d60e9ab8f96c7bab91d8324187"
+    },
+    {
+      "path": "docs/specs/workflow-mcp-scenario-tools/contracts/mcp.md",
+      "sha256": "3a1d141c38556872017ca6316ccd92afb089ad380a75c008cb5a2333e37dd31d"
+    },
+    {
+      "path": "docs/specs/workflow-mcp-scenario-tools/spec.md",
+      "sha256": "2969afff73fec9fba1d3f7163e95ff8f22615ae15a16aefb190967d7879ae7ba"
+    },
+    {
+      "path": "docs/specs/workflow-mcp-scenario-tools/tasks/handoff.md",
+      "sha256": "30b222066e71e916d4a4a5fcbcace0519d47af8b5cc8408daf2d7ea4f4ddc339"
+    },
+    {
+      "path": "docs/specs/workflow-mcp-scenario-tools/tasks/plan.md",
+      "sha256": "d5e7e673903f6d96ddaa7776df159143a37618c7216271b21092b268100a7356"
+    },
+    {
+      "path": "docs/specs/workflow-mcp-scenario-tools/tasks/todo.md",
+      "sha256": "bcb1a652188e09e37dc8920f7433d2a2fe777b0fc79beda087b50b40a343d325"
+    },
+    {
+      "path": "docs/specs/workflow-reliability-remediation/contracts/mcp.md",
+      "sha256": "35ea2555c25de6e958a7a76cb65292a0df6084bb7400069fc6908e4e31eef195"
+    },
+    {
+      "path": "docs/specs/workflow-reliability-remediation/quality/scenarios.yaml",
+      "sha256": "c498ce426522fa363fea878dd5f836e41cfdde708f86b402d955f6a356459ed7"
+    },
+    {
+      "path": "docs/specs/workflow-reliability-remediation/spec.md",
+      "sha256": "6151e3ebf664e72764b364eab0c55392bf2b1b47d296d93eb13b6acc285f4e77"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "bfdd902d409d51ce8abf7f2a0b0c79b77d866aa9eb5b5380f1d90b03fb2aef2b"
+    },
+    {
+      "path": "package.json",
+      "sha256": "7173e3b7da5f0c0c6fcaf1d08c022282f5b74a4d7ee4667b5834be870c5caba1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/LICENSE",
+      "sha256": "d3d66be8e52b74329b58eb9ad14c55ad019fd2f8f6bb638e5c4cf4d3fb758812"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/README.md",
+      "sha256": "714eb19adeacc018bfbcd426bf2f208d83120f6f81780064639c0736de697fef"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/eslint.config.mjs",
+      "sha256": "398c363d649b793d0b6e6801fdf1457ee0a70f9ff78113d7db6320185ec4292b"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/package.json",
+      "sha256": "097a6174d45124643cf3e0ca0afec53d2839fff5bda9af86e2f1a33c3ea30e34"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/scripts/build-runtime-info.mjs",
+      "sha256": "8d5a12b43f264b0a35be39dea21343167f47b991e80129a335fe541275cf4661"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/scripts/build-schemas.mjs",
+      "sha256": "e441fc093c652426d9dcd0ba2c7dc4fed0103835e28c65619d8cc81421fec0e5"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/api.ts",
+      "sha256": "47c23507767279c822a1938e4d2d03a8626002bdc4143d7ddc6647dcedf79ce6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/catalog.ts",
+      "sha256": "95e12da1ec206d7498b4596be5eb7e34fa14f9db06af9f57d5582e4a017c1ffa"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/checks.ts",
+      "sha256": "3b79ee37337970d36194cb74c48ead8771e0b97ac965e71b1ae8bc62f8140fe5"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/decisions.ts",
+      "sha256": "a7b4c401b682d13c1204aae02868878c8380c93096e9cc0c0a9dae6a9bc73c01"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/design.ts",
+      "sha256": "7662475a22b8a029eaf25b167713e145f066386a5f4a9b876e26f6b37ef2880a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/diagnostics.ts",
+      "sha256": "d3685979a70c6be31d3056c92d16a8d71ad2fdcfb23fb9ad06a938a9bc5140cd"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/experience.ts",
+      "sha256": "f497f37a1ebcb8abeea697fa928cb19ad81dff6e3e205eb5483056ea031f25cf"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/ledger.ts",
+      "sha256": "c427628e3eca2e3fdaa552376e866cb795e124762e695bb620ea847465429221"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/main.ts",
+      "sha256": "dae67c7ab1cfec552d82f9463ae2940af9a3dfa3584b4bc72b6b5ee944eb6be6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/metadata.ts",
+      "sha256": "4d9241a109ddef13ed3f00527ce929831342b6fa3abad3b51fb66ec22e52e93f"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/penpot.ts",
+      "sha256": "7f082f63eb2a0b47c206fe47ab9e799e709ffabee84bfae00a6cc093b7158ba0"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/bindings.ts",
+      "sha256": "2543d3cc6aeb82de589d3d15bb3faf72c0ba9f17dafd9fe36c2d2433fc139eb1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/config.ts",
+      "sha256": "50d7d479690100da8ed51a792ddc5cdeb60b3536a54469cad3f75fdf1621bd13"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+      "sha256": "1d6ba6466974bd9a5522012411fed2b6717cd2881ed57b00909bc8b3f1d28e18"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/definition.ts",
+      "sha256": "4e1fa3b9c12f8afd3bafef870c3f4ba552a3092de72ae21023036a0e64060f48"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/documents.ts",
+      "sha256": "ec288a8ad7de33601641060171b720664f4451041dbfd80c26c1c353d0312073"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts",
+      "sha256": "07965f9e4b331b9351bf62878a5760b1dbd2a0751cdfadc7241051dccaa97b35"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts",
+      "sha256": "74244778253fb488f38ee2b99cc01de449faa89c2c424f59dcdfaf9c6466c05d"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review-blocks.ts",
+      "sha256": "1079950574beb798040612ba1210e78d421451f8f96cca6aeb822f724adf4781"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "sha256": "21e4f8b215a3bdd6cd96ff4403358a4f3b44b7e2f48d53991205a879ac3009e6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/roadmap.ts",
+      "sha256": "c45750c4e6efdce0d2292046c2ed6529d7224105ea9566b82ca723f5dd51c13c"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/schemas.ts",
+      "sha256": "55ef3885713439965c401c30726e45c6daed7fe518ca003efa372f31aedb2ae4"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/sessions.ts",
+      "sha256": "bf8f697ec8e8f3a74c912620805d7ba357bf90dd0dcd570f086706856e237ad5"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts",
+      "sha256": "851ae8deb6bdb6b3f5ba98365f944d06e07d90eb03da51588d66afe2626ba967"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tasks.ts",
+      "sha256": "5665eac9c84fb332f38d0d17c5d0b128ffc69a9ebeb686bb252081ddadb415dd"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/technical.ts",
+      "sha256": "e546147e2ad078f5cbbaeadd471bed17c329ce3acf00255fbc8ba55e0ba1387a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+      "sha256": "d34e029f5da0c9a19a96a8388d31f3af2661f871991278d6dc90a3e7231ce315"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/requirements.ts",
+      "sha256": "fb442fc117daed33a1ce05ef4aa56828742af3089e828b3faafa48bc6cb007a5"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts",
+      "sha256": "4aebb7b0ffc0f44fc2e8ae72e4cfe18e3f82a95cde9e6ac29c87889d90951840"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/review-model.ts",
+      "sha256": "c80acc6f9043d5f0ab36f3a6a3765c66b884ee0ae49eb8852cc9b9ee6616c412"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/review-snapshots.ts",
+      "sha256": "f782874782707241fdd599ea6967f43f8fe4c7d9f19a87f7d3229171492ccb96"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/reviews.ts",
+      "sha256": "2650d1b5b13239b1828703db0b408ca92b6b7bd494931367fc5c0ec630e85ea6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/runtime-info.ts",
+      "sha256": "f7d68a590b5f9e28071aa081638161a011cfaae0dfc21044f0a93618d0fd9264"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/scope.ts",
+      "sha256": "800d155ede819821a7e119e2939d3caf1c5c9c8721f7bc165a9aaaf074e9467a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/server.ts",
+      "sha256": "cb35bddb6d34b640d4daed0639dc9f762dae8238942a0b5c51b01260d0ed1586"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/service.ts",
+      "sha256": "8376b0076fde3f94ee82b5536d763280baa38207f00edae1143124fe79984caa"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/source.ts",
+      "sha256": "ee5c2e4397a648da557f1fd7ecaa2ef1ac89b203ebac3ae5273b66fdbf4fb0e9"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "sha256": "b73572c8f62edfbd3efbc6d3283dc078a808570fafb4837e9cd566c26abe2420"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs",
+      "sha256": "81d0fd3ddbabfe06f20e36ee5768f30e72a0802516a22679d01a60ecb57fd719"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test-support/stdio-harness.mjs",
+      "sha256": "f5ef64c8254bc95d5a6420276ec226c040c8a13f020725a830626a61060eb368"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs",
+      "sha256": "c28bc67f08a082d5f1418fe80a052dfaf38a1f0049856ddb86e78401c2de2f44"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/completeness.test.mjs",
+      "sha256": "4a3c0dd82c0e48c8dcd8edac2b1178bfebe4a5efd5a4082f8bb9bd4d708565d8"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs",
+      "sha256": "e03d8fe8842e472ee58131b58f7d2ea2a699886e299518f0a993583a5782effb"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/design-token-scope.test.mjs",
+      "sha256": "1561d4d429ede18c25154c533ba92e79228fca8988e2da6bb7385acb6dea9eea"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs",
+      "sha256": "071620247fc292130d6fff14277a488a603bbf281fe375ccde8e863f599118c9"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+      "sha256": "ef7ca8f358a39f2340289dbe09c9677ef7f4eca0b02863ad5a0ff8db3fe1895f"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-actor-lifecycle.test.mjs",
+      "sha256": "7f22a7e3f7697144bb746c0991d815a8729dfdd30b605a635773cc8b74655790"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs",
+      "sha256": "8637de181f6072706f168b3c09929fef2e1ce2a518fa51d148eb72c58879728e"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-bindings.test.mjs",
+      "sha256": "f058dc61cf4d37686a3b0004c99bcdc7fd7c9441fe1bc158d94c81144774e96a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-compression-contract.test.mjs",
+      "sha256": "3272fbd1498f2ac7e809be26ffc5605deaf840c741218117cbbf6413d230b275"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+      "sha256": "d8a650f06bf86cf2c1aa60da09ef54df3ea935121e92c28920442f9f7ffcadeb"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-definition.test.mjs",
+      "sha256": "d5916ef0378456ac691fa9001515fc4015972d8500a267fa81ff8905c47b1827"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-diagnostics.test.mjs",
+      "sha256": "4af2993ef0af820c9264263dd0f7c59b8270ca484315207cc9b792365d096bf8"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-documents.test.mjs",
+      "sha256": "970c02d294acae850305d3c39a9b2f1b278db7ee9f47ef4032e72efcfcc9cab5"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-draft-records.test.mjs",
+      "sha256": "42418d680149342d8c6673eaf79a357abb6a372f030ed8a42e47ca9ea37c95da"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
+      "sha256": "7820468a1781a6392db436d0aa65094765d1f4ec2b1d162072223410a5da826b"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-foundation.test.mjs",
+      "sha256": "843b41316f76419d81420368fb2a17087598de53542605c450b2f212402a8cb4"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-interview.test.mjs",
+      "sha256": "a32b25ddc7a60c22441a4031b105a2af5b7ffc0c6010e3947fc9f74c972a228e"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs",
+      "sha256": "28ce8d2fe2f86b142df616cbfaf90faf7b731e63085e7eb84d107e0b8bbe6b06"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs",
+      "sha256": "6900affbd68b79078be55307170745a281986acd56778e72128a8aae0c7a16c1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "sha256": "8a58bf20767794e97375536e807cdc3d61ba1b749fc10fb6432ecbaa5d319a96"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs",
+      "sha256": "4b957cabb7e6212855d97bb1949a89d780ebc212aadcd2faaef7f6ac008043cf"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs",
+      "sha256": "ad44dc4cd53ace3319900369e174ac16999214d96433c9562d4626fa55ccb17b"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs",
+      "sha256": "6c752f4ae6799a3946717730c07d9e71be00eab4e732f0ea8595e125ffaf9264"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs",
+      "sha256": "f0655ce5b3f2175122cee330753275900b9d5328afb42536bee682d01147e63f"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-roadmap.test.mjs",
+      "sha256": "3008fe31766028ca37f13d691a8409278330c219020758358cbd5f09fea6c5ea"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
+      "sha256": "af010137381c74574f86e86c83c1e9df1fea44f583f97896fadb73b006bba52a"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs",
+      "sha256": "313cd6d1cb76893a8f21cb1f00636b4442fb1754c8378e8fc6d5d8dcc12baf60"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-storage.test.mjs",
+      "sha256": "f3a0b95f0693a6f7a38ffb147b124e62106323460d310eacd2bcd0ea58da76c1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs",
+      "sha256": "0ce6246b5eb5d22527c954a4bdd4cbdb28880a99568bb9fcfd109346a73df4be"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs",
+      "sha256": "ad69981eab7e4b386f4705860c73ae71e3684c7868f8d88914ec5f3014be9e83"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/qualification-diagnostics.test.mjs",
+      "sha256": "6c5835bed4e455b38175de299878bcf3c89c2b52885a472b4e20c6671ebe7ee6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/result.test.mjs",
+      "sha256": "c01b33ff2fb78301f25d08b9aec8f204785de982c9ccfd2bcba8a0f46087a3ac"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs",
+      "sha256": "24c1c559aa0564e9e53bf476725b3f027ffd9aa3b6eac4df44674c94e2a7a048"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs",
+      "sha256": "8b8b243fd39bd120676d55ce4434404b72944ca3564a8dc47907500e39a77156"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs",
+      "sha256": "38cd14bbc6fff0bd3ee885686323763b2e853a07bfa0961bafbc74d04c581ed8"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs",
+      "sha256": "472fb21dcb58253ae6d1b43905ef5981d65007280efc82791073c18df5aeacfd"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs",
+      "sha256": "681f5f6efcfe288d8aab03f0c4f52f3a5029b035181eb13d6a79f683dc226e4e"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/review-structured-changes.test.mjs",
+      "sha256": "053eac33e7c3063ee4feca335dc386bfca222c706ea062c4533bbf039bc90df6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs",
+      "sha256": "eb7ae585189b969c248e9e26e297bab76042977c7e664292cdffceab23681008"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs",
+      "sha256": "0671f14f6f8aa3c199b55f406e5a27c62d290145d38cc1c27b717762a0fc4309"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/stdio-harness.test.mjs",
+      "sha256": "62f68ce25a408c6a7255255cc4694a714ccdfcd59ef3b9bbf9f801aa7b80c2a1"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/npm-pack.mjs",
+      "sha256": "19a38e26df5fcae0ce5c8b82e1e80634a2f958a3b131a96b1834ba4a9c578951"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+      "sha256": "cad0a487772383d8018543876680d88354ac0b3fd4c159e56e09dd38ae2b1320"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/qualification-diagnostics.mjs",
+      "sha256": "21b0c1c71bc4fb92df061a02b779c7fa67cf3b22153b8689ca8f4cdc9de4b564"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/recovery-checkpoint.mjs",
+      "sha256": "eaf4b285979052f58d06dde16420a542dae9e36e7e204b792f4ffe9d53415499"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",
+      "sha256": "803287d954544bb5b66eecd4fd79640d126b45716c3b60300f91c03bd8df14e4"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/tool-metadata.test.mjs",
+      "sha256": "b7c11f2cd1583adc9b460d6073c9c1328e4e9cfac16a7482438d7a12ea4a1260"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/transport.test.mjs",
+      "sha256": "afa7dfbfd2e840770529899487e9b7394f15d28e6f2dfe9ccc994da06051f1e6"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs",
+      "sha256": "8b99f160d980696a12e5154c1564c9e190ee40d80b5c204204b4c0dd0500037e"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs",
+      "sha256": "a24c4180f9227c17d50d264048cf55e66bb11b602769f06ba8ddf2a1a0156896"
+    },
+    {
+      "path": "packages/engineer-agent-workflow-mcp/tsconfig.json",
+      "sha256": "7730a2c6e100ad265fc226df55540e75aae98d430ac6fa4ee35a7e344385c5e8"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/.claude-plugin/plugin.json",
+      "sha256": "4bb398f15300663e2fd6e2cee6ccbb461359bdd0d650a6df6ea5f51175e0f796"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/catalog.json",
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md",
+      "sha256": "9db66eb099bf27bbea546136b204506d2756ef234900dd8b326a0d2c7d08eaee"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/code-simplification/SKILL.md",
+      "sha256": "a161168e4c2fa6811f0334db1959b0932739ebf39220637707e46aec9bd69d97"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/context-engineering/SKILL.md",
+      "sha256": "19673d91dc89c63a7a0640f89b4d343d4d9af4992eeb48d2ef6a5b2130d95848"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+      "sha256": "e84635d83ebff52309481f606c8beb17b3c7c1f63af5eb1ac0d11ae6f7f6d65a"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+      "sha256": "9927c7e37ad68b16d4fa3fce99fbd2c5225b4d32f2e2c9c35ae87c518c09fba3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/SKILL.md",
+      "sha256": "3ef52b75cb10603a24152bf599bf7f7c0f138ad8d57e1ad72dad709a0aed7c6a"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/assets/penpot/catalog.example.yaml",
+      "sha256": "2cc5f5e18fbcaf96fe51fe500ae66ac9473aca934205ed1552d4e6fe1e0afc1b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/assets/penpot/experience.example.yaml",
+      "sha256": "f35851fc0a86977632a77df9b5d96aef7f399254b14bbe3a19f18c9cb3f5feac"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/assets/penpot/manifest.example.yaml",
+      "sha256": "332d0e0ab48bb2ca743bde1e6efb7694a1f8df500866e6ee6171d7028767ddd8"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/references/penpot-workflow.md",
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/documentation-and-adrs/SKILL.md",
+      "sha256": "36284cc2d3e2e6a46181e3da62f1b06d1b92b59b17ed2505106886145622aed6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md",
+      "sha256": "59b7a38694bb40ff93da327d90dd2733ef99e127127b996b85db56e24bef8283"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/SKILL.md",
+      "sha256": "9fc15ac815708328d42eb9911b1ed9ad9b5e8078eec6c2cb7961f6d903531dc7"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/backend.md",
+      "sha256": "6421774d778c465fb33b313c6d826d0bb1475e719503fa21fe7bb794075d2c78"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/core.md",
+      "sha256": "e2ee6f367a56d8a975b1a4fc238650e407d009669155a1ff17d7022ff6623ca3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/cross-surface.md",
+      "sha256": "32eeec54c9abc8ced7e53946499c36bcf9f157cd9d19e4d7bae12163ff6885f0"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/data.md",
+      "sha256": "6ebe8d04b9bcc0081dcf516992333920f24f7115ca62d74e908ea7c75ab9df54"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/events.md",
+      "sha256": "587ea2ae64362ae17feefd3b0c021d48ac7a2d727ece9fd163e1832dceee8d25"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/operations.md",
+      "sha256": "b50215310fd552e524370dd785b2784ed61ff1bb2976fca8486b057ea92c1d20"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/security.md",
+      "sha256": "681b9ce4cce4787155925a9013e2fcccac5eefb612e075e78cb63bb98c5959bc"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/references/product-profiles/ui.md",
+      "sha256": "152aa2174c4f84089fea9ee1c12c54e96fc47308dfd8557c86cb325c8d16a9aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/shared/product-workflow.sha256",
+      "sha256": "b02b1408778b08cd24dbd8c6c16632fcfb9357cbbfb14ba8096cbc9f11bc1433"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/idea-refine/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "sha256": "7eac965279312d7ad49b4e2aff694e444016f692ae21c33c697d7b97c61a778c"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/references/packet-recovery.md",
+      "sha256": "56aa8e40f77564f75669798a90046248af5976964f9529320da272d0d100023f"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/interview-me/SKILL.md",
+      "sha256": "459747b6348977eb7c0a5912db29760f8a4ad24e8a2eb7b3436538ace1a8a9ea"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md",
+      "sha256": "21cbe6972ca6cb66d2b8c569585aa2ee1b3317110b163ddab2d674ec35143423"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/performance-optimization/SKILL.md",
+      "sha256": "cc76fc29c7f1cdeb3e0ae0973b39a24107f66ad44e611c9f421fa67e2febab77"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/SKILL.md",
+      "sha256": "a87f04c9bac5640661a607c21434ea88e303a7c0e99a34fe87cf7c0f41db5157"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/adaptive-planning.md",
+      "sha256": "bb5314eb225d2501f22456a5d2c5dea4f08734911bd1d1d510ac44cc9856b346"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/backend-planning.md",
+      "sha256": "8ee3e82f411e041122471e5641138156b82fff1163d4fd5a07e9870bb952b501"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/core-planning.md",
+      "sha256": "6502d3b9e8fae87f5f474aaaf5e58812c4cdf53f589677486ae14771b4f198fd"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/cross-surface-planning.md",
+      "sha256": "113e24db2cef1b253e40c358fff90615032df3c8d001858054eb923aa912a842"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/data-planning.md",
+      "sha256": "fcf532bfbd18e1c6da18a97a18cbdf15e0db9306bb614ac25488d4132040022f"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/developer-documentation.md",
+      "sha256": "8ae26d929d39924703422f078f4b11c5591e4f83cc9c45b5d5bcbb04ce668f93"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/events-planning.md",
+      "sha256": "6898c654c4b695858c542ed8e3b71a471dc058cb6e272761b23755fa6a734104"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/operations-planning.md",
+      "sha256": "84e71e55b16455701e738e0323eb6309d46eec764091f7ab63944a54fee5df23"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/security-planning.md",
+      "sha256": "75b1eaaf50e70d65a53add05076143470219e71785db8076a9f1b741301cdabb"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md",
+      "sha256": "ff07c0dc8d96254d6029aa43d602ea04e693b21bda25fee516c73da7a43a0f37"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/references/ui-planning.md",
+      "sha256": "ffb1073ba77430353958f43c79e34e7eaf96c0f3bafc5070c199e75dab524b78"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-definition/SKILL.md",
+      "sha256": "286cc713b4b58fb280af97715b3ef3b1c05a11591c93c218330dc0fe3b46dfd2"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-definition/shared/product-workflow.sha256",
+      "sha256": "b39b3cd88668970e3e949d288865a7168796de03ce8d02cbe331f3a651d6a737"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-definition/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-definition/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/SKILL.md",
+      "sha256": "f62425fe4fdc40913f97e52b3380d0701a231df0dbed7abdd8bc6380328b97a1"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/shared/product-workflow.sha256",
+      "sha256": "2fbc4ffe7ea321311e5bfe1b75e077be85cf4325542cc139d99d536aeac9906e"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/security-and-hardening/SKILL.md",
+      "sha256": "d8d1675f5d55521b615956a78180a92abf9f586090f11c375192062bdc9d23c0"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/SKILL.md",
+      "sha256": "38260c3054c19e04939441b5f187a37ed7d8a48328eb32666322242a68375ede"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/adaptive-scope.md",
+      "sha256": "3603ec1b0e7cf5999388f2884c50707116bbc8937ce88c12528608a7b7464e53"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/backend-requirements.md",
+      "sha256": "e8f35231b1bb2b8220b02aedeffef09cd92c02c8c74f91c6100288b0d314fa8d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md",
+      "sha256": "f030664f8df47d6bbec0b7e56bfc6994f907cf1da89dba069789ce2bcaf173c4"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/core-requirements.md",
+      "sha256": "c587a04ee84a8a7adbdbb3b2acd15f908fa4c883b7959b72ea92a2d0ac54aae5"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/cross-surface-requirements.md",
+      "sha256": "78eec7cc0680daa9f3a9882f0232927b963f96b2bcd27beef2bb6e930b2c346b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/data-requirements.md",
+      "sha256": "5734258f6bfba415c86d5de54a4e27815975c8539375dc5c69c580e07d976698"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/events-requirements.md",
+      "sha256": "135f4f9b45daf6966a845885ee896f9653747c0bdfc33f15ce818f279e12138b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/followup-review.md",
+      "sha256": "7f4fbf99842d1e13711116100a9660185f9af392097246d03cf1a42cac24151f"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/operations-requirements.md",
+      "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/security-requirements.md",
+      "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/specification-interview.md",
+      "sha256": "9474ed04ebbb23cf0720441f304bfa819d3c3f35a20c2b3978e751ebbef8f4c6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/ui-requirements.md",
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/technical-design/SKILL.md",
+      "sha256": "5fdd5588aae4dfdddf9687d5880ad6459afaf355561c4bf624ba3b53271683d0"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/technical-design/references/technology-decisions.md",
+      "sha256": "7faddad668bb58f31a1d4984a629c290222dafdd8cdf1057a06da108bb6ecc26"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/technical-design/shared/product-workflow.sha256",
+      "sha256": "ad2ed9fb88eeeae24883cd030b1fa590c2d086b72e395cf1d8d283caf50c4d86"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/technical-design/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/claude-code/engineer-agent-workflows/skills/technical-design/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/.codex-plugin/plugin.json",
+      "sha256": "49abd68dae30442739ed585e181968397905c04021003277bee244688ebc5849"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/catalog.json",
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md",
+      "sha256": "010e9174ec23aba976b475e58a0a0c61f06ab8147d03558fdaae67ca3da60a7e"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/code-review-and-quality/agents/openai.yaml",
+      "sha256": "74e3dea25cd8edf4271954ba4ccc17f97b78565b2783b3f1f2e9ffcfa5c7ee18"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/code-simplification/SKILL.md",
+      "sha256": "d313692d9ba81b6b554b12703dfd82d513b9700873b14a2ad52fac09edbefd2e"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/code-simplification/agents/openai.yaml",
+      "sha256": "2cf0bea3354d77b663eacf1bd924c8adf705db7feae69fe95de1ea47d7f8d955"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-engineering/SKILL.md",
+      "sha256": "bff7034df1aedb1b5afd70e5284077e947075071285483700c061d3c6585d314"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-engineering/agents/openai.yaml",
+      "sha256": "d0e3bf77535a9d5799ad06b706d2af16cc64fa81d66355881784d2d3fe6112b6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+      "sha256": "4891bd0e404692d64694c897437e06d66be0984092b04f85226b14e9d7b01e4b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/agents/openai.yaml",
+      "sha256": "f41dc375413a1bca422eec852ade0d6773fcc771abb9c5b6a53551452692670b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+      "sha256": "323864fa6701c7ce71c19a945522a3db59fecfc21c68fe47aa006b48a39a9c80"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/SKILL.md",
+      "sha256": "8ac51fa44caf83ecf3fde4bc7840de0ed472a008b43781beafcb1cf56100711c"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/agents/openai.yaml",
+      "sha256": "0b1198b0a09f56766cf20f9e4036080fedbfb1c1cd9f96f767af2e1dd13dea0d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/assets/penpot/catalog.example.yaml",
+      "sha256": "2cc5f5e18fbcaf96fe51fe500ae66ac9473aca934205ed1552d4e6fe1e0afc1b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/assets/penpot/experience.example.yaml",
+      "sha256": "f35851fc0a86977632a77df9b5d96aef7f399254b14bbe3a19f18c9cb3f5feac"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/assets/penpot/manifest.example.yaml",
+      "sha256": "332d0e0ab48bb2ca743bde1e6efb7694a1f8df500866e6ee6171d7028767ddd8"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/references/penpot-workflow.md",
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/design-planning/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/documentation-and-adrs/SKILL.md",
+      "sha256": "24b06b35154d6c9bed8e98a3208f8816d860a2fa346934fc39d38f60d9c20ae0"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/documentation-and-adrs/agents/openai.yaml",
+      "sha256": "9f719959e0d73a66e6f74424c36be368004a3b6675d6d93c3a2b1ab67fb59894"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md",
+      "sha256": "704fb591216149fc81504ec0be4c3634caa67a355dcbfe53004fc99a0f32e7bc"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/doubt-driven-development/agents/openai.yaml",
+      "sha256": "118f78d5a0ad241773b7efb3741a8eb7ac32ed049c2633671e38aa6cd63c2769"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/SKILL.md",
+      "sha256": "054a963487a5788b17a72cb4299b55e534f18316ccbd7e14edf993f4828b386c"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/agents/openai.yaml",
+      "sha256": "79b6b2911cf1057a2f35d619885eb18a5fba1d1577a4bf935abe6429ca370490"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/backend.md",
+      "sha256": "6421774d778c465fb33b313c6d826d0bb1475e719503fa21fe7bb794075d2c78"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/core.md",
+      "sha256": "e2ee6f367a56d8a975b1a4fc238650e407d009669155a1ff17d7022ff6623ca3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/cross-surface.md",
+      "sha256": "32eeec54c9abc8ced7e53946499c36bcf9f157cd9d19e4d7bae12163ff6885f0"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/data.md",
+      "sha256": "6ebe8d04b9bcc0081dcf516992333920f24f7115ca62d74e908ea7c75ab9df54"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/events.md",
+      "sha256": "587ea2ae64362ae17feefd3b0c021d48ac7a2d727ece9fd163e1832dceee8d25"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/operations.md",
+      "sha256": "b50215310fd552e524370dd785b2784ed61ff1bb2976fca8486b057ea92c1d20"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/security.md",
+      "sha256": "681b9ce4cce4787155925a9013e2fcccac5eefb612e075e78cb63bb98c5959bc"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/references/product-profiles/ui.md",
+      "sha256": "152aa2174c4f84089fea9ee1c12c54e96fc47308dfd8557c86cb325c8d16a9aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/shared/product-workflow.sha256",
+      "sha256": "7b994c0fe67a9dc6a9dabf94f0675612afffda8a1363a4b7f1257e36bc8132ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/idea-refine/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "sha256": "611e1d3cdbb810846c67d02d69d06105e76284938706ba8c59c77182c0597778"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/agents/openai.yaml",
+      "sha256": "c98920f90ad30505475885809ec3eb7593e49f6925b9d9d45292b219c6823683"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/references/packet-recovery.md",
+      "sha256": "56aa8e40f77564f75669798a90046248af5976964f9529320da272d0d100023f"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/interview-me/SKILL.md",
+      "sha256": "7c24b71b31954a26dcefedabf83b631a7261b9e24670de39639ee196fc4fc8a3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/interview-me/agents/openai.yaml",
+      "sha256": "bb76fcb4c30a986ed1af20764a6291f8aea960c2e9cbf5d60c9a98259d87822c"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md",
+      "sha256": "9998b17eed0a0064e156419e302ad958142a58f24cd6341fa5c739c1a31f2066"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/performance-optimization/SKILL.md",
+      "sha256": "530b37b3330b4885480b447db38a0a86456d853600abf4c581cd2859b1a21913"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/performance-optimization/agents/openai.yaml",
+      "sha256": "882ffc8033ef7b61b55b3c6b681dd894d1ecd6273967ae4d28758bf594eb4003"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/SKILL.md",
+      "sha256": "a1a52357653e72f2b2123a3ca99e300eba5e5819b72f31fa71846c18d1de3d32"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/agents/openai.yaml",
+      "sha256": "8f586ba7df476bc39a58676615d3e32925e658f9e9a832c6ebfa3ab41265012a"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/adaptive-planning.md",
+      "sha256": "bb5314eb225d2501f22456a5d2c5dea4f08734911bd1d1d510ac44cc9856b346"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/backend-planning.md",
+      "sha256": "8ee3e82f411e041122471e5641138156b82fff1163d4fd5a07e9870bb952b501"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/core-planning.md",
+      "sha256": "6502d3b9e8fae87f5f474aaaf5e58812c4cdf53f589677486ae14771b4f198fd"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/cross-surface-planning.md",
+      "sha256": "113e24db2cef1b253e40c358fff90615032df3c8d001858054eb923aa912a842"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/data-planning.md",
+      "sha256": "fcf532bfbd18e1c6da18a97a18cbdf15e0db9306bb614ac25488d4132040022f"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/developer-documentation.md",
+      "sha256": "8ae26d929d39924703422f078f4b11c5591e4f83cc9c45b5d5bcbb04ce668f93"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/events-planning.md",
+      "sha256": "6898c654c4b695858c542ed8e3b71a471dc058cb6e272761b23755fa6a734104"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/operations-planning.md",
+      "sha256": "84e71e55b16455701e738e0323eb6309d46eec764091f7ab63944a54fee5df23"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/security-planning.md",
+      "sha256": "75b1eaaf50e70d65a53add05076143470219e71785db8076a9f1b741301cdabb"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md",
+      "sha256": "ff07c0dc8d96254d6029aa43d602ea04e693b21bda25fee516c73da7a43a0f37"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/ui-planning.md",
+      "sha256": "ffb1073ba77430353958f43c79e34e7eaf96c0f3bafc5070c199e75dab524b78"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-definition/SKILL.md",
+      "sha256": "037bc19b423878149a527772cbe93d0e0534d73fe833b0a6d731c9adee23f1bf"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-definition/agents/openai.yaml",
+      "sha256": "fad5aaacb4a3ea400c459362158a95e4a9fc54bfad6368510cd6c8543d188839"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-definition/shared/product-workflow.sha256",
+      "sha256": "3a720780f581207648755832056074dc594bafc07ed927a434e530ec024fe409"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-definition/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-definition/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-roadmap/SKILL.md",
+      "sha256": "c8a6185f48ce582a06cbf088305ccafe890bf47fb046cb0087cd66628a027a79"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-roadmap/agents/openai.yaml",
+      "sha256": "d009172b32203f097947eccbffb06d656491c81cef1f83a218019b6910c90cbb"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-roadmap/shared/product-workflow.sha256",
+      "sha256": "fced68da757cbd9c58fd65f3f5b612336d8a5cdfed1d1cc66884306ef0fcdbb0"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-roadmap/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/product-roadmap/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/security-and-hardening/SKILL.md",
+      "sha256": "3d46f679b24f8de247b728dfe354d8e937ba9f6c8ea38e0e389572948e97ea05"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/security-and-hardening/agents/openai.yaml",
+      "sha256": "ad0fc5ba06be3b238660efe0e1d0cd6713d315f4f38291474efccff0c4f7933f"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/SKILL.md",
+      "sha256": "965d3e1bb24561971125d6331f4907b364357cbb89fe7ac4cb197b5d33d9158b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/agents/openai.yaml",
+      "sha256": "d3adb7403ac8fd72f27e5a4f7c0764c8c8a98c8c62355a18cb2b01d1caf81490"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/adaptive-scope.md",
+      "sha256": "8b085b78a2a195557c9e482a98a5090fe39db2e5a4a6d52837e153f721bc12b6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/backend-requirements.md",
+      "sha256": "e8f35231b1bb2b8220b02aedeffef09cd92c02c8c74f91c6100288b0d314fa8d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md",
+      "sha256": "1ff316b3f3bd0e07fd366b0b01f26792f708d5c161c06204fcc6f6a3bbdf8637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/core-requirements.md",
+      "sha256": "c587a04ee84a8a7adbdbb3b2acd15f908fa4c883b7959b72ea92a2d0ac54aae5"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/cross-surface-requirements.md",
+      "sha256": "78eec7cc0680daa9f3a9882f0232927b963f96b2bcd27beef2bb6e930b2c346b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/data-requirements.md",
+      "sha256": "5734258f6bfba415c86d5de54a4e27815975c8539375dc5c69c580e07d976698"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/events-requirements.md",
+      "sha256": "135f4f9b45daf6966a845885ee896f9653747c0bdfc33f15ce818f279e12138b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/followup-review.md",
+      "sha256": "7f4fbf99842d1e13711116100a9660185f9af392097246d03cf1a42cac24151f"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/operations-requirements.md",
+      "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/security-requirements.md",
+      "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/specification-interview.md",
+      "sha256": "e9c53050975249f95d70bf7e1318f92e8f2bf34300b57c04f48b1cb1ba59d85b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/ui-requirements.md",
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/SKILL.md",
+      "sha256": "6ca5d6d71d9100add126a68ddc7b33d21ee4560e997355834d1ce3e1ef42d82f"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/agents/openai.yaml",
+      "sha256": "0fa92fe2086d9386394adf9410153d4ccb45150c9dc969a8652e45286fe9fcec"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/references/technology-decisions.md",
+      "sha256": "7faddad668bb58f31a1d4984a629c290222dafdd8cdf1057a06da108bb6ecc26"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/shared/product-workflow.sha256",
+      "sha256": "d34e12f84fa01cda81a79fbd2a15ccac1b5d775731c927f9d798491230ac9ecc"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "plugins/codex/engineer-agent-workflows/skills/technical-design/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "scripts/benchmark-product-review.mjs",
+      "sha256": "4c2617ca824983a5af5fe2d2888b740513c0b1acdf62337053246be07aad2f8b"
+    },
+    {
+      "path": "scripts/build-dev.mjs",
+      "sha256": "aa7eb97de54c7eec90bd5fde6eed80cfe212d158b5e25c78025fe8e742ce35d6"
+    },
+    {
+      "path": "scripts/generate.mjs",
+      "sha256": "632d59a0865d8e76635b53a6d40f356a3a4cf8559f321be4f7f803feeb60166e"
+    },
+    {
+      "path": "scripts/lib/captured-evidence.mjs",
+      "sha256": "03e039c8e202d88b62264c3d33c75907cfc40569e08aba018cee040c9ab0cc3c"
+    },
+    {
+      "path": "scripts/lib/catalog.mjs",
+      "sha256": "6b4b25fc5a8ecce8532270a47152386304bf0d1e908d305bf12f2fc919373435"
+    },
+    {
+      "path": "scripts/lib/distribution.mjs",
+      "sha256": "3cf2dae6d41be5d24d03eecbdadc93ec38a6c964482eef28411ec090412c6f6b"
+    },
+    {
+      "path": "scripts/lib/errors.mjs",
+      "sha256": "f639b9fce6a087597238cfd977146663a78342ba7e2ca3543b1918c01cfeaad3"
+    },
+    {
+      "path": "scripts/lib/files.mjs",
+      "sha256": "dea3fafbb66162f33eef96a0e9a6c48f5e9a68e53a20e2230d80f4dafccc5b53"
+    },
+    {
+      "path": "scripts/lib/manifests.mjs",
+      "sha256": "0ea218293fc8c6c9cc2dc60b6179a33d9b40237e9aee3601b52e5fa5d921d4b6"
+    },
+    {
+      "path": "scripts/lib/skill-document.mjs",
+      "sha256": "0536ccaa1fc3c6230a8252fcdea95dfce65214cae80b37c9c54d361ece94122d"
+    },
+    {
+      "path": "scripts/qualify-product-review.mjs",
+      "sha256": "58135e560af31e65cb380cbd9c44042873e8e0b2a43e24652c596bc4d0e228ec"
+    },
+    {
+      "path": "scripts/qualify-product-workflows.mjs",
+      "sha256": "d16df74ff611560c600d27b3c9b45975c7c9dd2d9b9ac9643473fcd1d862b4b1"
+    },
+    {
+      "path": "scripts/run-tests.mjs",
+      "sha256": "8cdfe0cad081dbf30f1b6b36c388425077911c1c5b7acce9ca54d7fbbca34f2e"
+    },
+    {
+      "path": "scripts/validate.mjs",
+      "sha256": "6cf02bac135171dfb2efc89331148ee3f971a5872c40ebb8426ae99a320c774a"
+    },
+    {
+      "path": "scripts/verify-workflow-evidence.mjs",
+      "sha256": "c0327a5d56bb287d3e9a9bfabb50589d53daf08379ac6cc8b64b503e76f12dd1"
+    },
+    {
+      "path": "shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "shared/schemas/product.schema.json",
+      "sha256": "87979e47032e84f8a64dce58715c078294bd755615d141cbbd643fa5fbe62feb"
+    },
+    {
+      "path": "shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "skills/code-review-and-quality/SKILL.md",
+      "sha256": "62ba09c4f78f22da1e2789fd7c4d4ec4d6d0d4e6cc652fff54eac2bb7396570f"
+    },
+    {
+      "path": "skills/code-review-and-quality/agents/openai.yaml",
+      "sha256": "74e3dea25cd8edf4271954ba4ccc17f97b78565b2783b3f1f2e9ffcfa5c7ee18"
+    },
+    {
+      "path": "skills/code-simplification/SKILL.md",
+      "sha256": "cc2f94180f397a893b5006d7c89eb32da026b4684074d159c33c2b85e87da8b2"
+    },
+    {
+      "path": "skills/code-simplification/agents/openai.yaml",
+      "sha256": "2cf0bea3354d77b663eacf1bd924c8adf705db7feae69fe95de1ea47d7f8d955"
+    },
+    {
+      "path": "skills/context-engineering/SKILL.md",
+      "sha256": "033ccff96132127452787981d9bf4452a7bef24ed2471ffe0e58403a4a7549ed"
+    },
+    {
+      "path": "skills/context-engineering/agents/openai.yaml",
+      "sha256": "d0e3bf77535a9d5799ad06b706d2af16cc64fa81d66355881784d2d3fe6112b6"
+    },
+    {
+      "path": "skills/context-scouting/SKILL.md",
+      "sha256": "f33a0ec07eb53b0d1f69797766473518dd2877f1bd5223e8736430403e79e391"
+    },
+    {
+      "path": "skills/context-scouting/agents/openai.yaml",
+      "sha256": "f41dc375413a1bca422eec852ade0d6773fcc771abb9c5b6a53551452692670b"
+    },
+    {
+      "path": "skills/context-scouting/references/delegation.md",
+      "sha256": "7776425dc52fc6f84532135e2e34e13b9259531185718aadda1389c374af22cf"
+    },
+    {
+      "path": "skills/design-planning/SKILL.md",
+      "sha256": "bf99aa1d66b4270590d32de4d4e3760eeb5d19447872a942928ff265a82c815b"
+    },
+    {
+      "path": "skills/design-planning/agents/openai.yaml",
+      "sha256": "0b1198b0a09f56766cf20f9e4036080fedbfb1c1cd9f96f767af2e1dd13dea0d"
+    },
+    {
+      "path": "skills/design-planning/assets/penpot/catalog.example.yaml",
+      "sha256": "2cc5f5e18fbcaf96fe51fe500ae66ac9473aca934205ed1552d4e6fe1e0afc1b"
+    },
+    {
+      "path": "skills/design-planning/assets/penpot/experience.example.yaml",
+      "sha256": "f35851fc0a86977632a77df9b5d96aef7f399254b14bbe3a19f18c9cb3f5feac"
+    },
+    {
+      "path": "skills/design-planning/assets/penpot/manifest.example.yaml",
+      "sha256": "332d0e0ab48bb2ca743bde1e6efb7694a1f8df500866e6ee6171d7028767ddd8"
+    },
+    {
+      "path": "skills/design-planning/references/penpot-workflow.md",
+      "sha256": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727"
+    },
+    {
+      "path": "skills/design-planning/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "skills/design-planning/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "skills/design-planning/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "skills/design-planning/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "skills/design-planning/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "skills/design-planning/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "skills/design-planning/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "skills/design-planning/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "skills/design-planning/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "skills/design-planning/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "skills/documentation-and-adrs/SKILL.md",
+      "sha256": "3d4ff15db72e7b45cd02928ebb51069fcc4c22c9df4d44e90f13e41403c8dd41"
+    },
+    {
+      "path": "skills/documentation-and-adrs/agents/openai.yaml",
+      "sha256": "9f719959e0d73a66e6f74424c36be368004a3b6675d6d93c3a2b1ab67fb59894"
+    },
+    {
+      "path": "skills/doubt-driven-development/SKILL.md",
+      "sha256": "27fb6bed6e085be4209039d81ea54d6ce3eb7c4f615f2525e7f6724e41ce476c"
+    },
+    {
+      "path": "skills/doubt-driven-development/agents/openai.yaml",
+      "sha256": "118f78d5a0ad241773b7efb3741a8eb7ac32ed049c2633671e38aa6cd63c2769"
+    },
+    {
+      "path": "skills/idea-refine/SKILL.md",
+      "sha256": "769939acf696c826b636c93b2b957f855f691d1882af629c67c2ad07c32ac175"
+    },
+    {
+      "path": "skills/idea-refine/agents/openai.yaml",
+      "sha256": "79b6b2911cf1057a2f35d619885eb18a5fba1d1577a4bf935abe6429ca370490"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/backend.md",
+      "sha256": "6421774d778c465fb33b313c6d826d0bb1475e719503fa21fe7bb794075d2c78"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/core.md",
+      "sha256": "e2ee6f367a56d8a975b1a4fc238650e407d009669155a1ff17d7022ff6623ca3"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/cross-surface.md",
+      "sha256": "32eeec54c9abc8ced7e53946499c36bcf9f157cd9d19e4d7bae12163ff6885f0"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/data.md",
+      "sha256": "6ebe8d04b9bcc0081dcf516992333920f24f7115ca62d74e908ea7c75ab9df54"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/events.md",
+      "sha256": "587ea2ae64362ae17feefd3b0c021d48ac7a2d727ece9fd163e1832dceee8d25"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/operations.md",
+      "sha256": "b50215310fd552e524370dd785b2784ed61ff1bb2976fca8486b057ea92c1d20"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/security.md",
+      "sha256": "681b9ce4cce4787155925a9013e2fcccac5eefb612e075e78cb63bb98c5959bc"
+    },
+    {
+      "path": "skills/idea-refine/references/product-profiles/ui.md",
+      "sha256": "152aa2174c4f84089fea9ee1c12c54e96fc47308dfd8557c86cb325c8d16a9aa"
+    },
+    {
+      "path": "skills/idea-refine/shared/product-workflow.sha256",
+      "sha256": "215bfded4ad30a0e15e31298b38e2440c3694bf06e1dd0664d1fc16c19432e00"
+    },
+    {
+      "path": "skills/idea-refine/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/idea-refine/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "skills/incremental-implementation/SKILL.md",
+      "sha256": "fd7b7e3562723dc7e363e9c526498f3cfd546610376e834eec73a6d7bf9b71a0"
+    },
+    {
+      "path": "skills/incremental-implementation/agents/openai.yaml",
+      "sha256": "c98920f90ad30505475885809ec3eb7593e49f6925b9d9d45292b219c6823683"
+    },
+    {
+      "path": "skills/incremental-implementation/references/packet-recovery.md",
+      "sha256": "56aa8e40f77564f75669798a90046248af5976964f9529320da272d0d100023f"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "skills/incremental-implementation/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "skills/interview-me/SKILL.md",
+      "sha256": "0dbb6b77211ecd3a633d6764610021f3fc537d56566b45feec882fe034046854"
+    },
+    {
+      "path": "skills/interview-me/agents/openai.yaml",
+      "sha256": "bb76fcb4c30a986ed1af20764a6291f8aea960c2e9cbf5d60c9a98259d87822c"
+    },
+    {
+      "path": "skills/interview-me/references/host-native-questions.md",
+      "sha256": "e8c98a7673ab12cb39dd2d89d4c4f96d032c8978b06b7c4bad36b5869d26b0d6"
+    },
+    {
+      "path": "skills/performance-optimization/SKILL.md",
+      "sha256": "0e55681aa210a34319f7884d761b26c9a57e655899781681a026d47c2c86d250"
+    },
+    {
+      "path": "skills/performance-optimization/agents/openai.yaml",
+      "sha256": "882ffc8033ef7b61b55b3c6b681dd894d1ecd6273967ae4d28758bf594eb4003"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/SKILL.md",
+      "sha256": "7edda5a7544937aa5478f5ffc57291e44ff2c044abf8265a73d8ca15fc7ee047"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/agents/openai.yaml",
+      "sha256": "8f586ba7df476bc39a58676615d3e32925e658f9e9a832c6ebfa3ab41265012a"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/adaptive-planning.md",
+      "sha256": "bb5314eb225d2501f22456a5d2c5dea4f08734911bd1d1d510ac44cc9856b346"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/backend-planning.md",
+      "sha256": "8ee3e82f411e041122471e5641138156b82fff1163d4fd5a07e9870bb952b501"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/core-planning.md",
+      "sha256": "6502d3b9e8fae87f5f474aaaf5e58812c4cdf53f589677486ae14771b4f198fd"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/cross-surface-planning.md",
+      "sha256": "113e24db2cef1b253e40c358fff90615032df3c8d001858054eb923aa912a842"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/data-planning.md",
+      "sha256": "fcf532bfbd18e1c6da18a97a18cbdf15e0db9306bb614ac25488d4132040022f"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/developer-documentation.md",
+      "sha256": "8ae26d929d39924703422f078f4b11c5591e4f83cc9c45b5d5bcbb04ce668f93"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/events-planning.md",
+      "sha256": "6898c654c4b695858c542ed8e3b71a471dc058cb6e272761b23755fa6a734104"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/operations-planning.md",
+      "sha256": "84e71e55b16455701e738e0323eb6309d46eec764091f7ab63944a54fee5df23"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/security-planning.md",
+      "sha256": "75b1eaaf50e70d65a53add05076143470219e71785db8076a9f1b741301cdabb"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/task-packets.md",
+      "sha256": "ff07c0dc8d96254d6029aa43d602ea04e693b21bda25fee516c73da7a43a0f37"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/references/ui-planning.md",
+      "sha256": "ffb1073ba77430353958f43c79e34e7eaf96c0f3bafc5070c199e75dab524b78"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "skills/planning-and-task-breakdown/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "skills/product-definition/SKILL.md",
+      "sha256": "22b078505d3ae2746b486c051e915e00c7007289874843f411aa7a475f11b9f4"
+    },
+    {
+      "path": "skills/product-definition/agents/openai.yaml",
+      "sha256": "fad5aaacb4a3ea400c459362158a95e4a9fc54bfad6368510cd6c8543d188839"
+    },
+    {
+      "path": "skills/product-definition/shared/product-workflow.sha256",
+      "sha256": "5a1f4ce83be93bcdbc1ef6541fcd9f0c45c3f62aa693674529ba6e1b52241c05"
+    },
+    {
+      "path": "skills/product-definition/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/product-definition/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "skills/product-roadmap/SKILL.md",
+      "sha256": "dd734d132d3e98e64f2b33b29d929261c19df481825071297c0c48bd7031a82d"
+    },
+    {
+      "path": "skills/product-roadmap/agents/openai.yaml",
+      "sha256": "d009172b32203f097947eccbffb06d656491c81cef1f83a218019b6910c90cbb"
+    },
+    {
+      "path": "skills/product-roadmap/shared/product-workflow.sha256",
+      "sha256": "f67a04b67febbee8b0af8079821c87be21c26c289027ef2e0e71a4b69dd2bc85"
+    },
+    {
+      "path": "skills/product-roadmap/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/product-roadmap/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "skills/security-and-hardening/SKILL.md",
+      "sha256": "f5506a7b3cde707a2fc9c2c5c30285479feb23937396bd7e0a1bccfb5a64cab1"
+    },
+    {
+      "path": "skills/security-and-hardening/agents/openai.yaml",
+      "sha256": "ad0fc5ba06be3b238660efe0e1d0cd6713d315f4f38291474efccff0c4f7933f"
+    },
+    {
+      "path": "skills/spec-driven-development/SKILL.md",
+      "sha256": "632627911f7c639cac4460055d28e283def0ee0e9c7e8e1379d82ec809ea9671"
+    },
+    {
+      "path": "skills/spec-driven-development/agents/openai.yaml",
+      "sha256": "d3adb7403ac8fd72f27e5a4f7c0764c8c8a98c8c62355a18cb2b01d1caf81490"
+    },
+    {
+      "path": "skills/spec-driven-development/references/adaptive-scope.md",
+      "sha256": "cc02d7dd3a1889c8340a77d0e3a132fbe510cc88de2d0452ef269075b6c9ae37"
+    },
+    {
+      "path": "skills/spec-driven-development/references/backend-requirements.md",
+      "sha256": "e8f35231b1bb2b8220b02aedeffef09cd92c02c8c74f91c6100288b0d314fa8d"
+    },
+    {
+      "path": "skills/spec-driven-development/references/completeness-review.md",
+      "sha256": "86eaeae7f2f9fbbc904cc955d3cd03f1d72d4b0d95851fc0a9031c65c2c24f65"
+    },
+    {
+      "path": "skills/spec-driven-development/references/core-requirements.md",
+      "sha256": "c587a04ee84a8a7adbdbb3b2acd15f908fa4c883b7959b72ea92a2d0ac54aae5"
+    },
+    {
+      "path": "skills/spec-driven-development/references/cross-surface-requirements.md",
+      "sha256": "78eec7cc0680daa9f3a9882f0232927b963f96b2bcd27beef2bb6e930b2c346b"
+    },
+    {
+      "path": "skills/spec-driven-development/references/data-requirements.md",
+      "sha256": "5734258f6bfba415c86d5de54a4e27815975c8539375dc5c69c580e07d976698"
+    },
+    {
+      "path": "skills/spec-driven-development/references/events-requirements.md",
+      "sha256": "135f4f9b45daf6966a845885ee896f9653747c0bdfc33f15ce818f279e12138b"
+    },
+    {
+      "path": "skills/spec-driven-development/references/followup-review.md",
+      "sha256": "7f4fbf99842d1e13711116100a9660185f9af392097246d03cf1a42cac24151f"
+    },
+    {
+      "path": "skills/spec-driven-development/references/operations-requirements.md",
+      "sha256": "2f1c703566fc3fac2adead7a6561fff38aa49298f99efa8e3bed3a84d0d920c5"
+    },
+    {
+      "path": "skills/spec-driven-development/references/scope-boundaries.md",
+      "sha256": "450f0bec643a0fd93cda979f7a1b3bbe048cc7c5e33251af535cf8621f7b8e79"
+    },
+    {
+      "path": "skills/spec-driven-development/references/security-requirements.md",
+      "sha256": "d3eb810b4a8d5f77c13fc27aa1f2cb2aa5a1756352a57e7153fc83e62091307d"
+    },
+    {
+      "path": "skills/spec-driven-development/references/specification-interview.md",
+      "sha256": "b05511ea0524d83599622d9589b70d03712b76db245765ba72a1ba0821b61a09"
+    },
+    {
+      "path": "skills/spec-driven-development/references/ui-requirements.md",
+      "sha256": "ba62c355a7c988b84e3c3ff05c1322381ad0318ef0996980f622f69343f38fcb"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/engineering-manual.sha256",
+      "sha256": "f68d6c8d778de8ff435187e481577f1cfbac77ed9337261ae53e35f87aacc55d"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/product-protocol.sha256",
+      "sha256": "e43fcee534ddd61e9bc5e7950fe25d961081374281b08c9cc0774fee19cdd8ea"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/references/engineering-principles.md",
+      "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/references/test-discipline.md",
+      "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/references/yaml-contracts.md",
+      "sha256": "eb53ea3274bc6ed0ffd9dfb0cd8773602e759c7a7fea468716938066b5735ad6"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/schemas/catalog.schema.json",
+      "sha256": "44fe6a30bbca024a66ade510a1735979abcd5f87fd614bf2e60e50d45a6b8c8b"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/schemas/decisions.schema.json",
+      "sha256": "2288efc1421674ad6bf6370571b5997e537de48deaa3a7c881464261f68cb7ad"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/schemas/experience.schema.json",
+      "sha256": "33a2943694549e4a14441ccb3f9ecdb3343ce188c536cae35c68e7693a8613aa"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/schemas/manifest.schema.json",
+      "sha256": "733ae88af36359533d2182f58915662d2eedc7ee41bbde112328f904f41fb841"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/scripts/verify-engineering-manual.mjs",
+      "sha256": "b9eaba8e962c4a7b54ece4d19926e3dd049ec2289cdb5b6fb9194c92e12770e3"
+    },
+    {
+      "path": "skills/spec-driven-development/shared/test-discipline.sha256",
+      "sha256": "308cd195db636cdbd10707cb713abb1c51b08ac4bd02be85fafcfe665b375b89"
+    },
+    {
+      "path": "skills/technical-design/SKILL.md",
+      "sha256": "5659d3dd65bc0c147eee854e8b70c7af40c25cceb99617276b742be80344ddcb"
+    },
+    {
+      "path": "skills/technical-design/agents/openai.yaml",
+      "sha256": "0fa92fe2086d9386394adf9410153d4ccb45150c9dc969a8652e45286fe9fcec"
+    },
+    {
+      "path": "skills/technical-design/references/technology-decisions.md",
+      "sha256": "7faddad668bb58f31a1d4984a629c290222dafdd8cdf1057a06da108bb6ecc26"
+    },
+    {
+      "path": "skills/technical-design/shared/product-workflow.sha256",
+      "sha256": "96b67b547e138ae3409710c710044831e089611dad7b22ce3b3e4be28552f114"
+    },
+    {
+      "path": "skills/technical-design/shared/references/product-workflow.md",
+      "sha256": "5c447150821c6c0924b5371883b9878bdcf8b4f815bb56a27aec9882e87ef03b"
+    },
+    {
+      "path": "skills/technical-design/shared/scripts/verify-product-workflow.mjs",
+      "sha256": "6a830fdd9fbe6ae5a2cdc2bc60c37385b7ac0d75148fd65bf5e019d15b255760"
+    },
+    {
+      "path": "tests/bundle-required.test.mjs",
+      "sha256": "2e01659417c6cb35a7e785a2fbc614d20e84543e15a20cc56a1f346827dbc664"
+    },
+    {
+      "path": "tests/captured-evidence.test.mjs",
+      "sha256": "874e785c7ab50a0d7a5163e62ee4f2e81d23ca7576b686f3bd9a84e68fadbfd3"
+    },
+    {
+      "path": "tests/catalog.test.mjs",
+      "sha256": "300d9b3d5ac474d6a665838404ab85c34f6e311479b383d12f90a414567b29ab"
+    },
+    {
+      "path": "tests/cli.test.mjs",
+      "sha256": "bb6734f2da7112ad0d6b76bdb4a7174ef169f32f9350bcf7fc4628793e91a853"
+    },
+    {
+      "path": "tests/code-quality-skills.test.mjs",
+      "sha256": "d578e2e4a4dc376335cd2e2989e4069c4f859a861de56494a402fcaffd32d12f"
+    },
+    {
+      "path": "tests/context-discovery-skills.test.mjs",
+      "sha256": "32a3c5e5660827688197af1ea74d944379f4057e14073f034212227705ea01c6"
+    },
+    {
+      "path": "tests/context-scouting.test.mjs",
+      "sha256": "5782e09cadba74fed2506e574d1b3c5de1228900943b13b118b5bc80553c32c6"
+    },
+    {
+      "path": "tests/decision-authoring-contract.test.mjs",
+      "sha256": "6ce4bf555553d2dd326126db48cb93b7436d17f0f4f88248d57900d2323b6903"
+    },
+    {
+      "path": "tests/design-planning-skill.test.mjs",
+      "sha256": "f0f64812d003bd0ad7fde80350782e346b1b673657573ce6baaebfe3e1e25cfb"
+    },
+    {
+      "path": "tests/dev-build.test.mjs",
+      "sha256": "f0afacc810dc7adae016f381740dc877b608d1291da67e73e46137b995b447f1"
+    },
+    {
+      "path": "tests/documentation-skills.test.mjs",
+      "sha256": "8477374b0dd889640d8d42224c0d775a9f4d04ceb56f5f983f0a5ff4625c3037"
+    },
+    {
+      "path": "tests/files.test.mjs",
+      "sha256": "679518da98e4e397ca68fef537dc5eea0f81d7e41817f45bd28dc37ff4a004c6"
+    },
+    {
+      "path": "tests/fixtures/code-quality/code-review-and-quality/scenarios.json",
+      "sha256": "fd2313be79b871c2dabcc5da932517b5ee96b5b41092a38c56e3618254d2360c"
+    },
+    {
+      "path": "tests/fixtures/code-quality/code-simplification/scenarios.json",
+      "sha256": "bd571cefe5a3aa8b30c81b6b276318f0d6ab8377d4a04d1cff48691e06a4fd4b"
+    },
+    {
+      "path": "tests/fixtures/code-quality/doubt-driven-development/scenarios.json",
+      "sha256": "c713fdfaff6ea517c8db7111adba3906ce28bf2498dbd719480795d78019fa51"
+    },
+    {
+      "path": "tests/fixtures/code-quality/performance-optimization/scenarios.json",
+      "sha256": "f1142f424f00bb4ccd8ea7b4b2ec27861230c734f89de265819fb94e35d016ca"
+    },
+    {
+      "path": "tests/fixtures/code-quality/security-and-hardening/scenarios.json",
+      "sha256": "43dc40a70d0743dac6698194d5cc7b818ad5898c18ef805a7cd0589306724b9f"
+    },
+    {
+      "path": "tests/fixtures/context-discovery/context-engineering/scenarios.json",
+      "sha256": "8f5312b5081fc16357b0191f6b46f9bd6ef34e4eca4c1b2a46f89f1e4d805c72"
+    },
+    {
+      "path": "tests/fixtures/context-discovery/idea-refine/scenarios.json",
+      "sha256": "3cd3dcb4cc41339faff3357042da9d6456753c2f9bb6ca9a8f4149cecc67164b"
+    },
+    {
+      "path": "tests/fixtures/context-discovery/interview-me/scenarios.json",
+      "sha256": "71d3ee3c7ee836c197f4581b83acb4d1b244de6255dfec1244c1304a32619f81"
+    },
+    {
+      "path": "tests/fixtures/context-discovery/progressive-disclosure.json",
+      "sha256": "695a7bb04edfd3c18ccae70ad5accbd43b5f3ad1a4097e74b1e44644a87e2122"
+    },
+    {
+      "path": "tests/fixtures/context-discovery/question-tool-outcomes.json",
+      "sha256": "50ad63f9398275ddd8f88b5cff01de3a7d132a97e76cec34fcf43f0d58e3abae"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/README.md",
+      "sha256": "582adfd91e5c17a5acf86be60de0653e359b0ffb061a2b0802f5f04374be8e78"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/src/delivery.mjs",
+      "sha256": "23e71ce125b577232448b85d1d27b9246633093fabf997619b1998a0bb8defab"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/src/orders.mjs",
+      "sha256": "c0b248c1cadf755c3b66c4ef5116479b6467f7cc7c3c28631f24a0ad6c278be4"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/repo/test/orders.test.mjs",
+      "sha256": "cc5b902c030f2f0033d5461c101cd598335479daa691eba4de214e1f57527f16"
+    },
+    {
+      "path": "tests/fixtures/context-scouting/scenarios.json",
+      "sha256": "bcac09617be078c06cda3a077feb2dcb380f01abd74c155a4566324d51efb637"
+    },
+    {
+      "path": "tests/fixtures/documentation/documentation-and-adrs/scenarios.json",
+      "sha256": "c81ccdc72064f129822c54d6a78342f67176ab76aba604d74dbf731db2798301"
+    },
+    {
+      "path": "tests/fixtures/documentation/layouts.json",
+      "sha256": "2cdbc6ecf3ec2113a196f2751ab7247849acaca6a0101211bbaa6767412c9f5d"
+    },
+    {
+      "path": "tests/fixtures/documentation/progressive-disclosure.json",
+      "sha256": "922f4450808aefd453866bec52197f7dd8d6fccb219c2fe1d4120e163aea3ee8"
+    },
+    {
+      "path": "tests/fixtures/documentation/source-equivalence.json",
+      "sha256": "eb85fa2fc559e2293caced70e1abf52a2b01a892488b556765504a0093caa0cb"
+    },
+    {
+      "path": "tests/fixtures/documentation/state-classification.json",
+      "sha256": "16d734b1b7a302bc3bd64976479b15892e49f53a84cc7ec9d0c844df31d3b733"
+    },
+    {
+      "path": "tests/fixtures/foundation/cyclic-skills.json",
+      "sha256": "7f3bdb352101e2be608358ab4905053f58c2302b765ec120682804f3a7fd6234"
+    },
+    {
+      "path": "tests/fixtures/foundation/governance.json",
+      "sha256": "7bda8765908b2a9c6d1fe17afe30e58ed95d73f5b305db2790dac5291b70e799"
+    },
+    {
+      "path": "tests/fixtures/foundation/invalid-complex-frontmatter.md",
+      "sha256": "b8c311015d4054dc2a6312610d3631bd43823768b63f142117bfda87ace5e6fe"
+    },
+    {
+      "path": "tests/fixtures/foundation/invalid-unknown-frontmatter.md",
+      "sha256": "f6c845509f0af88b311f350d9fb0348bc31f6332aca74b44ca4e6d084acdebaf"
+    },
+    {
+      "path": "tests/fixtures/foundation/valid-skill.md",
+      "sha256": "bcce56825ad7160108fe011afe076e92add13c20a16b6ea1be89f40b1fda7b0f"
+    },
+    {
+      "path": "tests/fixtures/incremental/packet-execution.json",
+      "sha256": "44d2bffffd189b80b42acbe7f008bac2f48df0a4df835ede6897733fbf0666c7"
+    },
+    {
+      "path": "tests/fixtures/incremental/planning-mode.json",
+      "sha256": "7151b981e05f3103f7ad04e04971cc0d5e8699825124d47a7c0f02ced60f7a31"
+    },
+    {
+      "path": "tests/fixtures/incremental/transition-commit.json",
+      "sha256": "a319ca974bc5981d64f7530684a45245e09523e6f9125af67aaa7fb48c5ea575"
+    },
+    {
+      "path": "tests/fixtures/incremental/verification-failure.json",
+      "sha256": "8a3f5eacab571cfb67881d6c7ae7f7a265ec6bbb19f84218b82482177c38f1a5"
+    },
+    {
+      "path": "tests/fixtures/manifests/claude-marketplace.json",
+      "sha256": "fddff6bcab08dbe8a5e75d44e8fd3776237f662dca803c290a5e616af3aec1c6"
+    },
+    {
+      "path": "tests/fixtures/manifests/claude-plugin.json",
+      "sha256": "4bb398f15300663e2fd6e2cee6ccbb461359bdd0d650a6df6ea5f51175e0f796"
+    },
+    {
+      "path": "tests/fixtures/manifests/codex-marketplace.json",
+      "sha256": "81b36e9dbcc432b1a3ed7c6c508ddcdcba7f791fe22cae401dc2ab1f2023d408"
+    },
+    {
+      "path": "tests/fixtures/manifests/codex-plugin.json",
+      "sha256": "49abd68dae30442739ed585e181968397905c04021003277bee244688ebc5849"
+    },
+    {
+      "path": "tests/fixtures/manifests/codex-skill.yaml",
+      "sha256": "74e3dea25cd8edf4271954ba4ccc17f97b78565b2783b3f1f2e9ffcfa5c7ee18"
+    },
+    {
+      "path": "tests/fixtures/manifests/invalid-cases.json",
+      "sha256": "e003c878a2c5b0a74a397c43a8d675668759186c50a877a30aab116b2a15bf7f"
+    },
+    {
+      "path": "tests/fixtures/manifests/plugin-catalog.json",
+      "sha256": "b14a96f5f40b43c1ab2185a88a9790c0acda8b8974829d412541e4c991695e44"
+    },
+    {
+      "path": "tests/fixtures/planning/adaptive-profile-artifacts.json",
+      "sha256": "d6b82354705a24891736a1e72ef8452d29320102a49b4886bc2f79b010b95c38"
+    },
+    {
+      "path": "tests/fixtures/planning/developer-documentation-not-warranted.json",
+      "sha256": "98cccdff0f5be400e6ab00336e49218348e3cce4b1a8aa4b9bdf896b4b21abe7"
+    },
+    {
+      "path": "tests/fixtures/planning/developer-documentation-warranted.json",
+      "sha256": "2de178df0a1758258c33ff2265225da5a5a5db2fa8fd4ec510fb2a1605263d0a"
+    },
+    {
+      "path": "tests/fixtures/planning/disproved-boundary.json",
+      "sha256": "2afe4f2b339134b5b71d011c0578f217f721874b998bf601510c0949c4aecf31"
+    },
+    {
+      "path": "tests/fixtures/planning/documentation-configuration.json",
+      "sha256": "f93daeb2a199d29a5d80545164159958c3a32bea4c7d287e2fdc11c5cbf5a37f"
+    },
+    {
+      "path": "tests/fixtures/planning/functional-procedural.json",
+      "sha256": "4e52c546e7b7cdb7940a1ac9cf238aa74cce3710de929ec6534e1f4ff8ddff91"
+    },
+    {
+      "path": "tests/fixtures/planning/incomplete-evidence.json",
+      "sha256": "614dd40630e7a29cdfc73ce6e5066c9dd5926ace01ce4c7b42b6d78c2e7c85a3"
+    },
+    {
+      "path": "tests/fixtures/planning/missing-specification-scope.json",
+      "sha256": "2b04ab9688536995e8b0c1ae3440cdc8da0c5f9df0951c5e33ef826cd559460d"
+    },
+    {
+      "path": "tests/fixtures/planning/object-oriented.json",
+      "sha256": "e976473b758c6752a9ac91de66da9316cb4f4de8ea910155db9f22a4ffb5602d"
+    },
+    {
+      "path": "tests/fixtures/planning/rule-conflict.json",
+      "sha256": "e37ab6115d1461bbea79122dd0dac2e7da9abe314c4ca04b7fb4807349d6a25f"
+    },
+    {
+      "path": "tests/fixtures/product-workflows/architecture-readiness.json",
+      "sha256": "5c3d11fdb6ad46b6995feba5a12004848c25268a96ad6463f047e28d5d7b834e"
+    },
+    {
+      "path": "tests/fixtures/product-workflows/qualification.json",
+      "sha256": "f0acfb5f255fb9b9ace09f4868a08b32c57988b87edc9d450ce7919907c1a749"
+    },
+    {
+      "path": "tests/fixtures/skills-cli-1.5.20/help.txt",
+      "sha256": "b89b0f5bd8e5b216951e3c9dbae1148151bfd79ada69d7f6ced81b482760d391"
+    },
+    {
+      "path": "tests/fixtures/skills-cli-1.5.20/metadata.json",
+      "sha256": "eb3e1549d52d181fa26f3a72f5c9be0f447c66287ac928439bacee210cb0fc9e"
+    },
+    {
+      "path": "tests/fixtures/skills-cli-1.5.20/unknown-skill.txt",
+      "sha256": "d10b96d920a88707cfe6ee9310fb392beda03253f3d168b6fb768fe9b8222964"
+    },
+    {
+      "path": "tests/fixtures/specification/adaptive-scope.json",
+      "sha256": "059eb42db56195067f9b8af4fb82d3e36079a860f35177b4e7dc66f2747335ef"
+    },
+    {
+      "path": "tests/fixtures/specification/automatic-approval.json",
+      "sha256": "dc7c40d0139410587f4aa5660482f1bd16a26a567fdae715bf8de6099b4ea031"
+    },
+    {
+      "path": "tests/fixtures/specification/behavioral-contract.json",
+      "sha256": "4f2031597cd9d252ae326b943eb52f369d21632807a4a127ad552c875d9076b6"
+    },
+    {
+      "path": "tests/fixtures/specification/scope-boundaries.md",
+      "sha256": "a515c24eaf931c305c04e6985a49f7e9ba9ad5ac025b0e113fecb8e714ec19c4"
+    },
+    {
+      "path": "tests/fixtures/specification/status-recovery.json",
+      "sha256": "c22ca42de09633450d731f0336ee14cdbf6ed184890bd067ea99f9af08c465e5"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/TRIALS.md",
+      "sha256": "f27f584f87de922aa1ba69912302134ffaebd87676d1eef4c26adb287af2fc0a"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/adversarial.json",
+      "sha256": "43b05cffa4c43bd160b97e015241f22387b38875000a65c24837a62e7ac7ecc0"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/customer-answers.json",
+      "sha256": "30d6036823ba3be59da5ff272979ec27636d1701ec6dc833c671d561d7c1b14e"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/decision-reader.json",
+      "sha256": "91a55d8322dc69f34bb14ea0a9ab923e8fb2abe6067deaf90305c54284d46f8f"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/mcp-first-implementation.json",
+      "sha256": "507f0651c7bb2fd0cd7a9c6b95b08b23bc5119beb6af0aca72af2ec1fdc1dfe0"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/mcp-first-planning.json",
+      "sha256": "d55c42d8f23b5317a3e914ce3c5a6869468473e3128bbb4ce2c07f14e1631501"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/native-answer-mapping.json",
+      "sha256": "7e9347bb1f535dd49d9798e0fb4b9cd8b2eeddf583b0780bea8ecf47811228a0"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/registry.json",
+      "sha256": "7689b1b4f79c0e053cb7b157ab1e949e45bb8075c829d28f03aac42d5c5b86a6"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/required-check-completion.json",
+      "sha256": "664b87415f08625e6f6b875d6d44486d36680a774a10371382a3ea3fe0efab38"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/rule-regressions.json",
+      "sha256": "b9db45b56b7ba4eff629559636bb195961b95ac8dbebcc2163c8194c79045def"
+    },
+    {
+      "path": "tests/fixtures/workflow-loop/yaml-checkpoints.json",
+      "sha256": "d623292f69ccdd93058645c45ef83cf1ac6b0f5184f64ae3dfcd795779e13b34"
+    },
+    {
+      "path": "tests/governance.test.mjs",
+      "sha256": "cc9dfc62a29f22301ce536206fa1625adeabcb6c3401d22a3260bf6c46e707f7"
+    },
+    {
+      "path": "tests/host-model-roles.test.mjs",
+      "sha256": "016989356cb163ecfbf16c4b594299c16076170d4530dd0e0e4e86832e80649a"
+    },
+    {
+      "path": "tests/host-project-instructions.test.mjs",
+      "sha256": "a578ff6f54fbae9352307b9b76361ad9bfb50b4c615c49bd7a7b1ad4ffce016d"
+    },
+    {
+      "path": "tests/incremental-git-preflight.test.mjs",
+      "sha256": "a5dc30a75bded206a9609b6781416f26406366ba8fcf7853c57f7f09813fee0c"
+    },
+    {
+      "path": "tests/incremental-skill.test.mjs",
+      "sha256": "b9ee5b062354ec75f9e79b7e8b2fc1ba2366f9cb3e5eb3d82c7d8b76fca72d3e"
+    },
+    {
+      "path": "tests/lib/fixtures.mjs",
+      "sha256": "97ae26c58bba831ad4acb21b00c6af7dbc81e989875708071e9f18ce9ce618c6"
+    },
+    {
+      "path": "tests/lib/workflow-evidence.mjs",
+      "sha256": "81ba51a107ebac5dfaf25da669adcde76c65f320d3b99b48b01c2d98d6f2bedf"
+    },
+    {
+      "path": "tests/lifecycle/global-lifecycle.test.mjs",
+      "sha256": "70ab06983eb7db96ea701e3aaf8ad0074d8d645a9bd156bc65bd7abaf8a25f07"
+    },
+    {
+      "path": "tests/lifecycle/isolated-profile.mjs",
+      "sha256": "779b17beefa7ccca135fd1cda50d93f0005c7815d186cd2e42fddbb97788ed8c"
+    },
+    {
+      "path": "tests/lifecycle/platform-paths.test.mjs",
+      "sha256": "e196f137d736d1baa9ab797fe8a541a734eb8660c2c0ab08ed31624a5f990fb2"
+    },
+    {
+      "path": "tests/lifecycle/project-snapshot.mjs",
+      "sha256": "c4c183416790808c3381866c9e5e3a91472491ae21691538d5ad88d87ecb815e"
+    },
+    {
+      "path": "tests/lifecycle/skills-command.mjs",
+      "sha256": "c481db53b241d8aaa4ad56ad4bd14f6f94a61819efdadd289f798cd73b2233f5"
+    },
+    {
+      "path": "tests/lifecycle/source-fixture.mjs",
+      "sha256": "3b0316862d54aad825dd638dc4f779a593dfd3b846df516e58c55762232c2891"
+    },
+    {
+      "path": "tests/lifecycle/workflow-policy.test.mjs",
+      "sha256": "7222af1de31dc374435f1de6ab25323100700ea33d6c7a94bc42cf3eeddae99b"
+    },
+    {
+      "path": "tests/manual-verifier.test.mjs",
+      "sha256": "f6532298fb24742c9e6f4d1a2afa4f2d3650334a5c21951ebd1e9f6d7aec0a73"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "sha256": "aad566f262ea89731298b05b023968aa4582bbe882804581835befc8f9b2acaf"
+    },
+    {
+      "path": "tests/packet-completion-contract.test.mjs",
+      "sha256": "8e0f9a6560f1477b4bc67e38b8bc80705eb8f2550b40b741e4daa171b3b4f777"
+    },
+    {
+      "path": "tests/penpot-ui-profile.test.mjs",
+      "sha256": "9eae519757ea51cb04f189ddd732a6dc81957db206f3e3e339f0c10023fcf10c"
+    },
+    {
+      "path": "tests/planning-mcp-preflight.test.mjs",
+      "sha256": "4aa5a20bc08035488391a15993e18b21b411f8abc8b2a7beacc81a09e4f46a09"
+    },
+    {
+      "path": "tests/planning-skill.test.mjs",
+      "sha256": "2ed79a64b7e976cd6280f9c6901827d0e76954ecd78f6868522c5edf33775492"
+    },
+    {
+      "path": "tests/platform-scope.test.mjs",
+      "sha256": "ec0bc422467fab60e5204fcb700349b7c564ca314b73f8acced8a78d370f3a8c"
+    },
+    {
+      "path": "tests/product-authoring-skills.test.mjs",
+      "sha256": "a8d0990e88716b90ceffcdc704c8269ba519369176d9c2f9d30928946c421755"
+    },
+    {
+      "path": "tests/product-documentation.test.mjs",
+      "sha256": "9bd699da3709f6c8af01631ddea8029fe669c156c152012c405db4821c92d1c9"
+    },
+    {
+      "path": "tests/product-planning-skills.test.mjs",
+      "sha256": "c88d0e07ab316a054b0353ce6df38c40769f3b17fe2fc527439c2f42f766e01e"
+    },
+    {
+      "path": "tests/product-task-integration.test.mjs",
+      "sha256": "b73195e4f483d998f7f58f0113c9a97f962e7b96c3898c9562ab62e9072156e8"
+    },
+    {
+      "path": "tests/skill-document.test.mjs",
+      "sha256": "c1a57840381a981eed8ecca8e01b5afc5a920585da58d5b470b6190906ddb1ce"
+    },
+    {
+      "path": "tests/skill-verifier-command.test.mjs",
+      "sha256": "b9541cd0a96a74b8d55a1da0c0d854aa56f00ef7df8c1fcf5facaf7bf5e097bc"
+    },
+    {
+      "path": "tests/specification-skill.test.mjs",
+      "sha256": "326bbfe04daa39f84eaf1775f595f08e997a3a31e544327cfe53fc1bca84db2a"
+    },
+    {
+      "path": "tests/test-runner.test.mjs",
+      "sha256": "c6d29700ea66d32bc4a47656b487acda28867d84f589cb199ede26c6120af479"
+    },
+    {
+      "path": "tests/workflow-evidence.test.mjs",
+      "sha256": "0c8564375d1dc9e28d898ada7b61625ada2cdb929c560a37814073a8da908609"
+    },
+    {
+      "path": "tests/workflow-mcp-integration.test.mjs",
+      "sha256": "2f956526813deef36971b5d6abe959746b1926fb90e112822920800dd5608467"
+    },
+    {
+      "path": "tests/workflow-yaml-contracts.test.mjs",
+      "sha256": "e9b0e7041ea6eb932abfad299980cd043a3dc4752aa7cd1630154833661b80c9"
+    }
+  ]
+}

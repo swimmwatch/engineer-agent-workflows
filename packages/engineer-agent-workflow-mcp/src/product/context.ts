@@ -17,7 +17,7 @@ const ARTIFACTS = new Set(["idea", "prd", "technical-design", "roadmap"]);
 const GLOBAL_CONSTRAINT_TYPES = new Set(["PrdConstraint", "PrdRule", "TechnicalPolicy"]);
 const MAX_CONTEXT_SOURCES = 10_000;
 const MAX_GENERATIONS = 100_000;
-const PORTION_CODE_POINTS = 4096;
+export const PORTION_CODE_POINTS = 4096;
 
 type Artifact = "idea" | "prd" | "technical-design" | "roadmap";
 type Purpose = "idea" | "product-definition" | "technical-design" | "product-roadmap"
@@ -87,6 +87,9 @@ interface DecisionRecord {
 
 interface LoadedState {
   readonly context: ProductContext;
+  readonly generations: Map<string, Promise<LoadedGeneration>>;
+  readonly verifiedPins: Set<string>;
+  readonly parsedDocuments: Map<string, ReturnType<typeof parseProductDocument>>;
   readonly generation: LoadedGeneration;
   readonly registry: RegistryRecord;
   readonly relations: readonly Relation[];
@@ -99,11 +102,14 @@ interface LoadedState {
   }>;
 }
 
-interface ContextSelection {
+export interface ContextSelection {
   readonly schema_version: 1;
   readonly kind: "context_selection";
   readonly product_id: string;
   readonly purpose: Purpose;
+  readonly packet_id?: string;
+  readonly packet_scoped?: boolean;
+  readonly check_ref?: string;
   readonly source_version: string;
   readonly required: readonly SourcePin[];
   readonly optional: readonly SourcePin[];
@@ -154,6 +160,9 @@ interface ContextQuery {
   readonly task_id?: string;
   readonly artifact?: Artifact;
   readonly required_refs: readonly Ref[];
+  readonly packet_id?: string;
+  readonly packet_refs?: readonly Ref[];
+  readonly packet_generation?: string;
   readonly budget_bytes: number;
 }
 
@@ -166,6 +175,16 @@ interface CursorPayload extends Record<string, unknown> {
 
 function digest(value: Uint8Array | string): string {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function sourceIdentity(value: unknown): string {
+  return digest(JSON.stringify(value, (_key, entry: unknown) => {
+    if (entry !== null && typeof entry === "object" && !Array.isArray(entry)) {
+      const record = entry as Record<string, unknown>;
+      return Object.fromEntries(Object.keys(record).sort().map((key) => [key, record[key]]));
+    }
+    return entry;
+  }));
 }
 
 function refKey(reference: Ref): string {
@@ -215,14 +234,16 @@ function decodeContext(value: string): ProductContext {
   return parsed as ProductContext;
 }
 
-async function loadState(root: string, contextText: string): Promise<LoadedState> {
+async function loadState(root: string, contextText: string, sourceGeneration?: string): Promise<LoadedState> {
   const context = decodeContext(contextText);
-  const generation = await loadGeneration(root, context.product_id, context.target_revision);
+  const generation = await loadGeneration(root, context.product_id, sourceGeneration ?? context.target_revision);
   const registry = parseJson(generation.registry, "Product registry") as RegistryRecord;
   if (registry.product_id !== context.product_id) return fail("SOURCE_CHANGED", "Product registry belongs to another product.");
   const relations = generation.generation.relations as readonly Relation[];
   const documents = new Map(generation.documents.map((document) => [document.id, document]));
+  const metadataByRef = new Map(registry.element_metadata.map((entry) => [refKey(entry.ref), entry]));
   const elements = new Map<string, LoadedState["elements"] extends ReadonlyMap<string, infer V> ? V : never>();
+  const parsedDocuments = new Map<string, ReturnType<typeof parseProductDocument>>();
   for (const document of registry.documents) {
     const loaded = documents.get(document.id);
     if (loaded === undefined || loaded.sha256 !== document.object_sha256) {
@@ -230,19 +251,38 @@ async function loadState(root: string, contextText: string): Promise<LoadedState
     }
     if (document.role !== "semantic") continue;
     const parsed = parseProductDocument(loaded.bytes);
+    parsedDocuments.set(`${generation.sha256}:${document.id}`, parsed);
     for (const element of parsed.elements) {
-      const metadata = registry.element_metadata.find((entry) => entry.ref.product_id === registry.product_id
-        && entry.ref.artifact === document.artifact && entry.ref.element_id === element.id);
+      const metadata = metadataByRef.get(refKey({ product_id: registry.product_id, artifact: document.artifact, element_id: element.id }));
       if (metadata === undefined) return fail("BROKEN_REFERENCE", "Product element is missing from registry metadata.");
       elements.set(refKey(metadata.ref), {
         metadata, document, title: element.title, text: parsed.source.slice(element.start, element.end),
       });
     }
   }
-  return { context, generation, registry, relations, documents, elements };
+  return { context, generation, registry, relations, documents, elements,
+    generations: new Map([[generation.sha256, Promise.resolve(generation)]]), verifiedPins: new Set(), parsedDocuments };
 }
 
-function encodeCursor(payload: CursorPayload): string {
+async function retainedGeneration(root: string, state: LoadedState, generation: string): Promise<LoadedGeneration> {
+  let loaded = state.generations.get(generation);
+  if (loaded === undefined) {
+    loaded = loadGeneration(root, state.context.product_id, generation);
+    state.generations.set(generation, loaded);
+  }
+  return loaded;
+}
+
+async function verifySelectedPin(root: string, state: LoadedState, pin: SourcePin): Promise<void> {
+  await validateProductRecord("SourcePin", pin);
+  const key = pinKey(pin);
+  if (!state.verifiedPins.has(key)) {
+    await verifySourcePin(root, pin);
+    state.verifiedPins.add(key);
+  }
+}
+
+export function encodeCursor(payload: CursorPayload): string {
   const query = payload.query as ContextQuery | undefined;
   const compact = {
     k: payload.kind,
@@ -255,6 +295,9 @@ function encodeCursor(payload: CursorPayload): string {
         ...(query.task_id === undefined ? {} : { t: query.task_id }),
         ...(query.artifact === undefined ? {} : { a: query.artifact }),
         r: query.required_refs,
+        ...(query.packet_id === undefined ? {} : { i: query.packet_id }),
+        ...(query.packet_refs === undefined ? {} : { e: query.packet_refs }),
+        ...(query.packet_generation === undefined ? {} : { g: query.packet_generation }),
         b: query.budget_bytes,
       },
     }),
@@ -269,7 +312,7 @@ function encodeCursor(payload: CursorPayload): string {
   return cursor;
 }
 
-function decodeCursor(value: string, kind: string, context: string): CursorPayload {
+export function decodeCursor(value: string, kind: string, context: string): CursorPayload {
   let payload: CursorPayload;
   try {
     const encoded = Buffer.from(value, "base64url");
@@ -290,6 +333,9 @@ function decodeCursor(value: string, kind: string, context: string): CursorPaylo
           ...(query.t === undefined ? {} : { task_id: query.t }),
           ...(query.a === undefined ? {} : { artifact: query.a }),
           required_refs: query.r,
+          ...(query.i === undefined ? {} : { packet_id: query.i }),
+          ...(query.e === undefined ? {} : { packet_refs: query.e }),
+          ...(query.g === undefined ? {} : { packet_generation: query.g }),
           budget_bytes: query.b,
         },
       }),
@@ -370,7 +416,7 @@ async function findDecisionPin(root: string, state: LoadedState, reference: Deci
       };
     }
     const parent: string | null = generation.generation.parent;
-    generation = parent === null ? null : await loadGeneration(root, reference.product_id, parent);
+    generation = parent === null ? null : await retainedGeneration(root, state, parent);
   }
   return fail("NOT_FOUND", "Decision revision is not retained in the selected product lineage.");
 }
@@ -398,7 +444,13 @@ async function collectContext(root: string, state: LoadedState, query: ContextQu
       && metadata.semantic_type === "Task" && metadata.ref.artifact === "roadmap"
       && metadata.ref.element_id === query.task_id);
     if (task === undefined) return fail("NOT_FOUND", "Selected product task is unavailable.");
-    const pending = [task.ref, ...query.required_refs];
+    const pending = query.packet_refs === undefined
+      ? [task.ref, ...query.required_refs]
+      : [...query.packet_refs, ...query.required_refs].filter((reference) => refKey(reference) !== refKey(task.ref));
+    if (query.packet_refs !== undefined) {
+      selected.set(refKey(task.ref), task.ref);
+      selectedArtifacts.add(task.ref.artifact);
+    }
     while (pending.length > 0) {
       if (selected.size >= MAX_CONTEXT_SOURCES) return fail("SOURCE_LIMIT", "Product context closure exceeds the supported bound.");
       const reference = pending.shift()!;
@@ -485,6 +537,9 @@ function contextQuery(input: {
   readonly taskId?: string;
   readonly artifact?: Artifact;
   readonly requiredRefs?: readonly Ref[];
+  readonly packetId?: string;
+  readonly packetRefs?: readonly Ref[];
+  readonly sourceGeneration?: string;
   readonly budgetBytes?: number;
 }): ContextQuery {
   if (!PURPOSES.has(input.purpose)) return fail("INVALID_INPUT", "Product context purpose is invalid.");
@@ -493,6 +548,13 @@ function contextQuery(input: {
   if (hasTask === hasArtifact) return fail("INVALID_INPUT", "Product context requires exactly one task or artifact selector.");
   if (hasTask && !/^TASK-[0-9]{4,}$/u.test(input.taskId)) return fail("INVALID_INPUT", "Product task identity is invalid.");
   if (hasArtifact && !ARTIFACTS.has(input.artifact)) return fail("INVALID_INPUT", "Product artifact selector is invalid.");
+  if (input.packetId !== undefined && (!hasTask || input.purpose !== "implementation" || !/^P[0-9]{2,}$/u.test(input.packetId))) {
+    return fail("INVALID_INPUT", "Packet context requires an implementation task and exact packet identity.");
+  }
+  if (input.packetRefs !== undefined && input.packetId === undefined) return fail("INVALID_INPUT", "Packet roots require a packet identity.");
+  if (input.sourceGeneration !== undefined && (input.packetId === undefined || !DIGEST_PATTERN.test(input.sourceGeneration))) {
+    return fail("INVALID_INPUT", "Pinned source generation requires a packet context.");
+  }
   const budget = input.budgetBytes ?? 8192;
   if (!Number.isSafeInteger(budget) || budget < 1024 || budget > 16_384) return fail("INVALID_INPUT", "Product context budget is invalid.");
   return {
@@ -500,6 +562,9 @@ function contextQuery(input: {
     ...(input.taskId === undefined ? {} : { task_id: input.taskId }),
     ...(input.artifact === undefined ? {} : { artifact: input.artifact }),
     required_refs: [...(input.requiredRefs ?? [])],
+    ...(input.packetId === undefined ? {} : { packet_id: input.packetId }),
+    ...(input.packetRefs === undefined ? {} : { packet_refs: input.packetRefs }),
+    ...(input.sourceGeneration === undefined ? {} : { packet_generation: input.sourceGeneration }),
     budget_bytes: budget,
   };
 }
@@ -515,6 +580,9 @@ function queryFromCursor(payload: CursorPayload): ContextQuery {
     ...(typeof record.task_id === "string" ? { taskId: record.task_id } : {}),
     ...(typeof record.artifact === "string" ? { artifact: record.artifact as Artifact } : {}),
     requiredRefs: Array.isArray(record.required_refs) ? record.required_refs as Ref[] : [],
+    ...(typeof record.packet_id === "string" ? { packetId: record.packet_id } : {}),
+    ...(Array.isArray(record.packet_refs) ? { packetRefs: record.packet_refs as Ref[] } : {}),
+    ...(typeof record.packet_generation === "string" ? { sourceGeneration: record.packet_generation } : {}),
     budgetBytes: Number(record.budget_bytes),
   });
 }
@@ -569,6 +637,7 @@ function contextPage(
     const candidate = {
       schema_version: 1 as const,
       kind: "context_selection" as const,
+      ...(query.packet_id === undefined ? {} : { packet_id: query.packet_id, packet_scoped: query.packet_refs !== undefined }),
       product_id: state.context.product_id,
       purpose: query.purpose,
       source_version: state.generation.sha256,
@@ -590,6 +659,7 @@ function contextPage(
   return {
     schema_version: 1,
     kind: "context_selection",
+    ...(query.packet_id === undefined ? {} : { packet_id: query.packet_id, packet_scoped: query.packet_refs !== undefined }),
     product_id: state.context.product_id,
     purpose: query.purpose,
     source_version: state.generation.sha256,
@@ -613,10 +683,13 @@ export async function prepareProductContext(input: {
   readonly taskId?: string;
   readonly artifact?: Artifact;
   readonly requiredRefs?: readonly Ref[];
+  readonly packetId?: string;
+  readonly packetRefs?: readonly Ref[];
+  readonly sourceGeneration?: string;
   readonly budgetBytes?: number;
 }): Promise<ProductContextOutcome<ContextSelection>> {
   const query = contextQuery(input);
-  const state = await loadState(input.root, input.context);
+  const state = await loadState(input.root, input.context, query.packet_generation);
   const sources = await collectContext(input.root, state, query);
   return { context: input.context, result: contextPage(state, input.context, query, sources, 0), replayed: false, operationRef: null };
 }
@@ -627,9 +700,9 @@ export async function readContextPage(input: {
   readonly cursor: string;
 }): Promise<ProductContextOutcome<ContextSelection>> {
   const payload = decodeCursor(input.cursor, "context", input.context);
-  const state = await loadState(input.root, input.context);
-  assertSourceVersion(payload, state);
   const query = queryFromCursor(payload);
+  const state = await loadState(input.root, input.context, query.packet_generation);
+  assertSourceVersion(payload, state);
   const sources = await collectContext(input.root, state, query);
   return {
     context: input.context,
@@ -791,30 +864,40 @@ function portion(state: LoadedState, contextText: string, pin: SourcePin, identi
   };
 }
 
-export async function readProductElement(input: {
+interface ElementReadInput {
   readonly root: string;
   readonly context: string;
   readonly elementRef: Ref;
   readonly pin: SourcePin;
   readonly cursor?: string;
-}): Promise<ProductContextOutcome<Portion>> {
-  const state = await loadState(input.root, input.context);
+}
+
+export async function readProductElement(input: ElementReadInput): Promise<ProductContextOutcome<Portion>> {
+  return readElement(await loadState(input.root, input.context), input);
+}
+
+async function readElement(state: LoadedState, input: ElementReadInput): Promise<ProductContextOutcome<Portion>> {
   if (input.elementRef.product_id !== state.context.product_id || input.pin.product_id !== input.elementRef.product_id
     || input.pin.artifact !== input.elementRef.artifact || input.pin.source_kind !== "markdown"
     || !input.pin.element_ids.includes(input.elementRef.element_id)) {
     return fail("BROKEN_REFERENCE", "Element source pin does not address the selected product element.");
   }
-  await verifySourcePin(input.root, input.pin);
+  await verifySelectedPin(input.root, state, input.pin);
   const generation = input.pin.generation === state.generation.sha256
     ? state.generation
-    : await loadGeneration(input.root, input.pin.product_id, input.pin.generation);
+    : await retainedGeneration(input.root, state, input.pin.generation);
   const document = generation.documents.find((candidate) => candidate.id === input.pin.source_id
     && candidate.sha256 === input.pin.object_sha256);
   if (document === undefined) return fail("SOURCE_CHANGED", "Element source pin is missing from its retained generation.");
-  const parsed = parseProductDocument(document.bytes);
+  const documentKey = `${generation.sha256}:${document.id}`;
+  let parsed = state.parsedDocuments.get(documentKey);
+  if (parsed === undefined) {
+    parsed = parseProductDocument(document.bytes);
+    state.parsedDocuments.set(documentKey, parsed);
+  }
   const element = parsed.elements.find((candidate) => candidate.id === input.elementRef.element_id);
   if (element === undefined) return fail("BROKEN_REFERENCE", "Pinned product element is unavailable.");
-  const identity = digest(JSON.stringify({ ref: input.elementRef, pin: input.pin }));
+  const identity = sourceIdentity({ ref: input.elementRef, pin: input.pin });
   return {
     context: input.context,
     result: portion(state, input.context, input.pin, identity, parsed.source.slice(element.start, element.end), input.cursor),
@@ -823,29 +906,102 @@ export async function readProductElement(input: {
   };
 }
 
-export async function readProductDecision(input: {
+interface DecisionReadInput {
   readonly root: string;
   readonly context: string;
   readonly decisionRef: DecisionRef;
   readonly cursor?: string;
-}): Promise<ProductContextOutcome<Portion>> {
-  const state = await loadState(input.root, input.context);
+}
+
+export async function readProductDecision(input: DecisionReadInput): Promise<ProductContextOutcome<Portion>> {
+  return readDecision(await loadState(input.root, input.context), input);
+}
+
+async function readDecision(state: LoadedState, input: DecisionReadInput): Promise<ProductContextOutcome<Portion>> {
   const pin = await findDecisionPin(input.root, state, input.decisionRef);
-  await verifySourcePin(input.root, pin);
+  await verifySelectedPin(input.root, state, pin);
   const generation = pin.generation === state.generation.sha256
     ? state.generation
-    : await loadGeneration(input.root, pin.product_id, pin.generation);
+    : await retainedGeneration(input.root, state, pin.generation);
   const decision = generation.decisions.find((candidate) => candidate.sha256 === pin.object_sha256
     && candidate.ref.product_id === input.decisionRef.product_id && candidate.ref.artifact === input.decisionRef.artifact
     && candidate.ref.id === input.decisionRef.id && candidate.ref.revision === input.decisionRef.revision);
   if (decision === undefined) return fail("SOURCE_CHANGED", "Decision source pin is missing from its retained generation.");
   await decisionRecord(decision.bytes, input.decisionRef);
   const source = new TextDecoder("utf-8", { fatal: true }).decode(decision.bytes);
-  const identity = digest(JSON.stringify(input.decisionRef));
+  const identity = sourceIdentity(input.decisionRef);
   return {
     context: input.context,
     result: portion(state, input.context, pin, identity, source, input.cursor),
     replayed: false,
     operationRef: null,
   };
+}
+
+export async function collectProductContextPins(input: {
+  readonly root: string; readonly context: string; readonly taskId: string;
+}): Promise<{ readonly sourceVersion: string; readonly pins: readonly SourcePin[]; readonly blockers: readonly string[] }> {
+  const state = await loadState(input.root, input.context);
+  const sources = await collectContext(input.root, state, contextQuery({ purpose: "implementation", taskId: input.taskId }));
+  return { sourceVersion: state.generation.sha256, pins: splitPinsForBudget(sources.required, 16_384), blockers: sources.blockers };
+}
+
+type SourceReadRequest = ({ readonly element_ref: Ref; readonly pin: SourcePin; readonly decision_ref?: never }
+  | { readonly decision_ref: DecisionRef; readonly element_ref?: never; readonly pin?: never }) & { readonly cursor?: string };
+
+interface SourceBatch {
+  readonly items: readonly { readonly index: number; readonly portion: Portion }[];
+  readonly complete: boolean;
+  readonly next_cursor: string | null;
+}
+
+export async function readProductSourcesBatch(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly requests: readonly SourceReadRequest[];
+  readonly cursor?: string;
+}): Promise<ProductContextOutcome<SourceBatch>> {
+  try {
+    await validateProductRecord("product_sources_get_batch_input", {
+      context: input.context, requests: input.requests,
+      ...(input.cursor === undefined ? {} : { cursor: input.cursor }),
+    });
+  } catch {
+    return fail("INVALID_INPUT", "Use 1-20 exact source requests and their published parameters.");
+  }
+  const identity = sourceIdentity(input.requests);
+  const payload = input.cursor === undefined ? undefined : decodeCursor(input.cursor, "source-batch", input.context);
+  if (payload !== undefined && payload.identity !== identity) return fail("STALE_CURSOR", "Source batch continuation belongs to another ordered request.");
+  const state = await loadState(input.root, input.context);
+  if (payload !== undefined) assertSourceVersion(payload, state);
+  const offset = payload?.offset ?? 0;
+  if (offset >= input.requests.length) return fail("STALE_CURSOR", "Source batch continuation is outside the request.");
+  const items: { index: number; portion: Portion }[] = [];
+  let result: SourceBatch = { items, complete: false, next_cursor: null };
+  for (let index = offset; index < input.requests.length; index++) {
+    const request = input.requests[index]!;
+    const outcome = request.element_ref === undefined
+      ? await readDecision(state, { root: input.root, context: input.context, decisionRef: request.decision_ref, ...(request.cursor === undefined ? {} : { cursor: request.cursor }) })
+      : await readElement(state, { root: input.root, context: input.context, elementRef: request.element_ref, pin: request.pin, ...(request.cursor === undefined ? {} : { cursor: request.cursor }) });
+    const next = index + 1;
+    const candidate: SourceBatch = {
+      items: [...items, { index, portion: outcome.result }],
+      complete: next === input.requests.length,
+      next_cursor: next === input.requests.length ? null : encodeCursor({
+        kind: "source-batch", context_digest: digest(input.context), source_version: state.generation.sha256, offset: next, identity,
+      }),
+    };
+    const wire = { protocol_version: 2, context: input.context, result: candidate, replayed: false, operation_ref: null };
+    if (Buffer.byteLength(JSON.stringify(candidate)) > 24 * 1024
+      || Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: JSON.stringify(wire) }], structuredContent: wire })) > 64 * 1024) break;
+    items.push({ index, portion: outcome.result });
+    result = { ...candidate, items };
+  }
+  if (items.length === 0) return fail("RESULT_LIMIT", "Source batch cannot fit one exact portion within its byte budget.");
+  const outcome = { context: input.context, result, replayed: false as const, operationRef: null };
+  const envelope = { protocol_version: 2, context: input.context, result, replayed: false, operation_ref: null };
+  if (Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: JSON.stringify(envelope) }], structuredContent: envelope })) > 64 * 1024) {
+    return fail("RESULT_LIMIT", "Source batch exceeds the MCP response byte limit.");
+  }
+  return outcome;
 }

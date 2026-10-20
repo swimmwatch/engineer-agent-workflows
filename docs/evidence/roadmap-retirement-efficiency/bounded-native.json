@@ -1,0 +1,136 @@
+{
+  "transport": "direct",
+  "mode": "recheck",
+  "elements": 30,
+  "representative": true,
+  "review": "676b530b-df05-5818-902c-dd7fcb20169d",
+  "blocks": 212,
+  "atoms": 814,
+  "source_atoms_delivered": 180,
+  "source_atom_occurrences": 331,
+  "delivered": 36,
+  "portions": 86,
+  "consistencyPortions": 11,
+  "proseKey": "document:ce7e8fd0-5970-4168-9196-140c56ef83a0:prose",
+  "inherited": 176,
+  "correction": {
+    "review": "3c6f665a-4441-574d-9f3a-52b753b9cc2b",
+    "blocks": 212,
+    "atoms": 814,
+    "source_atoms_delivered": 1,
+    "source_atom_occurrences": 1,
+    "delivered": 1,
+    "portions": 1,
+    "consistencyPortions": 8,
+    "proseKey": null,
+    "inherited": 211
+  },
+  "elapsed_ms": 120706.295186,
+  "source_validation": {
+    "reads": 70046,
+    "bytes": 472921149,
+    "duration_ms": 65520.7855129995
+  },
+  "measurement_serialization_ms": 2.574716999894008,
+  "calls": 195,
+  "response_bytes": 647496,
+  "result_bytes": 647496,
+  "per_tool": {
+    "product_amendment_activate": {
+      "calls": 2,
+      "elapsed_ms_sum": 9815.337443000026,
+      "median_ms": 4907.668721500013,
+      "response_bytes": 2481
+    },
+    "product_amendment_activation_status": {
+      "calls": 1,
+      "elapsed_ms_sum": 884.7834110000113,
+      "median_ms": 884.7834110000113,
+      "response_bytes": 1209
+    },
+    "product_amendment_prepare": {
+      "calls": 1,
+      "elapsed_ms_sum": 3488.940696999998,
+      "median_ms": 3488.940696999998,
+      "response_bytes": 2390
+    },
+    "product_document_accept_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 5902.8124259999895,
+      "median_ms": 2951.4062129999948,
+      "response_bytes": 3021
+    },
+    "product_document_begin_edit": {
+      "calls": 1,
+      "elapsed_ms_sum": 2395.1837460000097,
+      "median_ms": 2395.1837460000097,
+      "response_bytes": 1983
+    },
+    "product_document_inspect_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 1262.4763090000051,
+      "median_ms": 631.2381545000026,
+      "response_bytes": 2828
+    },
+    "product_review_complete": {
+      "calls": 2,
+      "elapsed_ms_sum": 9707.755510999996,
+      "median_ms": 4853.877755499998,
+      "response_bytes": 2587
+    },
+    "product_review_consistency_get": {
+      "calls": 19,
+      "elapsed_ms_sum": 9108.217299999917,
+      "median_ms": 261.4536139999982,
+      "response_bytes": 107472
+    },
+    "product_review_consistency_record": {
+      "calls": 2,
+      "elapsed_ms_sum": 9157.876471000025,
+      "median_ms": 4578.9382355000125,
+      "response_bytes": 2774
+    },
+    "product_review_get": {
+      "calls": 50,
+      "elapsed_ms_sum": 3003.888143999997,
+      "median_ms": 56.56487950000155,
+      "response_bytes": 206343
+    },
+    "product_review_get_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 6949.17194400006,
+      "median_ms": 62.89339000000473,
+      "response_bytes": 208995
+    },
+    "product_review_record_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 11416.25860499998,
+      "median_ms": 324.2522905000005,
+      "response_bytes": 49500
+    },
+    "product_review_start": {
+      "calls": 2,
+      "elapsed_ms_sum": 23570.49566900001,
+      "median_ms": 11785.247834500005,
+      "response_bytes": 2584
+    },
+    "product_review_status": {
+      "calls": 36,
+      "elapsed_ms_sum": 1394.1203140000289,
+      "median_ms": 38.138983500000904,
+      "response_bytes": 47875
+    },
+    "roadmap_retire_task": {
+      "calls": 1,
+      "elapsed_ms_sum": 11211.42384399999,
+      "median_ms": 11211.42384399999,
+      "response_bytes": 1934
+    },
+    "roadmap_unlink_dependency": {
+      "calls": 2,
+      "elapsed_ms_sum": 11424.255745999995,
+      "median_ms": 5712.127872999998,
+      "response_bytes": 3520
+    }
+  }
+}

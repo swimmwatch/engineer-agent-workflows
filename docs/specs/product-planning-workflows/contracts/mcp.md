@@ -632,8 +632,27 @@ The first artifact draft may be created without a ready version of that artifact
 Further revisions use amendment-prepare, which records the supplied actual intent
 text/source in the new candidate rather than requiring a decision inside a
 not-yet-created candidate. Missing ready upstream artifacts remain explicit
-readiness prerequisites. Task inputs-check returns exact product, specification
-and plan pins in TaskCheckResult, not only a pass flag.
+readiness prerequisites. Task inputs-check returns a bounded `TaskCheckSummary`:
+status, specification versions, source counts, issue previews, and a `check_ref`.
+Retrieve full issues or product/plan pins only when needed through read-only
+`task_inputs_details_get`, using the same context, task, optional packet, and
+check reference. Pages are byte-bounded; oversized product pins expose successive
+`element_ids` fragments with the same index and explicit `element_offset` and
+`complete` fields. Changed check inputs invalidate continuations with
+`SOURCE_CHANGED`. Packet selection validates that packet but does not narrow the
+complete task evidence. Internal `TaskCheckResult` and packet transitions retain
+all product and plan pins.
+
+`task_inputs_reconcile` uses `#/definitions/task_inputs_reconcile_input` and
+returns `MutationResult`. It is an explicit owner-invoked mutation for a paused
+frozen task, with a current task-wide check reference and unique existing active
+packet IDs. Current product/specification/review prerequisites and absence of an
+active owner, safety block or pending recovery are required. The previous binding
+is saved as an immutable record referenced by `previous_binding_sha256`; current
+pins/completions are cleared and `active_packet_ids` limits the next execution
+cycle. Historical files and predecessor records remain intact. Exact retries
+replay the recorded result. This operation does not start implementation or
+assign approval; a fresh task-input check is required after it.
 
 Review freezes all applicable scope, source history, semantic members, relations, non-requirement prose and profile items. Start is no-write for an unchanged pending run. A followup needs a completed parent, unchanged scope, complete correction links and known impact; otherwise it explicitly requires full review. Only full reads issue read receipts. Followup completion additionally needs a fresh entire-current-artifact consistency receipt. No tool performs semantic review or authenticates reviewer identity. Candidate check is read-only and cannot assign readiness. Activation is explicitly author-invoked after a fresh pass, not after a mere draft save.
 
@@ -675,7 +694,8 @@ Reserve a new, absent spec slug before its spec workflow creates the bundle. Rec
 | ---------------------------------- | ------------------------------------------------------ | ---------------------- | ----------------- | --------- |
 | `task_specification_reserve`       | `#/definitions/task_specification_reserve_input`       | Named fields in schema | `MutationResult`  | Mutation  |
 | `task_specification_register_copy` | `#/definitions/task_specification_register_copy_input` | Named fields in schema | `MutationResult`  | Mutation  |
-| `task_inputs_check`                | `#/definitions/task_inputs_check_input`                | Named fields in schema | `TaskCheckResult` | Read only |
+| `task_inputs_check`                | `#/definitions/task_inputs_check_input`                | Named fields in schema | `TaskCheckSummary` | Read only |
+| `task_inputs_details_get`          | `#/definitions/task_inputs_details_get_input`          | Named fields in schema | `TaskInputDetails` | Read only |
 | `task_packet_start`                | `#/definitions/task_packet_start_input`                | Named fields in schema | `MutationResult`  | Mutation  |
 | `task_packet_complete`             | `#/definitions/task_packet_complete_input`             | Named fields in schema | `MutationResult`  | Mutation  |
 | `task_owner_handoff`               | `#/definitions/task_owner_handoff_input`               | Named fields in schema | `MutationResult`  | Mutation  |

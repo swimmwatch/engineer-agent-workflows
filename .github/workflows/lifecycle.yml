@@ -65,5 +65,11 @@ jobs:
         run: npm ci
       - name: Build MCP
         run: npm run build
+      - name: Test Roadmap retirement and operation recovery
+        run: node --test packages/engineer-agent-workflow-mcp/test/product-roadmap.test.mjs packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs
+      - name: Test exact packet context and source continuations
+        run: node --test packages/engineer-agent-workflow-mcp/test/product-context.test.mjs packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs
+      - name: Test public, packed and transport acceptance
+        run: node scripts/run-tests.mjs packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs packages/engineer-agent-workflow-mcp/test/transport.test.mjs packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs
       - name: Run native product qualification
         run: node scripts/qualify-product-workflows.mjs --run --skip-model-trials

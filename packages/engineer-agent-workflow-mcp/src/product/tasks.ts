@@ -1,3 +1,4 @@
+import { fromMarkdown } from "mdast-util-from-markdown";
 import { createHash, randomUUID } from "node:crypto";
 import { lstat, open, readdir, rename, unlink } from "node:fs/promises";
 import type { FileHandle } from "node:fs/promises";
@@ -14,7 +15,7 @@ import {
   WorkflowError,
 } from "../state.js";
 import { resolveWorkspace } from "./bindings.js";
-import { prepareProductContext, readContextPage } from "./context.js";
+import { collectProductContextPins, prepareProductContext } from "./context.js";
 import {
   inspectExactOperationForResume,
   pendingOperationsForTarget,
@@ -24,7 +25,7 @@ import {
 } from "./operations.js";
 import type { ExactOperationResumeEvidence, ProductMutationPlan } from "./operations.js";
 import { validateProductRecord } from "./schemas.js";
-import { loadGeneration, verifySourcePin } from "./storage.js";
+import { loadGeneration, saveObject, verifySourcePin } from "./storage.js";
 import type { SourcePin } from "./storage.js";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
@@ -115,6 +116,8 @@ interface TaskBinding {
   readonly plan_pins: readonly PlanPin[];
   readonly safety_blocks: readonly string[];
   readonly completed_packets: readonly CompletedPacket[];
+  readonly active_packet_ids?: readonly string[];
+  readonly previous_binding_sha256?: string;
 }
 
 interface StoredBinding {
@@ -405,6 +408,22 @@ async function listSharedBindings(root: string, productId: string): Promise<Stor
   return records;
 }
 
+export async function assertRoadmapTaskBindingsCompatible(root: string, productId: string, taskIds: readonly string[]): Promise<void> {
+  for (const taskId of new Set(taskIds)) {
+    const path = sharedBindingPath(productId, taskId);
+    const pending = await pendingOperationsForTarget({ root, productId, relativePath: path });
+    if (pending.length > 0) return fail("RECOVERY_REQUIRED", "Task binding has an incomplete operation.", { task_id: taskId });
+    const binding = await readBinding(root, path);
+    if (binding === null) continue;
+    if (binding.value.product_id !== productId || binding.value.task_id !== taskId) {
+      return fail("SOURCE_CHANGED", "Task binding identity does not match the selected task.");
+    }
+    if (binding.value.state !== "completed" || binding.value.owner_session !== null || binding.value.current_packet !== null) {
+      return fail("CONFLICT", "Roadmap task change requires an unbound task or a completed historical binding.", { task_id: taskId });
+    }
+  }
+}
+
 function sameDecisionRef(left: DecisionRef, right: DecisionRef): boolean {
   return left.product_id === right.product_id
     && left.artifact === right.artifact
@@ -464,24 +483,8 @@ async function collectProductPins(root: string, context: string, taskId: string)
   readonly sourceVersion: string;
   readonly pins: readonly SourcePin[];
 }> {
-  let page = (await prepareProductContext({
-    root,
-    context,
-    purpose: "implementation",
-    taskId,
-    budgetBytes: 16_384,
-  })).result;
-  const pins: SourcePin[] = [];
-  const blockers = new Set<string>();
-  const sourceVersion = page.source_version;
-  while (true) {
-    if (page.source_version !== sourceVersion) return fail("SOURCE_CHANGED", "Product task context changed while its pins were collected.");
-    pins.push(...page.required);
-    for (const blocker of page.blockers) blockers.add(blocker);
-    if (page.next_cursor === null) break;
-    page = (await readContextPage({ root, context, cursor: page.next_cursor })).result;
-  }
-  if (blockers.size > 0) return fail("PREREQUISITE_REQUIRED", "Product task context has unresolved blockers.", { blockers: [...blockers].slice(0, 20) });
+  const { sourceVersion, pins, blockers } = await collectProductContextPins({ root, context, taskId });
+  if (blockers.length > 0) return fail("PREREQUISITE_REQUIRED", "Product task context has unresolved blockers.", { blockers: blockers.slice(0, 20) });
   const unique = new Map(pins.map((pin) => [JSON.stringify(pin), pin]));
   if (unique.size > 1000) return fail("SOURCE_LIMIT", "Product task requires too many exact source pins.");
   return { sourceVersion, pins: [...unique.values()] };
@@ -497,7 +500,7 @@ function coverage(value: unknown): TaskCheckResult["coverage_status"] {
     : null;
 }
 
-async function planPins(workspace: string, slug: string, packetId?: string): Promise<PlanPin[]> {
+async function planPins(workspace: string, slug: string, packetId?: string, activePacketIds?: readonly string[]): Promise<PlanPin[]> {
   const base = `docs/specs/${slug}/tasks`;
   const directory = await safePath(workspace, base, false, true);
   let entries;
@@ -519,6 +522,12 @@ async function planPins(workspace: string, slug: string, packetId?: string): Pro
     packets.set(identity.id, `${base}/${entry.name}`);
   }
   if (packets.size === 0) return fail("PREREQUISITE_REQUIRED", "Task plan must contain at least one packet file.");
+  if (activePacketIds !== undefined) {
+    if (activePacketIds.some((id) => !packets.has(id))) {
+      return fail("PREREQUISITE_REQUIRED", "Every selected active packet must exist in the current plan.");
+    }
+    for (const id of packets.keys()) if (!activePacketIds.includes(id)) packets.delete(id);
+  }
   if (packets.size + 1 > MAX_PLAN_PINS) return fail("SOURCE_LIMIT", "Task plan contains too many packet files.");
   if (packetId !== undefined && !packets.has(packetIdentity(packetId).id)) {
     return fail("PREREQUISITE_REQUIRED", "Selected packet must resolve to exactly one task packet file.");
@@ -575,6 +584,7 @@ async function specificationEvidence(
   workspace: string,
   slug: string,
   packetId?: string,
+  activePacketIds?: readonly string[],
 ): Promise<{
   readonly issues: TaskIssue[];
   readonly coverageStatus: TaskCheckResult["coverage_status"];
@@ -616,7 +626,7 @@ async function specificationEvidence(
           : coverage(run.completed === true ? run.outcome : "pending");
     }
     if (coverageStatus !== "reviewed") issues.push(issue("REVIEW_REQUIRED", "Specification completeness review must be current and reviewed."));
-    pins = await planPins(workspace, slug, packetId);
+    pins = await planPins(workspace, slug, packetId, activePacketIds);
     if (pins.length < 2) issues.push(issue("PREREQUISITE_REQUIRED", "Required plan and packet files are unavailable."));
   } catch (error) {
     if (!(error instanceof WorkflowError)) throw error;
@@ -1090,6 +1100,7 @@ export async function checkTaskInputs(input: {
     context.canonical_workspace,
     shared.value.specification_slug,
     input.packetId,
+    shared.value.active_packet_ids,
   );
   issues.push(...specification.issues);
   if (frozen && (
@@ -1125,21 +1136,191 @@ export async function checkTaskInputs(input: {
   return { context: input.context, result, replayed: false, operationRef: null };
 }
 
+type TaskCheckInput = Parameters<typeof checkTaskInputs>[0];
+type TaskDetailsSection = "issues" | "product_pins" | "plan_pins";
+
+function taskCheckRef(input: TaskCheckInput, checked: TaskOutcome<TaskCheckResult>): string {
+  return digest(canonicalOperationValue({ root: input.root, context: input.context,
+    task: input.taskId, packet: input.packetId ?? null, result: checked.result }));
+}
+
+function taskResponseFits(context: string | null, result: object): boolean {
+  const envelope = { protocol_version: 2, context, result, replayed: false, operation_ref: null };
+  const text = JSON.stringify(envelope);
+  return Buffer.byteLength(text) <= 24 * 1024
+    && Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text }], structuredContent: envelope })) <= 64 * 1024;
+}
+
+/** Keep full evidence internal to packet transitions; transport only a bounded summary. */
+export async function checkTaskInputsSummary(input: TaskCheckInput) {
+  const checked = await checkTaskInputs(input);
+  const { product_pins, plan_pins, issues, ...summary } = checked.result;
+  const result = { ...summary, check_ref: taskCheckRef(input, checked),
+    product_pin_count: product_pins.length, plan_pin_count: plan_pins.length,
+    issue_count: issues.length, issues: issues.slice(0, 5), issues_truncated: issues.length > 5 };
+  while (!taskResponseFits(checked.context, result) && result.issues.length > 0) {
+    result.issues.pop();
+    result.issues_truncated = true;
+  }
+  if (!taskResponseFits(checked.context, result)) return fail("RESULT_LIMIT", "Task check summary exceeds the supported context size.");
+  return { ...checked, result };
+}
+
+export async function readTaskInputDetails(input: TaskCheckInput & {
+  readonly checkRef: string;
+  readonly section: TaskDetailsSection;
+  readonly cursor?: string;
+  readonly limit?: number;
+}) {
+  const limit = input.limit ?? 20;
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 100
+    || !["issues", "product_pins", "plan_pins"].includes(input.section) || !DIGEST_PATTERN.test(input.checkRef)) {
+    return fail("INVALID_INPUT", "Use a task check reference, supported detail section and limit 1–100.");
+  }
+  const checked = await checkTaskInputs(input);
+  const checkRef = taskCheckRef(input, checked);
+  if (checkRef !== input.checkRef) return fail("SOURCE_CHANGED", "Task inputs or check state changed; repeat task_inputs_check.");
+  const values = checked.result[input.section];
+  let index = 0;
+  let offset = 0;
+  if (input.cursor !== undefined) {
+    let cursor: Record<string, unknown>;
+    try { cursor = JSON.parse(Buffer.from(input.cursor, "base64url").toString("utf8")) as Record<string, unknown>; }
+    catch { return fail("INVALID_CURSOR", "Task detail continuation is invalid."); }
+    if (cursor === null || typeof cursor !== "object" || cursor.check_ref !== checkRef || cursor.section !== input.section
+      || !Number.isSafeInteger(cursor.index) || !Number.isSafeInteger(cursor.offset)) {
+      return fail("INVALID_CURSOR", "Task detail continuation does not match this check and section.");
+    }
+    index = cursor.index as number;
+    offset = cursor.offset as number;
+    if (index < 0 || index >= values.length || offset < 0) return fail("INVALID_CURSOR", "Task detail continuation is out of range.");
+  }
+  const items: { index: number; element_offset: number; complete: boolean; value: TaskIssue | SourcePin | PlanPin }[] = [];
+  const continuation = (index: number, offset: number) => index >= values.length ? null
+    : Buffer.from(JSON.stringify({ check_ref: checkRef, section: input.section, index, offset })).toString("base64url");
+  const resultFor = (nextIndex: number, nextOffset: number) => ({ check_ref: checkRef, section: input.section,
+    items, total_items: values.length, next_cursor: continuation(nextIndex, nextOffset), complete: nextIndex >= values.length });
+  while (index < values.length && items.length < limit) {
+    const value = values[index]!;
+    const pin = "element_ids" in value ? value : undefined;
+    if ((pin === undefined && offset !== 0) || (pin !== undefined && offset > 0 && offset >= pin.element_ids.length)) {
+      return fail("INVALID_CURSOR", "Task detail element offset is out of range.");
+    }
+    let end = pin === undefined ? 0 : pin.element_ids.length;
+    while (true) {
+      const complete = pin === undefined || end === pin.element_ids.length;
+      const entry = { index, element_offset: offset, complete,
+        value: pin === undefined ? value : { ...pin, element_ids: pin.element_ids.slice(offset, end) } };
+      const nextIndex = complete ? index + 1 : index;
+      const nextOffset = complete ? 0 : end;
+      items.push(entry);
+      if (taskResponseFits(checked.context, resultFor(nextIndex, nextOffset))) {
+        index = nextIndex;
+        offset = nextOffset;
+        break;
+      }
+      items.pop();
+      if (items.length > 0) return { ...checked, result: resultFor(index, offset) };
+      if (pin === undefined || end - offset <= 1) return fail("RESULT_LIMIT", "One task detail cannot fit within the response budget.");
+      end = offset + Math.ceil((end - offset) / 2);
+    }
+  }
+  return { ...checked, result: resultFor(index, offset) };
+}
+
+export async function reconcileTaskInputs(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly taskId: string;
+  readonly checkRef: string;
+  readonly packetIds: readonly string[];
+  readonly invocationSource: string;
+}): Promise<TaskOutcome<TaskMutationResult>> {
+  if (!TASK_PATTERN.test(input.taskId) || !DIGEST_PATTERN.test(input.checkRef)
+    || input.packetIds.length === 0 || input.packetIds.length >= MAX_PLAN_PINS
+    || new Set(input.packetIds).size !== input.packetIds.length
+    || input.invocationSource.length === 0 || input.invocationSource.length > 512) {
+    return fail("INVALID_INPUT", "Reconciliation requires an exact check, unique active packets and explicit invocation provenance.");
+  }
+  const packetIds = [...input.packetIds].sort();
+  for (const id of packetIds) {
+    if (packetIdentity(id).id !== id) return fail("INVALID_INPUT", "Use canonical packet identities.");
+  }
+  assertNonSensitive([input.invocationSource]);
+  const requested = decodeContext(input.context);
+  const scenario = "task_inputs_reconcile";
+  const intent = { schema_version: 1, kind: "operation_intent", scenario, input: {
+    context: input.context, task_id: input.taskId, check_ref: input.checkRef,
+    packet_ids: packetIds, invocation_source: input.invocationSource,
+  } };
+  const operationId = deterministicUuid(`${scenario}:${requested.product_id}:${input.taskId}:${digest(canonicalOperationValue(intent))}`);
+  const replayed = await replay(input.root, requested, operationId, scenario, intent);
+  if (replayed !== null) return replayed;
+  const context = await currentContext(input.root, input.context);
+  const bindings = await requireTaskBinding(input.root, context, input.taskId);
+  const previous = bindings.shared.value;
+  if ([previous, bindings.local.value].some((binding) => binding.state === "started"
+    || binding.owner_session !== null || binding.current_packet !== null)) {
+    return fail("CONFLICT", "A running packet must be completed by its current owner before reconciliation.");
+  }
+  if (previous.state !== "planned" || !hasFrozenInputs(previous)) {
+    return fail("INVALID_STATE", "Only a paused task with frozen inputs can be explicitly replanned.");
+  }
+  const checked = await checkTaskInputs({ root: input.root, context: input.context, taskId: input.taskId });
+  if (taskCheckRef(input, checked) !== input.checkRef) {
+    return fail("SOURCE_CHANGED", "Task inputs changed; repeat task_inputs_check before reconciliation.");
+  }
+  if (checked.result.issues.some((entry) => entry.code !== "SOURCE_CHANGED")) {
+    return fail("PREREQUISITE_REQUIRED", "Resolve task review, safety or recovery issues before reconciliation.");
+  }
+  const specification = await specificationEvidence(context.canonical_workspace, previous.specification_slug, undefined, packetIds);
+  if (specification.issues.length > 0) {
+    return fail("PREREQUISITE_REQUIRED", "The replacement specification and selected packets must be ready.", { issues: specification.issues });
+  }
+  await collectProductPins(input.root, input.context, input.taskId);
+  const archived = await saveObject(input.root, { productId: context.product_id, kind: "record", bytes: bindings.shared.bytes });
+  const next: TaskBinding = {
+    ...previous,
+    workspace_id: context.workspace_id,
+    state: "planned",
+    owner_session: null,
+    current_packet: null,
+    product_pins: [],
+    product_source_version: null,
+    specification_source_version: null,
+    specification_version: null,
+    specification_review_ref: null,
+    plan_pins: [],
+    completed_packets: [],
+    active_packet_ids: packetIds,
+    previous_binding_sha256: archived.sha256,
+  };
+  const result = mutationResult(operationId, context, next,
+    `Prior execution retained as immutable record ${archived.sha256}. Recheck planning inputs; implementation still requires a separate invocation.`);
+  return applyBindingMutation({
+    root: input.root, context, scenario, operationId, intent, result,
+    sharedPath: sharedBindingPath(context.product_id, input.taskId), sharedBefore: bindings.shared, sharedAfter: next,
+    localPath: localBindingPath(next.specification_slug), localBefore: bindings.local, localAfter: next,
+  });
+}
+
 export async function startTaskPacket(input: {
   readonly root: string;
   readonly context: string;
   readonly taskId: string;
   readonly packetId: string;
   readonly invocationSource: string;
+  readonly checkRef?: string;
 }): Promise<TaskOutcome<TaskMutationResult>> {
   if (!TASK_PATTERN.test(input.taskId) || input.packetId.length === 0 || input.packetId.length > 128
     || input.invocationSource.length === 0 || input.invocationSource.length > 512) {
     return fail("INVALID_INPUT", "Task packet start input is invalid.");
   }
+  if (input.checkRef !== undefined && !DIGEST_PATTERN.test(input.checkRef)) return fail("INVALID_INPUT", "Task input check reference is invalid.");
   const packet = packetIdentity(input.packetId);
   assertNonSensitive([input.invocationSource]);
   const context = decodeContext(input.context);
-  const operationId = deterministicUuid(`task_packet_start:${context.product_id}:${input.taskId}:${packet.id}:${digest(input.invocationSource)}:${digest(input.context)}`);
+  const operationId = deterministicUuid(`task_packet_start:${context.product_id}:${input.taskId}:${packet.id}:${digest(input.invocationSource)}:${digest(input.context)}${input.checkRef === undefined ? "" : `:${input.checkRef}`}`);
   const intent = {
     schema_version: 1,
     kind: "operation_intent",
@@ -1149,6 +1330,7 @@ export async function startTaskPacket(input: {
       task_id: input.taskId,
       packet_id: packet.id,
       invocation_source: input.invocationSource,
+      ...(input.checkRef === undefined ? {} : { check_ref: input.checkRef }),
     },
   } as const;
   const replayed = await replay(input.root, context, operationId, "task_packet_start", intent);
@@ -1175,6 +1357,9 @@ export async function startTaskPacket(input: {
     packetId: packet.id,
   });
   if (checked.result.status !== "pass") return fail("PREREQUISITE_REQUIRED", "Task inputs are not ready for implementation.", { issues: checked.result.issues });
+  if (input.checkRef !== undefined && input.checkRef !== taskCheckRef({
+    root: input.root, context: input.context, taskId: input.taskId, packetId: packet.id,
+  }, checked)) return fail("SOURCE_CHANGED", "Task inputs changed after the packet context was selected.");
   const next: TaskBinding = {
     ...bindings.shared.value,
     workspace_id: selected.workspace_id,
@@ -1490,4 +1675,66 @@ export async function resolveSafetyBlock(input: {
     ...(replayed.recovery === undefined ? {} : { recovery: replayed.recovery }),
     ...(hooks.checkpoint === undefined ? {} : { checkpoint: hooks.checkpoint }),
   });
+}
+
+export async function prepareTaskPacketContext(input: {
+  readonly root: string;
+  readonly context: string;
+  readonly taskId: string;
+  readonly packetId: string;
+  readonly budgetBytes?: number;
+  readonly requiredRefs?: readonly Ref[];
+}) {
+  const packet = packetIdentity(input.packetId);
+  const checked = await checkTaskInputs({ ...input, packetId: packet.id });
+  if (checked.result.status !== "pass") return fail("PREREQUISITE_REQUIRED", "Packet context requires passing task inputs.", { issues: checked.result.issues });
+  const context = decodeContext(input.context);
+  const pin = checked.result.plan_pins.find((entry) => new RegExp(`/tasks/${packet.prefix}_[^/]+\\.md$`, "u").test(entry.relative_path));
+  if (pin === undefined) return fail("MISSING_EVIDENCE", "Selected packet is absent from the validated plan.");
+  const source = await readBytes(context.canonical_workspace, pin.relative_path);
+  if (source === null || digest(source) !== pin.sha256) return fail("SOURCE_CHANGED", "Packet changed while its context was selected.");
+  let text: string;
+  try {
+    text = new TextDecoder("utf-8", { fatal: true }).decode(source);
+  } catch {
+    return fail("INVALID_STATE", "Task packet must contain valid UTF-8 Markdown.");
+  }
+  const nodes = fromMarkdown(text).children;
+  const headings = nodes.flatMap((node, index) => node.type === "heading" && node.depth === 2
+    && node.children.length === 1 && node.children[0]?.type === "text" && node.children[0].value === "Product context roots" ? [index] : []);
+  let roots: Ref[] | undefined;
+  if (headings.length > 0) {
+    const start = headings[0]!;
+    const end = nodes.findIndex((node, index) => index > start && node.type === "heading" && node.depth <= 2);
+    const section = nodes.slice(start + 1, end === -1 ? undefined : end);
+    const block = section[0];
+    if (headings.length !== 1 || section.length !== 1 || block?.type !== "code" || block.lang !== "json") {
+      return fail("INVALID_STATE", "Packet product context roots require one exact JSON array.");
+    }
+    try {
+      const value: unknown = JSON.parse(block.value);
+      if (!Array.isArray(value) || value.length === 0 || value.length > 100) throw new Error();
+      roots = [];
+      for (const reference of value) roots.push(await validateProductRecord("Ref", reference) as Ref);
+      if (new Set(roots.map((reference) => JSON.stringify(normalizedRef(reference)))).size !== roots.length) throw new Error();
+    } catch {
+      return fail("INVALID_STATE", "Packet product context roots are invalid or duplicated.");
+    }
+    for (const reference of roots) {
+      if (!checked.result.product_pins.some((entry) => entry.product_id === reference.product_id
+        && entry.artifact === reference.artifact && entry.source_kind === "markdown" && entry.element_ids.includes(reference.element_id))) {
+        return fail("BROKEN_REFERENCE", "Packet product root is outside the validated task input inventory.");
+      }
+    }
+  }
+  const prepared = await prepareProductContext({
+    root: input.root, context: input.context, purpose: "implementation", taskId: input.taskId,
+    packetId: packet.id, sourceGeneration: checked.result.source_version,
+    ...(roots === undefined ? {} : { packetRefs: roots }),
+    ...(input.requiredRefs === undefined ? {} : { requiredRefs: input.requiredRefs }),
+    ...(input.budgetBytes === undefined ? {} : { budgetBytes: input.budgetBytes }),
+  });
+  return { ...prepared, result: { ...prepared.result, check_ref: taskCheckRef({
+    root: input.root, context: input.context, taskId: input.taskId, packetId: packet.id,
+  }, checked) } };
 }

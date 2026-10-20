@@ -164,10 +164,11 @@ technology choices, relevant quality/security/privacy/operation constraints,
 compatibility and migration intent, risks, alternatives, rationale and revisit
 conditions. Ground current implementation claims in repository evidence.
 Choose technologies using applicable current evidence and actual constraints.
-Separate current implementation, accepted target for a named stage and a
-hypothetical future option. Exact existing contracts remain at their single
-authoritative location; local modules, algorithms and execution order belong
-to the task's planning stage.
+Separate current implementation, accepted targets (either product-global or
+scoped to active named stages), and hypothetical future options. A global
+target does not require a Roadmap stage. Exact existing contracts remain at
+their single authoritative location; local modules, algorithms and execution
+order belong to the task's planning stage.
 
 Acceptance: two task implementers can retrieve the same relevant shared rule,
 its PRD justification and current applicability. The result does not require
@@ -500,6 +501,20 @@ A new task cannot opt into obsolete rules by inventing a start marker. Task
 completion identifies the version actually implemented, not the current
 product version if it differs. Commits and code review remain separate actions,
 not automatic completion/next-packet gates.
+
+An explicit owner-authorized replan may replace a paused task's execution cycle
+through `task_inputs_reconcile`, never through an ordinary input check. Require
+the exact current task-wide check reference, current ready product inputs, an
+Approved and currently reviewed specification, unique existing active packet
+identities and invocation provenance. Reject active ownership, completed tasks,
+unresolved safety/recovery issues and stale checks. Retain the complete prior
+binding, pins and completion evidence as an immutable content-addressed record;
+keep its predecessor reference and historical Markdown files. Clear the current
+execution pins/completions and select only the explicitly named future packets.
+The transition neither starts a packet nor assigns approval. Fresh input checks
+remain mandatory, and the next explicit implementation start freezes the new
+cycle. Required acceptance includes unchanged prior history, rejection without
+writes, retry safety and completion using only the replacement packet set.
 
 ### PWF-025: Safety and incompatibility override
 

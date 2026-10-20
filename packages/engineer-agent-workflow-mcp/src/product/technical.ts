@@ -7,6 +7,7 @@ import { dirname } from "node:path";
 import Ajv from "ajv";
 
 import { fail, WorkflowError } from "../state.js";
+import { documentSubjectDiagnostics } from "../diagnostics.js";
 import { validateProductPath } from "./config.js";
 import { listProductDocuments, parseProductDocument } from "./documents.js";
 import { replayProductMutationResult, runProductMutation } from "./operations.js";
@@ -475,9 +476,6 @@ function validateSemanticValue(type: SemanticType, value: unknown): SemanticValu
   if (semantic.applicability.global === scoped) {
     return fail("INVALID_INPUT", "Technical Design applicability must be either global or scoped to named stages.");
   }
-  if (semantic.applicability.state === "accepted_target" && !scoped) {
-    return fail("INVALID_INPUT", "Accepted Technical Design targets require at least one named stage.");
-  }
   return semantic;
 }
 
@@ -530,7 +528,7 @@ async function requireReadyPrd(state: CandidateState): Promise<readonly SourcePi
     current = (await loadGeneration(state.root, state.candidate.product_id, current)).generation.parent;
   }
   for (const pin of pins) {
-    if (!lineage.has(pin.generation) || pin.element_ids.length === 0) {
+    if (!lineage.has(pin.generation) || (pin.source_kind === "markdown" && pin.element_ids.length === 0)) {
       return fail("SOURCE_CHANGED", "Ready PRD source pin is outside the selected generation lineage or has no addressed elements.");
     }
     await verifySourcePin(state.root, pin);
@@ -847,7 +845,11 @@ export async function defineTechnicalElement(input: {
   const matchingDocuments = state.registry.documents.filter((document) =>
     document.artifact === "technical-design" && document.role === "semantic" && document.subject === subject);
   if (matchingDocuments.length !== 1) {
-    return fail(matchingDocuments.length === 0 ? "NOT_FOUND" : "AMBIGUOUS_BINDING", "Technical Design subject does not resolve to one semantic document.");
+    return fail(matchingDocuments.length === 0 ? "NOT_FOUND" : "AMBIGUOUS_BINDING", "Technical Design subject does not resolve to one semantic document.",
+      documentSubjectDiagnostics({
+        allowedSubjects: state.registry.documents.filter((document) => document.artifact === "technical-design" && document.role === "semantic").map((document) => document.subject),
+        candidateRef: { ...input.candidateRef }, ambiguous: matchingDocuments.length > 1,
+      }));
   }
   const target = matchingDocuments[0]!;
   const metadata = [...state.registry.element_metadata];

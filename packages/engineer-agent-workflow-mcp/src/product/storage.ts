@@ -3,6 +3,9 @@ import { constants } from "node:fs";
 import { lstat, open, mkdir, readFile } from "node:fs/promises";
 import type { FileHandle } from "node:fs/promises";
 import { dirname } from "node:path";
+import { channel } from "node:diagnostics_channel";
+import { performance } from "node:perf_hooks";
+import { AsyncLocalStorage } from "node:async_hooks";
 
 import Ajv from "ajv";
 import { isAlias, isMap, isNode, isSeq, parseAllDocuments } from "yaml";
@@ -13,6 +16,13 @@ import { validateProductPath } from "./config.js";
 import { validateProductRecord } from "./schemas.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
+const sourceValidationMetrics = channel("engineer-agent-workflows.product.source-validation");
+const objectReads = new AsyncLocalStorage<Map<string, Promise<Uint8Array>>>();
+
+/** Reuse verified immutable bytes only within one read-only source audit. */
+export function withProductObjectReads<T>(read: () => Promise<T>): Promise<T> {
+  return objectReads.getStore() === undefined ? objectReads.run(new Map(), read) : read();
+}
 const READ_CHUNK_BYTES = 64 * 1024;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
 const DIGEST_PATTERN = /^[0-9a-f]{64}$/u;
@@ -77,6 +87,7 @@ interface Generation {
     readonly artifact: Artifact;
     readonly source_version: string;
     readonly review_id: string;
+    readonly candidate_ref?: { readonly product_id: string; readonly candidate_id: string };
     readonly upstream_pins: readonly SourcePin[];
   }[];
   readonly decision_heads: readonly {
@@ -380,8 +391,24 @@ export async function saveObject(root: string, input: ObjectWrite): Promise<Stor
 }
 
 export async function readObject(root: string, reference: ObjectReference): Promise<Uint8Array> {
-  const relativePath = objectRelativePath(reference);
-  return readRelative(root, relativePath, reference.sha256);
+  const scope = objectReads.getStore();
+  if (scope === undefined) return readVerifiedObject(root, reference);
+  const key = `${root}\0${objectRelativePath(reference)}\0${reference.sha256}`;
+  let value = scope.get(key);
+  if (value === undefined) { value = readVerifiedObject(root, reference); scope.set(key, value); }
+  return value;
+}
+
+async function readVerifiedObject(root: string, reference: ObjectReference): Promise<Uint8Array> {
+  const started = sourceValidationMetrics.hasSubscribers ? performance.now() : null;
+  let bytes = 0;
+  try {
+    const value = await readRelative(root, objectRelativePath(reference), reference.sha256);
+    bytes = value.byteLength;
+    return value;
+  } finally {
+    if (started !== null) sourceValidationMetrics.publish({ duration_ms: performance.now() - started, bytes, kind: reference.kind });
+  }
 }
 
 function validateYamlNodes(node: Node | null): void {
@@ -547,7 +574,7 @@ function generationBytes(generation: Generation): Uint8Array {
   }
 }
 
-async function readGenerationMetadata(root: string, productId: string, digest: string): Promise<Generation> {
+export async function readGenerationMetadata(root: string, productId: string, digest: string): Promise<Generation> {
   const relativePath = generationRelativePath(productId, digest);
   const value = await readRelative(root, relativePath, digest);
   const parsed = parseStructured(value);
