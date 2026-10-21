@@ -12,7 +12,7 @@ import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
 import { replayProductMutationResult, runProductMutation } from "./operations.js";
 import { validateProductRecord } from "./schemas.js";
-import { loadGeneration, readObject, saveObject } from "./storage.js";
+import { loadGeneration, readObject, reuseProductSource, saveObject, withProductObjectReads } from "./storage.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
 const MAX_INVENTORY_DEPTH = 32;
@@ -400,6 +400,10 @@ function precedingSeparator(source: string, offset: number, newline: "\n" | "\r\
 
 export function parseProductDocument(bytes: Uint8Array): ParsedProductDocument {
   if (bytes.byteLength > MAX_SOURCE_BYTES) return fail("SOURCE_LIMIT", "Product document source exceeds the 16 MiB limit.");
+  return reuseProductSource("parse-markdown", [digest(bytes)], () => parseProductDocumentBytes(bytes));
+}
+
+function parseProductDocumentBytes(bytes: Uint8Array): ParsedProductDocument {
   let source: string;
   try {
     source = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
@@ -628,6 +632,11 @@ async function loadCandidateState(
   }
   validateMembership(registry, parsed);
   return { root, context, candidate, candidateBytes, registry, documents, parsed, paths };
+}
+
+/** Internal validated snapshot shared by document listing and Roadmap preflight. */
+export async function loadProductDocumentSnapshot(root: string, context: string, candidateRef: CandidateRef | null): Promise<CandidateState> {
+  return withProductObjectReads(() => loadCandidateState(root, context, candidateRef));
 }
 
 function assertNoDirectEdits(state: CandidateState): void {
@@ -917,7 +926,7 @@ export async function listProductDocuments(input: {
   readonly cursor?: string;
   readonly limit?: number;
 }): Promise<DocumentOutcome<Record<string, unknown>>> {
-  const state = await loadCandidateState(input.root, input.context, null);
+  const state = await loadProductDocumentSnapshot(input.root, input.context, null);
   const items = state.registry.documents.filter((document) => document.artifact === input.artifact);
   const offset = pageOffset(input.cursor, state.candidate.source_version);
   const limit = input.limit ?? 20;

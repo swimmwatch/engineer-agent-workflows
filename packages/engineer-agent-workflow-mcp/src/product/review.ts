@@ -5,6 +5,7 @@ import type { FileHandle } from "node:fs/promises";
 import { dirname } from "node:path";
 
 import { fail, WorkflowError } from "../state.js";
+import { workflowDiagnostics } from "../diagnostics.js";
 import { assertRoadmapTaskBindingsCompatible } from "./tasks.js";
 import { validateProductPath } from "./config.js";
 import { parseProductDocument, validateProductTables } from "./documents.js";
@@ -20,6 +21,7 @@ import {
   saveObject,
   verifySourcePin,
   withProductObjectReads,
+  reuseProductSource,
 } from "./storage.js";
 import type { LoadedGeneration, SourcePin } from "./storage.js";
 
@@ -336,6 +338,8 @@ interface ReviewState extends CandidateState {
   readonly retainedSources: ReadonlyMap<string, InventoryItem["sources"]>;
   readonly verdicts: Map<string, SavedVerdict>;
   readonly sourceChecks?: Map<string, () => Promise<unknown>>;
+  readonly historyDepth?: number;
+  readonly completedAudit?: { readonly key: string; readonly sourceIndex?: ReadonlyMap<string, InventoryItem["sources"]> };
 }
 
 // Process-local audit evidence is bounded and never survives a server restart.
@@ -413,6 +417,10 @@ async function closeHandle(handle: FileHandle | undefined): Promise<void> {
 }
 
 function parseJson(value: Uint8Array, label: string): unknown {
+  return reuseProductSource("parse-json-utf8", [digest(value)], () => parseJsonBytes(value, label));
+}
+
+function parseJsonBytes(value: Uint8Array, label: string): unknown {
   try {
     return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(value));
   } catch {
@@ -646,6 +654,10 @@ function proseOutsideElements(source: string, elements: readonly { readonly star
 }
 
 async function buildInventory(state: CandidateState): Promise<ReviewInventory> {
+  return reuseProductSource("review-inventory", [state.root, digest(canonicalBytes(state.candidate)), digest(canonicalBytes(state.registry))], () => buildInventorySources(state));
+}
+
+async function buildInventorySources(state: CandidateState): Promise<ReviewInventory> {
   const items: InventoryItem[] = [];
   let aggregateBytes = 0;
   const append = (entry: InventoryItem): void => {
@@ -895,7 +907,7 @@ async function loadReviewStateFromSources(
   ancestors: readonly string[] = [],
 ): Promise<ReviewState> {
   if (ancestors.includes(reviewId) || ancestors.length >= 128) return fail("INVALID_STATE", "Review inheritance history is cyclic or exceeds its supported depth.");
-  let candidate = await loadCandidate(root, context, reference, requireSelected, true);
+  const candidate = await loadCandidate(root, context, reference, requireSelected, true);
   const reviewBytes = await readSafe(root, reviewPath(reference, reviewId), context.canonical_workspace);
   if (reviewBytes === null) return fail("NOT_FOUND", "Product review does not exist.");
   const review = await validateProductRecord("Review", parseJson(reviewBytes, "Product review")) as ReviewRecord;
@@ -903,6 +915,31 @@ async function loadReviewStateFromSources(
     || review.candidate_ref.candidate_id !== reference.candidate_id) {
     return fail("SOURCE_CHANGED", "Product review identity does not match retained path.");
   }
+  const state = await reuseProductSource("review-audit", [root, context.canonical_workspace, context.workspace_id,
+    reference.product_id, reference.candidate_id, digest(candidate.candidateBytes), digest(reviewBytes), requireSelected, full],
+  () => auditReviewState(root, context, reference, reviewId, requireSelected, full, ancestors, candidate, review, reviewBytes));
+  if (ancestors.length + (state.historyDepth ?? 1) > 128) return fail("INVALID_STATE", "Review inheritance history exceeds its supported depth.");
+  const after = await readSafe(root, reviewPath(reference, reviewId), context.canonical_workspace);
+  if (after === null || !after.equals(reviewBytes)) return fail("CONFLICT", "Product review changed during inspection.");
+  const candidateAfter = await readSafe(root, candidatePath(reference), context.canonical_workspace);
+  if (candidateAfter === null || !candidateAfter.equals(state.candidateBytes)) {
+    return fail("CONFLICT", "Product candidate changed during review inspection.");
+  }
+  if (state.completedAudit !== undefined) {
+    if (auditedReviews.size >= MAX_AUDITED_REVIEWS) {
+      auditedReviews.clear();
+      auditedSourceIndexes.clear();
+    }
+    if (state.completedAudit.sourceIndex !== undefined) auditedSourceIndexes.set(state.completedAudit.key, state.completedAudit.sourceIndex);
+    auditedReviews.add(state.completedAudit.key);
+  }
+  return state;
+}
+
+async function auditReviewState(root: string, context: ProductContext, reference: CandidateRef, reviewId: string,
+  requireSelected: boolean, full: boolean, ancestors: readonly string[], candidate: CandidateState,
+  review: ReviewRecord, reviewBytes: Buffer): Promise<ReviewState> {
+  let historyDepth = 1;
   const inventoryBytes = await readObject(root, {
     productId: reference.product_id, kind: "record", sha256: review.inventory_sha256,
   });
@@ -947,6 +984,7 @@ async function loadReviewStateFromSources(
     if (review.mode === "recheck" || (review.mode === "followup" && inventory.recheck_impact !== undefined)) {
       if (review.parent === null || inventory.recheck_impact === undefined) return fail("SOURCE_CHANGED", "Recheck parent or impact evidence is missing.");
       recheckParent = await loadParentReview(root, context, review.parent_candidate_ref ?? reference, review.parent, [...ancestors, reviewId]);
+      historyDepth += recheckParent.historyDepth ?? 1;
       if (inventory.parent_checkpoint !== undefined && (inventory.parent_checkpoint.review_sha256 !== digest(recheckParent.reviewBytes)
         || (inventory.parent_checkpoint.candidate_sha256 !== undefined && inventory.parent_checkpoint.candidate_sha256 !== digest(recheckParent.candidateBytes)))) return fail("SOURCE_CHANGED", "Review predecessor checkpoint changed.");
       if (review.mode === "recheck") assertSuccessfulParent(recheckParent);
@@ -985,20 +1023,6 @@ async function loadReviewStateFromSources(
       return fail("SOURCE_CHANGED", "Review consistency receipt does not match retained evidence.");
     }
   }
-  const after = await readSafe(root, reviewPath(reference, reviewId), context.canonical_workspace);
-  if (after === null || !after.equals(reviewBytes)) return fail("CONFLICT", "Product review changed during inspection.");
-  const candidateAfter = await readSafe(root, candidatePath(reference), context.canonical_workspace);
-  if (candidateAfter === null || !candidateAfter.equals(candidate.candidateBytes)) {
-    return fail("CONFLICT", "Product candidate changed during review inspection.");
-  }
-  if (audit) {
-    if (auditedReviews.size >= MAX_AUDITED_REVIEWS) {
-      auditedReviews.clear();
-      auditedSourceIndexes.clear();
-    }
-    if (sourceIndex !== undefined) auditedSourceIndexes.set(auditKey, sourceIndex);
-    auditedReviews.add(auditKey);
-  }
   const sourceChecks = new Map<string, () => Promise<unknown>>();
   if (review.mode === "recheck" || (review.mode === "followup" && inventory.recheck_impact !== undefined)) sourceChecks.set("recheck-history", async () => {
     if (inventory.parent_checkpoint === undefined || review.parent === null) {
@@ -1012,7 +1036,8 @@ async function loadReviewStateFromSources(
       || (inventory.parent_checkpoint.candidate_sha256 !== undefined && (candidateBytes === null
         || digest(candidateBytes) !== inventory.parent_checkpoint.candidate_sha256))) return fail("CONFLICT", "Retained predecessor changed before review mutation.");
   });
-  return { ...candidate, review, reviewBytes, inventory, retainedSources, verdicts, sourceChecks };
+  return { ...candidate, review, reviewBytes, inventory, retainedSources, verdicts, sourceChecks, historyDepth,
+    ...(audit ? { completedAudit: { key: auditKey, ...(sourceIndex === undefined ? {} : { sourceIndex }) } } : {}) };
 }
 
 async function loadParentReview(root: string, context: ProductContext, reference: CandidateRef, reviewId: string,
@@ -1198,7 +1223,7 @@ async function mutateReview<T extends object>(input: {
   readonly saveObjects?: () => Promise<void>;
 }): Promise<ProductReviewOutcome<T>> {
   const id = operationId(input.scenario, input.state.candidate.source_version, input.scenarioInput);
-  const verifyCandidate = async (): Promise<void> => {
+  const verifyCandidate = async (): Promise<void> => withProductObjectReads(async () => {
     const current = await readSafe(input.state.root, candidatePath({
       product_id: input.state.candidate.product_id, candidate_id: input.state.candidate.candidate_id,
     }), input.state.context.canonical_workspace);
@@ -1208,7 +1233,7 @@ async function mutateReview<T extends object>(input: {
     if ("sourceChecks" in input.state) {
       for (const check of (input.state as ReviewState).sourceChecks?.values() ?? []) await check();
     }
-  };
+  });
   const outcome = await runProductMutation({
     root: input.state.root,
     productId: input.state.candidate.product_id,
@@ -1266,6 +1291,10 @@ function fullReviewRequired(reason: string): never {
 
 /** Reconstruct historical membership from retained inputs, never from current hydration. */
 async function recheckBasis(state: ReviewState): Promise<CandidateState> {
+  return reuseProductSource("review-basis", [state.root, state.review.id, state.review.inventory_sha256, digest(state.reviewBytes)], () => recheckBasisSources(state));
+}
+
+async function recheckBasisSources(state: ReviewState): Promise<CandidateState> {
   if (state.inventory.recheck_basis === undefined || state.inventory.blocks === undefined) {
     return fullReviewRequired("Parent review lacks compatible retained inheritance inputs.");
   }
@@ -1445,7 +1474,12 @@ async function verifyRetainedSourceEvidence(state: CandidateState, pin: SourcePi
 }
 
 async function verifyParentEvidence(parent: ReviewState, prior: CandidateState, ancestors: readonly string[] = []): Promise<void> {
-  if (ancestors.includes(parent.review.id) || ancestors.length >= 128) return fullReviewRequired("Historical evidence chain is cyclic or exceeds supported depth.");
+  if (ancestors.includes(parent.review.id) || ancestors.length + (parent.historyDepth ?? 1) > 128) return fullReviewRequired("Historical evidence chain is cyclic or exceeds supported depth.");
+  return reuseProductSource("review-evidence", [parent.root, parent.review.id, digest(parent.reviewBytes), digest(prior.candidateBytes), ancestors.length],
+    () => verifyParentEvidenceSources(parent, prior, ancestors));
+}
+
+async function verifyParentEvidenceSources(parent: ReviewState, prior: CandidateState, ancestors: readonly string[]): Promise<void> {
   if (parent.review.mode === "followup" && [...parent.verdicts.values()].some((entry) => entry.verdict?.inherited_from !== null)) {
     if (parent.review.parent === null) return fullReviewRequired("Finding-linked inheritance has no retained parent.");
     const grand = await loadParentReview(parent.root, parent.context, parent.review.parent_candidate_ref ?? parent.review.candidate_ref, parent.review.parent, [...ancestors, parent.review.id]);
@@ -1798,7 +1832,11 @@ async function saveVerdictObject(root: string, productId: string, verdict: Verdi
   return { id: deterministicUuid(`${productId}:${verdict.item_key}:${saved.sha256}`), object_sha256: saved.sha256 };
 }
 
-export async function prepareAmendment(input: {
+export async function prepareAmendment(input: Parameters<typeof prepareAmendmentSources>[0]): ReturnType<typeof prepareAmendmentSources> {
+  return withProductObjectReads(() => prepareAmendmentSources(input));
+}
+
+async function prepareAmendmentSources(input: {
   readonly root: string;
   readonly context: string;
   readonly artifact: Artifact;
@@ -2147,7 +2185,11 @@ export async function rebaseAmendment(input: {
   };
 }
 
-export async function startProductReview(input: {
+export async function startProductReview(input: Parameters<typeof startProductReviewSources>[0]): ReturnType<typeof startProductReviewSources> {
+  return withProductObjectReads(() => startProductReviewSources(input));
+}
+
+async function startProductReviewSources(input: {
   readonly root: string;
   readonly context: string;
   readonly candidateRef: CandidateRef;
@@ -2232,10 +2274,29 @@ export async function startProductReview(input: {
         return fail("INVALID_INPUT", "Document correction keys require an exact retained prose item and a consistency finding.");
       }
     }
+    const missingRefs = new Map<string, Ref>();
+    const missingItems = new Set<string>();
     for (const changed of inventoryDiff(parentState.inventory, inventory)) {
-      if ((!changedItems.has(changed.item_key) && changed.refs.length === 0) || changed.refs.some((reference) => !changedRefs.has(refKey(reference)))) {
-        return fail("PREREQUISITE_REQUIRED", "Correction impact is incomplete; start a full independent review.");
+      if (!changedItems.has(changed.item_key) && changed.refs.length === 0) {
+        if (!changed.item_key.startsWith("document:") || !findings.has("__consistency__")) {
+          return fail("PREREQUISITE_REQUIRED", "Correction impact is incomplete; start a full independent review.");
+        }
+        missingItems.add(changed.item_key);
       }
+      for (const reference of changed.refs) {
+        if (!changedRefs.has(refKey(reference))) missingRefs.set(refKey(reference), reference);
+      }
+    }
+    if (missingRefs.size > 0 || missingItems.size > 0) {
+      const nextAction = "complete_correction_mapping";
+      const issue = { kind: "review_lifecycle", review_ref: parent!, mode: "followup",
+        reason: "correction_impact_incomplete", next_action: nextAction };
+      return fail("PREREQUISITE_REQUIRED",
+        "Correction impact is incomplete. Add the reported missing references to fixes[].changed_refs and prose keys to fixes[].changed_item_keys, then retry followup.",
+        { details: workflowDiagnostics([
+          ...[...missingRefs].sort(([left], [right]) => left.localeCompare(right)).map(([, reference]) => ({ ...issue, missing_ref: reference })),
+          ...[...missingItems].sort().map((itemKey) => ({ ...issue, missing_item_key: itemKey })),
+        ], nextAction) });
     }
     const pending = new Set<string>();
     if (parentState.inventory.blocks !== undefined) {
@@ -2433,7 +2494,11 @@ async function validateFreshVerdict(state: ReviewState, value: Verdict): Promise
   return verdict;
 }
 
-export async function readProductReviewBatch(input: {
+export async function readProductReviewBatch(input: Parameters<typeof readProductReviewBatchSources>[0]): ReturnType<typeof readProductReviewBatchSources> {
+  return withProductObjectReads(() => readProductReviewBatchSources(input));
+}
+
+async function readProductReviewBatchSources(input: {
   readonly root: string; readonly context: string; readonly reviewRef: string;
   readonly startIndex: number; readonly limit?: number; readonly representation?: ReviewRepresentation;
   readonly pendingOnly?: boolean;
@@ -2481,7 +2546,11 @@ export async function readProductReviewBatch(input: {
   return { context: input.context, result: { items, next_item_index: next }, replayed: false, operationRef: null };
 }
 
-export async function recordProductVerdictBatch(input: {
+export async function recordProductVerdictBatch(input: Parameters<typeof recordProductVerdictBatchSources>[0]): ReturnType<typeof recordProductVerdictBatchSources> {
+  return withProductObjectReads(() => recordProductVerdictBatchSources(input));
+}
+
+async function recordProductVerdictBatchSources(input: {
   readonly root: string; readonly context: string; readonly reviewRef: string; readonly items: readonly Verdict[];
 }): Promise<ProductReviewOutcome<MutationResult>> {
   if (input.items.length < 1 || input.items.length > 20) {
@@ -2534,7 +2603,11 @@ export async function recordProductVerdictBatch(input: {
   });
 }
 
-export async function recordProductVerdict(input: {
+export async function recordProductVerdict(input: Parameters<typeof recordProductVerdictSources>[0]): ReturnType<typeof recordProductVerdictSources> {
+  return withProductObjectReads(() => recordProductVerdictSources(input));
+}
+
+async function recordProductVerdictSources(input: {
   readonly root: string;
   readonly context: string;
   readonly reviewRef: string;
@@ -2633,7 +2706,11 @@ function consistencyText(state: ReviewState, representation?: ReviewRepresentati
       .map(([key, value]) => ({ item_key: key, verdict: value.kind, object_sha256: value.object.object_sha256 })) });
 }
 
-export async function readProductReviewConsistency(input: {
+export async function readProductReviewConsistency(input: Parameters<typeof readProductReviewConsistencySources>[0]): ReturnType<typeof readProductReviewConsistencySources> {
+  return withProductObjectReads(() => readProductReviewConsistencySources(input));
+}
+
+async function readProductReviewConsistencySources(input: {
   readonly root: string;
   readonly context: string;
   readonly reviewRef: string;
@@ -2677,7 +2754,11 @@ export async function verifyProductReviewDelivery(input: {
   }
 }
 
-export async function recordProductReviewConsistency(input: {
+export async function recordProductReviewConsistency(input: Parameters<typeof recordProductReviewConsistencySources>[0]): ReturnType<typeof recordProductReviewConsistencySources> {
+  return withProductObjectReads(() => recordProductReviewConsistencySources(input));
+}
+
+async function recordProductReviewConsistencySources(input: {
   readonly root: string;
   readonly context: string;
   readonly reviewRef: string;
@@ -2749,7 +2830,11 @@ export async function recordProductReviewConsistency(input: {
   });
 }
 
-export async function completeProductReview(input: {
+export async function completeProductReview(input: Parameters<typeof completeProductReviewSources>[0]): ReturnType<typeof completeProductReviewSources> {
+  return withProductObjectReads(() => completeProductReviewSources(input));
+}
+
+async function completeProductReviewSources(input: {
   readonly root: string;
   readonly context: string;
   readonly reviewRef: string;
@@ -2927,7 +3012,11 @@ async function checkCandidateState(state: CandidateState, requiredReview?: strin
   };
 }
 
-export async function checkProductCandidate(input: {
+export async function checkProductCandidate(input: Parameters<typeof checkProductCandidateSources>[0]): ReturnType<typeof checkProductCandidateSources> {
+  return withProductObjectReads(() => checkProductCandidateSources(input));
+}
+
+async function checkProductCandidateSources(input: {
   readonly root: string;
   readonly context: string;
   readonly candidateRef: CandidateRef;
@@ -2945,7 +3034,11 @@ function candidateVersion(candidate: Omit<CandidateRecord, "source_version">): s
   return digest(canonicalBytes(candidate));
 }
 
-export async function activateAmendment(input: {
+export async function activateAmendment(input: Parameters<typeof activateAmendmentSources>[0]): ReturnType<typeof activateAmendmentSources> {
+  return withProductObjectReads(() => activateAmendmentSources(input));
+}
+
+async function activateAmendmentSources(input: {
   readonly root: string;
   readonly context: string;
   readonly candidates: readonly CandidateRef[];

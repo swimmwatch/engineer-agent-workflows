@@ -1,0 +1,212 @@
+{
+  "baseline_revision": "c1f55dcffccf1aa3bb325745114e40bf80a8053d",
+  "node": "v24.20.0",
+  "repetitions_per_transport_per_version": 3,
+  "latency": {
+    "direct": {
+      "before": {
+        "wall_ms": {
+          "median": 105102.151036,
+          "minimum": 103862.52744199999,
+          "maximum": 109663.97218900001
+        },
+        "retirement_ms": {
+          "median": 5592.590977,
+          "minimum": 4960.232170000003,
+          "maximum": 5933.422798999993
+        }
+      },
+      "after": {
+        "wall_ms": {
+          "median": 69425.990106,
+          "minimum": 61466.99954800001,
+          "maximum": 74337.15192500001
+        },
+        "retirement_ms": {
+          "median": 1769.3174440000003,
+          "minimum": 1470.898319,
+          "maximum": 2011.1691019999998
+        }
+      }
+    },
+    "stdio": {
+      "before": {
+        "wall_ms": {
+          "median": 107066.867355,
+          "minimum": 106120.526621,
+          "maximum": 108409.74319000001
+        },
+        "retirement_ms": {
+          "median": 5218.524875999996,
+          "minimum": 4927.664759000007,
+          "maximum": 6114.955793000001
+        }
+      },
+      "after": {
+        "wall_ms": {
+          "median": 69401.93583500001,
+          "minimum": 66990.98773200001,
+          "maximum": 80889.89772
+        },
+        "retirement_ms": {
+          "median": 1729.0748109999986,
+          "minimum": 1712.5878729999968,
+          "maximum": 2369.9779659999913
+        }
+      }
+    }
+  },
+  "native_phases_ms": {
+    "before": {
+      "prepare": {
+        "median": 2649.5679939999973,
+        "minimum": 2215.955976999998,
+        "maximum": 2712.4722550000006
+      },
+      "redistribution": {
+        "median": 6327.580643999994,
+        "minimum": 5484.446747999995,
+        "maximum": 7396.051146999991
+      },
+      "unlink": {
+        "median": 10987.746646000014,
+        "minimum": 9857.605880999996,
+        "maximum": 11635.383228999985
+      },
+      "retirement": {
+        "median": 5592.590977,
+        "minimum": 4960.232170000003,
+        "maximum": 5933.422798999993
+      },
+      "review": {
+        "median": 34467.21371100015,
+        "minimum": 32724.021539999943,
+        "maximum": 35409.019750000036
+      },
+      "correction-edit": {
+        "median": 3490.3208390000073,
+        "minimum": 3134.4079119999806,
+        "maximum": 5271.677742
+      },
+      "correction-review": {
+        "median": 31065.340483000007,
+        "minimum": 30062.894955000025,
+        "maximum": 34185.53750900006
+      },
+      "activation": {
+        "median": 9610.963328000013,
+        "minimum": 9110.257736,
+        "maximum": 9723.201927000016
+      },
+      "activation-status": {
+        "median": 844.2597240000032,
+        "minimum": 535.2025459999859,
+        "maximum": 933.5493220000062
+      },
+      "activation-replay": {
+        "median": 594.0235450000037,
+        "minimum": 562.8568870000017,
+        "maximum": 1133.3022840000049
+      }
+    },
+    "after": {
+      "prepare": {
+        "median": 1306.6912430000011,
+        "minimum": 1298.9929559999946,
+        "maximum": 1397.7905050000045
+      },
+      "redistribution": {
+        "median": 2936.6132499999876,
+        "minimum": 2745.2867849999966,
+        "maximum": 3309.1642429999993
+      },
+      "unlink": {
+        "median": 3588.4549060000063,
+        "minimum": 3417.80934,
+        "maximum": 3979.016709000003
+      },
+      "retirement": {
+        "median": 1769.3174440000003,
+        "minimum": 1470.898319,
+        "maximum": 2011.1691019999998
+      },
+      "review": {
+        "median": 29564.721936999937,
+        "minimum": 26698.339525000032,
+        "maximum": 33205.850893000104
+      },
+      "correction-edit": {
+        "median": 1669.4294450000016,
+        "minimum": 1612.8064100000047,
+        "maximum": 1843.8463350000093
+      },
+      "correction-review": {
+        "median": 21174.016042999996,
+        "minimum": 18189.125846999974,
+        "maximum": 26212.685436
+      },
+      "activation": {
+        "median": 4155.2076249999955,
+        "minimum": 3793.310289999994,
+        "maximum": 5726.876571000001
+      },
+      "activation-status": {
+        "median": 293.6651429999911,
+        "minimum": 280.8053639999998,
+        "maximum": 338.8830250000028
+      },
+      "activation-replay": {
+        "median": 292.08697600000596,
+        "minimum": 284.2651199999964,
+        "maximum": 641.8768520000012
+      }
+    }
+  },
+  "full_suite": {
+    "passed": 999,
+    "failed": 0,
+    "duration_ms": 197643.94884
+  },
+  "source_validation": {
+    "before": {
+      "reads": {
+        "median": 70046,
+        "minimum": 70046,
+        "maximum": 70046
+      },
+      "bytes": {
+        "median": 472921149,
+        "minimum": 472921149,
+        "maximum": 472921149
+      },
+      "duration_ms": {
+        "median": 60982.85582099965,
+        "minimum": 58720.378025000304,
+        "maximum": 64770.9626449958
+      }
+    },
+    "after": {
+      "reads": {
+        "median": 60477,
+        "minimum": 60477,
+        "maximum": 60477
+      },
+      "bytes": {
+        "median": 436202098,
+        "minimum": 436202098,
+        "maximum": 436202098
+      },
+      "duration_ms": {
+        "median": 72279.3590720002,
+        "minimum": 66432.38886200004,
+        "maximum": 80828.74121399858
+      }
+    }
+  },
+  "public_large_fixture": {
+    "original_tasks": 101,
+    "remaining_tasks": 100,
+    "preserved_identifiers": true
+  },
+  "model_time": "Excluded; scripted judgments only."
+}

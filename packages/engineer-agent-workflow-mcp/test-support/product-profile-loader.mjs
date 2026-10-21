@@ -4,6 +4,12 @@ import { performance } from "node:perf_hooks";
 
 const stringify = JSON.stringify;
 let reads = 0, bytes = 0, sourceMs = 0, envelopeMs = 0;
+let auditKinds = {}, auditIds = new Set();
+channel("engineer-agent-workflows.product.source-audit").subscribe((event) => {
+  auditIds.add(event.audit_id);
+  const counts = auditKinds[event.kind] ??= { hits: 0, misses: 0 };
+  counts[event.hit ? "hits" : "misses"]++;
+});
 channel("engineer-agent-workflows.product.source-validation").subscribe((event) => {
   reads++; bytes += event.bytes; sourceMs += event.duration_ms;
 });
@@ -15,8 +21,8 @@ JSON.stringify = function (value, replacer, space) {
   if (envelope) envelopeMs += duration;
   if (response) {
     process.stderr.write(`EAW_BENCHMARK ${stringify({ reads, bytes, source_ms: sourceMs, envelope_ms: envelopeMs, wire_ms: duration,
-      wire_bytes: Buffer.byteLength(result) })}\n`);
-    reads = 0; bytes = 0; sourceMs = 0; envelopeMs = 0;
+      wire_bytes: Buffer.byteLength(result), audit_kinds: auditKinds, audits: auditIds.size })}\n`);
+    reads = 0; bytes = 0; sourceMs = 0; envelopeMs = 0; auditKinds = {}; auditIds = new Set();
   }
   return result;
 };

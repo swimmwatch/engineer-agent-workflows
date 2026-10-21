@@ -268,9 +268,11 @@ async function recordItem(f, reviewRef, itemIndex, contextValue, verdict = "cove
   return { item, context: recorded.context };
 }
 
-async function completeReview(f, contextValue, { gapText } = {}) {
+async function completeReview(f, contextValue, { gapText, mode = "full", parentReviewRef, parentCandidateRef } = {}) {
   const started = await startProductReview({
-    root: f.root, context: contextValue, candidateRef: f.candidateRef, mode: "full",
+    root: f.root, context: contextValue, candidateRef: f.candidateRef, mode,
+    ...(parentReviewRef === undefined ? {} : { parentReviewRef }),
+    ...(parentCandidateRef === undefined ? {} : { parentCandidateRef }),
   });
   let currentContext = started.context;
   let status = started.result;

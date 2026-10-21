@@ -16,12 +16,40 @@ import { validateProductPath } from "./config.js";
 import { validateProductRecord } from "./schemas.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
+const SOURCE_READ_CONCURRENCY = 4;
 const sourceValidationMetrics = channel("engineer-agent-workflows.product.source-validation");
-const objectReads = new AsyncLocalStorage<Map<string, Promise<Uint8Array>>>();
+const sourceAuditMetrics = channel("engineer-agent-workflows.product.source-audit");
+const objectReads = new AsyncLocalStorage<{ id: number; readonly values: Map<string, unknown> }>();
+let nextAuditId = 0;
 
 /** Reuse verified immutable bytes only within one read-only source audit. */
 export function withProductObjectReads<T>(read: () => Promise<T>): Promise<T> {
-  return objectReads.getStore() === undefined ? objectReads.run(new Map(), read) : read();
+  return objectReads.getStore() === undefined ? objectReads.run({ id: ++nextAuditId, values: new Map() }, read) : read();
+}
+
+/** Transaction entry discards all preflight reuse before acquiring a lock. */
+export function withoutProductObjectReads<T>(run: () => T): T {
+  const scope = objectReads.getStore();
+  if (scope !== undefined) {
+    scope.values.clear();
+    scope.id = ++nextAuditId;
+  }
+  return objectReads.exit(run);
+}
+
+/** Reuse exact immutable inputs, keeping validation strengths in separate keys. */
+export function reuseProductSource<T>(kind: string, identity: readonly unknown[], read: () => T): T {
+  const scope = objectReads.getStore();
+  if (scope === undefined) return read();
+  const key = JSON.stringify([kind, ...identity]);
+  const hit = scope.values.has(key);
+  if (sourceAuditMetrics.hasSubscribers) sourceAuditMetrics.publish({
+    audit_id: scope.id, kind, key: createHash("sha256").update(key).digest("hex"), hit,
+  });
+  if (hit) return scope.values.get(key) as T;
+  const value = read();
+  scope.values.set(key, value);
+  return value;
 }
 const READ_CHUNK_BYTES = 64 * 1024;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
@@ -366,6 +394,10 @@ async function saveImmutable(
 }
 
 export async function saveObject(root: string, input: ObjectWrite): Promise<StoredObject> {
+  return withoutProductObjectReads(() => saveObjectFresh(root, input));
+}
+
+async function saveObjectFresh(root: string, input: ObjectWrite): Promise<StoredObject> {
   if (input.bytes.byteLength > MAX_SOURCE_BYTES) {
     return fail("SOURCE_LIMIT", "Product source exceeds the 16 MiB limit.");
   }
@@ -391,12 +423,7 @@ export async function saveObject(root: string, input: ObjectWrite): Promise<Stor
 }
 
 export async function readObject(root: string, reference: ObjectReference): Promise<Uint8Array> {
-  const scope = objectReads.getStore();
-  if (scope === undefined) return readVerifiedObject(root, reference);
-  const key = `${root}\0${objectRelativePath(reference)}\0${reference.sha256}`;
-  let value = scope.get(key);
-  if (value === undefined) { value = readVerifiedObject(root, reference); scope.set(key, value); }
-  return value;
+  return reuseProductSource("object", [root, objectRelativePath(reference), reference.sha256], () => readVerifiedObject(root, reference));
 }
 
 async function readVerifiedObject(root: string, reference: ObjectReference): Promise<Uint8Array> {
@@ -427,6 +454,10 @@ function validateYamlNodes(node: Node | null): void {
 }
 
 function parseStructured(value: Uint8Array): unknown {
+  return reuseProductSource("parse-yaml", [sha256(value)], () => parseStructuredBytes(value));
+}
+
+function parseStructuredBytes(value: Uint8Array): unknown {
   let source: string;
   try {
     source = new TextDecoder("utf-8", { fatal: true }).decode(value);
@@ -576,13 +607,15 @@ function generationBytes(generation: Generation): Uint8Array {
 
 export async function readGenerationMetadata(root: string, productId: string, digest: string): Promise<Generation> {
   const relativePath = generationRelativePath(productId, digest);
-  const value = await readRelative(root, relativePath, digest);
-  const parsed = parseStructured(value);
-  const generation = await validateProductRecord("Generation", parsed) as Generation;
-  if (generation.product_id !== productId) {
-    return fail("SOURCE_CHANGED", "Retained generation belongs to a different product.");
-  }
-  return generation;
+  return reuseProductSource("generation-metadata", [root, productId, relativePath, digest], async () => {
+    const value = await readRelative(root, relativePath, digest);
+    const parsed = parseStructured(value);
+    const generation = await validateProductRecord("Generation", parsed) as Generation;
+    if (generation.product_id !== productId) {
+      return fail("SOURCE_CHANGED", "Retained generation belongs to a different product.");
+    }
+    return generation;
+  });
 }
 
 async function readSourcePin(root: string, pin: SourcePin): Promise<Uint8Array> {
@@ -669,6 +702,19 @@ export async function verifySourcePin(root: string, pin: SourcePin): Promise<voi
   await readSourcePin(root, pin);
 }
 
+async function readSourceGroup<T, R>(values: readonly T[], read: (value: T) => Promise<R>): Promise<R[]> {
+  const result: R[] = [];
+  for (let index = 0; index < values.length; index += SOURCE_READ_CONCURRENCY) {
+    const batch = await Promise.allSettled(values.slice(index, index + SOURCE_READ_CONCURRENCY).map(read));
+    // Finish every opened read before returning an error, preserving source order.
+    for (const entry of batch) {
+      if (entry.status === "rejected") throw entry.reason;
+      result.push(entry.value);
+    }
+  }
+  return result;
+}
+
 async function verifyGenerationReferences(
   root: string,
   generation: Generation,
@@ -688,22 +734,22 @@ async function verifyGenerationReferences(
   }
 
   const documentIds = new Set<string>();
-  const documents: LoadedDocument[] = [];
   for (const document of registry.documents) {
     if (documentIds.has(document.id)) {
       return fail("INVALID_STATE", "Stored product registry contains duplicate document identities.");
     }
     documentIds.add(document.id);
+  }
+  const documents: LoadedDocument[] = await readSourceGroup(registry.documents, async (document) => {
     const value = await readObject(root, {
       productId: generation.product_id,
       kind: "markdown",
       sha256: document.object_sha256,
     });
-    documents.push({ id: document.id, sha256: document.object_sha256, bytes: value });
-  }
+    return { id: document.id, sha256: document.object_sha256, bytes: value };
+  });
 
-  const decisions: LoadedDecision[] = [];
-  for (const head of generation.decision_heads) {
+  const decisions: LoadedDecision[] = await readSourceGroup(generation.decision_heads, async (head) => {
     const reference = head.decision_ref;
     const value = await readObject(root, {
       productId: reference.product_id,
@@ -724,24 +770,24 @@ async function verifyGenerationReferences(
     ) {
       return fail("SOURCE_CHANGED", "Retained decision bytes do not match the referenced revision.");
     }
-    decisions.push({ ref: reference, sha256: head.object_sha256, bytes: value });
-  }
+    return { ref: reference, sha256: head.object_sha256, bytes: value };
+  });
 
-  const sourcePins: LoadedSourcePin[] = [];
-  for (const ready of generation.ready_artifacts) {
-    for (const pin of ready.upstream_pins) {
-      const value = await readSourcePin(root, pin);
-      sourcePins.push({ pin, bytes: value });
-    }
-  }
+  const sourcePins: LoadedSourcePin[] = await readSourceGroup(generation.ready_artifacts.flatMap((ready) => ready.upstream_pins), async (pin) => ({
+    pin, bytes: await readSourcePin(root, pin),
+  }));
 
   return { registry: registryBytes, documents, decisions, sourcePins };
 }
 
 export async function saveGeneration(root: string, value: unknown): Promise<StoredGeneration> {
+  return withoutProductObjectReads(() => saveGenerationFresh(root, value));
+}
+
+async function saveGenerationFresh(root: string, value: unknown): Promise<StoredGeneration> {
   const generation = await validateProductRecord("Generation", value) as Generation;
   const serialized = generationBytes(generation);
-  await verifyGenerationReferences(root, generation);
+  await withProductObjectReads(() => verifyGenerationReferences(root, generation));
   const digest = sha256(serialized);
   const relativePath = generationRelativePath(generation.product_id, digest);
   const reused = await saveImmutable(root, relativePath, serialized, digest);
@@ -753,7 +799,10 @@ export async function loadGeneration(
   productId: string,
   digest: string,
 ): Promise<LoadedGeneration> {
-  const generation = await readGenerationMetadata(root, productId, digest);
-  const references = await verifyGenerationReferences(root, generation);
-  return { sha256: digest, generation, ...references };
+  const relativePath = generationRelativePath(productId, digest);
+  return withProductObjectReads(() => reuseProductSource("generation-full", [root, productId, relativePath, digest], async () => {
+    const generation = await readGenerationMetadata(root, productId, digest);
+    const references = await verifyGenerationReferences(root, generation);
+    return { sha256: digest, generation, ...references };
+  }));
 }

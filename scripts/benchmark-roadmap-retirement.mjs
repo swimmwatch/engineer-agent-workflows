@@ -7,6 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { fixture, bytes, candidateVersion, context, writeCandidate, replaceArtifactDocument } from "../packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs";
 import { workflowTools } from "../packages/engineer-agent-workflow-mcp/dist/server.js";
 import { saveObject } from "../packages/engineer-agent-workflow-mcp/dist/product/storage.js";
+import { parseProductDocument } from "../packages/engineer-agent-workflow-mcp/dist/product/documents.js";
 import { randomUUID } from "node:crypto";
 import { channel } from "node:diagnostics_channel";
 
@@ -15,7 +16,14 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
   const sourceMetrics = { reads: 0, bytes: 0, duration_ms: 0 };
   const metrics = channel("engineer-agent-workflows.product.source-validation");
   const collect = (event) => { sourceMetrics.reads++; sourceMetrics.bytes += event.bytes; sourceMetrics.duration_ms += event.duration_ms; };
-  if (transport === "direct") metrics.subscribe(collect);
+  const auditMetrics = channel("engineer-agent-workflows.product.source-audit");
+  let auditKinds = {}, auditIds = new Set();
+  const collectAudit = (event) => {
+    auditIds.add(event.audit_id);
+    const counts = auditKinds[event.kind] ??= { hits: 0, misses: 0 };
+    counts[event.hit ? "hits" : "misses"]++;
+  };
+  if (transport === "direct") { metrics.subscribe(collect); auditMetrics.subscribe(collectAudit); }
   const cleanup = [], calls = [], f = await fixture({ after: (fn) => cleanup.push(fn) }, "roadmap", {
     elements, ...(representative ? { upstreamElements: { prd: 120, "technical-design": 60 } } : {}),
   });
@@ -42,7 +50,7 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
   if (findings) await replaceArtifactDocument(f, "roadmap", f.documentBytes.get("roadmap").toString()
     .replace("Introductory prose for roadmap.", `There are ${elements} active tasks in the current Roadmap.`));
   let client;
-  const serverProfile = { responses: 0, reads: 0, bytes: 0, source_ms: 0, envelope_ms: 0, wire_ms: 0, wire_bytes: 0 };
+  const serverProfile = { responses: 0, reads: 0, bytes: 0, source_ms: 0, envelope_ms: 0, wire_ms: 0, wire_bytes: 0, audits: 0, audit_kinds: {} };
   async function connectClient(name) {
     const wire = new StdioClientTransport({ command: process.execPath, args: [
       ...(profile ? ["--import", fileURLToPath(new URL("../packages/engineer-agent-workflow-mcp/test-support/product-profile-loader.mjs", import.meta.url))] : []),
@@ -53,7 +61,14 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
       pending += value.toString(); const lines = pending.split("\n"); pending = lines.pop();
       for (const line of lines) if (line.startsWith("EAW_BENCHMARK ")) {
         const event = JSON.parse(line.slice("EAW_BENCHMARK ".length)); serverProfile.responses++;
-        for (const key of Object.keys(event)) serverProfile[key] += event[key];
+        for (const [key, value] of Object.entries(event)) {
+          if (key === "audit_kinds") {
+            for (const [kind, counts] of Object.entries(value)) {
+              const total = serverProfile.audit_kinds[kind] ??= { hits: 0, misses: 0 };
+              total.hits += counts.hits; total.misses += counts.misses;
+            }
+          } else serverProfile[key] += value;
+        }
       }
     });
     const connected = new Client({ name, version: "1" }); await connected.connect(wire); return connected;
@@ -62,15 +77,17 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
   if (transport === "stdio") {
     client = await connectClient("retirement-benchmark");
   } else process.env.EAW_PRODUCT_DATA_DIR = f.root;
-  let current = f.context;
+  let current = f.context, phase = "fixture";
   async function call(name, input) {
     const start = performance.now();
+    const sourceBefore = { ...sourceMetrics };
     const raw = client ? await client.callTool({ name, arguments: input }) : await workflowTools.find((tool) => tool.name === name).run(input);
     if (profile && client) await new Promise((resolve) => setImmediate(resolve));
     const result = client ? raw.structuredContent ?? JSON.parse(raw.content.find((entry) => entry.type === "text").text) : raw;
     const elapsed = performance.now() - start, encodingStarted = performance.now();
     const responseBytes = Buffer.byteLength(JSON.stringify(raw)), resultBytes = Buffer.byteLength(JSON.stringify(result));
-    calls.push({ name, elapsed_ms: elapsed, measurement_serialization_ms: performance.now() - encodingStarted, response_bytes: responseBytes, result_bytes: resultBytes });
+    calls.push({ name, phase, elapsed_ms: elapsed, measurement_serialization_ms: performance.now() - encodingStarted, response_bytes: responseBytes, result_bytes: resultBytes,
+      ...(client ? {} : { source_validation: Object.fromEntries(Object.keys(sourceMetrics).map((key) => [key, sourceMetrics[key] - sourceBefore[key]])) }) });
     assert.ok(resultBytes <= 24 * 1024, "Structured result stays within its published budget.");
     if (client) assert.ok(responseBytes <= 64 * 1024, "Full MCP response stays within its published wire budget.");
     if (progress) console.error(JSON.stringify({ name, elapsed_ms: calls.at(-1).elapsed_ms }));
@@ -96,7 +113,7 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
         const gap = findings && candidate.candidate_id !== f.candidateId && mode !== "followup" && portion.item_key.startsWith("document:");
         if (gap) proseKey = portion.item_key;
         verdicts.push({ item_key: portion.item_key, verdict: gap ? "gap" : "covered", explanation: "Synthetic current-source protocol measurement.",
-          counterexample: gap ? "Summary still states 30 active tasks after task retirement." : null, evidence_refs: [], evidence_sources: [], read_receipt: portion.read_receipt, inherited_from: null }); delivered++;
+          counterexample: gap ? `Summary still states ${elements} active tasks after task retirement.` : null, evidence_refs: [], evidence_sources: [], read_receipt: portion.read_receipt, inherited_from: null }); delivered++;
       }
       await call("product_review_record_batch", { context: current, review_ref: status.review_ref, items: verdicts });
       status = (await call("product_review_status", { context: current, review_ref: status.review_ref })).result;
@@ -117,13 +134,16 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
     const initial = await finish(f.candidateRef, "full");
     await call("product_amendment_activate", { context: current, candidates: [f.candidateRef], review_refs: [initial.review] });
     calls.length = 0; sourceMetrics.reads = 0; sourceMetrics.bytes = 0; sourceMetrics.duration_ms = 0;
-    for (const key of Object.keys(serverProfile)) serverProfile[key] = 0;
+    for (const key of Object.keys(serverProfile)) serverProfile[key] = key === "audit_kinds" ? {} : 0;
+    auditKinds = {}; auditIds = new Set();
     const start = performance.now();
+    phase = "prepare";
     const amendment = await call("product_amendment_prepare", { context: current, artifact: "roadmap", base_generation: JSON.parse(Buffer.from(current, "base64url")).target_revision,
       intent_text: "Exclude task 29; retain template checks in task 1 and integration agreement in task 3.", source: "Synthetic explicit owner instruction",
       ...(mode === "recheck" ? { change_scope: { kind: "task_retirement", task_ref: ref("TASK-0029"), redistributed_to: [ref("TASK-0001"), ref("TASK-0003")] } } : {}) });
     const candidate = amendment.result.candidate_ref, answer = amendment.result.decision_ref;
     const document = f.registry.documents.find((entry) => entry.artifact === "roadmap");
+    phase = "redistribution";
     const editable = await call("product_document_begin_edit", { context: current, artifact: "roadmap", document_id: document.id });
     let source = await readFile(editable.result.editable_path, "utf8");
     source = source.replace("Current roadmap behavior", "Current roadmap behavior; verify inherited template checks")
@@ -131,15 +151,19 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
     await writeFile(editable.result.editable_path, source);
     const edits = await call("product_document_inspect_edits", { context: current, candidate_ref: candidate, document_id: document.id, limit: 50 });
     await call("product_document_accept_edits", { context: current, candidate_ref: candidate, document_id: document.id, instruction_ref: answer, observed_digest: edits.result.source_version });
+    phase = "unlink";
     for (const id of ["TASK-0002", "TASK-0005"]) await call("roadmap_unlink_dependency", { context: current, candidate_ref: candidate, task_ref: ref(id), requires_task_ref: ref("TASK-0029"), answer_ref: answer, reason: "Keep the existing task 1 prerequisite; remove the obsolete task 29 edge." });
+    phase = "retirement";
     await call("roadmap_retire_task", { context: current, candidate_ref: candidate, task_ref: ref("TASK-0029"), redistributed_to: [ref("TASK-0001"), ref("TASK-0003")], answer_ref: answer, reason: "Responsibilities remain in existing tasks 1 and 3." });
     const basis = amendment.result.review_basis;
     if (mode === "recheck") {
       assert.deepEqual(basis, { candidate_ref: f.candidateRef, review_ref: initial.review }, "Public preparation must deliver the verified predecessor.");
     }
+    phase = "review";
     const retirementReviewed = await finish(candidate, mode, mode === "recheck" ? basis.review_ref : undefined, mode === "recheck" ? basis.candidate_ref : undefined);
     let reviewed = retirementReviewed, correction = null;
     if (retirementReviewed.proseKey) {
+      phase = "correction-edit";
       let source = await readFile(editable.result.editable_path, "utf8");
       source = source.replace(`There are ${elements} active tasks in the current Roadmap.`, `There are ${elements - 1} active tasks in the current Roadmap.`);
       await writeFile(editable.result.editable_path, source);
@@ -147,28 +171,41 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
       await call("product_document_accept_edits", { context: current, candidate_ref: candidate, document_id: document.id, instruction_ref: answer, observed_digest: edits.result.source_version });
       const fixes = [retirementReviewed.proseKey, "__consistency__"].map((finding_key) => ({ finding_key, changed_refs: [],
         changed_item_keys: [retirementReviewed.proseKey], explanation: "Correct only the retired-task count and responsibility summary." }));
+      phase = "correction-review";
       reviewed = await finish(candidate, "followup", retirementReviewed.review, undefined, fixes); correction = reviewed;
     }
     const activation = { context: current, candidates: [candidate], review_refs: [reviewed.review] };
+    phase = "activation";
     const published = await call("product_amendment_activate", activation);
     if (client) {
       // The first acknowledgement is an oracle only; recovery uses original arguments.
       await client.close(); client = await connectClient("retirement-lost-response-replay");
     }
     if (mode === "recheck") {
+      phase = "activation-status";
       const status = await call("product_amendment_activation_status", activation); assert.equal(status.result.state, "applied");
     }
+    phase = "activation-replay";
     const replay = await call("product_amendment_activate", activation);
     assert.equal(replay.replayed, true); assert.equal(replay.operation_ref, published.operation_ref);
     if (profile && client) assert.equal(serverProfile.responses, calls.length);
-    return { transport, mode, elements, representative, ...retirementReviewed, correction, elapsed_ms: performance.now() - start,
+    const elapsedMs = performance.now() - start;
+    // Validate large-fixture identity preservation outside the measurement window.
+    let remainingTaskIds;
+    if (elements > 100) {
+      remainingTaskIds = parseProductDocument(await readFile(editable.result.editable_path)).elements.map((entry) => entry.id);
+      assert.deepEqual(remainingTaskIds, Array.from({ length: elements }, (_, index) => `TASK-${String(index + 1).padStart(4, "0")}`).filter((id) => id !== "TASK-0029"));
+    }
+    return { transport, mode, elements, representative, ...retirementReviewed, correction, elapsed_ms: elapsedMs,
+      ...(remainingTaskIds === undefined ? {} : { remaining_task_ids: remainingTaskIds }),
       source_validation: transport === "direct" ? sourceMetrics : null,
+      source_audits: transport === "direct" ? { audits: auditIds.size, kinds: auditKinds } : null,
       server_profile: profile && client ? serverProfile : null,
       measurement_serialization_ms: calls.reduce((sum, value) => sum + value.measurement_serialization_ms, 0),
       calls: calls.length, response_bytes: calls.reduce((sum, value) => sum + value.response_bytes, 0), result_bytes: calls.reduce((sum, value) => sum + value.result_bytes, 0), timings: calls };
   } finally {
     if (client) await client.close();
-    if (transport === "direct") metrics.unsubscribe(collect);
+    if (transport === "direct") { metrics.unsubscribe(collect); auditMetrics.unsubscribe(collectAudit); }
     if (oldRoot === undefined) delete process.env.EAW_PRODUCT_DATA_DIR; else process.env.EAW_PRODUCT_DATA_DIR = oldRoot;
     for (const fn of cleanup.reverse()) await fn();
   }

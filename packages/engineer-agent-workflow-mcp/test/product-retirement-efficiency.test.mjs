@@ -38,8 +38,14 @@ test("bounded retirement inherits ready predecessor coverage through a new candi
   const amendment = await review.prepareAmendment(args);
   assert.deepEqual(amendment.result.review_basis, { candidate_ref: f.candidateRef, review_ref: parent.reviewRef });
   assert.ok(amendment.result.changed_refs.length < 10);
+  const events = [], metrics = channel("engineer-agent-workflows.product.source-audit");
+  const collect = (event) => events.push(event); metrics.subscribe(collect); t.after(() => metrics.unsubscribe(collect));
   const retired = await retireRoadmapTask({ root: f.root, context: amendment.context, candidateRef: amendment.result.candidate_ref,
     taskRef: scope(f).task_ref, redistributedTo: scope(f).redistributed_to, answerRef: amendment.result.decision_ref, reason: args.intentText });
+  metrics.unsubscribe(collect);
+  assert.equal(events.filter((event) => event.kind === "roadmap-lineage" && !event.hit).length, 1, "Ready PRD and Technical Design share one fully validated lineage pass.");
+  const fullLoads = events.filter((event) => event.kind === "generation-full" && !event.hit);
+  assert.equal(new Set(fullLoads.map((event) => `${event.audit_id}:${event.key}`)).size, fullLoads.length);
   const begun = await review.startProductReview({ root: f.root, context: retired.context, candidateRef: amendment.result.candidate_ref,
     mode: "recheck", parentReviewRef: parent.reviewRef, parentCandidateRef: f.candidateRef });
   assert.ok(begun.result.recheck.inherited_items >= 20);
@@ -140,6 +146,16 @@ test("finding-linked prose correction retains unrelated judgments and requires f
   await review.completeProductReview({ root: f.root, context: current, reviewRef: begun.result.review_ref });
   await replaceArtifactDocument(f, "roadmap", f.documentBytes.get("roadmap").toString().replace("Introductory prose", "Corrected retirement prose"));
   const fixes = [proseKey, "__consistency__"].map((finding_key) => ({ finding_key, changed_refs: [], changed_item_keys: [proseKey], explanation: "Correct the shared task summary only." }));
+  const beforeIncomplete = await snapshot(f.root);
+  await assert.rejects(review.startProductReview({ root: f.root, context: f.context, candidateRef: f.candidateRef, mode: "followup", parentReviewRef: begun.result.review_ref,
+    fixes: fixes.map((fix) => ({ ...fix, changed_item_keys: [] })) }), (error) => {
+    assert.equal(error.code, "PREREQUISITE_REQUIRED");
+    assert.doesNotMatch(error.message, /full independent review/i);
+    assert.equal(error.details.details.next_action, "complete_correction_mapping");
+    assert.deepEqual(error.details.details.issues.map((issue) => issue.missing_item_key), [proseKey]);
+    return true;
+  });
+  assert.deepEqual(await snapshot(f.root), beforeIncomplete);
   const followup = await review.startProductReview({ root: f.root, context: f.context, candidateRef: f.candidateRef, mode: "followup", parentReviewRef: begun.result.review_ref, fixes });
   assert.equal(followup.result.recorded_items, followup.result.total_items - 1);
   await assert.rejects(review.completeProductReview({ root: f.root, context: f.context, reviewRef: followup.result.review_ref }), expectCode("PREREQUISITE_REQUIRED"));

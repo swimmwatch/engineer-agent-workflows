@@ -6,7 +6,7 @@ import { dirname } from "node:path";
 
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
-import { loadGeneration, readGenerationMetadata, readObject, saveObject } from "./storage.js";
+import { loadGeneration, readGenerationMetadata, readObject, saveObject, withoutProductObjectReads } from "./storage.js";
 import { validateProductRecord } from "./schemas.js";
 
 const MAX_SOURCE_BYTES = 16 * 1024 * 1024;
@@ -1079,6 +1079,10 @@ export async function publishHead(
 }
 
 export async function runProductMutation(plan: ProductMutationPlan): Promise<ProductMutationOutcome> {
+  return withoutProductObjectReads(() => runFreshProductMutation(plan));
+}
+
+async function runFreshProductMutation(plan: ProductMutationPlan): Promise<ProductMutationOutcome> {
   const prepared = await preflight(plan);
   const existing = await readOperation(plan.root, plan.productId, plan.operationId);
   if (existing !== null) {
@@ -1233,6 +1237,10 @@ export async function resumeOperation(
   plan: ProductMutationPlan,
   inspectionToken: string | null,
 ): Promise<ProductMutationOutcome> {
+  return withoutProductObjectReads(() => resumeFreshOperation(plan, inspectionToken));
+}
+
+async function resumeFreshOperation(plan: ProductMutationPlan, inspectionToken: string | null): Promise<ProductMutationOutcome> {
   const prepared = await preflight(plan);
   const status = await inspectOperation(plan.root, plan.productId, plan.operationId);
   if (status.state === "applied") {

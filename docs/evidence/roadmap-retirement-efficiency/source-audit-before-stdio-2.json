@@ -1,0 +1,167 @@
+{
+  "transport": "stdio",
+  "mode": "recheck",
+  "elements": 30,
+  "representative": true,
+  "review": "335d62c6-1aba-5dca-be39-3e65bf3a536f",
+  "blocks": 212,
+  "atoms": 814,
+  "source_atoms_delivered": 180,
+  "source_atom_occurrences": 331,
+  "delivered": 36,
+  "portions": 86,
+  "consistencyPortions": 11,
+  "proseKey": "document:bd52e29f-75bd-444c-b69d-f20363dcf722:prose",
+  "inherited": 176,
+  "correction": {
+    "review": "694441a5-57eb-5882-9f3e-44a9ef77dd5a",
+    "blocks": 212,
+    "atoms": 814,
+    "source_atoms_delivered": 1,
+    "source_atom_occurrences": 1,
+    "delivered": 1,
+    "portions": 1,
+    "consistencyPortions": 8,
+    "proseKey": null,
+    "inherited": 211
+  },
+  "elapsed_ms": 108409.74319000001,
+  "source_validation": null,
+  "server_profile": {
+    "responses": 195,
+    "reads": 70046,
+    "bytes": 472921149,
+    "source_ms": 62661.35509200451,
+    "envelope_ms": 1.7201090000455679,
+    "wire_ms": 1.7771630000104324,
+    "wire_bytes": 1389937
+  },
+  "measurement_serialization_ms": 7.3494960002208245,
+  "calls": 195,
+  "response_bytes": 1382921,
+  "result_bytes": 647496,
+  "per_tool": {
+    "product_amendment_prepare": {
+      "calls": 1,
+      "elapsed_ms_sum": 3771.375608000002,
+      "median_ms": 3771.375608000002
+    },
+    "product_document_begin_edit": {
+      "calls": 1,
+      "elapsed_ms_sum": 2642.2999349999955,
+      "median_ms": 2642.2999349999955
+    },
+    "product_document_inspect_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 1620.309866999989,
+      "median_ms": 810.1549334999945
+    },
+    "product_document_accept_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 6035.758402000007,
+      "median_ms": 3017.8792010000034
+    },
+    "roadmap_unlink_dependency": {
+      "calls": 2,
+      "elapsed_ms_sum": 9444.723639000003,
+      "median_ms": 4722.361819500002
+    },
+    "roadmap_retire_task": {
+      "calls": 1,
+      "elapsed_ms_sum": 6114.955793000001,
+      "median_ms": 6114.955793000001
+    },
+    "product_review_start": {
+      "calls": 2,
+      "elapsed_ms_sum": 18876.439175999985,
+      "median_ms": 9438.219587999993
+    },
+    "product_review_get_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 6514.119347000073,
+      "median_ms": 61.395130499993684
+    },
+    "product_review_get": {
+      "calls": 50,
+      "elapsed_ms_sum": 3083.805959000034,
+      "median_ms": 59.134220499996445
+    },
+    "product_review_record_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 11171.26811400002,
+      "median_ms": 306.120061499998
+    },
+    "product_review_status": {
+      "calls": 36,
+      "elapsed_ms_sum": 1225.4039650000486,
+      "median_ms": 34.04042950000439
+    },
+    "product_review_consistency_get": {
+      "calls": 19,
+      "elapsed_ms_sum": 9369.944481000013,
+      "median_ms": 399.315557000009
+    },
+    "product_review_consistency_record": {
+      "calls": 2,
+      "elapsed_ms_sum": 8388.890970999972,
+      "median_ms": 4194.445485499986
+    },
+    "product_review_complete": {
+      "calls": 2,
+      "elapsed_ms_sum": 9237.923840000003,
+      "median_ms": 4618.961920000002
+    },
+    "product_amendment_activate": {
+      "calls": 2,
+      "elapsed_ms_sum": 9618.530567000009,
+      "median_ms": 4809.265283500004
+    },
+    "product_amendment_activation_status": {
+      "calls": 1,
+      "elapsed_ms_sum": 896.741726999986,
+      "median_ms": 896.741726999986
+    }
+  },
+  "per_phase": {
+    "prepare": {
+      "calls": 1,
+      "elapsed_ms": 3771.375608000002
+    },
+    "redistribution": {
+      "calls": 3,
+      "elapsed_ms": 6120.602930000001
+    },
+    "unlink": {
+      "calls": 2,
+      "elapsed_ms": 9444.723639000003
+    },
+    "retirement": {
+      "calls": 1,
+      "elapsed_ms": 6114.955793000001
+    },
+    "review": {
+      "calls": 169,
+      "elapsed_ms": 34047.926068000175
+    },
+    "correction-edit": {
+      "calls": 2,
+      "elapsed_ms": 4177.76527399999
+    },
+    "correction-review": {
+      "calls": 14,
+      "elapsed_ms": 33819.86978499997
+    },
+    "activation": {
+      "calls": 1,
+      "elapsed_ms": 8506.742154000007
+    },
+    "activation-status": {
+      "calls": 1,
+      "elapsed_ms": 896.741726999986
+    },
+    "activation-replay": {
+      "calls": 1,
+      "elapsed_ms": 1111.788413000002
+    }
+  }
+}

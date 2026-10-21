@@ -1,0 +1,296 @@
+{
+  "transport": "direct",
+  "mode": "recheck",
+  "elements": 30,
+  "representative": true,
+  "review": "71b0a02e-71bd-5222-8e2b-394f11ad110d",
+  "blocks": 212,
+  "atoms": 814,
+  "source_atoms_delivered": 180,
+  "source_atom_occurrences": 331,
+  "delivered": 36,
+  "portions": 86,
+  "consistencyPortions": 11,
+  "proseKey": "document:131bbcc8-1e53-43d8-8a9d-6ca4626c4c5d:prose",
+  "inherited": 176,
+  "correction": {
+    "review": "f3ef3257-fc0f-5051-b16c-db9ec875c937",
+    "blocks": 212,
+    "atoms": 814,
+    "source_atoms_delivered": 1,
+    "source_atom_occurrences": 1,
+    "delivered": 1,
+    "portions": 1,
+    "consistencyPortions": 8,
+    "proseKey": null,
+    "inherited": 211
+  },
+  "elapsed_ms": 74337.15192500001,
+  "source_validation": {
+    "reads": 60477,
+    "bytes": 436202098,
+    "duration_ms": 80828.74121399858
+  },
+  "source_audits": {
+    "audits": 454,
+    "kinds": {
+      "generation-full": {
+        "hits": 39,
+        "misses": 80
+      },
+      "generation-metadata": {
+        "hits": 544,
+        "misses": 603
+      },
+      "parse-yaml": {
+        "hits": 508,
+        "misses": 36627
+      },
+      "object": {
+        "hits": 9177,
+        "misses": 59753
+      },
+      "parse-json-utf8": {
+        "hits": 18607,
+        "misses": 20274
+      },
+      "parse-markdown": {
+        "hits": 67,
+        "misses": 90
+      },
+      "roadmap-lineage": {
+        "hits": 0,
+        "misses": 3
+      },
+      "parse-json-buffer": {
+        "hits": 0,
+        "misses": 6
+      },
+      "review-inventory": {
+        "hits": 7,
+        "misses": 32
+      },
+      "review-audit": {
+        "hits": 0,
+        "misses": 202
+      },
+      "review-basis": {
+        "hits": 5,
+        "misses": 30
+      },
+      "review-evidence": {
+        "hits": 0,
+        "misses": 20
+      }
+    }
+  },
+  "server_profile": null,
+  "measurement_serialization_ms": 2.270729999981995,
+  "calls": 195,
+  "response_bytes": 647496,
+  "result_bytes": 647496,
+  "per_tool": {
+    "product_amendment_prepare": {
+      "calls": 1,
+      "elapsed_ms_sum": 1306.6912430000011,
+      "source_validation": {
+        "reads": 2400,
+        "bytes": 2265416,
+        "duration_ms": 2689.858129999913
+      },
+      "median_ms": 1306.6912430000011
+    },
+    "product_document_begin_edit": {
+      "calls": 1,
+      "elapsed_ms_sum": 1147.2019450000007,
+      "source_validation": {
+        "reads": 2401,
+        "bytes": 2323820,
+        "duration_ms": 2742.420807999828
+      },
+      "median_ms": 1147.2019450000007
+    },
+    "product_document_inspect_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 574.7468240000017,
+      "source_validation": {
+        "reads": 1202,
+        "bytes": 1250568,
+        "duration_ms": 1388.9405899998455
+      },
+      "median_ms": 287.3734120000008
+    },
+    "product_document_accept_edits": {
+      "calls": 2,
+      "elapsed_ms_sum": 2636.144425999999,
+      "source_validation": {
+        "reads": 4804,
+        "bytes": 4653992,
+        "duration_ms": 5812.370873000538
+      },
+      "median_ms": 1318.0722129999995
+    },
+    "roadmap_unlink_dependency": {
+      "calls": 2,
+      "elapsed_ms_sum": 3417.80934,
+      "source_validation": {
+        "reads": 4806,
+        "bytes": 4655979,
+        "duration_ms": 5938.584378999563
+      },
+      "median_ms": 1708.90467
+    },
+    "roadmap_retire_task": {
+      "calls": 1,
+      "elapsed_ms_sum": 1470.898319,
+      "source_validation": {
+        "reads": 2403,
+        "bytes": 2328384,
+        "duration_ms": 2813.953358000035
+      },
+      "median_ms": 1470.898319
+    },
+    "product_review_start": {
+      "calls": 2,
+      "elapsed_ms_sum": 12864.876977999993,
+      "source_validation": {
+        "reads": 11016,
+        "bytes": 25159700,
+        "duration_ms": 17665.28806199962
+      },
+      "median_ms": 6432.4384889999965
+    },
+    "product_review_get_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 4971.023051000026,
+      "source_validation": {
+        "reads": 2635,
+        "bytes": 74889619,
+        "duration_ms": 4606.35883599981
+      },
+      "median_ms": 68.44071850000182
+    },
+    "product_review_get": {
+      "calls": 50,
+      "elapsed_ms_sum": 3625.6997350000456,
+      "source_validation": {
+        "reads": 809,
+        "bytes": 94404379,
+        "duration_ms": 1507.4730389999168
+      },
+      "median_ms": 68.00060349999694
+    },
+    "product_review_record_batch": {
+      "calls": 36,
+      "elapsed_ms_sum": 15116.686264000004,
+      "source_validation": {
+        "reads": 2361,
+        "bytes": 80831973,
+        "duration_ms": 4021.9793729998346
+      },
+      "median_ms": 385.68206800000917
+    },
+    "product_review_status": {
+      "calls": 36,
+      "elapsed_ms_sum": 1658.2902390000236,
+      "source_validation": {
+        "reads": 72,
+        "bytes": 66039090,
+        "duration_ms": 318.46037099993555
+      },
+      "median_ms": 38.62550549999287
+    },
+    "product_review_consistency_get": {
+      "calls": 19,
+      "elapsed_ms_sum": 9452.048392000012,
+      "source_validation": {
+        "reads": 8890,
+        "bytes": 40159920,
+        "duration_ms": 8559.33121100036
+      },
+      "median_ms": 342.8933240000042
+    },
+    "product_review_consistency_record": {
+      "calls": 2,
+      "elapsed_ms_sum": 5601.511721000003,
+      "source_validation": {
+        "reads": 5904,
+        "bytes": 13554749,
+        "duration_ms": 6144.662275999661
+      },
+      "median_ms": 2800.7558605000013
+    },
+    "product_review_complete": {
+      "calls": 2,
+      "elapsed_ms_sum": 6128.399948999999,
+      "source_validation": {
+        "reads": 5888,
+        "bytes": 13881882,
+        "duration_ms": 11096.261334999479
+      },
+      "median_ms": 3064.1999744999994
+    },
+    "product_amendment_activate": {
+      "calls": 2,
+      "elapsed_ms_sum": 4077.5754099999904,
+      "source_validation": {
+        "reads": 4280,
+        "bytes": 9230432,
+        "duration_ms": 4848.668739000175
+      },
+      "median_ms": 2038.7877049999952
+    },
+    "product_amendment_activation_status": {
+      "calls": 1,
+      "elapsed_ms_sum": 280.8053639999998,
+      "source_validation": {
+        "reads": 606,
+        "bytes": 572195,
+        "duration_ms": 674.1298340000649
+      },
+      "median_ms": 280.8053639999998
+    }
+  },
+  "per_phase": {
+    "prepare": {
+      "calls": 1,
+      "elapsed_ms": 1306.6912430000011
+    },
+    "redistribution": {
+      "calls": 3,
+      "elapsed_ms": 2745.2867849999966
+    },
+    "unlink": {
+      "calls": 2,
+      "elapsed_ms": 3417.80934
+    },
+    "retirement": {
+      "calls": 1,
+      "elapsed_ms": 1470.898319
+    },
+    "review": {
+      "calls": 169,
+      "elapsed_ms": 33205.850893000104
+    },
+    "correction-edit": {
+      "calls": 2,
+      "elapsed_ms": 1612.8064100000047
+    },
+    "correction-review": {
+      "calls": 14,
+      "elapsed_ms": 26212.685436
+    },
+    "activation": {
+      "calls": 1,
+      "elapsed_ms": 3793.310289999994
+    },
+    "activation-status": {
+      "calls": 1,
+      "elapsed_ms": 280.8053639999998
+    },
+    "activation-replay": {
+      "calls": 1,
+      "elapsed_ms": 284.2651199999964
+    }
+  }
+}

@@ -663,6 +663,15 @@ consistency representation retains the inventory hash, impact and exact verdict
 object hashes without repeating shared source text. Other read representations
 are unchanged.
 
+An incomplete correction map returns `PREREQUISITE_REQUIRED` with
+`error.details.next_action: "complete_correction_mapping"`. Add the reported
+`issues[].missing_ref` values to the relevant `fixes[].changed_refs` and
+`issues[].missing_item_key` values to `fixes[].changed_item_keys`, then retry
+followup. References cover the complete changed blocks, including dependency
+participants and retained retired-task provenance. If `details.truncated` is
+true, another retry can report remaining omissions. Unmappable changes still
+require full review; prose mapping still requires a recorded consistency finding.
+
 Before activation, retain its original arguments/context.
 `product_amendment_activation_status` accepts those same arguments, is read-only,
 and distinguishes the operation's published generation from current head.

@@ -8,10 +8,10 @@ import Ajv from "ajv";
 
 import { fail, WorkflowError } from "../state.js";
 import { validateProductPath } from "./config.js";
-import { listProductDocuments, parseProductDocument } from "./documents.js";
+import { loadProductDocumentSnapshot, parseProductDocument } from "./documents.js";
 import { inspectExactOperationForResume, replayProductMutationResult, resumeOperation, runProductMutation } from "./operations.js";
 import type { ExactOperationResumeEvidence, ProductMutationPlan } from "./operations.js";
-import { loadGeneration, readObject, saveObject, verifySourcePin } from "./storage.js";
+import { loadGeneration, readObject, reuseProductSource, saveObject, verifySourcePin, withProductObjectReads } from "./storage.js";
 import type { LoadedGeneration, SourcePin } from "./storage.js";
 import { validateProductRecord } from "./schemas.js";
 import { assertRoadmapTaskBindingsCompatible } from "./tasks.js";
@@ -355,6 +355,10 @@ function documentPath(productId: string, candidateId: string, relativePath: stri
 }
 
 function parseJson(value: Uint8Array, label: string): unknown {
+  return reuseProductSource("parse-json-buffer", [digest(value)], () => parseJsonBytes(value, label));
+}
+
+function parseJsonBytes(value: Uint8Array, label: string): unknown {
   try {
     return JSON.parse(Buffer.from(value).toString("utf8"));
   } catch {
@@ -400,17 +404,24 @@ async function validateRegistry(value: unknown, productId: string): Promise<Regi
 
 async function loadState(root: string, contextText: string, candidateRef: CandidateRef, requireCurrent = true,
   originals: ReadonlyMap<string, Buffer> = new Map()): Promise<CandidateState> {
+  return withProductObjectReads(() => loadStateSources(root, contextText, candidateRef, requireCurrent, originals));
+}
+
+async function loadStateSources(root: string, contextText: string, candidateRef: CandidateRef, requireCurrent: boolean,
+  originals: ReadonlyMap<string, Buffer>): Promise<CandidateState> {
   const context = decodeContext(contextText);
   if (
     context.product_id !== candidateRef.product_id || context.workspace_id === null
     || context.candidate_ref?.product_id !== candidateRef.product_id
     || context.candidate_ref.candidate_id !== candidateRef.candidate_id
   ) return fail("INVALID_INPUT", "Roadmap authoring requires the selected candidate context.");
-  if (requireCurrent) await listProductDocuments({ root, context: contextText, artifact: "roadmap", limit: 1 });
+  const snapshot = requireCurrent ? await loadProductDocumentSnapshot(root, contextText, candidateRef) : undefined;
   const relativeCandidate = candidatePath(candidateRef.product_id, candidateRef.candidate_id);
-  const candidateBytes = originals.get(relativeCandidate) ?? await readSafe(root, relativeCandidate, context.canonical_workspace);
+  const candidateBytes = originals.get(relativeCandidate) ?? snapshot?.candidateBytes ?? await readSafe(root, relativeCandidate, context.canonical_workspace);
   if (candidateBytes === null) return fail("NOT_FOUND", "Selected product candidate is unavailable.");
-  const candidate = await validateProductRecord("Candidate", parseJson(candidateBytes, "Selected product candidate")) as CandidateRecord;
+  const candidate = snapshot === undefined
+    ? await validateProductRecord("Candidate", parseJson(candidateBytes, "Selected product candidate")) as CandidateRecord
+    : snapshot.candidate as CandidateRecord;
   if (
     candidate.product_id !== candidateRef.product_id || candidate.candidate_id !== candidateRef.candidate_id
     || candidate.workspace_id !== context.workspace_id || candidate.base_generation !== context.target_revision
@@ -424,21 +435,20 @@ async function loadState(root: string, contextText: string, candidateRef: Candid
     candidate.product_id,
     candidate.base_generation ?? fail("PREREQUISITE_REQUIRED", "Roadmap requires a base generation."),
   );
-  const registryBytes = await readObject(root, {
+  const registry = snapshot === undefined ? await validateRegistry(parseJson(await readObject(root, {
     productId: candidate.product_id,
     kind: "record",
     sha256: candidate.registry.object_sha256,
-  });
-  const registry = await validateRegistry(parseJson(registryBytes, "Selected product registry"), candidate.product_id);
+  }), "Selected product registry"), candidate.product_id) : await validateRegistry(snapshot.registry, candidate.product_id);
   const documents = new Map<string, Buffer>();
   const owners = new Map<string, Artifact>();
   for (const document of registry.documents) {
     const relative = documentPath(candidate.product_id, candidate.candidate_id, document.relative_path);
-    const value = originals.get(relative) ?? await readSafe(root, relative, context.canonical_workspace);
+    const value = originals.get(relative) ?? snapshot?.documents.get(document.id) ?? await readSafe(root, relative, context.canonical_workspace);
     if (value === null || digest(value) !== document.object_sha256) {
       return fail("SOURCE_CHANGED", "Product draft contains direct or missing document edits.");
     }
-    const parsed = parseProductDocument(value);
+    const parsed = snapshot?.parsed.get(document.id) ?? parseProductDocument(value);
     if (document.role === "navigation" && parsed.elements.length > 0) {
       return fail("INVALID_MARKDOWN", "Navigation documents cannot own semantic elements.");
     }
@@ -545,12 +555,11 @@ async function validateDecisionReference(state: CandidateState, reference: Decis
 }
 
 async function requireReadyInputs(state: CandidateState): Promise<void> {
-  for (const artifact of ["prd", "technical-design"] as const) {
-    if (!state.generation.generation.ready_artifacts.some((ready) => ready.artifact === artifact)) {
-      return fail("PREREQUISITE_REQUIRED", `Roadmap authoring requires a ready ${artifact === "prd" ? "PRD" : "Technical Design"} result.`);
-    }
-    const pins = state.candidate.upstream_pins.filter((pin) => pin.product_id === state.candidate.product_id && pin.artifact === artifact);
-    if (pins.length === 0) return fail("PREREQUISITE_REQUIRED", "Roadmap authoring requires exact ready PRD and Technical Design source pins.");
+  return withProductObjectReads(() => requireReadyInputSources(state));
+}
+
+async function requireReadyInputSources(state: CandidateState): Promise<void> {
+  const loadLineage = () => reuseProductSource("roadmap-lineage", [state.root, state.candidate.product_id, state.generation.sha256], async () => {
     const lineage = new Set<string>();
     let current: string | null = state.generation.sha256;
     while (current !== null) {
@@ -558,6 +567,16 @@ async function requireReadyInputs(state: CandidateState): Promise<void> {
       lineage.add(current);
       current = (await loadGeneration(state.root, state.candidate.product_id, current)).generation.parent;
     }
+    return lineage;
+  });
+  let lineage: ReadonlySet<string> | undefined;
+  for (const artifact of ["prd", "technical-design"] as const) {
+    if (!state.generation.generation.ready_artifacts.some((ready) => ready.artifact === artifact)) {
+      return fail("PREREQUISITE_REQUIRED", `Roadmap authoring requires a ready ${artifact === "prd" ? "PRD" : "Technical Design"} result.`);
+    }
+    const pins = state.candidate.upstream_pins.filter((pin) => pin.product_id === state.candidate.product_id && pin.artifact === artifact);
+    if (pins.length === 0) return fail("PREREQUISITE_REQUIRED", "Roadmap authoring requires exact ready PRD and Technical Design source pins.");
+    lineage ??= await loadLineage();
     for (const pin of pins) {
       if (!lineage.has(pin.generation) || pin.element_ids.length === 0) {
         return fail("SOURCE_CHANGED", "Ready Roadmap source pin is outside the selected generation lineage or has no addressed elements.");
@@ -1232,7 +1251,11 @@ async function guardTaskChange(state: CandidateState, taskId: string): Promise<v
   if (head.generation !== state.candidate.base_generation) return fail("CONFLICT", "Product head changed during task change.");
 }
 
-export async function unlinkRoadmapDependency(input: {
+export async function unlinkRoadmapDependency(input: Parameters<typeof unlinkRoadmapDependencySources>[0], hooks: Parameters<typeof unlinkRoadmapDependencySources>[1] = {}): ReturnType<typeof unlinkRoadmapDependencySources> {
+  return withProductObjectReads(() => unlinkRoadmapDependencySources(input, hooks));
+}
+
+async function unlinkRoadmapDependencySources(input: {
   readonly root: string;
   readonly context: string;
   readonly candidateRef: CandidateRef;
@@ -1268,7 +1291,11 @@ export async function unlinkRoadmapDependency(input: {
   });
 }
 
-export async function retireRoadmapTask(input: {
+export async function retireRoadmapTask(input: Parameters<typeof retireRoadmapTaskSources>[0], hooks: Parameters<typeof retireRoadmapTaskSources>[1] = {}): ReturnType<typeof retireRoadmapTaskSources> {
+  return withProductObjectReads(() => retireRoadmapTaskSources(input, hooks));
+}
+
+async function retireRoadmapTaskSources(input: {
   readonly root: string;
   readonly context: string;
   readonly candidateRef: CandidateRef;
