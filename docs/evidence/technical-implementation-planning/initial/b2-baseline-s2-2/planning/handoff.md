@@ -1,0 +1,15 @@
+# B2 current handoff
+
+Packet [01_timeout-range.md](01_timeout-range.md): complete. Completion tracked in [todo.md](todo.md). Next packet: none. Stop at this implementation boundary; no review or further stage launched.
+
+Changes: `configuration.mjs:3` expands only the upper bound from 10 to 60. `test.mjs:6` onward adds exhaustive 1..60 unit cases, leading zeroes, all packet invalid categories, and real CLI checks using the unchanged `runCli` helper with exact status, signal, stdout and stderr. The default/value regression remains intact. Updated only the current checklist and this handoff in the planning bundle.
+
+Verification ran in `/tmp/eaw-tip-p03-df48iZ/runs/b2-baseline-s2-2/app`. Bundle verification exited 0; separate Git worktree check returned true. Read all four exact pinned requirements and both linked current decisions through scenario MCP; confirmed Lite/core scope with no additional contracts. Before work and completion, `specification_check_state` with expected source `7fcd011665d866b7e912710e6b44df093846b32adf3e6239fc076bf06ae2ba2b` passed, reviewed/approved, no issues; specification version `4f85f3b995a54ce1e1fdbf8de5895c3b8c9cea70c58f9119a7ea8325efe35862`, review `2ed89011-812c-4af6-a05d-da8a10be1f0d` unchanged.
+
+RED: `rtk proxy npm test` before production changes exited 1: 106 tests, 51 pass, 55 fail. Unit values 11..60 and leading zeroes 00011/00060 threw INVALID_TIMEOUT; actual real CLI assertions for 11/60/00060 failed on status and streams. No harness/import failure. GREEN: same command after ceiling edit exited 0, 106/106 pass. PROVE: temporarily restored ceiling 10 alone; same command exited 1 and reproduced the range failures including real CLI assertion failures. Restored 60; final `rtk proxy npm test` exited 0, 106/106 pass, none skipped. Unchanged CLI empty-stream/default guarantees remained regression checks; no CLI mutation was required.
+
+Evidence correction: the packet/plan prediction that the existing regex accepts a final newline was disproved. Both unit and real CLI `'1\n'` rejection checks passed before implementation; a bounded installed-Node check of `/^[0-9]+$/.test("1\n")` returned false. Retained the regex and all whitespace assertions; approved behavior and architecture are unchanged. No checks were weakened.
+
+Preservation: reviewed Git status, staged additions and scoped diff; existing staged fixture additions preserved. Pre-execution SHA-256 and mode/owner/group inventory compared successfully for protected files, including `unrelated.txt`, CLI, helper, package command, spec, plan and numbered packet. All touched-path mode/owner/group attributes also match baseline. Final production/test diff contains only the ceiling and added behavioral tests; checklist/handoff are the only planning updates. Workflow YAML was not edited. No installs, commits, publication, global changes or external services.
+
+Limitations/blockers: no unresolved decisions or required checks. Verification covers the installed isolated Node runner; no other platform matrix was declared or tested. Optional independent review remains separately invoked.

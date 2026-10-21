@@ -46,3 +46,17 @@ test("artifact references and source bundles reject symbolic links", async (t) =
   assert.equal((await verifyCapturedArtifacts([{ ref: "link/trace.txt", digest: sha("trace") }], root)).length, 1);
   assert.equal((await verifyCapturedArtifacts([{ ref: "bundle", kind: "bundle", digest: sha("") }], root)).length, 1);
 });
+
+test("captured JSON is exposed only after the same bytes pass digest validation", async (t) => {
+  const bytes = '{"variant":"candidate"}\n';
+  const root = await makeTempTree(t, { "source.json": bytes, "invalid.json": "not JSON" });
+  const jsonDocuments = new Map();
+  assert.deepEqual(await verifyCapturedArtifacts([{ ref: "source.json", digest: sha(bytes) }], root, { jsonDocuments }), []);
+  assert.deepEqual(jsonDocuments.get("source.json"), { variant: "candidate" });
+  await fs.writeFile(path.join(root, "source.json"), '{"variant":"baseline"}\n');
+  const rejected = new Map();
+  assert.equal((await verifyCapturedArtifacts([{ ref: "source.json", digest: sha(bytes) }], root, { jsonDocuments: rejected })).length, 1);
+  assert.equal(rejected.size, 0);
+  assert.equal((await verifyCapturedArtifacts([{ ref: "invalid.json", digest: sha("not JSON") }], root, { jsonDocuments: rejected })).length, 1);
+  assert.equal(rejected.size, 0);
+});

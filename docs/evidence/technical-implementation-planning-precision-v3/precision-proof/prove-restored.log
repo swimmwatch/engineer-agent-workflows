@@ -1,0 +1,10 @@
+✔ B1 oracle rejects rounded aggregate JSON tokens (123.959113ms)
+✔ B1 oracle accepts exact aggregate JSON integers (465.323695ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 631.665988

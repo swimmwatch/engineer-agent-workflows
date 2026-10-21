@@ -1,0 +1,25 @@
+{
+  "classification": "ACTUAL",
+  "command": "rtk proxy node scripts/verify-workflow-evidence.mjs docs/evidence/technical-implementation-planning/evidence.json tests/fixtures/workflow-loop/technical-agreement-registry.json",
+  "exitCode": 1,
+  "report": {
+    "ok": false,
+    "verificationKind": "evidence-consistency",
+    "behaviorCertified": false,
+    "sourceDigest": "f8dd511a4665a523a5be93939354e7a391cf1dafc5f593dbe0a5ff2b313166a7",
+    "findings": [
+      {
+        "code": "required-prove-missing",
+        "message": "Packet 01_shared-validation-and-validate.md lacks PROVE and restored GREEN for V01/V02 successful output assertions missed by initial RED.",
+        "runId": "b1-baseline-s2-2",
+        "traceRef": "initial/b1-baseline-s2-2/derived-trace.json"
+      },
+      {
+        "code": "evaluation-unreviewed",
+        "message": "The evaluation claim lacks a successful external review record.",
+        "runId": "b1-baseline-s2-2",
+        "traceRef": "initial/b1-baseline-s2-2/derived-trace.json"
+      }
+    ]
+  }
+}

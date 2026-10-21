@@ -15,6 +15,7 @@ import { describeInputSchema } from "./metadata.js";
 import { WorkflowError } from "./state.js";
 import { tool, type WorkflowTool } from "./api.js";
 import { runtimeIdentity } from "./runtime-info.js";
+import { planningTools } from "./planning.js";
 
 const runtimeInfo: WorkflowTool = tool("workflow_runtime_info",
   "Identify the serving MCP build and exact implemented capabilities; read only. Missing identity requires an explicit package refresh and process restart.",
@@ -26,7 +27,7 @@ runtimeInfo.outputSchema = z.toJSONSchema(z.object({ protocol_version: z.literal
   contract_digest: z.string().nullable(), identity_status: z.enum(["verified", "unavailable"]),
   reason: z.string().nullable(), refresh_requirement: z.string().nullable(), capabilities: z.array(z.string()),
 }) }));
-export const workflowTools: WorkflowTool[] = [...scopeTools, ...decisionTools, ...catalogTools, ...experienceTools, ...checkTools, ...requirementTools, ...reviewTools, ...followupTools, ...productTools, runtimeInfo];
+export const workflowTools: WorkflowTool[] = [...scopeTools, ...decisionTools, ...catalogTools, ...experienceTools, ...checkTools, ...requirementTools, ...reviewTools, ...followupTools, ...planningTools, ...productTools, runtimeInfo];
 
 const ERROR_MESSAGES: Readonly<Record<string, string>> = {
   INVALID_INPUT: "The request does not match the decision-reader contract.",

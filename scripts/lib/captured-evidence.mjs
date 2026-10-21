@@ -17,7 +17,8 @@ async function readRegularFile(target) {
 async function digestPath(target, kind) {
   const info = await fs.lstat(target);
   if (kind === "file" && info.isFile()) {
-    return createHash("sha256").update(await readRegularFile(target)).digest("hex");
+    const bytes = await readRegularFile(target);
+    return { digest: createHash("sha256").update(bytes).digest("hex"), bytes };
   }
   if (kind !== "bundle" || !info.isDirectory()) throw new Error("Invalid artifact type");
   const files = [];
@@ -35,12 +36,12 @@ async function digestPath(target, kind) {
   for (const file of files.sort()) {
     hash.update(file).update("\0").update(await readRegularFile(path.join(target, file))).update("\0");
   }
-  return hash.digest("hex");
+  return { digest: hash.digest("hex") };
 }
 
 // The operator selects the report root; captured trees must be quiescent.
 // This offline checker is not a sandbox against concurrent directory replacement.
-export async function verifyCapturedArtifacts(artifacts, evidenceRoot) {
+export async function verifyCapturedArtifacts(artifacts, evidenceRoot, { jsonDocuments } = {}) {
   const findings = [];
   const root = await fs.realpath(evidenceRoot);
   if (!Array.isArray(artifacts)) {
@@ -60,8 +61,12 @@ export async function verifyCapturedArtifacts(artifacts, evidenceRoot) {
         target = path.join(target, part);
         if ((await fs.lstat(target)).isSymbolicLink()) throw new Error("Symbolic artifact reference");
       }
-      if (await digestPath(target, artifact.kind ?? "file") !== artifact.digest) {
+      const captured = await digestPath(target, artifact.kind ?? "file");
+      if (captured.digest !== artifact.digest) {
         throw new Error("Captured bytes do not match the declared digest");
+      }
+      if (jsonDocuments && captured.bytes && ref.endsWith(".json")) {
+        jsonDocuments.set(ref, JSON.parse(captured.bytes.toString("utf8")));
       }
     } catch {
       findings.push({

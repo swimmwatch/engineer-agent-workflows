@@ -1,6 +1,7 @@
 type JsonSchema = Record<string, unknown>;
 
 const REFERENCE_DESCRIPTIONS: Readonly<Record<string, string>> = {
+  agreement_ref: "Exact technical answer reference returned by planning_question_record_answer for this packet's accepted proposal; do not reconstruct it.",
   answer_ref: "Exact answer reference returned by the corresponding answer-recording scenario; do not reconstruct it.",
   candidate_ref: "Exact product candidate reference returned by the product draft or mutation being continued.",
   decision_ref: "Exact decision reference returned by the corresponding decision search, read, or write scenario.",
@@ -30,6 +31,13 @@ const REFERENCE_LIST_DESCRIPTIONS: Readonly<Record<string, string>> = {
 };
 
 const FIELD_DESCRIPTIONS: Readonly<Record<string, string>> = {
+  packet_id: "Stable task packet identifier explicitly covered by the saved technical proposal and answer.",
+  proposals: "Concrete task alternatives with stable IDs, requirement IDs and exact Markdown source headings under this specification's tasks directory.",
+  option_bindings: "Saved option IDs mapped to the exact proposal IDs each choice accepts; an empty proposal list records rejection without agreement.",
+  accepted_proposal_ids: "Exact saved proposal IDs explicitly accepted by the actual answer; supply them for an unambiguous custom answer, never from defaults or silence.",
+  rejected_proposal_ids: "Exact saved proposal IDs explicitly rejected by a custom answer; revoke their existing agreements while retaining unrelated ones. A selected empty-binding option rejects every proposal in that question.",
+  expected_proposal_digest: "Exact selected proposal digest returned by planning_question_prepare and the recorded packet agreement; changed sources require a new answer.",
+  history: "Include immutable planning revisions when true; otherwise return only the current technical question revisions.",
   session_ref: "Opaque candidate-bound logical session reference returned by product_session_open; distinct from operation lock session_id and not an authorization token.",
   read_ref: "Exact pending read_ref returned by this logical session; deliver all portions using product_session_next before a dependent verdict.",
   expected_revision: "Exact session_revision from the latest session response or status; a changed revision requires inspection, never blind overwrite.",

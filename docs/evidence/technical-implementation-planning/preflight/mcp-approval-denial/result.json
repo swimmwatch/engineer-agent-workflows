@@ -1,0 +1,1362 @@
+{
+  "fixture": "b1",
+  "variant": "baseline",
+  "repetition": 1,
+  "id": "b1-baseline-1",
+  "prepared": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "absent",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+    "specification_version": "4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007",
+    "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "setupTrace": [
+    {
+      "name": "specification_open",
+      "args": {
+        "project": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+        "specification": "b1"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImI3NTYwY2ZlYmM1OTdlMGQwYmM5ZDk1YmUyYzE5N2EzYTNkZjdiMWRmNGU4ZWY1MGIzY2U2ZTYxMTA1YzBlYTUiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "scope": "confirmed",
+          "pending_questions": [],
+          "pending_count": 0,
+          "artifacts": [
+            "manifest",
+            "decisions"
+          ]
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_start",
+      "args": {},
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjYxMjBlNjE3ZDk4NGVkZWY5MjQyZWU4YWJiNWUwNGU2Y2M3MTg4NzljYzMzMjk0YWQ1ZjFmZDY5MmVkNDAxYjIiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "total_items": 8,
+          "recorded_items": 0,
+          "consistency_required": false,
+          "mechanical_status": "pass",
+          "mechanical_issues": [],
+          "total_mechanical_issues": 0,
+          "next": "Use a separate context to read every item completely and record an evidence-based verdict."
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 0
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjYxMjBlNjE3ZDk4NGVkZWY5MjQyZWU4YWJiNWUwNGU2Y2M3MTg4NzljYzMzMjk0YWQ1ZjFmZDY5MmVkNDAxYjIiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 0,
+          "item_key": "source:scope.manifest",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 1,
+          "text": "{\n  \"kind\": \"source\",\n  \"key\": \"source:scope.manifest\",\n  \"source\": {\n    \"id\": \"scope.manifest\",\n    \"category\": \"scope\",\n    \"state\": \"answered\",\n    \"provenance\": \"user\",\n    \"question\": {\n      \"text\": \"Confirm this exact scope proposal, or request a correction.\",\n      \"kind\": \"single_choice\",\n      \"options\": [\n        {\n          \"id\": \"confirm\",\n          \"label\": \"Confirm this proposal\"\n        },\n        {\n          \"id\": \"change\",\n          \"label\": \"Change the proposal\"\n        }\n      ]\n    },\n    \"answer\": {\n      \"text\": \"SIMULATION: confirm exactly this scope and these declared artifacts.\",\n      \"selected_ids\": [\n        \"confirm\"\n      ]\n    },\n    \"status\": \"answered\",\n    \"scope\": {\n      \"schema_version\": 1,\n      \"depth\": \"standard\",\n      \"confirmed\": false,\n      \"rationale\": [\n        \"Frozen simulation fixture for a bounded workflow comparison.\"\n      ],\n      \"profiles\": [\n        {\n          \"id\": \"core\",\n          \"reason\": \"Dependency-free Node.js command/function contracts.\",\n  ",
+          "offset": 0,
+          "total_characters": 2665,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjJmMzQ2Nzk1NjBmMTY4N2ZhZDNiNjY0ZjgyMjhlYmIxNTUxOTY1ZmZiMTkwMGM4YWYwYmFjYzk3NGUzZTgzNjkiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjoyNjY1LCJwcmVmaXhfaGFzaCI6ImJmY2MzYmYzOWUzYTNjMTNlYTQ2ZTc4OTY3MWJmYTVjYjZhZTJkOWQ0M2NlYmY3MzAzYTRjMzZhNjQxODQwZDkifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 0,
+        "cursor": "eyJpZGVudGl0eSI6IjJmMzQ2Nzk1NjBmMTY4N2ZhZDNiNjY0ZjgyMjhlYmIxNTUxOTY1ZmZiMTkwMGM4YWYwYmFjYzk3NGUzZTgzNjkiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjoyNjY1LCJwcmVmaXhfaGFzaCI6ImJmY2MzYmYzOWUzYTNjMTNlYTQ2ZTc4OTY3MWJmYTVjYjZhZTJkOWQ0M2NlYmY3MzAzYTRjMzZhNjQxODQwZDkifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjYxMjBlNjE3ZDk4NGVkZWY5MjQyZWU4YWJiNWUwNGU2Y2M3MTg4NzljYzMzMjk0YWQ1ZjFmZDY5MmVkNDAxYjIiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 0,
+          "item_key": "source:scope.manifest",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 1,
+          "text": "        \"state\": \"active\"\n        }\n      ],\n      \"planning_artifacts\": []\n    },\n    \"revision\": 2,\n    \"supersedes_revision\": 1,\n    \"question_origin\": {\n      \"id\": \"scope.manifest\",\n      \"revision\": 1\n    },\n    \"answer_source\": \"fixture:approved-scope\",\n    \"answered_question\": {\n      \"id\": \"scope.manifest\",\n      \"revision\": 1\n    }\n  },\n  \"related_sources\": [\n    {\n      \"id\": \"scope.manifest\",\n      \"category\": \"scope\",\n      \"state\": \"needs_user\",\n      \"provenance\": \"user\",\n      \"question\": {\n        \"text\": \"Confirm this exact scope proposal, or request a correction.\",\n        \"kind\": \"single_choice\",\n        \"options\": [\n          {\n            \"id\": \"confirm\",\n            \"label\": \"Confirm this proposal\"\n          },\n          {\n            \"id\": \"change\",\n            \"label\": \"Change the proposal\"\n          }\n        ]\n      },\n      \"answer\": null,\n      \"status\": \"prepared\",\n      \"scope\": {\n        \"schema_version\": 1,\n        \"depth\": \"standard\",\n        \"confirmed\": false,\n        \"rati",
+          "offset": 1024,
+          "total_characters": 2665,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjJmMzQ2Nzk1NjBmMTY4N2ZhZDNiNjY0ZjgyMjhlYmIxNTUxOTY1ZmZiMTkwMGM4YWYwYmFjYzk3NGUzZTgzNjkiLCJvZmZzZXQiOjIwNDgsInVuaXRfb2Zmc2V0IjoyMDQ4LCJ0b3RhbF9jaGFyYWN0ZXJzIjoyNjY1LCJwcmVmaXhfaGFzaCI6IjFlNDQ2Yjk4Y2JlNDViYmM0NTg0MjcyMzBmYjQ4NmJmYzhjMTY1MWYzNWNkZDU3ZDVhZmFmNDM5YjcyN2Y4MGIifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 0,
+        "cursor": "eyJpZGVudGl0eSI6IjJmMzQ2Nzk1NjBmMTY4N2ZhZDNiNjY0ZjgyMjhlYmIxNTUxOTY1ZmZiMTkwMGM4YWYwYmFjYzk3NGUzZTgzNjkiLCJvZmZzZXQiOjIwNDgsInVuaXRfb2Zmc2V0IjoyMDQ4LCJ0b3RhbF9jaGFyYWN0ZXJzIjoyNjY1LCJwcmVmaXhfaGFzaCI6IjFlNDQ2Yjk4Y2JlNDViYmM0NTg0MjcyMzBmYjQ4NmJmYzhjMTY1MWYzNWNkZDU3ZDVhZmFmNDM5YjcyN2Y4MGIifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjYxMjBlNjE3ZDk4NGVkZWY5MjQyZWU4YWJiNWUwNGU2Y2M3MTg4NzljYzMzMjk0YWQ1ZjFmZDY5MmVkNDAxYjIiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 0,
+          "item_key": "source:scope.manifest",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 1,
+          "text": "onale\": [\n          \"Frozen simulation fixture for a bounded workflow comparison.\"\n        ],\n        \"profiles\": [\n          {\n            \"id\": \"core\",\n            \"reason\": \"Dependency-free Node.js command/function contracts.\",\n            \"state\": \"active\"\n          }\n        ],\n        \"planning_artifacts\": []\n      },\n      \"revision\": 1,\n      \"supersedes_revision\": null,\n      \"question_origin\": {\n        \"id\": \"scope.manifest\",\n        \"revision\": 1\n      }\n    }\n  ],\n  \"requirements\": [],\n  \"source_refs\": [\n    {\n      \"id\": \"scope.manifest\",\n      \"revision\": 2\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 2048,
+          "total_characters": 2665,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "2f34679560f1687fad3b664f8228ebb1551965ffb1900c8af0bacc974e3e8369"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 0,
+        "read_receipt": "2f34679560f1687fad3b664f8228ebb1551965ffb1900c8af0bacc974e3e8369",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": []
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjdhZDNjMDBlYTk1MzMxYWNlYWE3MzM2M2Y3MTY2ODFkYTFiMTY0NTM3NTk4MjZlMTE4YWFkMjczNjQxNmM0M2UiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 0,
+          "verdict": "covered",
+          "recorded_items": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 1
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjdhZDNjMDBlYTk1MzMxYWNlYWE3MzM2M2Y3MTY2ODFkYTFiMTY0NTM3NTk4MjZlMTE4YWFkMjczNjQxNmM0M2UiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 1,
+          "item_key": "source:b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 2,
+          "text": "{\n  \"kind\": \"source\",\n  \"key\": \"source:b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n  \"source\": {\n    \"category\": \"behavior\",\n    \"state\": \"instructed\",\n    \"provenance\": \"user\",\n    \"instruction\": {\n      \"text\": \"Keep the existing help command and its exact text unchanged. Add validate <file>, emitting a JSON array of {id, amount} records after validating the complete UTF-8 input.\\nInput is zero or more LF-separated rows id,amount, optionally ending with one LF. Each id matches [A-Za-z0-9_-]+ and is unique within the input. Each amount is ASCII decimal digits representing a nonnegative safe integer. Malformed, duplicate or invalid records make either data command exit 2 with empty stdout and INVALID_INPUT on stderr; never emit a partial result.\\nAdd summarize <file>, emitting JSON {count,total} using the same row validation contract as validate. Empty input produces [] for validate and {count:0,total:0} for summarize.\\nUse dependency-free Node.js. Delivery has two packets: shared validation and validate first, th",
+          "offset": 0,
+          "total_characters": 3612,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6IjUzMGJhZGZkNDM5M2M1NDliNzBlZWFmZWM3OWMyMTM2MmE5ODg4M2EyMzg4YTJkNjAxZWU1ZWFhNTRhNGZmMGQifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 1,
+        "cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6IjUzMGJhZGZkNDM5M2M1NDliNzBlZWFmZWM3OWMyMTM2MmE5ODg4M2EyMzg4YTJkNjAxZWU1ZWFhNTRhNGZmMGQifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjdhZDNjMDBlYTk1MzMxYWNlYWE3MzM2M2Y3MTY2ODFkYTFiMTY0NTM3NTk4MjZlMTE4YWFkMjczNjQxNmM0M2UiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 1,
+          "item_key": "source:b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 2,
+          "text": "en summarize consuming that same validation contract. Preserve unrelated fixture content and existing compatibility. No commit, installation or external action is authorized.\",\n      \"source\": \"fixture:frozen-behavior\",\n      \"kind\": \"initial_request\"\n    },\n    \"related_decisions\": [],\n    \"requirement_ids\": [\n      \"B1-001\",\n      \"B1-002\",\n      \"B1-003\",\n      \"B1-004\"\n    ],\n    \"question\": null,\n    \"answer\": null,\n    \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n    \"revision\": 1,\n    \"supersedes_revision\": null\n  },\n  \"related_sources\": [],\n  \"requirements\": [\n    {\n      \"id\": \"B1-001\",\n      \"title\": \"Required behavior\",\n      \"text\": \"### B1-001: Required behavior\\n\\nKeep the existing help command and its exact text unchanged. Add validate <file>, emitting a JSON array of {id, amount} records after validating the complete UTF-8 input.\\n\\n\",\n      \"start_line\": 7,\n      \"end_line\": 10,\n      \"start_offset\": 137,\n      \"end_offset\": 340\n    },\n    {\n      \"id\": \"B1-002\",\n      \"title\": \"Required beh",
+          "offset": 1024,
+          "total_characters": 3612,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjIwNDgsInVuaXRfb2Zmc2V0IjoyMDQ4LCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6Ijc4Y2M1MWNmYTM0ZjVhMTJhMDE5ZmZkY2Q1YjU2NTFiNzI1ZDk2NmEzZmE3YjIzZWE2NjgzODBmMWM2M2FkYTQifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 1,
+        "cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjIwNDgsInVuaXRfb2Zmc2V0IjoyMDQ4LCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6Ijc4Y2M1MWNmYTM0ZjVhMTJhMDE5ZmZkY2Q1YjU2NTFiNzI1ZDk2NmEzZmE3YjIzZWE2NjgzODBmMWM2M2FkYTQifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjdhZDNjMDBlYTk1MzMxYWNlYWE3MzM2M2Y3MTY2ODFkYTFiMTY0NTM3NTk4MjZlMTE4YWFkMjczNjQxNmM0M2UiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 1,
+          "item_key": "source:b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 2,
+          "text": "avior\",\n      \"text\": \"### B1-002: Required behavior\\n\\nInput is zero or more LF-separated rows id,amount, optionally ending with one LF. Each id matches [A-Za-z0-9_-]+ and is unique within the input. Each amount is ASCII decimal digits representing a nonnegative safe integer. Malformed, duplicate or invalid records make either data command exit 2 with empty stdout and INVALID_INPUT on stderr; never emit a partial result.\\n\\n\",\n      \"start_line\": 11,\n      \"end_line\": 14,\n      \"start_offset\": 340,\n      \"end_offset\": 742\n    },\n    {\n      \"id\": \"B1-003\",\n      \"title\": \"Required behavior\",\n      \"text\": \"### B1-003: Required behavior\\n\\nAdd summarize <file>, emitting JSON {count,total} using the same row validation contract as validate. Empty input produces [] for validate and {count:0,total:0} for summarize.\\n\\n\",\n      \"start_line\": 15,\n      \"end_line\": 18,\n      \"start_offset\": 742,\n      \"end_offset\": 950\n    },\n    {\n      \"id\": \"B1-004\",\n      \"title\": \"Required behavior\",\n      \"text\": \"### B1-004:",
+          "offset": 2048,
+          "total_characters": 3612,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjMwNzIsInVuaXRfb2Zmc2V0IjozMDcyLCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6IjAyODFjMDY2NjgwZDAxNWM0ODhiNGQ1MzcxYzZlMjA0ZDhkMjQ4N2EzNzk0ZGNkNGU1YjkxYjQ5YTRkZDBiN2MifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 1,
+        "cursor": "eyJpZGVudGl0eSI6IjdjMjNlODQyZmZlYTZhN2NiZjc1NWU4Zjc4NDdkMmJlMmNiZGQxZGIzMGU2NTMwNjE1OGUwNGZlM2Q5ZDg5MzkiLCJvZmZzZXQiOjMwNzIsInVuaXRfb2Zmc2V0IjozMDcyLCJ0b3RhbF9jaGFyYWN0ZXJzIjozNjEyLCJwcmVmaXhfaGFzaCI6IjAyODFjMDY2NjgwZDAxNWM0ODhiNGQ1MzcxYzZlMjA0ZDhkMjQ4N2EzNzk0ZGNkNGU1YjkxYjQ5YTRkZDBiN2MifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjdhZDNjMDBlYTk1MzMxYWNlYWE3MzM2M2Y3MTY2ODFkYTFiMTY0NTM3NTk4MjZlMTE4YWFkMjczNjQxNmM0M2UiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 1,
+          "item_key": "source:b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+          "kind": "source",
+          "total_items": 8,
+          "next_item_index": 2,
+          "text": " Required behavior\\n\\nUse dependency-free Node.js. Delivery has two packets: shared validation and validate first, then summarize consuming that same validation contract. Preserve unrelated fixture content and existing compatibility. No commit, installation or external action is authorized.\\n\",\n      \"start_line\": 19,\n      \"end_line\": 22,\n      \"start_offset\": 950,\n      \"end_offset\": 1251\n    }\n  ],\n  \"source_refs\": [\n    {\n      \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n      \"revision\": 1\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 3072,
+          "total_characters": 3612,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "7c23e842ffea6a7cbf755e8f7847d2be2cbdd1db30e65306158e04fe3d9d8939"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 1,
+        "read_receipt": "7c23e842ffea6a7cbf755e8f7847d2be2cbdd1db30e65306158e04fe3d9d8939",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [
+          "B1-001",
+          "B1-002",
+          "B1-003",
+          "B1-004"
+        ],
+        "evidence_source_refs": []
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImQ1OGM1MTA3NzE2MTFjMGU5MzNhZTNhOTE4MmUzNmJlN2I2NTQzZDJhOTIyY2NmODk2ZDVkMWNjNjc2MTE4YTEiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 1,
+          "verdict": "covered",
+          "recorded_items": 2
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 2
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImQ1OGM1MTA3NzE2MTFjMGU5MzNhZTNhOTE4MmUzNmJlN2I2NTQzZDJhOTIyY2NmODk2ZDVkMWNjNjc2MTE4YTEiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 2,
+          "item_key": "requirement:B1-001",
+          "kind": "requirement",
+          "total_items": 8,
+          "next_item_index": 3,
+          "text": "{\n  \"kind\": \"requirement\",\n  \"key\": \"requirement:B1-001\",\n  \"source\": {\n    \"id\": \"B1-001\",\n    \"title\": \"Required behavior\",\n    \"text\": \"### B1-001: Required behavior\\n\\nKeep the existing help command and its exact text unchanged. Add validate <file>, emitting a JSON array of {id, amount} records after validating the complete UTF-8 input.\\n\\n\",\n    \"start_line\": 7,\n    \"end_line\": 10,\n    \"start_offset\": 137,\n    \"end_offset\": 340\n  },\n  \"related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [\n    {\n      \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n      \"revision\": 1\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 0,
+          "total_characters": 624,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "80cb3a8a35c8296d2b49872f8d6420419e140fff324420a02e7a10f4a3b5b27b"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 2,
+        "read_receipt": "80cb3a8a35c8296d2b49872f8d6420419e140fff324420a02e7a10f4a3b5b27b",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": [
+          {
+            "id": "b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+            "revision": 1
+          }
+        ]
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjNlMDZiYzA5NzYyYTc3NzAwMDI4YTg5ODBlYzg5ZjQwNGYxZDZhNGJiNmFlNDA5NTFhOTE5ZDU4YjJlMTFlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 2,
+          "verdict": "covered",
+          "recorded_items": 3
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 3
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjNlMDZiYzA5NzYyYTc3NzAwMDI4YTg5ODBlYzg5ZjQwNGYxZDZhNGJiNmFlNDA5NTFhOTE5ZDU4YjJlMTFlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 3,
+          "item_key": "requirement:B1-002",
+          "kind": "requirement",
+          "total_items": 8,
+          "next_item_index": 4,
+          "text": "{\n  \"kind\": \"requirement\",\n  \"key\": \"requirement:B1-002\",\n  \"source\": {\n    \"id\": \"B1-002\",\n    \"title\": \"Required behavior\",\n    \"text\": \"### B1-002: Required behavior\\n\\nInput is zero or more LF-separated rows id,amount, optionally ending with one LF. Each id matches [A-Za-z0-9_-]+ and is unique within the input. Each amount is ASCII decimal digits representing a nonnegative safe integer. Malformed, duplicate or invalid records make either data command exit 2 with empty stdout and INVALID_INPUT on stderr; never emit a partial result.\\n\\n\",\n    \"start_line\": 11,\n    \"end_line\": 14,\n    \"start_offset\": 340,\n    \"end_offset\": 742\n  },\n  \"related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [\n    {\n      \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n      \"revision\": 1\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 0,
+          "total_characters": 824,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "7cee999fa61be303a49104c0a76c498aae19f01fb3b62d9b311bd54ce2bbb0bf"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 3,
+        "read_receipt": "7cee999fa61be303a49104c0a76c498aae19f01fb3b62d9b311bd54ce2bbb0bf",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": [
+          {
+            "id": "b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+            "revision": 1
+          }
+        ]
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImYyNzBiMjgwMTk0ZGU1MWM0NzhjYWEzYTYzZDAwNTY3NDQ0NzliYTIwYWRjN2FjNDllZjkzMmEzNTBhZTc0MTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 3,
+          "verdict": "covered",
+          "recorded_items": 4
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 4
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImYyNzBiMjgwMTk0ZGU1MWM0NzhjYWEzYTYzZDAwNTY3NDQ0NzliYTIwYWRjN2FjNDllZjkzMmEzNTBhZTc0MTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 4,
+          "item_key": "requirement:B1-003",
+          "kind": "requirement",
+          "total_items": 8,
+          "next_item_index": 5,
+          "text": "{\n  \"kind\": \"requirement\",\n  \"key\": \"requirement:B1-003\",\n  \"source\": {\n    \"id\": \"B1-003\",\n    \"title\": \"Required behavior\",\n    \"text\": \"### B1-003: Required behavior\\n\\nAdd summarize <file>, emitting JSON {count,total} using the same row validation contract as validate. Empty input produces [] for validate and {count:0,total:0} for summarize.\\n\\n\",\n    \"start_line\": 15,\n    \"end_line\": 18,\n    \"start_offset\": 742,\n    \"end_offset\": 950\n  },\n  \"related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [\n    {\n      \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n      \"revision\": 1\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 0,
+          "total_characters": 630,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "187df0f0732d51c74c36d934c1f8b23677a7f384e61f9c978aa91659518316e3"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 4,
+        "read_receipt": "187df0f0732d51c74c36d934c1f8b23677a7f384e61f9c978aa91659518316e3",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": [
+          {
+            "id": "b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+            "revision": 1
+          }
+        ]
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFhYTdlNTRlZThlMDExMWY4YTAxNjZkMWVmZTU2YTU1NDQ2OTJiNTRmNWMzODExOWIxYmQ3Y2RlYjEyYzBjZDUiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 4,
+          "verdict": "covered",
+          "recorded_items": 5
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 5
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFhYTdlNTRlZThlMDExMWY4YTAxNjZkMWVmZTU2YTU1NDQ2OTJiNTRmNWMzODExOWIxYmQ3Y2RlYjEyYzBjZDUiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 5,
+          "item_key": "requirement:B1-004",
+          "kind": "requirement",
+          "total_items": 8,
+          "next_item_index": 6,
+          "text": "{\n  \"kind\": \"requirement\",\n  \"key\": \"requirement:B1-004\",\n  \"source\": {\n    \"id\": \"B1-004\",\n    \"title\": \"Required behavior\",\n    \"text\": \"### B1-004: Required behavior\\n\\nUse dependency-free Node.js. Delivery has two packets: shared validation and validate first, then summarize consuming that same validation contract. Preserve unrelated fixture content and existing compatibility. No commit, installation or external action is authorized.\\n\",\n    \"start_line\": 19,\n    \"end_line\": 22,\n    \"start_offset\": 950,\n    \"end_offset\": 1251\n  },\n  \"related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [\n    {\n      \"id\": \"b3a22eec-4869-4b3f-93eb-0e9c3ff6f678\",\n      \"revision\": 1\n    }\n  ],\n  \"recorded_result\": null\n}",
+          "offset": 0,
+          "total_characters": 723,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "0133e2dd21fdd83b2b55141e18505cc9167b8411c02d4666fc9598c5634ec208"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 5,
+        "read_receipt": "0133e2dd21fdd83b2b55141e18505cc9167b8411c02d4666fc9598c5634ec208",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": [
+          {
+            "id": "b3a22eec-4869-4b3f-93eb-0e9c3ff6f678",
+            "revision": 1
+          }
+        ]
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjY3MzE5MDI3ZTZhNjMwMmY4NmFlZTdjZmUzM2Q1NmM2OGZiZjZhOTM1MzFmMTNmYmRiNTc5NThiN2FhMDExYjAiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 5,
+          "verdict": "covered",
+          "recorded_items": 6
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 6
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjY3MzE5MDI3ZTZhNjMwMmY4NmFlZTdjZmUzM2Q1NmM2OGZiZjZhOTM1MzFmMTNmYmRiNTc5NThiN2FhMDExYjAiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 6,
+          "item_key": "profile:core",
+          "kind": "profile",
+          "total_items": 8,
+          "next_item_index": 7,
+          "text": "{\n  \"kind\": \"profile\",\n  \"key\": \"profile:core\",\n  \"source\": {\n    \"id\": \"core\",\n    \"reason\": \"Dependency-free Node.js command/function contracts.\",\n    \"state\": \"active\"\n  },\n  \"related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [],\n  \"recorded_result\": null\n}",
+          "offset": 0,
+          "total_characters": 271,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "a8025d4aa9dc3dab6fde3327d6da50174c7cbd20bdfffae141f7e241f93bd762"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 6,
+        "read_receipt": "a8025d4aa9dc3dab6fde3327d6da50174c7cbd20bdfffae141f7e241f93bd762",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": []
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjJmNjEzNDU3NDU3NTNiNmJlMzI1NmVkMjA4YzUwYmY2M2EzNDQzNWQ5Njg3MDE5Mjg2YmQ2ZjgwMTAyYTJjNTEiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 6,
+          "verdict": "covered",
+          "recorded_items": 7
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 7
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjJmNjEzNDU3NDU3NTNiNmJlMzI1NmVkMjA4YzUwYmY2M2EzNDQzNWQ5Njg3MDE5Mjg2YmQ2ZjgwMTAyYTJjNTEiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 7,
+          "item_key": "context:specification",
+          "kind": "context",
+          "total_items": 8,
+          "next_item_index": null,
+          "text": "{\n  \"kind\": \"context\",\n  \"key\": \"context:specification\",\n  \"source\": {\n    \"text\": \"# B1 Frozen Simulation Specification\\n\\nStatus: Approved\\n\\nThis is SIMULATION data. Authorizations apply only inside its isolated fixture.\\n\\n\\n\\n\\n\\n\",\n    \"manifest\": {\n      \"schema_version\": 1,\n      \"depth\": \"standard\",\n      \"confirmed\": true,\n      \"rationale\": [\n        \"Frozen simulation fixture for a bounded workflow comparison.\"\n      ],\n      \"profiles\": [\n        {\n          \"id\": \"core\",\n          \"reason\": \"Dependency-free Node.js command/function contracts.\",\n          \"state\": \"active\"\n        }\n      ],\n      \"planning_artifacts\": [],\n      \"extensions\": {\n        \"workflow_mcp_receipts\": [\n          {\n            \"id\": \"bcff0933ceefa6594b09037da9149c5367ed93239515579037dfc6e78ea3bb0c\",\n            \"result\": {\n              \"confirmed\": true,\n              \"depth\": \"standard\",\n              \"next\": \"Load only the confirmed active profile references.\"\n            }\n          }\n        ]\n      }\n    }\n  },\n  \"",
+          "offset": 0,
+          "total_characters": 1116,
+          "complete": false,
+          "next_cursor": "eyJpZGVudGl0eSI6IjEzYzk4OTZiNzQwZjhjY2U3YWViZWZlNTNjMTM0YzI2ZTQ4OTdhM2FhNGQ3MzMzYzVlMjdjZjNhMTg0NDBlYTgiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjoxMTE2LCJwcmVmaXhfaGFzaCI6IjgyZjQwZjcwNDY1M2I1ZmQ2OWEzMjFlZGM2NmJjOTFkYmEzMDgyYjFmYzViOGY3YWI5ODY2OTI4ZDRkOGRkMjcifQ",
+          "recorded_result": null,
+          "read_receipt": null
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_get",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 7,
+        "cursor": "eyJpZGVudGl0eSI6IjEzYzk4OTZiNzQwZjhjY2U3YWViZWZlNTNjMTM0YzI2ZTQ4OTdhM2FhNGQ3MzMzYzVlMjdjZjNhMTg0NDBlYTgiLCJvZmZzZXQiOjEwMjQsInVuaXRfb2Zmc2V0IjoxMDI0LCJ0b3RhbF9jaGFyYWN0ZXJzIjoxMTE2LCJwcmVmaXhfaGFzaCI6IjgyZjQwZjcwNDY1M2I1ZmQ2OWEzMjFlZGM2NmJjOTFkYmEzMDgyYjFmYzViOGY3YWI5ODY2OTI4ZDRkOGRkMjcifQ"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6IjJmNjEzNDU3NDU3NTNiNmJlMzI1NmVkMjA4YzUwYmY2M2EzNDQzNWQ5Njg3MDE5Mjg2YmQ2ZjgwMTAyYTJjNTEiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "item_index": 7,
+          "item_key": "context:specification",
+          "kind": "context",
+          "total_items": 8,
+          "next_item_index": null,
+          "text": "related_sources\": [],\n  \"requirements\": [],\n  \"source_refs\": [],\n  \"recorded_result\": null\n}",
+          "offset": 1024,
+          "total_characters": 1116,
+          "complete": true,
+          "next_cursor": null,
+          "recorded_result": null,
+          "read_receipt": "13c9896b740f8cce7aebefe53c134c26e4897a3aa4d7333c5e27cf3a18440ea8"
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_record",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+        "item_index": 7,
+        "read_receipt": "13c9896b740f8cce7aebefe53c134c26e4897a3aa4d7333c5e27cf3a18440ea8",
+        "verdict": "covered",
+        "explanation": "Frozen SIMULATION fixture with exact approved behavior and scope.",
+        "evidence_requirement_ids": [],
+        "evidence_source_refs": []
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImI5ZDc3OTIzYWE5MmYwNjNmNDM5N2FiMTg0ZWE3MmU5NzRlMzc5NmZlNjg4OTExNzkzYzZhM2IzOTEwMDY0ODMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "item_index": 7,
+          "verdict": "covered",
+          "recorded_items": 8
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_review_complete",
+      "args": {
+        "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f"
+      },
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "coverage_status": "reviewed",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "semantic_correctness_proven": false,
+          "reviewer_independence_authenticated": false,
+          "approved_by_tool": false
+        },
+        "replayed": false
+      }
+    },
+    {
+      "name": "specification_check_state",
+      "args": {},
+      "result": {
+        "protocol_version": 2,
+        "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+        "result": {
+          "status": "pass",
+          "document_status": "approved",
+          "approval_checkpoint_status": "absent",
+          "approval_checkpoint_written": false,
+          "coverage_status": "reviewed",
+          "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+          "specification_version": "4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007",
+          "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+          "semantic_correctness_proven": false,
+          "reviewer_independence_authenticated": false,
+          "issues": [],
+          "checked": [
+            "scope_consistency",
+            "decision_resolution",
+            "requirement_references",
+            "review_freshness"
+          ],
+          "not_checked": [
+            "behavior_completeness",
+            "user_answer_authenticity",
+            "reviewer_independence"
+          ],
+          "approved_by_tool": false
+        },
+        "replayed": false
+      }
+    }
+  ],
+  "app": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+  "status": "incomplete",
+  "startedAt": "2026-10-21T12:16:15.420Z",
+  "stages": [
+    {
+      "stage": "planning",
+      "stageId": "planning",
+      "packetId": null,
+      "sessionId": "01a15e64-0680-7b43-a3ac-074ecdf0b29b",
+      "requestedModel": "gpt-6.1-sol",
+      "reportedModel": "gpt-6.1-sol",
+      "startMs": 1515.427357,
+      "endMs": 38238.533803,
+      "terminal": "completed",
+      "error": null,
+      "nativeQuestions": [],
+      "writes": [],
+      "items": [
+        {
+          "atMs": 3543.179215,
+          "item": {
+            "type": "userMessage",
+            "id": "01a15e64-11ad-7e41-aa08-b47d429da72d",
+            "clientId": null,
+            "content": [
+              {
+                "type": "text",
+                "text": "$planning-and-task-breakdown Plan the approved record-report change in exactly two independently verifiable packets: first shared input validation and the validate command, then the summarize command using that same validation contract. Use the explicitly selected planning skill and stop after planning. The specification slug is b1. The Approved spec and MCP-confirmed scope are frozen SIMULATION inputs. Read their exact current requirements. Do not execute implementation packets.",
+                "text_elements": []
+              },
+              {
+                "type": "skill",
+                "name": "planning-and-task-breakdown",
+                "path": "$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/SKILL.md"
+              }
+            ]
+          }
+        },
+        {
+          "atMs": 7831.142694,
+          "item": {
+            "type": "agentMessage",
+            "id": "msg_007d54af32a7eff5016ad8ad1611a081919a4dca0018294a9b",
+            "text": "I’m using the selected planning-and-task-breakdown skill to read the frozen requirements and create exactly two verifiable packets. I’ll stop after planning without implementing either packet.",
+            "phase": "commentary",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        },
+        {
+          "atMs": 10231.399752,
+          "item": {
+            "type": "commandExecution",
+            "id": "exec-e0ee3fe4-4e8d-47ad-8b2a-4c87ac3ab81f",
+            "pluginId": null,
+            "scriptPath": null,
+            "command": "/bin/bash -lc 'rtk node \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/scripts/verify-engineering-manual.mjs\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown\"'",
+            "cwd": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+            "processId": "15528",
+            "source": "unifiedExecStartup",
+            "status": "completed",
+            "commandActions": [
+              {
+                "type": "unknown",
+                "command": "rtk node \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/scripts/verify-engineering-manual.mjs\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown\""
+              }
+            ],
+            "aggregatedOutput": null,
+            "exitCode": 0,
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 13760.882794,
+          "item": {
+            "type": "commandExecution",
+            "id": "exec-2a5dc6c6-c084-4f11-9db8-f27f880d058b",
+            "pluginId": null,
+            "scriptPath": null,
+            "command": "/bin/bash -lc 'rtk cat \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/yaml-contracts.md\"'",
+            "cwd": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+            "processId": "66020",
+            "source": "unifiedExecStartup",
+            "status": "completed",
+            "commandActions": [
+              {
+                "type": "unknown",
+                "command": "rtk cat \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/yaml-contracts.md\""
+              }
+            ],
+            "aggregatedOutput": "# Workflow YAML Contracts\n\nUse the callable scenario tools of `engineer-agent-workflow-mcp` for all reads,\ncreation, updates and validation of these four workflow documents. Do not hand-edit\nthem, generate YAML payloads, reconstruct entire documents, or use a local reader\nor parser as a fallback. Missing required MCP capability blocks affected work;\nreport it without installing or configuring a server automatically.\n\nExclude these four documents from shell content searches and Git diffs, including\nwhile locating workflow state. Filename-only discovery is allowed; query their\ncontents and revisions through scenario tools.\n\n| File | Authoritative JSON Schema Draft 7 | Content owner |\n| --- | --- | --- |\n| `docs/specs/<slug>/manifest.yaml` | `manifest.schema.json` | Specification |\n| `docs/specs/<slug>/decisions.yaml` | `decisions.schema.json` | Specification decisions |\n| `design/system/catalog.yaml` | `catalog.schema.json` | Explicit design planning |\n| `design/specs/<slug>/experience.yaml` | `experience.schema.json` | Explicit design planning |\n\nSchemas remain under the matching bundle's `shared/schemas/` and are packaged in\nthe MCP artifact. They are local contract identifiers, not network fetch targets.\nAgents need not load their contents for ordinary scenario calls. Read a schema\nonly when explicitly investigating a contract/version conflict. Product API,\nevent and data contracts retain their own profile formats and authoring process;\nthey are not arbitrary YAML-editing targets for this MCP.\n\n## Context And Changes\n\n1. Use `specification_list` when the specification is unknown, then\n   `specification_open` with the absolute project path from current task context\n   and its exact slug. Pass the returned opaque `context` to subsequent calls.\n   Multiple projects/specifications remain separate; no directory allowlist or\n   implicit global current project is required.\n2. Use the tool appropriate to the owning workflow. Specification routes scope\n   and interviewing; design planning routes catalog/screens only after manifest\n   eligibility. Planning and implementation query existing state and do not\n   acquire authority to revise scope or design merely by accessing these tools.\n3. Use returned IDs/references with the latest returned context. Every successful\n   context-bearing call supplies the context for the next sequential write.\n   Independent read-only calls may run in parallel. Use\n   `decision_link_requirements_batch` when adding links to multiple decisions;\n   the single and batch tools are additive and never remove existing links. Do\n   not construct paths, revisions, digests, confirmation flags or field-level\n   patches. After a lost reply, repeat the exact call; do not invent a second\n   question or entity. On `CONFLICT`, stop writes, reopen, compare the returned\n   current decision references with the intended addition, and retry only after\n   confirming `operation_applied: false`; never repeat a write blindly.\n4. MCP preserves existing comments and extension metadata, appends decision\n   revisions, validates a single UTF-8 YAML mapping, and rejects duplicate keys,\n   aliases, merge keys, custom tags, unknown contract fields and unsafe paths.\n   Its reserved retry receipts use `extensions.workflow_mcp_receipts`. Before\n   install, it applies pinned Prettier `3.9.6` only for a supported declarative\n   project configuration or declared Prettier dependency. Invalid declarative\n   configuration fails without a write; executable configuration and plugins are\n   not loaded. Do not manually format MCP-owned workflow YAML.\n5. A single-file write is atomic for cooperating MCP writers. Related-file\n   changes are not one transaction. The MCP rechecks dependencies before saving;\n   do not concurrently edit the same files outside MCP during a write.\n   A crash lock remains a blocker for explicit recovery, not automatic deletion.\n\n`manifest.yaml` is the current confirmed scope. The `scope.manifest` decision\npreserves the immutable proposal shown before confirmation, so its nested\n`scope.confirmed: false` is not a competing current-state flag. Do not pass this\nservice record to generic decision-link tools. Completeness review checks the\nscope source and each active profile as dedicated inventory items.\n\n## Specification Completeness Versions\n\nPlanning and incremental call `specification_check_state` before consuming the\nspecification. It also checkpoints an observed author-made Draft-to-Approved\ntransition; it never assigns approval. New-review consumers require `status:\npass`, `coverage_status: reviewed`, and Approved Markdown. Save the returned\n`source_version`, `specification_version` and `review_ref` in plan/packet inputs.\nThese are references, not a second source/requirement map or an execution ledger.\n\nRead linked exact definitions with `requirement_get` and its\n`specification_version` as the tool's `source_version`; follow continuations for\nboth text and decision refs. Planning uses `requirement_list` to cover the full\napproved scope, without rereading a large journal. Incremental uses only its\npacket's linked requirements and contracts, then calls `specification_check_state`\nwith the pinned aggregate `expected_source_version` before work and completion.\nPending, gaps, stale or a mismatched version blocks affected work: return it to\nthe separately invoked specification/planning owner, never edit its product\ncontract from implementation. MCP registration is not semantic proof.\n\nFor `legacy_unverified`, retain previous scope/link/approval checks, use exact\nMarkdown sections when structured definitions are absent, and explicitly record\nthat new completeness assurance is absent. Do not auto-migrate or block solely\nfor this label. Creation or modification by specification enrolls the new cycle.\n\n## Evidence And Ownership\n\n- A recorded answer is not independently authenticated user consent. Preserve\n  the actual host-question outcome and source; silence, errors and default\n  options never become answers. `scope_confirm` requires explicit confirmation\n  of the exact saved proposal, not an agent-supplied `confirmed: true`.\n- Direct user edits remain authoritative. Reconcile them through the owning\n  workflow and new decision revisions. Unsupported legacy shapes require agreed\n  migration; never silently rewrite them to fit a template.\n- An active UI profile alone does not authorize design writes. The confirmed\n  manifest must declare the exact corresponding project artifact. Read-only\n  shared inputs do not authorize library changes or remote Penpot operations.\n- Before stage completion, use its scenario-specific state/design check. Record\n  the actual result and unresolved evidence. Native exports are checked against\n  real saved bytes, identities and shared-library links; a hash or valid schema\n  is not proof of visual quality, restoration or accessibility.\n- Design checks distinguish `local_status` from `external_status`. A local pass\n  with external checks not reproduced is not complete design evidence. Combine\n  it with actual separately obtained Penpot inspection/restoration results.\n- No MCP tool assigns specification approval, authorizes planning/implementation,\n  launches a skill, performs a review, commits, installs or publishes anything.\n\n## Review input archives\n\nNew completeness reviews may reference MCP-owned immutable historical inputs at\n`docs/specs/<slug>/.workflow/review-inputs/<sha256>.json`. They are not another\neditable specification or an agent-authored YAML document. Use review scenario\ntools for bounded comparisons and source reads; do not inspect or modify archive\nJSON as a workflow fallback. Keep referenced snapshots with the specification;\nmissing/corrupt inputs block result inheritance, not a new full review of intact\ncurrent sources. Followups retain attributed prior results and require a fresh\nwhole-specification consistency assessment before completion.\n",
+            "exitCode": 0,
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 17977.375579,
+          "item": {
+            "type": "commandExecution",
+            "id": "exec-bb7bcd58-c510-4541-92d5-1ea707f03d7f",
+            "pluginId": null,
+            "scriptPath": null,
+            "command": "/bin/bash -lc 'rtk rg --files -g \"!*.yaml\" -g \"!*.yml\" -g \"!.git/**\"'",
+            "cwd": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+            "processId": "54818",
+            "source": "unifiedExecStartup",
+            "status": "completed",
+            "commandActions": [
+              {
+                "type": "unknown",
+                "command": "rtk rg --files -g \"!*.yaml\" -g \"!*.yml\" -g \"!.git/**\""
+              }
+            ],
+            "aggregatedOutput": "unrelated.txt\npackage.json\ncli.mjs\ntest.mjs\nAGENTS.md\ndocs/specs/b1/spec.md\n",
+            "exitCode": 0,
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 23484.479867,
+          "item": {
+            "type": "mcpToolCall",
+            "id": "exec-20e35a58-ccb1-44c9-8227-0f6008082efb",
+            "server": "workflow",
+            "tool": "specification_open",
+            "status": "completed",
+            "arguments": {
+              "project": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+              "specification": "b1"
+            },
+            "appContext": null,
+            "mcpAppUi": null,
+            "pluginId": null,
+            "readOnlyHint": true,
+            "result": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"scope\":\"confirmed\",\"pending_questions\":[],\"pending_count\":0,\"artifacts\":[\"manifest\",\"decisions\"]},\"replayed\":false}"
+                }
+              ],
+              "structuredContent": {
+                "protocol_version": 2,
+                "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+                "result": {
+                  "scope": "confirmed",
+                  "pending_questions": [],
+                  "pending_count": 0,
+                  "artifacts": [
+                    "manifest",
+                    "decisions"
+                  ]
+                },
+                "replayed": false
+              },
+              "_meta": null
+            },
+            "error": null,
+            "durationMs": 47
+          }
+        },
+        {
+          "atMs": 23577.159865,
+          "item": {
+            "type": "commandExecution",
+            "id": "exec-7d626aff-8638-4713-9346-6a8329d9a997",
+            "pluginId": null,
+            "scriptPath": null,
+            "command": "/bin/bash -lc 'rtk cat docs/specs/b1/spec.md package.json cli.mjs test.mjs \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/engineering-principles.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/test-discipline.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/adaptive-planning.md\"'",
+            "cwd": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+            "processId": "82813",
+            "source": "unifiedExecStartup",
+            "status": "completed",
+            "commandActions": [
+              {
+                "type": "unknown",
+                "command": "rtk cat docs/specs/b1/spec.md package.json cli.mjs test.mjs \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/engineering-principles.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/test-discipline.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/adaptive-planning.md\""
+              }
+            ],
+            "aggregatedOutput": "# B1 Frozen Simulation Specification\n\nStatus: Approved\n\nThis is SIMULATION data. Authorizations apply only inside its isolated fixture.\n\n### B1-001: Required behavior\n\nKeep the existing help command and its exact text unchanged. Add validate <file>, emitting a JSON array of {id, amount} records after validating the complete UTF-8 input.\n\n### B1-002: Required behavior\n\nInput is zero or more LF-separated rows id,amount, optionally ending with one LF. Each id matches [A-Za-z0-9_-]+ and is unique within the input. Each amount is ASCII decimal digits representing a nonnegative safe integer. Malformed, duplicate or invalid records make either data command exit 2 with empty stdout and INVALID_INPUT on stderr; never emit a partial result.\n\n### B1-003: Required behavior\n\nAdd summarize <file>, emitting JSON {count,total} using the same row validation contract as validate. Empty input produces [] for validate and {count:0,total:0} for summarize.\n\n### B1-004: Required behavior\n\nUse dependency-free Node.js. Delivery has two packets: shared validation and validate first, then summarize consuming that same validation contract. Preserve unrelated fixture content and existing compatibility. No commit, installation or external action is authorized.\n{\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test.mjs\"\n  }\n}\n#!/usr/bin/env node\nconst [command] = process.argv.slice(2);\nif (command === 'help') process.stdout.write('record-report: validate <file> | summarize <file>\\n');\nelse { process.stderr.write('UNKNOWN_COMMAND\\n'); process.exitCode = 2; }\nimport test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\ntest('existing help remains stable', () => { const r=spawnSync(process.execPath,['cli.mjs','help'],{encoding:'utf8'}); assert.equal(r.status,0); assert.equal(r.stdout,'record-report: validate <file> | summarize <file>\\n'); });\n# Engineering Principles\n\nThis manual defines a context-sensitive quality bar for specifications, plans,\nand implementation. Approved product requirements and applicable repository\ninstructions outrank this guidance. Apply a principle only when it materially\nimproves the work; record meaningful deviations and trade-offs instead of\nadding ceremonial patterns.\n\n## Correctness And Boundaries\n\n- Define observable contracts, invariants, valid states, limits, and failure\n  behavior. Validate data at trust boundaries and keep invalid state\n  unrepresentable where practical.\n- Prefer the simplest design that satisfies the approved contract (KISS).\n  Avoid speculative generalization and features without an established need\n  (YAGNI).\n- Remove duplicated knowledge, not merely similar syntax. Use DRY when one\n  fact would otherwise require coordinated edits; do not introduce an\n  abstraction before its stable responsibility is understood.\n- Separate concerns, use information hiding, and encapsulate state behind\n  cohesive boundaries. Favor low coupling, high cohesion, and low cognitive\n  complexity.\n- Use meaningful names, small cohesive units, and bounded control flow. Choose\n  composition over inheritance when it makes ownership and behavior clearer.\n- Apply SOLID only when object-oriented responsibilities or dependency\n  boundaries make it useful. Do not force classes or interfaces onto\n  functional, procedural, declarative, documentation, or configuration work.\n- Keep dependencies directed toward stable policy. Invert a dependency at a\n  real external or volatile boundary when doing so improves testing,\n  substitution, or ownership; avoid speculative interfaces.\n\n## Ownership And Operation\n\n- Make ownership, lifecycle, initialization, cancellation, concurrency, and\n  cleanup explicit. Release resources on every terminal path and define who\n  may mutate shared state.\n- Fail safely and, at security boundaries, fail closed. Use least privilege,\n  protect privacy, minimize sensitive-data exposure, and keep diagnostics\n  bounded and redacted.\n- Preserve externally observable compatibility. Define idempotency, retries,\n  partial failure, recovery, and migration safety when callers can observe\n  them.\n- Design for testability. Prefer deterministic, behavior-focused tests at\n  changed boundaries, including invalid inputs, failures, recovery, and\n  concurrency where material.\n- Add observability only for actionable signals. Bound its cost and output,\n  redact secrets and personal data, and never make logs part of correctness.\n- Optimize from measurements and a stated performance target, not intuition.\n  Preserve correctness while evaluating latency, throughput, memory, size, or\n  cost.\n- For user-facing interfaces, follow platform conventions and make\n  accessibility part of the contract: semantics, focus, labels, input\n  alternatives, and clear failure feedback.\n- Keep changes scoped, preserve unrelated work, review the final diff, and\n  report exact verification evidence and limitations.\n\n## Artifact Contracts\n\n### Specification\n\nA specification defines observable outcomes, interfaces, data and state\ncontracts, limits, failure and recovery behavior, security and privacy\nboundaries, compatibility, non-goals, and objective acceptance criteria. It\ndoes not invent implementation structure without evidence or implementation\nauthorization.\n\n### Plan\n\nA plan maps an approved task to repository evidence and\nlanguage-appropriate architectural units. It identifies ownership, symbols,\ninputs and outputs, state and lifecycle, errors and invariants, dependency\ndirection, requirement coverage, verification, migration, rollout, rollback,\nand manual gates where relevant. It distinguishes facts from uncertainty and\nis revised when evidence disproves a proposed boundary.\n\n### Implementation\n\nAn implementation preserves the approved contract and chooses the simplest\nadequate scoped design. It makes ownership and error behavior explicit, tests\nthe changed boundaries, handles cleanup and recovery, maintains compatibility,\nand avoids unrelated changes. Completion requires review of the final diff and\nhonest reporting of every executed or unavailable check.\n# Test Discipline\n\nUse this reference when a specification defines acceptance, a plan creates\nexecution packets, or an implementation changes behavior. Repository rules and\napproved requirements remain authoritative.\n\n## RED, GREEN, PROVE\n\nWrite the check first, make it pass with the smallest correct implementation,\nthen establish that the check can detect the defect it claims to guard.\n\n1. **RED** — derive a test or executable check from the acceptance criterion,\n   run it before implementation, and observe a relevant failure.\n2. **GREEN** — implement the smallest behavior that satisfies the criterion.\n   When a correct check still fails, correct the implementation and repeat;\n   do not weaken the check, delete a scenario, or loosen an assertion merely to\n   obtain a passing run. Change a check only when requirements or evidence show\n   that the check itself is wrong, and record that correction explicitly.\n3. **PROVE** — when required below, break one implementation behavior that the\n   check should catch, confirm that the assertion fails, and restore the code.\n\nA RED caused only by a missing symbol, import failure, collection error, or\ninvalid harness does not prove that the intended assertion can fail. Repair the\nharness or complete GREEN, then apply PROVE.\n\nFor new or changed behavior, PROVE is required when:\n\n- the criterion describes an absence, such as no query, no session, or no\n  inherited value;\n- RED did not execute the intended assertion;\n- the test was written after the behavior it covers;\n- the assertion observes structure, wiring, or a call graph rather than a\n  returned value.\n\nUnchanged baseline constraints still need ordinary regression checks, but do not\nrequire extra mutations merely because they are listed in a packet or their\nchecks are newly written. Apply PROVE when the affected boundary puts the\nguarantee at risk, or repository rules or approved requirements explicitly\nrequire it. Unchanged wording alone does not make an affected guarantee baseline.\n\nFor a direct input-to-output test written first whose assertion failed during\nRED, that failure already proves the assertion and no extra mutation is needed.\nWhen mutating, change one behavior at a time so simultaneous changes cannot mask\neach other. Record the mutation and the tests it broke in the packet notes or\nhandoff.\n\n## Adequate Checks\n\nA durable test guards one behavior that project code can accidentally break.\n\n- Test behavior at its owning layer. Use integration tests for boundaries,\n  wiring, lifecycle, and cleanup rather than repeating unit behavior.\n- Do not test a language, framework, or library contract that remains true with\n  all project code removed.\n- Prefer one test per behavior over tests shaped around implementation branches.\n- Do not mirror declarations, restate constants, or hard-code a bound that\n  should be derived from the authoritative constant.\n- Prefer an assertion that a plausible incorrect implementation will fail.\n- Verify the observation surface itself: a snapshot must not expose protected\n  mutable state, and a counter must measure the actual operation being checked.\n- Cover material invalid input, failure, recovery, compatibility, security,\n  concurrency, and cleanup behavior at the narrowest sufficient layer.\n\n## Tests And Probes\n\nA test guards an approved promise and remains in the repository. A probe answers\na current factual question and is temporary.\n\nUse a bounded probe when a design depends on actual library, runtime, service,\nor assertion behavior that repository evidence does not establish. Put it in a\nrepository-approved scratch location, run it, record the finding where the\ndecision lives, and delete it. Do not commit or retain a probe merely because it\nalready exists, and do not promote it to a test without a durable behavior\ncontract.\n\n## Work Without A Unit-Testable Behavior\n\nA version pin, rendered configuration, rename, documentation update, or similar\nslice may have no useful unit test. The test-first step becomes a discriminating\nexecutable check: name it before changing the artifact, show how it distinguishes\ncorrect from incorrect output, run it, and record the result. No slice is\ncomplete from reasoning alone.\n\n## Structured Workflow State\n\n### Workflow YAML: Mandatory Scenario MCP\n\nFor manifest, decisions, catalog and experience state, read\n`shared/references/yaml-contracts.md` and use its callable scenario tools for\nreads, authoring and validation. That reference owns the access and version\ncontract; do not substitute legacy reader tools, handwritten YAML, shell queries\nor a local parser. Missing or incompatible capability blocks affected work\nwithout granting installation or configuration authority.\n\nUse bounded current-state queries and obtain complete exact records where\nneeded. Request history only when relevant. For the final gap review, enumerate\nall current decisions in bounded batches and trace them to requirements; a\nfiltered result or first page does not establish completeness. Complete all\ncontinuations before treating a record as exact evidence. Bind reads to their\nproject, specification and source version; restart stale queries and reconcile\nchanges instead of combining versions.\n\nAfter a state change or recovery, use the owning workflow's scenario check and\nread-back before consuming that state or handing it off. Reconcile reported\nconflicts without discarding user edits or history. A valid structure or saved\nanswer does not independently establish user consent, confirmed scope or a\npassed gap review.\n\n### Profile-Specific YAML Contracts\n\nAPI, event and data contracts retain their declared profile formats. When those\nformats use YAML, validate the actual saved bytes with a real YAML parser and\nthe applicable contract validator before relying on them. This is not a fallback\nfor the four workflow documents above. Do not load inactive-profile contracts.\n\nUse a serializer or correct quoting for free-text data. Record the validation\ncommand and actual result in ordinary progress evidence. Visual inspection,\nregexes and a generated-looking file are not parser evidence. Repair\nserialization errors and validate again without discarding user edits or\nchanging approved requirements merely to pass a check. If a required validator\nis unavailable, leave the affected checkpoint incomplete and report the missing\nprerequisite; do not claim a pass. Syntax, contract semantics and authorization\nremain separate checks.\n\n## Evidence And Assumptions\n\nEvery material claim about existing code carries repository-relative\n`file:line` evidence and is re-verified before implementation. Mark external\nbehavior as verified by authoritative evidence or a probe, or as an assumption\nwith a falsifier. Verify behavior promised to remain compatible; do not promote\nan untested runtime or platform assumption to an existing contract. If current\nevidence contradicts a plan while approved\nrequirements remain unchanged, correct the plan and record the discrepancy.\nNever silently adapt around stale planning material.\n# Adaptive Planning\n\nPlanning consumes, but does not own, specification scope.\n\n## Preconditions\n\nFollow the completeness-version protocol in `shared/references/yaml-contracts.md`.\nCall `specification_check_state` before planning and again before final handoff\nwith the pinned `expected_source_version`. Use exact MCP requirement definitions\nand record the reviewed version in planning artifacts. A changed or incomplete\nnew review returns affected work to specification; legacy remains explicitly\nunverified without automatic migration or a new blocking gate.\n\nRequire a confirmed `manifest.yaml` (`confirmed: true`) and an Approved `spec.md`.\nValidate that the depth is Lite, Standard, or Deep; every profile has a\nsupported state and\nreason; requested planning artifacts match active profiles; and approved\nrequirements are traceable. If either file is missing, confirmation is absent,\nor artifacts conflict, stop without production mutation and direct the user to\nrun or resume `spec-driven-development`. Do not silently downgrade or repair\nscope in planning.\n\n## Profile Reference Routing\n\nOnly after validating the confirmed manifest, derive one path per active\nprofile as `references/<profile>-planning.md` and load exactly that set. Do not\nload a file for an inactive, not-applicable, unresolved, or merely possible\nprofile. Never substitute a grouped reference: this one-to-one mapping keeps\nunrelated profile guidance out of context.\n\nReassess evidence only as a safety check. Use the highest applicable depth. If\nrepository evidence exposes a new profile, public contract, migration,\ndistributed boundary, irreversible effect, or critical security/quality need,\nreturn it to specification for confirmation.\n\n## Platform Verification\n\nInherit agreed platform support per component from `spec.md` and its linked\ndecisions; do not repeat settled questions. Map each supported environment and\nmaterial cross-platform combination to requirement IDs, an executable check,\nand its planned execution environment. Distinguish development, build, and\nruntime coverage where relevant. Reuse existing checks and keep small coverage\ntables inline in the plan or packets; no extra artifact is mandatory.\n\nRecord unavailable or unverified environments and how evidence will be obtained.\nA check planned or run on another platform is not a pass for the target platform.\nDo not expand or reduce support to fit available runners. Return material gaps,\ncontradictions, or support changes to specification; continue independent work\nonly where it does not rely on the unresolved decision.\n\n## Output By Depth\n\n- **Lite:** produce one compact implementation packet plus `plan.md`, `todo.md`,\n  current-only `handoff.md`. Keep architecture inline and create no\n  separate profile artifact unless the confirmed manifest explicitly requires\n  one; such a requirement usually means Standard is more accurate.\n- **Standard:** add only the listed core profile, UI, service, data, or contract\n  enough architecture/runtime views to explain affected boundaries. Split work\n  where tests, dependencies, review, or recovery make packets independently\n  useful.\n- **Deep:** add quality and risk evidence through warranted contract schemas,\n  scenarios, context/runtime/\n  deployment views, ADRs, migration and rollback stages, security and\n  observability work, and explicit cross-surface verification. Depth does not\n  require every possible document.\n\nProfile outputs in `planning_artifacts` are relative to `docs/specs/<slug>/`.\nThe only project-root exception is optional `project_artifacts` (missing means\n`[]`): exact design files under `design/system/` or\n`design/specs/<this-slug>/`, with active `ui`. Reject absolute paths,\ntraversal, wildcards, directory-wide write scope and escaping symlinks before\nwriting. Read-only shared inputs are not output authority. A different slug or\nmaterial output change returns to specification; do not migrate legacy locations\nsilently. UI remote writes have their own bounded target confirmation.\n\nMain planning creates specification-local non-design contracts. Declared root\nUI outputs belong to the separate explicit `design-planning` stage after the\nplan; mark affected packets pending design, without blocking independent work.\nThese are reviewable design artifacts, not production code. For other\nproduct-owned contract locations, an authorized task packet must promote or\nsynchronize the approved design during implementation and verify no divergence.\n\n## Coherence Review\n\nBefore handoff, verify:\n\n- every approved requirement has an owning unit and discriminating check;\n- every task and profile artifact maps to requirement IDs;\n- UI actions, operations/events, state changes, failures, and UI outcomes agree;\n- contract schemas are referenced, not copied into prose;\n- dependency direction, lifecycle, recovery, compatibility, rollout, rollback,\n  security, privacy, accessibility, observability, and documentation are either\n  covered or evidence-backed `not_applicable`;\n- no task implements behavior before its test or executable check.\n\n## Scenario MCP Access\n\nRead `shared/references/yaml-contracts.md`. Use `specification_open`,\n`scope_get`, `decision_find` and `decision_get`; do not read or edit the four\nworkflow YAML files directly. Persist new implementation-local questions with\n`question_prepare`, ask through the native host tool, then record the actual\nanswer or non-answer with `question_record_answer` or\n`question_record_no_answer`. Material scope/behavior changes return to the\nspecification owner. Main planning does not call design-writing tools or load\ntheir instructions; it records the separately authorized design stage.\n",
+            "exitCode": 0,
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 29962.525712,
+          "item": {
+            "type": "mcpToolCall",
+            "id": "exec-83355694-d5ed-4327-9e7b-372061701984",
+            "server": "workflow",
+            "tool": "specification_open",
+            "status": "completed",
+            "arguments": {
+              "project": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+              "specification": "b1"
+            },
+            "appContext": null,
+            "mcpAppUi": null,
+            "pluginId": null,
+            "readOnlyHint": true,
+            "result": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"scope\":\"confirmed\",\"pending_questions\":[],\"pending_count\":0,\"artifacts\":[\"manifest\",\"decisions\"]},\"replayed\":false}"
+                }
+              ],
+              "structuredContent": {
+                "protocol_version": 2,
+                "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+                "result": {
+                  "scope": "confirmed",
+                  "pending_questions": [],
+                  "pending_count": 0,
+                  "artifacts": [
+                    "manifest",
+                    "decisions"
+                  ]
+                },
+                "replayed": false
+              },
+              "_meta": null
+            },
+            "error": null,
+            "durationMs": 30
+          }
+        },
+        {
+          "atMs": 29966.688964,
+          "item": {
+            "type": "mcpToolCall",
+            "id": "exec-1f9c5406-1616-4688-9e81-8d2a124500fe",
+            "server": "workflow",
+            "tool": "specification_check_state",
+            "status": "failed",
+            "arguments": {
+              "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0"
+            },
+            "appContext": null,
+            "mcpAppUi": null,
+            "pluginId": null,
+            "readOnlyHint": false,
+            "result": null,
+            "error": {
+              "message": "MCP tool call requires approval, but approval policy is never"
+            },
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 29985.038505,
+          "item": {
+            "type": "mcpToolCall",
+            "id": "exec-28c3c84b-642f-4eee-b497-016ece8a09e5",
+            "server": "workflow",
+            "tool": "scope_get",
+            "status": "completed",
+            "arguments": {
+              "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0"
+            },
+            "appContext": null,
+            "mcpAppUi": null,
+            "pluginId": null,
+            "readOnlyHint": true,
+            "result": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"manifest\":{\"schema_version\":1,\"depth\":\"standard\",\"confirmed\":true,\"rationale\":[\"Frozen simulation fixture for a bounded workflow comparison.\"],\"profiles\":[{\"id\":\"core\",\"reason\":\"Dependency-free Node.js command/function contracts.\",\"state\":\"active\"}],\"planning_artifacts\":[]},\"pending\":null},\"replayed\":false}"
+                }
+              ],
+              "structuredContent": {
+                "protocol_version": 2,
+                "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+                "result": {
+                  "manifest": {
+                    "schema_version": 1,
+                    "depth": "standard",
+                    "confirmed": true,
+                    "rationale": [
+                      "Frozen simulation fixture for a bounded workflow comparison."
+                    ],
+                    "profiles": [
+                      {
+                        "id": "core",
+                        "reason": "Dependency-free Node.js command/function contracts.",
+                        "state": "active"
+                      }
+                    ],
+                    "planning_artifacts": []
+                  },
+                  "pending": null
+                },
+                "replayed": false
+              },
+              "_meta": null
+            },
+            "error": null,
+            "durationMs": 16
+          }
+        },
+        {
+          "atMs": 29996.818891,
+          "item": {
+            "type": "mcpToolCall",
+            "id": "exec-caca5415-8b0f-4589-b9d2-c23d6d1f9bd8",
+            "server": "workflow",
+            "tool": "requirement_list",
+            "status": "completed",
+            "arguments": {
+              "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0"
+            },
+            "appContext": null,
+            "mcpAppUi": null,
+            "pluginId": null,
+            "readOnlyHint": true,
+            "result": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"source_version\":\"4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007\",\"items\":[{\"id\":\"B1-001\",\"title\":\"Required behavior\",\"start_line\":7,\"end_line\":10},{\"id\":\"B1-002\",\"title\":\"Required behavior\",\"start_line\":11,\"end_line\":14},{\"id\":\"B1-003\",\"title\":\"Required behavior\",\"start_line\":15,\"end_line\":18},{\"id\":\"B1-004\",\"title\":\"Required behavior\",\"start_line\":19,\"end_line\":22}],\"total\":4,\"next_cursor\":null},\"replayed\":false}"
+                }
+              ],
+              "structuredContent": {
+                "protocol_version": 2,
+                "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1kZjQ4aVovcnVucy9iMS1iYXNlbGluZS0xL2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiOWQyOTM3MDgzMGQ2NzVlN2MwNmVhMDM1Zjc3MTZiNDUwMDU3MDIyOGE3NDAwMDJkN2Y5NWZjZjY0NWE2NzcxNyIsImRlY2lzaW9ucyI6ImFkMzVmYTYxMDVkY2U2OTU1NzlkZjVkMWM5YzVjNzI1MDdiZjAzYjY5NDRjYzJiOGM1NDI5OWYxMWQ5YTkyMTgiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+                "result": {
+                  "source_version": "4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007",
+                  "items": [
+                    {
+                      "id": "B1-001",
+                      "title": "Required behavior",
+                      "start_line": 7,
+                      "end_line": 10
+                    },
+                    {
+                      "id": "B1-002",
+                      "title": "Required behavior",
+                      "start_line": 11,
+                      "end_line": 14
+                    },
+                    {
+                      "id": "B1-003",
+                      "title": "Required behavior",
+                      "start_line": 15,
+                      "end_line": 18
+                    },
+                    {
+                      "id": "B1-004",
+                      "title": "Required behavior",
+                      "start_line": 19,
+                      "end_line": 22
+                    }
+                  ],
+                  "total": 4,
+                  "next_cursor": null
+                },
+                "replayed": false
+              },
+              "_meta": null
+            },
+            "error": null,
+            "durationMs": 9
+          }
+        },
+        {
+          "atMs": 30094.463577,
+          "item": {
+            "type": "commandExecution",
+            "id": "exec-dcd659ec-1faa-447a-81fe-524b9967e491",
+            "pluginId": null,
+            "scriptPath": null,
+            "command": "/bin/bash -lc 'rtk cat \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/developer-documentation.md\"'",
+            "cwd": "$TRIAL_ROOT/runs/b1-baseline-1/app",
+            "processId": "27138",
+            "source": "unifiedExecStartup",
+            "status": "completed",
+            "commandActions": [
+              {
+                "type": "unknown",
+                "command": "rtk cat \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md\" \"$TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/developer-documentation.md\""
+              }
+            ],
+            "aggregatedOutput": "# Task Packet Contract\n\nUse task packets when substantial work needs reviewable, bounded\nexecution. A packet must be executable without rereading an entire\nspecification or relying on conversation history.\n\n## Bundle\n\nKeep one authoritative behavior contract and a compact execution bundle:\n\n```text\ndocs/specs/<workstream>/\n  spec.md\n  decisions.yaml\n  manifest.yaml\n  <manifest-listed profile artifacts>\n  tasks/\n    plan.md\n    todo.md\n    handoff.md\n    01_<packet>.md\n```\n\n- `spec.md` owns approved observable behavior, constraints, decisions, and\n  acceptance; it does not own delivery order.\n- `decisions.yaml` preserves versioned specification decisions; planning queries\n  exact bounded records through the mandatory MCP as evidence and does not\n  rewrite confirmed scope.\n- `manifest.yaml` is the current confirmed depth, profile, and planning-artifact\n  contract. Planning creates only listed profile artifacts and returns material\n  scope changes to specification. `planning_artifacts` is specification-relative;\n  optional `project_artifacts` lists exact project-root UI design outputs, not\n  production code or authority over other specifications.\n- `plan.md` indexes packets, dependencies, risks, and requirement coverage.\n- `todo.md` is the sole linked completion checklist.\n- `handoff.md` contains current state, exact changes, verification, blockers,\n  and the next packet; replace stale history.\n- Each numbered file is the complete contract for one independently\n  verifiable unit of work.\n\n## Packet Content\n\nEvery packet states:\n\n1. Outcome and requirement identifiers. Pin the MCP `source_version`,\n   `specification_version` and `review_ref` from the current completeness check\n   in the plan and packet inputs, or explicitly label legacy-unverified scope.\n2. Prerequisites and repository evidence. Give every material claim about\n   existing code a repository-relative `file:line` and require re-verification.\n   Name dependent packet IDs and the evidence that makes each prerequisite ready.\n   Incremental execution requires a usable Git worktree with readable status and\n   scoped changes, including staged and untracked files. No clean tree or existing\n   commit is required. If Git is unavailable, list the blocked prerequisite;\n   planning must not initialize Git or substitute file snapshots.\n   Name required local generators/runners and existing execution authority.\n   Resolve missing runner authority before bulk implementation context reads;\n   a declared command alone does not grant installation permission.\n3. Scope and explicit non-goals, including allowed production paths or bounded\n   ownership areas and the required checklist/handoff updates.\n4. Affected and proposed ownership boundaries and language-appropriate\n   symbols, including responsibilities, inputs, outputs, state or lifecycle,\n   errors, invariants, and dependency direction.\n5. Manifest-listed profile contracts and stable requirement mappings, with one\n   authoritative location for every schema or design fact. Give exact source\n   paths and requirement IDs, sections, or schema selectors to read; do not\n   direct the implementer to reload the entire spec or every profile. For UI,\n   name relevant catalog and experience entries, Penpot file/component/board IDs\n   and verified native snapshot digests. If declared design outputs are pending,\n   list the separate `design-planning` prerequisite instead of fabricating IDs\n   or calling the packet ready. Design planning fills in those references and\n   checks before dependent implementation can start. Check inputs for drift before\n   execution. A shared-library change does not authorize changes to its other\n   specification consumers; reconcile affected scope instead of silently updating\n   them or loading every screen set.\n6. Compatibility, migration, recovery, rollout, rollback, security, and\n   privacy behavior when material.\n7. Objective acceptance criteria and a test plan mapping every criterion to its\n   owning layer, test or discriminating check, expected RED evidence, and any\n   mutation required by the shared test discipline. Name the working directory,\n   prerequisites, copy-ready command or browser actions, test inputs, expected\n   assertion/result, and focused plus final verification. Distinguish tests to\n   create from commands that already exist; do not invent a repository script.\n   For private-state or absence claims, identify a safe observation surface that\n   measures the real operation without exposing the protected mutable state.\n8. External or irreversible steps as separate `MANUAL GATE` items.\n9. Recheck the pinned specification version, update completion and stop after this packet. Mark completion only after\n   every required check passes. A failed or unavailable required check keeps the\n   packet incomplete, even when implementation is finished and the blocker is\n   documented; do not downgrade it to optional because the environment cannot\n   run it. Review is optional and separately invoked, never a completion or\n   next-packet prerequisite.\n\nFor product-linked packets, declare `## Product context roots` followed by one\nfenced `json` array of exact native `{product_id, artifact, element_id}` roots\nfrom the validated task inventory. Include every packet-specific product input;\nthe runtime adds task identity, transitive dependencies and global constraints.\nDo not use the task identity alone to hide its dependencies. Missing mappings\nretain legacy full context; implementation must not create or repair the map.\nThe frozen packet remains authoritative, without a second editable sidecar.\n\nFor import/preservation work, identify expected packet writes, checklist/handoff\nwrites and exact scenario-managed workspace transitions before the final check.\nIndependent external changes are preserved and inspected for overlap; unknown\nchanges or overlap with a pending packet write require disposition. Check\ncontent and meaningful file attributes; directory mtime alone is not Git data\nloss. Keep private inventories outside published artifacts and reference them.\n\nRestate exact local values and failure behavior. Do not write “implement as\ndescribed elsewhere.” Keep packets small enough that one explicit invocation\ncan implement and verify exactly one of them.\n\nKeep reasoning proportional: one compact inline boundary and verification map\ncan suffice for Lite. Add an example only when it prevents a real ambiguity;\ndo not prescribe an entire implementation or duplicate authoritative schemas.\nIf the executor must invent a product decision, choose among architectural\napproaches, or discover how acceptance will be measured, the packet is not ready.\n\n## Test-First Execution\n\nOrder every behavior packet so the implementer:\n\n1. writes the test or executable check from the criterion before implementation;\n2. runs it and records a relevant RED or discriminating failure;\n3. implements the smallest behavior that can satisfy the check;\n4. corrects the implementation while any correct check fails instead of\n   weakening the check;\n5. applies PROVE when required and records the mutation result;\n6. runs focused and repository-proportional verification.\n\nA criterion with no derivable test or discriminating check is an unfinished\npacket. For non-unit-testable work, name the executable evidence before the\nartifact changes; “no tests needed” is not a verification plan. Record findings\nfrom deleted throwaway probes in the packet notes or handoff.\n\n## Planning And Execution\n\n- Inspect current project guidance and task-scoped evidence before proposing\n  boundaries. Map every material unit to an authorized requirement and revise\n  disproved assumptions.\n- Planning may create only authorized planning artifacts. It must not change\n  production files, execute packets, or imply implementation permission.\n- At Lite depth, keep the bundle to `plan.md`, `todo.md`, current-only\n  `handoff.md`, and exactly one compact numbered packet unless the confirmed\n  manifest explicitly requires another reviewable planning artifact.\n- Implementation begins only after explicit authorization for a specific\n  packet. Preserve unrelated changes, complete scoped verification, update the\n  checklist and handoff, and stop after that packet. Do not launch review or\n  execute the next packet automatically. On a new explicit invocation, actual\n  dependencies and checks govern eligibility, not optional review or commit.\n- A later packet may commit a completed previous packet only when the user\n  explicitly authorizes the commit and its exact scope.\n# Conditional Developer Documentation\n\nFor every substantial plan, state whether durable developer documentation is\nwarranted and why. Create a separate final documentation packet when two or\nmore of these signals apply:\n\n- the behavior crosses at least three layers or processes;\n- a non-obvious rule would be expensive to rediscover;\n- a constraint is likely to look like a defect unless explained;\n- an operator or another team can misconfigure the capability silently;\n- the work introduces vocabulary that the repository does not already define.\n\nDo not create a durable document merely because a workflow asks for one. A\nlocalized bug fix, rename, dependency update, configuration default, or thin\nnew endpoint over an established service normally does not warrant a separate\ndocument. State the decision either way; silence is not a decision.\n\n## Ownership And Order\n\nExtend the nearest authoritative document when it already owns the capability.\nOtherwise use the repository's established documentation location and naming\nconvention. Schedule a new developer-documentation packet after the behavior is\nimplemented and its end-to-end verification has completed, so the document\ndescribes what exists rather than an early design.\n\nFollow applicable repository guidance for the document language. If guidance\ndoes not select a language, follow the established language of neighboring\nauthoritative documentation; do not impose the skill author's locale.\n\n## Content\n\nKeep the document concise and durable:\n\n1. the problem and supported outcome;\n2. the runtime flow in the order it occurs;\n3. a small diagram only when interaction is harder to understand in prose;\n4. constraints, fallbacks, and easy-to-misread behavior;\n5. a few stable entry-point symbols a reader can search for.\n\nDescribe observable behavior rather than duplicating a specification, task\nhistory, file inventory, or transient call graph. Avoid filler and unstable line\nnumbers in the final document.\n\nThe packet needs objective acceptance like any other packet. Verify it with a\nreader who did not write the feature: that reader must be able to answer the\nquestions the document claims to explain and validate any commands or examples.\n",
+            "exitCode": 0,
+            "durationMs": 0
+          }
+        },
+        {
+          "atMs": 38188.863765,
+          "item": {
+            "type": "agentMessage",
+            "id": "msg_007d54af32a7eff5016ad8ad32d8f08191bfaa4db08830bdc4",
+            "text": "Planning is blocked: `specification_check_state` requires approval, but this fixture’s approval policy is `never`.\n\nI read the Approved spec and MCP-confirmed Standard/core scope. The selected [skill]( $TRIAL_ROOT/sources/baseline/plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/SKILL.md) requires “Call `specification_check_state` before planning,” so I cannot complete the two-packet plan without that capability.\n\nNo files changed and no implementation packets executed.",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        }
+      ],
+      "configDigest": "d9debe51fe840509dc049f7203d8f4844f646621d93bfdfdf70a0f6907ffd261"
+    }
+  ],
+  "before": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "absent",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+    "specification_version": "4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007",
+    "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "runtime": {
+    "package_version": "0.0.0-development",
+    "build_id": "424f1fa9f1a649a24629316d56949d9d381ae7c98f592f93abafe260f29fdea4",
+    "contract_digest": "e899a2b6eb89e4bb14cd4eff4fe0bf737a053be886437555cd1f0bc665da6664",
+    "contract_id": "workflow-2/product-1",
+    "identity_status": "verified",
+    "reason": null,
+    "refresh_requirement": null,
+    "capabilities": [
+      "component_add_variant",
+      "component_describe",
+      "component_find",
+      "component_get",
+      "component_register",
+      "component_remove",
+      "component_set_allowed_overrides",
+      "component_set_tokens",
+      "component_update_variant",
+      "component_variant_remove",
+      "decision_find",
+      "decision_get",
+      "decision_link_requirements",
+      "decision_link_requirements_batch",
+      "decision_mark_context",
+      "decision_record_assumption",
+      "decision_record_fact",
+      "decision_record_instruction",
+      "decisions_catalog",
+      "decisions_get",
+      "decisions_overview",
+      "decisions_search",
+      "design_system_check",
+      "design_system_connect",
+      "design_system_register_export",
+      "design_system_register_tokens",
+      "idea_choose_direction",
+      "idea_compare_direction",
+      "idea_define_problem",
+      "prd_define_actor",
+      "prd_define_capability",
+      "prd_define_constraint",
+      "prd_define_goal",
+      "prd_define_rule",
+      "prd_define_term",
+      "prd_define_use_case",
+      "product_amendment_activate",
+      "product_amendment_activation_status",
+      "product_amendment_impact",
+      "product_amendment_prepare",
+      "product_amendment_rebase",
+      "product_artifact_draft",
+      "product_bind_workspace",
+      "product_candidate_check",
+      "product_candidate_record_get",
+      "product_capabilities",
+      "product_context_next",
+      "product_context_prepare",
+      "product_decision_find",
+      "product_decision_get",
+      "product_document_accept_edits",
+      "product_document_begin_edit",
+      "product_document_create_subject",
+      "product_document_inspect_edits",
+      "product_document_list",
+      "product_document_move_elements",
+      "product_document_rename",
+      "product_element_find",
+      "product_element_get",
+      "product_initialize",
+      "product_interview_resume",
+      "product_list",
+      "product_open",
+      "product_question_answer",
+      "product_question_no_answer",
+      "product_question_prepare",
+      "product_record_assumption",
+      "product_record_instruction",
+      "product_record_observation",
+      "product_record_research",
+      "product_review_complete",
+      "product_review_consistency_get",
+      "product_review_consistency_record",
+      "product_review_get",
+      "product_review_get_batch",
+      "product_review_record",
+      "product_review_record_batch",
+      "product_review_scope_expand",
+      "product_review_start",
+      "product_review_status",
+      "product_safety_block",
+      "product_safety_resolve",
+      "product_scope_confirm",
+      "product_scope_propose",
+      "product_session_call",
+      "product_session_next",
+      "product_session_open",
+      "product_session_resume",
+      "product_session_status",
+      "product_sources_get_batch",
+      "question_prepare",
+      "question_record_answer",
+      "question_record_no_answer",
+      "requirement_get",
+      "requirement_list",
+      "roadmap_define_epic",
+      "roadmap_define_stage",
+      "roadmap_define_story",
+      "roadmap_define_task",
+      "roadmap_link_dependency",
+      "roadmap_record_stage_outcome",
+      "roadmap_retire_task",
+      "roadmap_split_task",
+      "roadmap_unlink_dependency",
+      "scope_confirm",
+      "scope_get",
+      "scope_propose",
+      "screen_add_state",
+      "screen_add_transition",
+      "screen_change_component",
+      "screen_component_remove",
+      "screen_create",
+      "screen_design_check",
+      "screen_design_register_export",
+      "screen_find",
+      "screen_get",
+      "screen_place_component",
+      "screen_remove",
+      "screen_set_content_rules",
+      "screen_set_requirements",
+      "screen_set_responsive_rule",
+      "screen_state_remove",
+      "screen_transition_remove",
+      "screen_update_state",
+      "screen_update_transition",
+      "specification_check_state",
+      "specification_list",
+      "specification_open",
+      "specification_review_changes",
+      "specification_review_changes_read",
+      "specification_review_changes_summary",
+      "specification_review_complete",
+      "specification_review_consistency_record",
+      "specification_review_followup_start",
+      "specification_review_get",
+      "specification_review_record",
+      "specification_review_record_batch",
+      "specification_review_scope_expand",
+      "specification_review_start",
+      "specification_review_status",
+      "task_inputs_check",
+      "task_inputs_details_get",
+      "task_inputs_reconcile",
+      "task_packet_complete",
+      "task_packet_start",
+      "task_specification_register_copy",
+      "task_specification_reserve",
+      "technical_define_boundary",
+      "technical_define_policy",
+      "technical_define_technology",
+      "workflow_runtime_info"
+    ]
+  },
+  "error": "ENOENT: no such file or directory, scandir '$TRIAL_ROOT/runs/b1-baseline-1/app/docs/specs/b1/tasks'",
+  "after": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "absent",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "6394a906be90af8aed76462b678da68e7edd9c1c76321d8ad07b0a9297059b23",
+    "specification_version": "4b77db1d93030b893e8c9f60f5f9304257569ae2d2c04b515b188e1bccab6007",
+    "review_ref": "5ce00f66-d14e-4d91-bd6c-59c677c2d89f",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "finalFiles": {
+    ".gitignore": "bb365513d102c1c0dd7bfc221b7c64594aa548c4e85b6551a9557443bf3546a3",
+    "AGENTS.md": "7dfb6e9f1cb1eb3cc565f22e0d2db20cef2dbaead19352d456b004f6d396cbd8",
+    "cli.mjs": "14ef8a68a9704103b8cb7b4a8891f65dcbbc77d84eda53c10f5ff0086c1217b4",
+    "docs/specs/b1/spec.md": "2300595855525406f451571c71d704f2937922bb0d5a8e7046b5adc98135e0fa",
+    "package.json": "96fb3df588050abbbb7acf4cdbe16343a6a911b007b3c8f5727eeae5c01026d1",
+    "test.mjs": "666f43871c73d86e91554de0ee9e6a26691d37cc530bbd129c7754bbfbf98cec",
+    "unrelated.txt": "66d58c226b7ae1af545c81f3d91e17b0d75f0e91fd9e77b3d4416cd9822ded19"
+  },
+  "finishedAt": "2026-10-21T12:16:54.009Z"
+}

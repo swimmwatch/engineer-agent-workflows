@@ -1,0 +1,10 @@
+{
+  "classification": "ACTUAL",
+  "commands": [
+    {"command": "rtk npm test", "exitCode": 0, "tests": 1045, "passed": 1045, "failed": 0, "cancelled": 0, "skipped": 0, "durationMs": 188199.593377},
+    {"command": "rtk npm run lint", "exitCode": 0},
+    {"command": "rtk npm run generate:check", "exitCode": 0, "skills": 17},
+    {"command": "rtk npm run validate", "exitCode": 0, "skills": 17}
+  ],
+  "limitation": "Repository checks do not certify actual host behavior. Evidence-consistency and focused model observations remain separate requirements."
+}

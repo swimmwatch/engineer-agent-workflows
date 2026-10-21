@@ -1,0 +1,51 @@
+{
+  "classification": "ACTUAL",
+  "capturedAt": "2026-10-21T18:05:14.536Z",
+  "files": {
+    "controller-prepare.mjs": "1992f8ee2d5ae7e34b0a3bc85554e3f44994a2cdd05b1ca0c56c786e5b8f04a8",
+    "controller-fixture-setup.mjs": "96ab5b8237642bfb3894bdd511cedcda55849c7d09396ed5d5267eed100a6a43",
+    "controller-freeze.mjs": "40c200e74b8f1669726b9d34203a9a0196850cdbbca505e125c89802364d9204",
+    "controller-matrix.mjs": "d8a0f20aaf87a5c05e0dd467f65af70ee143dcff6baaef2286cda5904895213e",
+    "controller-focused-helper.mjs": "a8efb4c74a621c4da745c2f788590aa285a553360d41fcd4593f777c74bba5d3",
+    "controller-focused.mjs": "89d3a3421442ece1c42e85d17ea0cd79f5f797e044ed476a9abb7adc0ea41fd2",
+    "controller-evaluation.mjs": "51040c92480e2a5b6bbb6bc9ab9f660c7447989758d905bc1c780ef81f99cea0",
+    "controller-focused-evaluation.mjs": "e8a6cb3d307a7436a4648f2dfda6fe27ce56536c5da32df843cf73d5d2fbd797",
+    "capture-assembler.mjs": "cef6e7b09266e8bcaf6365bac1f1712fd51b64d8245f9e4818cdfda13af56eb0",
+    "controller-respondent-check.mjs": "73f188c75a96bbe86cccf9f29d33035b243059265e61cfa2b1d8ac6cf6e3786b",
+    "controller-mcp.mjs": "aebdc0f50a15c0ecc988e28f75ecd2c022842c9601dd4dbc4f95fff724db0fb7"
+  },
+  "purpose": "One-off local controllers, preserved for exact capture interpretation; restore their original private directory/import context to replay. No new maintained benchmark platform.",
+  "executionMapping": {
+    "matrix": {
+      "controller": "controller-matrix.mjs",
+      "runIds": [
+        "b1-baseline-precision-v3-1",
+        "b1-candidate-precision-v3-1",
+        "b2-candidate-precision-v3-1",
+        "b2-baseline-precision-v3-1",
+        "b1-candidate-precision-v3-2",
+        "b1-baseline-precision-v3-2",
+        "b2-baseline-precision-v3-2",
+        "b2-candidate-precision-v3-2"
+      ]
+    },
+    "focused": {
+      "controller": "controller-focused.mjs",
+      "stageHelper": "controller-focused-helper.mjs"
+    }
+  },
+  "preparationCorrections": [
+    {
+      "check": "assembler syntax",
+      "first": "failed: over-escaped regex",
+      "corrected": "passed: explicit path predicates",
+      "measuredTrialsAffected": false
+    },
+    {
+      "check": "respondent encoding",
+      "first": "Cyrillic regex alternatives re-encoded during preparation copy",
+      "corrected": "Future helper restores exact original function; matrix controller preserved and actual answers checked separately",
+      "observedPolicyCheck": "../controller-policy-check.json"
+    }
+  ]
+}

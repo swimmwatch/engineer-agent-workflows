@@ -1,0 +1,157 @@
+{
+  "classification": "ACTUAL",
+  "recordedAt": "2026-10-21T19:40:55.557Z",
+  "purpose": "Normalize only machine paths and personal owner/group labels in published exports. Pre-publication bytes remain in a private ignored cache. Model IDs, timestamps, numeric results, reviewer verdict objects and metric bytes are preserved.",
+  "privateOriginalsRoot": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals",
+  "placeholders": [
+    "$TRIAL_ROOT",
+    "$SOURCE_ROOT",
+    "$USER_HOME",
+    "$FIXTURE_USER"
+  ],
+  "files": [
+    {
+      "ref": "matrix/b1-baseline-precision-v3-1/planning/01_shared-validation-and-validate.md",
+      "beforeDigest": "323fdf69e9798aa4f98dad5b66ff87f209fc49dac7c80620960231a558ffcc90",
+      "afterDigest": "91b15a3cdafbbe0d8c6321b41ee4776a71460e57e5e0ad0c74f891186a06e66e",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/323fdf69e9798aa4f98dad5b66ff87f209fc49dac7c80620960231a558ffcc90/matrix/b1-baseline-precision-v3-1/planning/01_shared-validation-and-validate.md"
+    },
+    {
+      "ref": "matrix/b1-baseline-precision-v3-1/planning/02_summarize.md",
+      "beforeDigest": "5c604d3185edf5d9f09c56e39fac7409e576e1ab2231fa28eef8c0b1840cd084",
+      "afterDigest": "961cc81578491b021fc20e5ea2a13b44e8b5143a5101dc83e27f0ca2a0f5d5b3",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/5c604d3185edf5d9f09c56e39fac7409e576e1ab2231fa28eef8c0b1840cd084/matrix/b1-baseline-precision-v3-1/planning/02_summarize.md"
+    },
+    {
+      "ref": "matrix/b1-baseline-precision-v3-1/planning/handoff.md",
+      "beforeDigest": "6dce34fe2e0f3576fadfe4020ad805254d37996059f18e071d6e6c609366a94f",
+      "afterDigest": "c6a0e91e2691b62ba1832e43244ac73b0f684336dd4f8f73d8b4adda21627bee",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/6dce34fe2e0f3576fadfe4020ad805254d37996059f18e071d6e6c609366a94f/matrix/b1-baseline-precision-v3-1/planning/handoff.md"
+    },
+    {
+      "ref": "matrix/b1-baseline-precision-v3-2/planning/01_shared-validation-and-validate.md",
+      "beforeDigest": "fb6e1941b6ca7ba660a153a23790a958aa484e58f2f7b6692af43d378535dc74",
+      "afterDigest": "4b2f5bac43c89f7173f21e7affd6a99d06ac164d4f533f27feabaf6019115454",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/fb6e1941b6ca7ba660a153a23790a958aa484e58f2f7b6692af43d378535dc74/matrix/b1-baseline-precision-v3-2/planning/01_shared-validation-and-validate.md"
+    },
+    {
+      "ref": "matrix/b1-baseline-precision-v3-2/planning/02_summarize.md",
+      "beforeDigest": "3f299e97a94bb721a5ad04f4715c7454371000d75d726a21e6866ffc0b58f693",
+      "afterDigest": "1d0872e01aa2883b18a00080f4b6d50113cf42d7a61761601a59c7ef6ffe0960",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/3f299e97a94bb721a5ad04f4715c7454371000d75d726a21e6866ffc0b58f693/matrix/b1-baseline-precision-v3-2/planning/02_summarize.md"
+    },
+    {
+      "ref": "matrix/b1-baseline-precision-v3-2/planning/handoff.md",
+      "beforeDigest": "c904807f78ec3c429c6b13144de0ef9238c09fbaa1a5bd9d2f9d2ec48b57b748",
+      "afterDigest": "15fcd1394815d4f4a93b9dec9ae863fa7f415e4df1de842495526f1317ac2f73",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/c904807f78ec3c429c6b13144de0ef9238c09fbaa1a5bd9d2f9d2ec48b57b748/matrix/b1-baseline-precision-v3-2/planning/handoff.md"
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "beforeDigest": "1a1652318132ad3b931c1e7113d9df41b76dc0af3883ebc52cc915ab2523c693",
+      "afterDigest": "685b764bf767de6e255aaeb64dbb5f1bbff009ca80dd4ff52dfe39a634c53708",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/1a1652318132ad3b931c1e7113d9df41b76dc0af3883ebc52cc915ab2523c693/matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "reviewerVerdictPreserved": true
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-1/evaluation.jsonl",
+      "beforeDigest": "a714c3984c01c38f923af8f05f4fc0e6ded8c9c0afb9b5f132640df245300d7a",
+      "afterDigest": "a2635920ef51636957be09bd80cab52a7b2d42864a34fa57c66a18ee1ef23589",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/a714c3984c01c38f923af8f05f4fc0e6ded8c9c0afb9b5f132640df245300d7a/matrix/b1-candidate-precision-v3-1/evaluation.jsonl"
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-2/evaluation.json",
+      "beforeDigest": "c353238b53f1afe42bb6d777aee404a9ce5ace23beab39e0bc97708ac99cebfe",
+      "afterDigest": "66d26296f450b9eb7b3d4f0026064ac58edccffa2780ee01df72c553f7bad510",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/c353238b53f1afe42bb6d777aee404a9ce5ace23beab39e0bc97708ac99cebfe/matrix/b1-candidate-precision-v3-2/evaluation.json",
+      "reviewerVerdictPreserved": true
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-2/evaluation.jsonl",
+      "beforeDigest": "e474a9e4de66266ba0df24c5e7a68399376a795bac8c9f1209d5b68126f964df",
+      "afterDigest": "401ed7c2f0aa32210c1458688eda03d04308313699a11c293c8f3fc6fba14a9c",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/e474a9e4de66266ba0df24c5e7a68399376a795bac8c9f1209d5b68126f964df/matrix/b1-candidate-precision-v3-2/evaluation.jsonl"
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-2/planning/01_validate.md",
+      "beforeDigest": "f4590f7c30e4605d0314c387eb5d42499ad83d5efd1dd7600a50fc09ccfbde64",
+      "afterDigest": "11c060f7afe5ff647091385cf941ac9cd3aea9e8fb93cf7aafbb8a345588d155",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/f4590f7c30e4605d0314c387eb5d42499ad83d5efd1dd7600a50fc09ccfbde64/matrix/b1-candidate-precision-v3-2/planning/01_validate.md"
+    },
+    {
+      "ref": "matrix/b1-candidate-precision-v3-2/planning/02_summarize.md",
+      "beforeDigest": "044040739ba21820d8ce852252236c131b5667a46df02d1a00f9cb7069b23bd3",
+      "afterDigest": "02ca7fec0aa879234e7ec4de814831ff3532d1e7c4272af3984004b56a759431",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/044040739ba21820d8ce852252236c131b5667a46df02d1a00f9cb7069b23bd3/matrix/b1-candidate-precision-v3-2/planning/02_summarize.md"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/evaluation.json",
+      "beforeDigest": "1965a13494241f8428b3529bef95cab24f0df74a4080c384e2e6ce10c57c17b8",
+      "afterDigest": "290cf5bd7b2fc7539aae45ccd30f24c234feef3b4a5d472714cf35dc25eac05c",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/1965a13494241f8428b3529bef95cab24f0df74a4080c384e2e6ce10c57c17b8/matrix/b2-baseline-precision-v3-1/evaluation.json",
+      "reviewerVerdictPreserved": true
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/evaluation.jsonl",
+      "beforeDigest": "25c4246070a56ef959e1786e5b874e8326a136243c77c9c7b0dc11e28022f3cb",
+      "afterDigest": "60ce422736931a90f374913cffcbff010da227cafbcedaff0da7dae11cc7b868",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/25c4246070a56ef959e1786e5b874e8326a136243c77c9c7b0dc11e28022f3cb/matrix/b2-baseline-precision-v3-1/evaluation.jsonl"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-2/planning/01_timeout-range.md",
+      "beforeDigest": "43c0db4a9ea3856d69fe0cbaa139fa4fcadc5c854553c24b6ac6d7865a5df9c0",
+      "afterDigest": "1ff32d474c0330099621a362f87e5ebf149bf511d945c13a165d166968ef2d61",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/43c0db4a9ea3856d69fe0cbaa139fa4fcadc5c854553c24b6ac6d7865a5df9c0/matrix/b2-baseline-precision-v3-2/planning/01_timeout-range.md"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.json",
+      "beforeDigest": "a22755cb23939ee6baf9e9323b2b0b8fb038765892f4f7c27d1fedac0d3d7641",
+      "afterDigest": "2890ec181e063ba1c588a232a8fd943fbab576abe011e590c2612067bd4e9522",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/a22755cb23939ee6baf9e9323b2b0b8fb038765892f4f7c27d1fedac0d3d7641/matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.json",
+      "reviewerVerdictPreserved": true
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.jsonl",
+      "beforeDigest": "15d4618180fab3e7590cfdbd1464c6b5455684766f41a61ad76b28ee318b217d",
+      "afterDigest": "04f2628ef509f35e7980fd76594bd2e4751bfaf5dcd92eaab78cf10725263d26",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/15d4618180fab3e7590cfdbd1464c6b5455684766f41a61ad76b28ee318b217d/matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.jsonl"
+    },
+    {
+      "ref": "matrix/b2-candidate-precision-v3-1/evaluation.json",
+      "beforeDigest": "83c6e78259a3ea103950a10ddaa49706a93863039557d4c759213dbe226ec63a",
+      "afterDigest": "0cd7b4418b3d8411f214147641183c1ffe55fe21b4b3993b960cdac4389f1f05",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/83c6e78259a3ea103950a10ddaa49706a93863039557d4c759213dbe226ec63a/matrix/b2-candidate-precision-v3-1/evaluation.json",
+      "reviewerVerdictPreserved": true
+    },
+    {
+      "ref": "matrix/b2-candidate-precision-v3-1/evaluation.jsonl",
+      "beforeDigest": "0689816944f1aaa7edaee8391669df6c241c6675cbc6bdbe5023e91b16019764",
+      "afterDigest": "fdaa32862dbec71e5ef92cda1c5d06c02cb51b1427ba69571fe8ee5d29cd10e5",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/0689816944f1aaa7edaee8391669df6c241c6675cbc6bdbe5023e91b16019764/matrix/b2-candidate-precision-v3-1/evaluation.jsonl"
+    },
+    {
+      "ref": "matrix/b2-candidate-precision-v3-1/planning/01_timeout-range.md",
+      "beforeDigest": "70f478aecb5017eb5217c143bde7f854b6fc625d727c877c2d389fe5f5a9dc78",
+      "afterDigest": "03f899ba5e31c8d95fd08d6463f86619fbc97161d056cb0c37fa0aeb97ec8de0",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/70f478aecb5017eb5217c143bde7f854b6fc625d727c877c2d389fe5f5a9dc78/matrix/b2-candidate-precision-v3-1/planning/01_timeout-range.md"
+    },
+    {
+      "ref": "precision-proof/npm-test.log",
+      "beforeDigest": "ce3c4b40229d0f6c5b15829b612477fa9349fc05f8c659c0643670bdb41b0e71",
+      "afterDigest": "10e4381f82bc5e4b0eb93247e484b9823ff07b4bd46f2451defd895ffd9ae2b2",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/ce3c4b40229d0f6c5b15829b612477fa9349fc05f8c659c0643670bdb41b0e71/precision-proof/npm-test.log"
+    },
+    {
+      "ref": "precision-proof/prove-mutation.log",
+      "beforeDigest": "6bec4f3839371fa498dadd6074dae6d00d42bd27467185ffa7562a45227d0ef5",
+      "afterDigest": "4d930572d936a4f9597a743a192e03af281df6fa5425867d650e5fc17f3d2278",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/6bec4f3839371fa498dadd6074dae6d00d42bd27467185ffa7562a45227d0ef5/precision-proof/prove-mutation.log"
+    },
+    {
+      "ref": "precision-proof/red.log",
+      "beforeDigest": "932b602727f794df0df3bba2c7a5e37e03bf60ac272b2f91df703d27cab7f5df",
+      "afterDigest": "11dc525c876bdbd83b13f2d09cbaa6912773deccccd88b85187588e61493b3a8",
+      "privateOriginal": ".cache/technical-implementation-planning-precision-v3/ownership-redaction-originals/932b602727f794df0df3bba2c7a5e37e03bf60ac272b2f91df703d27cab7f5df/precision-proof/red.log"
+    }
+  ]
+}

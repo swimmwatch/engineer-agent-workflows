@@ -1,0 +1,36 @@
+✔ completed single-packet step checklist accepts its explicit packet link (0.675057ms)
+✖ unfinished single-packet step checklist is rejected (0.5422ms)
+✔ another packet link cannot attest this packet (0.08773ms)
+✔ ambiguous multi-packet step checklist is rejected (0.078055ms)
+✔ existing checked filename rows still support pending sibling packets (0.118882ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 57.056788
+
+✖ failing tests:
+
+test at .cache/technical-implementation-planning-precision-v3/checklist.test.mjs:9:1
+✖ unfinished single-packet step checklist is rejected (0.5422ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file://$SOURCE_ROOT/.cache/technical-implementation-planning-precision-v3/checklist.test.mjs:10:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,40 @@
+{
+  "classification": "SIMULATION",
+  "kind": "frozen-approved",
+  "depth": "Lite",
+  "profiles": [
+    "core"
+  ],
+  "explicitFixtureScope": true,
+  "before": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "absent",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "a8768504a041a80f0be679675cfc18e982726ce5e8cc8b818cf431531bafbb20",
+    "specification_version": "4f85f3b995a54ce1e1fdbf8de5895c3b8c9cea70c58f9119a7ea8325efe35862",
+    "review_ref": "a9e5ac8f-4f46-4c3d-94a7-14470b8863df",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "specificationDigest": "21bd45e762f399c5aa68595a1c0233254cf97ddff0d31401742ab7b2a587fce0",
+  "inputPolicy": {
+    "ref": "frozen-inputs-stdio-v2.json",
+    "digest": "4f480e7f4c2c9e76c1174f83bb250cf75a09a29e27a6d01f14faefb163b3c73b"
+  },
+  "note": "Frozen fixture setup, not a specification model run or real human consent."
+}

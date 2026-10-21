@@ -1,0 +1,74 @@
+{
+  "classification": "SIMULATION",
+  "revision": "stdio-v2",
+  "frozenBeforeRuns": true,
+  "parent": "frozen-inputs.json",
+  "fixtureDigests": {
+    "technical-agreement-registry.json": "64c18e1f7445a8e7cd2db15cac509c61399beeca05066be96131d98de5974e4c",
+    "technical-agreement-answers.json": "c94c4705328055a73263163ec80f44c87dc6d8b71a56719c1d665ea575178b61",
+    "technical-agreement-starters.json": "61e8ebc10d28926441146e13cb5a8cdc7346e2f25965b8ab3f919637f041168a",
+    "technical-agreement-oracle.mjs": "9a00509c4c7b483bbdbea411bed595267a66a574342b05b7fa2ff8a9d3f366ef",
+    "TRIALS.md": "f27f584f87de922aa1ba69912302134ffaebd87676d1eef4c26adb287af2fc0a",
+    "technical-agreement-starters-stdio.json": "c0f28b756f23474ead3cf081a1401f857997b03e9dcadbe2f0a27bc372888e51"
+  },
+  "sourceDigests": {
+    "baseline": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+    "candidate": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45"
+  },
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "client": "codex-cli 0.163.0",
+  "node": "v24.20.0",
+  "order": [
+    {
+      "id": "b1-baseline-s2-1",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 1
+    },
+    {
+      "id": "b1-candidate-s2-1",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 1
+    },
+    {
+      "id": "b2-candidate-s2-1",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 1
+    },
+    {
+      "id": "b2-baseline-s2-1",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 1
+    },
+    {
+      "id": "b1-candidate-s2-2",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 2
+    },
+    {
+      "id": "b1-baseline-s2-2",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 2
+    },
+    {
+      "id": "b2-baseline-s2-2",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 2
+    },
+    {
+      "id": "b2-candidate-s2-2",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 2
+    }
+  ],
+  "change": "Test-only file-descriptor capture and single-file driver; production starter code, approved requirements, oracle and answers unchanged.",
+  "proof": "preflight/stdio-fixture-checks.json"
+}

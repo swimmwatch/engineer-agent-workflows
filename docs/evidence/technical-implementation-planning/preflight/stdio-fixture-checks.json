@@ -1,0 +1,18 @@
+{
+  "classification": "ACTUAL",
+  "policyUnchanged": true,
+  "results": [
+    {
+      "fixture": "b1",
+      "exitCode": 0,
+      "stdout": "\n> test\n> node --test --test-isolation=none test.mjs\n\n✔ existing help remains stable (25.145675ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 34.407951\n",
+      "stderr": ""
+    },
+    {
+      "fixture": "b2",
+      "exitCode": 0,
+      "stdout": "\n> test\n> node --test --test-isolation=none test.mjs\n\n✔ existing default and accepted value remain stable (0.623908ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10.598249\n",
+      "stderr": ""
+    }
+  ]
+}

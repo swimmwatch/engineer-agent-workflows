@@ -84,6 +84,60 @@ function validateUnit(unit, requirements) {
   assert.ok(unit.verification.length > 0);
 }
 
+test("planning requires a concrete per-task agreement before readiness", async () => {
+  const entry = await fs.readFile(path.join(skillRoot, "SKILL.md"), "utf8");
+  assert.match(entry, /references\/technical-agreement\.md/);
+  assert.match(entry, /every task.*explicit agreement/is);
+  assert.match(entry, /alternatives.*recommendation/is);
+  assert.match(entry, /planning_packet_check/);
+  const packets = await fs.readFile(path.join(skillRoot, "references/task-packets.md"), "utf8");
+  for (const field of ["Technical proposal", "Technical agreement", "agreement_ref", "proposal_digest", "sources", "heading"]) {
+    assert.ok(packets.includes(field), field);
+  }
+});
+
+test("technical choices are explained in conversation before the question and full packet drafting", async () => {
+  const reference = await fs.readFile(path.join(skillRoot, "references/technical-agreement.md"), "utf8");
+  assert.match(reference, /before the native question.*conversation/is);
+  assert.match(reference, /not.*only in files or proposal identifiers/is);
+  assert.match(reference, /only the binding proposal sections.*before.*complete.*packet details after agreement/is);
+});
+
+test("draft proposal boundaries are frozen before delivery detail is appended", async () => {
+  const reference = await fs.readFile(path.join(skillRoot, "references/technical-agreement.md"), "utf8");
+  assert.match(reference, /before freezing.*next same-level heading/is);
+  assert.match(reference, /boundary whitespace unchanged/is);
+});
+
+test("technical discussion uses the managed technical journal and preserves unresolved tasks", async () => {
+  const reference = await fs.readFile(path.join(skillRoot, "references/technical-agreement.md"), "utf8");
+  for (const name of ["planning_question_prepare", "planning_question_record_answer", "planning_question_record_no_answer", "planning_decision_find", "planning_decision_get", "planning_packet_check"]) {
+    assert.match(reference, new RegExp(`\\b${name}\\b`));
+  }
+  for (const pattern of [
+    /inspect.*before.*ask/is,
+    /one.*adequate.*without.*invent/is,
+    /shared.*once/is,
+    /partial.*only.*explicit/is,
+    /dismiss.*not.*agreement/is,
+    /selected_ids/,
+    /accepted_proposal_ids/,
+    /rejected_proposal_ids/,
+    /revises/,
+    /latest.*question_ref/is,
+    /every.*binding.*commitment.*hashed/is,
+    /private helpers/is,
+    /source.*provenance/is,
+    /legacy.*affected/is,
+    /capability.*block/is,
+    /conversational fallback/is,
+  ]) assert.match(reference, pattern);
+  for (const name of ["technical-agreement.md", "adaptive-planning.md"]) {
+    const text = await fs.readFile(path.join(skillRoot, "references", name), "utf8");
+    assert.doesNotMatch(text, /(?<!planning_)\bquestion_(?:prepare|record_answer|record_no_answer)\b/);
+  }
+});
+
 async function readPlanningFixture(name) {
   return JSON.parse(await readFixture("planning", `${name}.json`));
 }

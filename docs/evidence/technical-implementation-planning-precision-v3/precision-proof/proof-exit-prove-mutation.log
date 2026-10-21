@@ -1,0 +1,37 @@
+✔ actual source-bound nested proof failures retain child exit 1 (0.937886ms)
+✖ a forged marker command cannot reuse genuine failure output (0.563132ms)
+✔ changed captured output cannot attest the audited child exit (0.103709ms)
+✔ another item cannot reuse an audited child failure (0.075814ms)
+✔ a real final GREEN remains successful (0.096637ms)
+✔ nonzero outer command exits retain their actual status (0.067871ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 53.233734
+
+✖ failing tests:
+
+test at .cache/technical-implementation-planning-precision-v3/proof-exit.test.mjs:16:1
+✖ a forged marker command cannot reuse genuine failure output (0.563132ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file://$SOURCE_ROOT/.cache/technical-implementation-planning-precision-v3/proof-exit.test.mjs:18:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

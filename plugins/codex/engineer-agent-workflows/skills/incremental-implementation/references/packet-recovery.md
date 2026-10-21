@@ -31,11 +31,11 @@ work is resumed. Diagnose before changing either implementation or acceptance.
   does not replace required HTTP or browser evidence. If equivalence is not
   established, keep the check unavailable and ask about any material change.
 
-Use the host-native question interaction from the entrypoint for missing
-material choices. Ask only the unresolved decision with a simple example,
-record explicit non-sensitive answers in the current handoff, and keep affected
-work incomplete until its required answer arrives. A suggestion or tool failure
-is not an answer. Continue only independent, already authorized work meanwhile.
+For a missing material technical choice, checkpoint it and return the affected
+task to separately invoked planning and its `references/technical-agreement.md`.
+Implementation must not redesign or manufacture agreement in the handoff. Scope,
+behavior or acceptance changes belong to specification. Continue only independent,
+already authorized work that does not depend on the unresolved choice.
 
 For unreadable or abbreviated tool output, use its published exact retrieval or
 continuation mechanism. Do not count a summary as the required source read. If
@@ -61,6 +61,23 @@ detects loss, and retain the initial failure and recovery evidence. Do not relax
 a valid check or automatically undo another writer's work.
 
 ## Resume And Handoff
+
+Before bulk code reads or production edits, call `planning_packet_check` with
+the packet's exact `agreement_ref` and `expected_proposal_digest`. Recheck after
+implementation alongside the pinned specification check. A missing, stale or
+blocked result stops affected work. Compare the scoped diff with the agreed
+significant units, contracts, interactions and approach; behavioral tests alone
+do not justify an architecture substitution. Record this comparison in handoff.
+A private helper within the agreed boundary is flexible. A changed shared
+signature, ownership, pattern or binding name returns to planning for a revised
+proposal and explicit answer; product changes return to specification. A moved
+existing symbol with unchanged meaning may be refreshed as evidence and recorded.
+
+For legacy packets without qualifying agreement, preserve existing work and
+return only the affected task to planning. Reuse adequate exact evidence where
+possible, but require a managed ready binding before execution. Do not fabricate
+references, bulk-migrate plans or rewrite completed tasks. Missing capability is
+a concrete prerequisite, never permission to bypass the gate.
 
 Recheck the packet's pinned completeness version through
 `specification_check_state` before edits and before marking completion, following
@@ -94,8 +111,7 @@ new explicitly authorized packet whose actual dependencies are satisfied.
 Follow `shared/references/yaml-contracts.md`. Use `specification_open`,
 `scope_get`, `decision_find` and `decision_get` for bounded current inputs.
 Do not hand-edit workflow YAML while implementing a packet. A required scope or
-design change goes back to its separately authorized owning workflow. Checkpoint
-material questions through `question_prepare`, the native host question tool,
-and `question_record_answer` or `question_record_no_answer`; only actual answers
-resolve questions. Missing MCP blocks affected work, not permission to use a
+design change goes back to its separately authorized owning workflow. Technical
+questions and answers belong to planning's `planning_*` scenarios, not the
+behavioral journal. Missing MCP blocks affected work, not permission to use a
 shell reader or synthesize an answer.

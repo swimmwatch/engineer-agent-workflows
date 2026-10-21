@@ -1,0 +1,15 @@
+{
+  "classification": "ACTUAL",
+  "kind": "test-assertion-repair",
+  "initialRequiredSuite": {"command": "rtk npm test", "exitCode": 1, "completeFailureCount": null, "limitation": "Terminal output was truncated; no full-suite count is inferred."},
+  "focusedRed": {"command": "rtk proxy node --test tests/product-task-integration.test.mjs", "exitCode": 1, "tests": 7, "passed": 6, "failed": 1, "failure": "The standalone word assertion rejected the existing otherwise skip product task tools instruction."},
+  "correction": "Assert the explicit non-product tool prohibition rather than a standalone vocabulary token; add a negative case removing that prohibition for every dependent workflow.",
+  "focusedGreen": {"command": "rtk proxy node --test tests/product-task-integration.test.mjs", "exitCode": 0, "tests": 8, "passed": 8, "failed": 0},
+  "workflowSourceChanged": false,
+  "frozenTrialSourcesChanged": false,
+  "additionalStaleAssertions": ["Host instruction reuse checked former vocabulary and fixed whitespace rather than the conditional read rule.", "Packet completion checked a literal step number rather than the all-required-checks completion gate."],
+  "additionalCorrection": "Retain the same read and completion restrictions; accept their current equivalent wording and add negative controls for missing conditions, unconditional reads, and any-check completion.",
+  "focusedRegression": {"tests": 11, "passed": 11, "failed": 0},
+  "preservedFullFailure": {"tests": 1041, "passed": 1039, "failed": 2, "privateLog": "npm-test-before-contract-assertion-repair.log"},
+  "fullSuiteRerun": {"command": "rtk npm test", "exitCode": 0, "tests": 1041, "passed": 1041, "failed": 0, "cancelled": 0, "skipped": 0, "durationMs": 190956.840375}
+}

@@ -1,0 +1,14 @@
+✔ actual source-bound nested proof failures retain child exit 1 (0.920547ms)
+✔ a forged marker command cannot reuse genuine failure output (0.102639ms)
+✔ changed captured output cannot attest the audited child exit (0.102291ms)
+✔ another item cannot reuse an audited child failure (0.069668ms)
+✔ a real final GREEN remains successful (0.094578ms)
+✔ nonzero outer command exits retain their actual status (0.065257ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 54.235957

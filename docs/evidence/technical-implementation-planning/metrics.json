@@ -1,0 +1,1066 @@
+{
+  "classification": "ACTUAL",
+  "runs": [
+    {
+      "runId": "b1-baseline-s2-1",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 1,
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 1731.743443,
+        "endMs": 521996.409415,
+        "setupMs": 1629.693878,
+        "elapsedMs": 520264.665972,
+        "respondentMs": 0,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 2193.6304409999284,
+        "activeMs": 518071.03553100006,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15e9d-40a6-7082-b287-9b2ad072103f",
+            "startMs": 1731.743443,
+            "endMs": 181081.119355
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ea0-01fe-7b70-abeb-d0767ae12c14",
+            "startMs": 182129.092977,
+            "endMs": 325738.955241
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ea2-3715-7951-8f75-0f42c31bdfb9",
+            "startMs": 326836.301233,
+            "endMs": 519894.48982
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b1-baseline-s2-1",
+            "startMs": 519942.800647,
+            "endMs": 521996.409415
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1940996,
+          "inputTokens": 1918769,
+          "cachedInputTokens": 1725184,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 22227,
+          "reasoningOutputTokens": 778
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15e9d-40a6-7082-b287-9b2ad072103f",
+            "total": {
+              "totalTokens": 513575,
+              "inputTokens": 504669,
+              "cachedInputTokens": 450432,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 8906,
+              "reasoningOutputTokens": 412
+            }
+          },
+          {
+            "stageId": "implementation-01_validation_and_validate.md",
+            "sessionId": "01a15ea0-01fe-7b70-abeb-d0767ae12c14",
+            "total": {
+              "totalTokens": 775637,
+              "inputTokens": 769396,
+              "cachedInputTokens": 691840,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6241,
+              "reasoningOutputTokens": 263
+            }
+          },
+          {
+            "stageId": "implementation-02_summarize.md",
+            "sessionId": "01a15ea2-3715-7951-8f75-0f42c31bdfb9",
+            "total": {
+              "totalTokens": 651784,
+              "inputTokens": 644704,
+              "cachedInputTokens": 582912,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 7080,
+              "reasoningOutputTokens": 103
+            }
+          }
+        ]
+      },
+      "questionRounds": 0,
+      "toolCalls": 107,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": null,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b1-candidate-s2-1",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 1,
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 523975.023894,
+        "endMs": 1191972.464906,
+        "setupMs": 1519.7056169999996,
+        "elapsedMs": 667997.4410120001,
+        "respondentMs": 0.70071799994912,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 2210.358139999793,
+        "activeMs": 665787.0828720003,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15ea5-3915-7e53-b4b1-6373c854acde",
+            "startMs": 523975.023894,
+            "endMs": 843574.120966
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15eaa-1de1-78f0-b81e-819789a011a6",
+            "startMs": 844638.932336,
+            "endMs": 1046719.448159
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ead-3768-7541-8d3c-098808b4dcba",
+            "startMs": 1047811.732893,
+            "endMs": 1189285.195147
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b1-candidate-s2-1",
+            "startMs": 1189338.457183,
+            "endMs": 1191972.464906
+          }
+        ],
+        "tokens": {
+          "totalTokens": 2357691,
+          "inputTokens": 2335207,
+          "cachedInputTokens": 2088576,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 22484,
+          "reasoningOutputTokens": 797
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15ea5-3915-7e53-b4b1-6373c854acde",
+            "total": {
+              "totalTokens": 888564,
+              "inputTokens": 878446,
+              "cachedInputTokens": 815616,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 10118,
+              "reasoningOutputTokens": 411
+            }
+          },
+          {
+            "stageId": "implementation-01_validate.md",
+            "sessionId": "01a15eaa-1de1-78f0-b81e-819789a011a6",
+            "total": {
+              "totalTokens": 752049,
+              "inputTokens": 745541,
+              "cachedInputTokens": 682368,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6508,
+              "reasoningOutputTokens": 173
+            }
+          },
+          {
+            "stageId": "implementation-02_summarize.md",
+            "sessionId": "01a15ead-3768-7541-8d3c-098808b4dcba",
+            "total": {
+              "totalTokens": 717078,
+              "inputTokens": 711220,
+              "cachedInputTokens": 590592,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 5858,
+              "reasoningOutputTokens": 213
+            }
+          }
+        ]
+      },
+      "questionRounds": 1,
+      "toolCalls": 148,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b2-candidate-s2-1",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 1,
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 1194272.725448,
+        "endMs": 1539454.356658,
+        "setupMs": 1650.135113999946,
+        "elapsedMs": 345181.63121,
+        "respondentMs": 0.17389299999922514,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 1189.7057580000255,
+        "activeMs": 343991.925452,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15eaf-7348-7fc2-90f7-84a005580c69",
+            "startMs": 1194272.725448,
+            "endMs": 1389262.168485
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15eb2-7184-7dd0-89ce-6dd95d0e9ffa",
+            "startMs": 1390405.227332,
+            "endMs": 1536111.499385
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b2-candidate-s2-1",
+            "startMs": 1536158.146296,
+            "endMs": 1539454.356658
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1200054,
+          "inputTokens": 1189469,
+          "cachedInputTokens": 1053056,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10585,
+          "reasoningOutputTokens": 259
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15eaf-7348-7fc2-90f7-84a005580c69",
+            "total": {
+              "totalTokens": 658553,
+              "inputTokens": 652473,
+              "cachedInputTokens": 567680,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6080,
+              "reasoningOutputTokens": 86
+            }
+          },
+          {
+            "stageId": "implementation-01_timeout-range.md",
+            "sessionId": "01a15eb2-7184-7dd0-89ce-6dd95d0e9ffa",
+            "total": {
+              "totalTokens": 541501,
+              "inputTokens": 536996,
+              "cachedInputTokens": 485376,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 4505,
+              "reasoningOutputTokens": 173
+            }
+          }
+        ]
+      },
+      "questionRounds": 1,
+      "toolCalls": 80,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b2-baseline-s2-1",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 1,
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 1541663.086595,
+        "endMs": 1870477.235941,
+        "setupMs": 1605.2251079999842,
+        "elapsedMs": 328814.14934600005,
+        "respondentMs": 0,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 1100.5343690000009,
+        "activeMs": 327713.61497700005,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15eb4-c008-7650-859b-e6342f39ef2e",
+            "startMs": 1541663.086595,
+            "endMs": 1704068.935394
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15eb7-3f28-7b33-91af-656fc3b06a55",
+            "startMs": 1705117.702515,
+            "endMs": 1869485.68748
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b2-baseline-s2-1",
+            "startMs": 1869537.454728,
+            "endMs": 1870477.235941
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1034797,
+          "inputTokens": 1023704,
+          "cachedInputTokens": 882176,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11093,
+          "reasoningOutputTokens": 174
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15eb4-c008-7650-859b-e6342f39ef2e",
+            "total": {
+              "totalTokens": 384145,
+              "inputTokens": 378853,
+              "cachedInputTokens": 308992,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 5292,
+              "reasoningOutputTokens": 59
+            }
+          },
+          {
+            "stageId": "implementation-01_timeout-range.md",
+            "sessionId": "01a15eb7-3f28-7b33-91af-656fc3b06a55",
+            "total": {
+              "totalTokens": 650652,
+              "inputTokens": 644851,
+              "cachedInputTokens": 573184,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 5801,
+              "reasoningOutputTokens": 115
+            }
+          }
+        ]
+      },
+      "questionRounds": 0,
+      "toolCalls": 63,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b1-candidate-s2-2",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 2,
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 1872565.134085,
+        "endMs": 2493319.313608,
+        "setupMs": 1606.7805069999304,
+        "elapsedMs": 620754.179523,
+        "respondentMs": 0.5614680000580847,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 2251.5535269998945,
+        "activeMs": 618502.6259960001,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15eb9-ccca-72c1-adc4-175c23c634b9",
+            "startMs": 1872565.134085,
+            "endMs": 2118131.775416
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ebd-909d-7a73-91e2-c2d8b2f611bf",
+            "startMs": 2119233.477308,
+            "endMs": 2286801.330556
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ec0-237c-7e10-b6d7-a0f970436b56",
+            "startMs": 2287909.103685,
+            "endMs": 2491416.095368
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b1-candidate-s2-2",
+            "startMs": 2491458.173874,
+            "endMs": 2493319.313608
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1877956,
+          "inputTokens": 1857508,
+          "cachedInputTokens": 1639424,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20448,
+          "reasoningOutputTokens": 541
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15eb9-ccca-72c1-adc4-175c23c634b9",
+            "total": {
+              "totalTokens": 574318,
+              "inputTokens": 566161,
+              "cachedInputTokens": 519296,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 8157,
+              "reasoningOutputTokens": 289
+            }
+          },
+          {
+            "stageId": "implementation-01_validation.md",
+            "sessionId": "01a15ebd-909d-7a73-91e2-c2d8b2f611bf",
+            "total": {
+              "totalTokens": 599402,
+              "inputTokens": 593709,
+              "cachedInputTokens": 540032,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 5693,
+              "reasoningOutputTokens": 125
+            }
+          },
+          {
+            "stageId": "implementation-02_summarize.md",
+            "sessionId": "01a15ec0-237c-7e10-b6d7-a0f970436b56",
+            "total": {
+              "totalTokens": 704236,
+              "inputTokens": 697638,
+              "cachedInputTokens": 580096,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6598,
+              "reasoningOutputTokens": 127
+            }
+          }
+        ]
+      },
+      "questionRounds": 1,
+      "toolCalls": 116,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b1-baseline-s2-2",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 2,
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 2495481.490665,
+        "endMs": 3081100.409711,
+        "setupMs": 1503.062684000004,
+        "elapsedMs": 585618.9190460001,
+        "respondentMs": 0,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 2209.5945599996485,
+        "activeMs": 583409.3244860005,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15ec3-4e77-7611-8122-55ce2d63b68c",
+            "startMs": 2495481.490665,
+            "endMs": 2638979.576924
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ec5-8351-70c3-97a7-58ecc73c6c2b",
+            "startMs": 2640089.731321,
+            "endMs": 2860743.408906
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ec8-e56d-7412-81a8-1e85645c369f",
+            "startMs": 2861797.129456,
+            "endMs": 3078464.659345
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b1-baseline-s2-2",
+            "startMs": 3078510.378958,
+            "endMs": 3081100.409711
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1706986,
+          "inputTokens": 1685565,
+          "cachedInputTokens": 1508096,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 21421,
+          "reasoningOutputTokens": 641
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15ec3-4e77-7611-8122-55ce2d63b68c",
+            "total": {
+              "totalTokens": 400848,
+              "inputTokens": 394096,
+              "cachedInputTokens": 353664,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6752,
+              "reasoningOutputTokens": 186
+            }
+          },
+          {
+            "stageId": "implementation-01_shared-validation-and-validate.md",
+            "sessionId": "01a15ec5-8351-70c3-97a7-58ecc73c6c2b",
+            "total": {
+              "totalTokens": 604850,
+              "inputTokens": 597456,
+              "cachedInputTokens": 525184,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 7394,
+              "reasoningOutputTokens": 278
+            }
+          },
+          {
+            "stageId": "implementation-02_summarize.md",
+            "sessionId": "01a15ec8-e56d-7412-81a8-1e85645c369f",
+            "total": {
+              "totalTokens": 701288,
+              "inputTokens": 694013,
+              "cachedInputTokens": 629248,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 7275,
+              "reasoningOutputTokens": 177
+            }
+          }
+        ]
+      },
+      "questionRounds": 0,
+      "toolCalls": 104,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "incomplete"
+    },
+    {
+      "runId": "b2-baseline-s2-2",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 2,
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 3083136.438568,
+        "endMs": 3417151.577562,
+        "setupMs": 1567.9496470000595,
+        "elapsedMs": 334015.1389939999,
+        "respondentMs": 0,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 1161.2589579997584,
+        "activeMs": 332853.88003600016,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15ecc-4603-7852-96dd-e46c9bcabd57",
+            "startMs": 3083136.438568,
+            "endMs": 3272075.276118
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ecf-2c2e-7d10-badf-853d94317e4c",
+            "startMs": 3273188.630997,
+            "endMs": 3416148.93893
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b2-baseline-s2-2",
+            "startMs": 3416196.843009,
+            "endMs": 3417151.577562
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1004480,
+          "inputTokens": 994042,
+          "cachedInputTokens": 884736,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10438,
+          "reasoningOutputTokens": 391
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15ecc-4603-7852-96dd-e46c9bcabd57",
+            "total": {
+              "totalTokens": 395932,
+              "inputTokens": 390014,
+              "cachedInputTokens": 347904,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 5918,
+              "reasoningOutputTokens": 170
+            }
+          },
+          {
+            "stageId": "implementation-01_timeout-range.md",
+            "sessionId": "01a15ecf-2c2e-7d10-badf-853d94317e4c",
+            "total": {
+              "totalTokens": 608548,
+              "inputTokens": 604028,
+              "cachedInputTokens": 536832,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 4520,
+              "reasoningOutputTokens": 221
+            }
+          }
+        ]
+      },
+      "questionRounds": 0,
+      "toolCalls": 68,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    },
+    {
+      "runId": "b2-candidate-s2-2",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 2,
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "benchmark": {
+        "clock": "monotonic-ms",
+        "startMs": 3419340.248645,
+        "endMs": 3886412.617966,
+        "setupMs": 1653.2983180000447,
+        "elapsedMs": 467072.36932099983,
+        "respondentMs": 0.5410750000737607,
+        "blockingRespondentMs": 0,
+        "orchestrationMs": 1112.487048999872,
+        "activeMs": 465959.88227199996,
+        "phases": [
+          {
+            "stage": "planning",
+            "sessionId": "01a15ed1-66c6-7b90-8177-49963fe8bb83",
+            "startMs": 3419340.248645,
+            "endMs": 3630100.818166
+          },
+          {
+            "stage": "implementation",
+            "sessionId": "01a15ed4-a2be-78d2-9726-43fdb8ed8509",
+            "startMs": 3631167.986582,
+            "endMs": 3885477.134587
+          },
+          {
+            "stage": "verification",
+            "sessionId": "oracle:b2-candidate-s2-2",
+            "startMs": 3885522.45322,
+            "endMs": 3886412.617966
+          }
+        ],
+        "tokens": {
+          "totalTokens": 1339431,
+          "inputTokens": 1325330,
+          "cachedInputTokens": 1168128,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14101,
+          "reasoningOutputTokens": 502
+        },
+        "stageTokens": [
+          {
+            "stageId": "planning",
+            "sessionId": "01a15ed1-66c6-7b90-8177-49963fe8bb83",
+            "total": {
+              "totalTokens": 622190,
+              "inputTokens": 615481,
+              "cachedInputTokens": 565248,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6709,
+              "reasoningOutputTokens": 73
+            }
+          },
+          {
+            "stageId": "implementation-01_timeout-range.md",
+            "sessionId": "01a15ed4-a2be-78d2-9726-43fdb8ed8509",
+            "total": {
+              "totalTokens": 717241,
+              "inputTokens": 709849,
+              "cachedInputTokens": 602880,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 7392,
+              "reasoningOutputTokens": 429
+            }
+          }
+        ]
+      },
+      "questionRounds": 1,
+      "toolCalls": 66,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "qualityVerdict": "passed"
+    }
+  ],
+  "summaries": [
+    {
+      "fixture": "b1",
+      "variant": "baseline",
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "measures": {
+        "elapsedMs": {
+          "n": 2,
+          "median": 552941.792509,
+          "min": 520264.665972,
+          "max": 585618.9190460001
+        },
+        "planningMs": {
+          "n": 2,
+          "median": 161423.73108549998,
+          "min": 143498.086259,
+          "max": 179349.375912
+        },
+        "implementationMs": {
+          "n": 2,
+          "median": 386994.62916250015,
+          "min": 336668.050851,
+          "max": 437321.2074740003
+        },
+        "verificationMs": {
+          "n": 2,
+          "median": 2321.819760500075,
+          "min": 2053.6087679999764,
+          "max": 2590.0307530001737
+        },
+        "setupMs": {
+          "n": 2,
+          "median": 1566.378281000002,
+          "min": 1503.062684000004,
+          "max": 1629.693878
+        },
+        "respondentMs": {
+          "n": 2,
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "orchestrationMs": {
+          "n": 2,
+          "median": 2201.6125004997884,
+          "min": 2193.6304409999284,
+          "max": 2209.5945599996485
+        },
+        "activeMs": {
+          "n": 2,
+          "median": 550740.1800085002,
+          "min": 518071.03553100006,
+          "max": 583409.3244860005
+        },
+        "questionRounds": {
+          "n": 2,
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "toolCalls": {
+          "n": 2,
+          "median": 105.5,
+          "min": 104,
+          "max": 107
+        },
+        "totalTokens": {
+          "n": 2,
+          "median": 1823991,
+          "min": 1706986,
+          "max": 1940996
+        }
+      }
+    },
+    {
+      "fixture": "b1",
+      "variant": "candidate",
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "measures": {
+        "elapsedMs": {
+          "n": 2,
+          "median": 644375.8102675001,
+          "min": 620754.179523,
+          "max": 667997.4410120001
+        },
+        "planningMs": {
+          "n": 2,
+          "median": 282582.8692014999,
+          "min": 245566.6413309998,
+          "max": 319599.09707200003
+        },
+        "implementationMs": {
+          "n": 2,
+          "median": 357314.41150400013,
+          "min": 343553.9780769999,
+          "max": 371074.8449310004
+        },
+        "verificationMs": {
+          "n": 2,
+          "median": 2247.5737285000505,
+          "min": 1861.1397339999676,
+          "max": 2634.0077230001334
+        },
+        "setupMs": {
+          "n": 2,
+          "median": 1563.243061999965,
+          "min": 1519.7056169999996,
+          "max": 1606.7805069999304
+        },
+        "respondentMs": {
+          "n": 2,
+          "median": 0.6310930000036024,
+          "min": 0.5614680000580847,
+          "max": 0.70071799994912
+        },
+        "orchestrationMs": {
+          "n": 2,
+          "median": 2230.9558334998437,
+          "min": 2210.358139999793,
+          "max": 2251.5535269998945
+        },
+        "activeMs": {
+          "n": 2,
+          "median": 642144.8544340002,
+          "min": 618502.6259960001,
+          "max": 665787.0828720003
+        },
+        "questionRounds": {
+          "n": 2,
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "toolCalls": {
+          "n": 2,
+          "median": 132,
+          "min": 116,
+          "max": 148
+        },
+        "totalTokens": {
+          "n": 2,
+          "median": 2117823.5,
+          "min": 1877956,
+          "max": 2357691
+        }
+      }
+    },
+    {
+      "fixture": "b2",
+      "variant": "baseline",
+      "sourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "measures": {
+        "elapsedMs": {
+          "n": 2,
+          "median": 331414.64417,
+          "min": 328814.14934600005,
+          "max": 334015.1389939999
+        },
+        "planningMs": {
+          "n": 2,
+          "median": 175672.34317449993,
+          "min": 162405.84879900003,
+          "max": 188938.83754999982
+        },
+        "implementationMs": {
+          "n": 2,
+          "median": 153664.14644900023,
+          "min": 142960.30793300038,
+          "max": 164367.98496500007
+        },
+        "verificationMs": {
+          "n": 2,
+          "median": 947.2578829999547,
+          "min": 939.7812129999511,
+          "max": 954.7345529999584
+        },
+        "setupMs": {
+          "n": 2,
+          "median": 1586.5873775000218,
+          "min": 1567.9496470000595,
+          "max": 1605.2251079999842
+        },
+        "respondentMs": {
+          "n": 2,
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "orchestrationMs": {
+          "n": 2,
+          "median": 1130.8966634998797,
+          "min": 1100.5343690000009,
+          "max": 1161.2589579997584
+        },
+        "activeMs": {
+          "n": 2,
+          "median": 330283.7475065001,
+          "min": 327713.61497700005,
+          "max": 332853.88003600016
+        },
+        "questionRounds": {
+          "n": 2,
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "toolCalls": {
+          "n": 2,
+          "median": 65.5,
+          "min": 63,
+          "max": 68
+        },
+        "totalTokens": {
+          "n": 2,
+          "median": 1019638.5,
+          "min": 1004480,
+          "max": 1034797
+        }
+      }
+    },
+    {
+      "fixture": "b2",
+      "variant": "candidate",
+      "sourceIdentity": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "measures": {
+        "elapsedMs": {
+          "n": 2,
+          "median": 406127.0002654999,
+          "min": 345181.63121,
+          "max": 467072.36932099983
+        },
+        "planningMs": {
+          "n": 2,
+          "median": 202875.00627899985,
+          "min": 194989.44303700002,
+          "max": 210760.56952099968
+        },
+        "implementationMs": {
+          "n": 2,
+          "median": 200007.71002900018,
+          "min": 145706.27205300005,
+          "max": 254309.14800500032
+        },
+        "verificationMs": {
+          "n": 2,
+          "median": 2093.1875539999455,
+          "min": 890.1647459999658,
+          "max": 3296.210361999925
+        },
+        "setupMs": {
+          "n": 2,
+          "median": 1651.7167159999954,
+          "min": 1650.135113999946,
+          "max": 1653.2983180000447
+        },
+        "respondentMs": {
+          "n": 2,
+          "median": 0.35748400003649294,
+          "min": 0.17389299999922514,
+          "max": 0.5410750000737607
+        },
+        "orchestrationMs": {
+          "n": 2,
+          "median": 1151.0964034999488,
+          "min": 1112.487048999872,
+          "max": 1189.7057580000255
+        },
+        "activeMs": {
+          "n": 2,
+          "median": 404975.903862,
+          "min": 343991.925452,
+          "max": 465959.88227199996
+        },
+        "questionRounds": {
+          "n": 2,
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "toolCalls": {
+          "n": 2,
+          "median": 73,
+          "min": 66,
+          "max": 80
+        },
+        "totalTokens": {
+          "n": 2,
+          "median": 1269742.5,
+          "min": 1200054,
+          "max": 1339431
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "fixture": "b1",
+      "repetition": 1,
+      "baseline": "b1-baseline-s2-1",
+      "candidate": "b1-candidate-s2-1",
+      "candidateMinusBaseline": {
+        "elapsedMs": 147732.7750400001,
+        "planningMs": 140249.72116000004,
+        "implementationMs": 6885.927225999883,
+        "verificationMs": 580.398955000157,
+        "setupMs": -109.98826100000042,
+        "respondentMs": 0.70071799994912,
+        "orchestrationMs": 16.727698999864515,
+        "activeMs": 147716.04734100023,
+        "questionRounds": 1,
+        "toolCalls": 41,
+        "totalTokens": 416695
+      }
+    },
+    {
+      "fixture": "b1",
+      "repetition": 2,
+      "baseline": "b1-baseline-s2-2",
+      "candidate": "b1-candidate-s2-2",
+      "candidateMinusBaseline": {
+        "elapsedMs": 35135.260476999916,
+        "planningMs": 102068.55507199978,
+        "implementationMs": -66246.36254299991,
+        "verificationMs": -728.8910190002061,
+        "setupMs": 103.71782299992628,
+        "respondentMs": 0.5614680000580847,
+        "orchestrationMs": 41.95896700024605,
+        "activeMs": 35093.30150999967,
+        "questionRounds": 1,
+        "toolCalls": 12,
+        "totalTokens": 170970
+      }
+    },
+    {
+      "fixture": "b2",
+      "repetition": 1,
+      "baseline": "b2-baseline-s2-1",
+      "candidate": "b2-candidate-s2-1",
+      "candidateMinusBaseline": {
+        "elapsedMs": 16367.481863999972,
+        "planningMs": 32583.59423799999,
+        "implementationMs": -18661.712912000017,
+        "verificationMs": 2356.429148999974,
+        "setupMs": 44.91000599996187,
+        "respondentMs": 0.17389299999922514,
+        "orchestrationMs": 89.17138900002465,
+        "activeMs": 16278.310474999947,
+        "questionRounds": 1,
+        "toolCalls": 17,
+        "totalTokens": 165257
+      }
+    },
+    {
+      "fixture": "b2",
+      "repetition": 2,
+      "baseline": "b2-baseline-s2-2",
+      "candidate": "b2-candidate-s2-2",
+      "candidateMinusBaseline": {
+        "elapsedMs": 133057.2303269999,
+        "planningMs": 21821.731970999856,
+        "implementationMs": 111348.84007199993,
+        "verificationMs": -64.56980699999258,
+        "setupMs": 85.34867099998519,
+        "respondentMs": 0.5410750000737607,
+        "orchestrationMs": -48.771908999886364,
+        "activeMs": 133106.0022359998,
+        "questionRounds": 1,
+        "toolCalls": -2,
+        "totalTokens": 334951
+      }
+    }
+  ],
+  "note": "Two repetitions are descriptive; simulation answers have no human deliberation delay. Unknown token totals remain null."
+}

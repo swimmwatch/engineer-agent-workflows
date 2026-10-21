@@ -1,0 +1,21 @@
+{
+  "classification": "ACTUAL",
+  "recordedAt": "2026-10-21T19:50:34.111Z",
+  "subject": "Explicit acceptance of the precision-v3 P03 measured speed/quality tradeoff",
+  "source": "Direct human response through native functions.request_user_input in the owning chat",
+  "questionId": "precision_v3_tradeoff",
+  "question": "Принять новые результаты P03: candidate +1,0% в B1 и +20,0% в B2 по полному циклу, с двумя повторами и поздним корректирующим B2 baseline (в исходном порядке модельные фазы B2: +11,1%)? Все 13 независимых оценок и evidence-check прошли; исходный выход обёртки 143 сохранён как ограничение.",
+  "selectedAnswer": "Принять (Recommended)",
+  "explicit": true,
+  "accepted": true,
+  "acceptedScope": "Close P03 using these exact measured results with the documented two-repeat, later corrective B2 baseline and unexplained original wrapper exit 143 limits. No blanket approval of future benchmarks or P04.",
+  "reviewedReportDigest": "e486802b8d4b903925c581bf7396a8b3e90812c2af6b1ce147122b1d77bb4297",
+  "evidence": {
+    "ref": "evidence.json",
+    "digest": "018b61e381fab5e7c382650bdd37ad135b3169581abaf549b566b7632c6d3ed5"
+  },
+  "metrics": {
+    "ref": "metrics.json",
+    "digest": "0f9fb85ca961f18d9684594b0e5196bd491f561e915aa9ea01a09e661019c7ce"
+  }
+}

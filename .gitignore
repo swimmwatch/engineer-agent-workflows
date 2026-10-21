@@ -3,6 +3,8 @@ node_modules/
 coverage/
 .nyc_output/
 *.log
+# Retain hash-bound qualification proof logs with their evidence bundle.
+!/docs/evidence/technical-implementation-planning-precision-v3/precision-proof/*.log
 
 # Temporary and cache directories
 .cache/

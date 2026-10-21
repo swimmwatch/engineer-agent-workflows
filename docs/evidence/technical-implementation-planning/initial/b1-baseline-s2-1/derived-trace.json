@@ -1,0 +1,645 @@
+{
+  "classification": "ACTUAL",
+  "traceKind": "derived-trace",
+  "note": "Facts derived from raw captures; simulation setup/authorization stays labeled. Actor completion claims do not establish full quality: required proof observations and the independent verdict remain authoritative, including the incomplete baseline.",
+  "events": [
+    {
+      "atMs": 1726.743443,
+      "type": "stage_started",
+      "stage": "specification",
+      "evidenceRef": "initial/b1-baseline-s2-1/inputs/setup.json",
+      "seq": 1
+    },
+    {
+      "atMs": 1727.743443,
+      "type": "profile_confirmation",
+      "explicit": true,
+      "depth": "Standard",
+      "profiles": [
+        "core"
+      ],
+      "classification": "SIMULATION",
+      "evidenceRef": "initial/b1-baseline-s2-1/inputs/setup.json",
+      "seq": 2
+    },
+    {
+      "atMs": 1728.743443,
+      "type": "artifact_write",
+      "stage": "specification",
+      "target": "specification-artifact",
+      "artifact": "spec.md",
+      "digest": "2300595855525406f451571c71d704f2937922bb0d5a8e7046b5adc98135e0fa",
+      "evidenceRef": "initial/b1-baseline-s2-1/inputs/spec.md",
+      "observedBy": "fixture-setup",
+      "seq": 3
+    },
+    {
+      "atMs": 1729.743443,
+      "type": "stage_completed",
+      "stage": "specification",
+      "status": "passed",
+      "contractDigest": "2300595855525406f451571c71d704f2937922bb0d5a8e7046b5adc98135e0fa",
+      "evidenceRef": "initial/b1-baseline-s2-1/inputs/setup.json",
+      "seq": 4
+    },
+    {
+      "atMs": 1731.743443,
+      "type": "stage_started",
+      "stage": "planning",
+      "sessionId": "01a15e9d-40a6-7082-b287-9b2ad072103f",
+      "seq": 5
+    },
+    {
+      "atMs": 22078.444259,
+      "type": "contract_read",
+      "status": "approved",
+      "digest": "2300595855525406f451571c71d704f2937922bb0d5a8e7046b5adc98135e0fa",
+      "itemId": "exec-5c9774aa-813f-41da-9d9f-a4f69ae6020a",
+      "seq": 6
+    },
+    {
+      "atMs": 29352.001102,
+      "type": "profile_reference_read",
+      "stage": "planning",
+      "profile": "core",
+      "itemId": "exec-86a6fda7-d0dd-41aa-9aa5-8ecb890d5033",
+      "seq": 7
+    },
+    {
+      "atMs": 163984.17137,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_validation_and_validate.md",
+      "path": "docs/specs/b1/tasks/01_validation_and_validate.md",
+      "itemId": "exec-69b16eab-5521-4afb-bfa7-04a367ad4c71",
+      "digest": "a8c693b4d565a140b7abbd79cbf69fcf508000033c0e8dda3dca827a4093b7d1",
+      "seq": 8
+    },
+    {
+      "atMs": 163984.196985,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "02_summarize.md",
+      "path": "docs/specs/b1/tasks/02_summarize.md",
+      "itemId": "exec-69b16eab-5521-4afb-bfa7-04a367ad4c71",
+      "digest": "89fe79c135104fb5976770869cecb1cb2d2ad493d5801460dd1ef680d76c21c9",
+      "seq": 9
+    },
+    {
+      "atMs": 163984.202414,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "handoff.md",
+      "path": "docs/specs/b1/tasks/handoff.md",
+      "itemId": "exec-69b16eab-5521-4afb-bfa7-04a367ad4c71",
+      "digest": "08b642e645051fc72e9860c86392d9aca89225e517b078add5e7d2afdefe7e95",
+      "seq": 10
+    },
+    {
+      "atMs": 163984.204213,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "plan.md",
+      "path": "docs/specs/b1/tasks/plan.md",
+      "itemId": "exec-69b16eab-5521-4afb-bfa7-04a367ad4c71",
+      "digest": "44021e4e484b72166acc84d9fcec504ab1ff4e1901dc72a9568804a5162c8efb",
+      "seq": 11
+    },
+    {
+      "atMs": 163984.205252,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "todo.md",
+      "path": "docs/specs/b1/tasks/todo.md",
+      "itemId": "exec-69b16eab-5521-4afb-bfa7-04a367ad4c71",
+      "digest": "a44f4d2b91d52019eb0da2bb5c28f21ecd34cdd314e8820bdceefde5f9045f6b",
+      "seq": 12
+    },
+    {
+      "atMs": 177447.575311,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "handoff.md",
+      "path": "docs/specs/b1/tasks/handoff.md",
+      "itemId": "exec-af7f3c37-1224-40fa-8438-5c9eba508f8c",
+      "digest": "dcd50f89174304b5e2cab99b27adf04e51076901e3194122bb07ed3864a16c50",
+      "seq": 13
+    },
+    {
+      "atMs": 181081.109355,
+      "type": "packet_declared",
+      "packetId": "01_validation_and_validate.md",
+      "requirementIds": [
+        "b1-baseline-AR-1",
+        "b1-baseline-AR-2",
+        "b1-baseline-AR-3",
+        "b1-baseline-AR-4"
+      ],
+      "requiredProofs": [
+        "validate: CLI rejects late malformed",
+        "validate: CLI rejects +1; validate: parser rejects +1",
+        "validate: parser uniqueness state is per call"
+      ],
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 14
+    },
+    {
+      "atMs": 181081.109355,
+      "type": "packet_declared",
+      "packetId": "02_summarize.md",
+      "requirementIds": [
+        "b1-baseline-AR-1",
+        "b1-baseline-AR-2",
+        "b1-baseline-AR-3",
+        "b1-baseline-AR-4"
+      ],
+      "requiredProofs": [
+        "summarize: CLI rejects late malformed",
+        "validate: CLI accepts ordered with final LF; summarize: CLI accepts ordered with final LF"
+      ],
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 15
+    },
+    {
+      "atMs": 181081.119355,
+      "type": "stage_completed",
+      "stage": "planning",
+      "status": "passed",
+      "seq": 16
+    },
+    {
+      "atMs": 182129.092977,
+      "type": "stage_started",
+      "stage": "implementation",
+      "seq": 17
+    },
+    {
+      "atMs": 182129.092977,
+      "type": "packet_authorized",
+      "packetId": "01_validation_and_validate.md",
+      "classification": "SIMULATION",
+      "source": "initial/b1-baseline-s2-1/implementation-01_validation_and_validate.md.jsonl",
+      "evidence": "Explicit single-packet invocation prompt",
+      "seq": 18
+    },
+    {
+      "atMs": 213417.089575,
+      "type": "packet_prerequisites",
+      "packetId": "01_validation_and_validate.md",
+      "status": "passed",
+      "itemIds": [
+        "exec-014865c1-dd3f-4093-99c5-6f1eb8ece9c2",
+        "exec-f0a955af-7fd0-4b87-8142-26714204a585",
+        "exec-aa9d6d9b-1446-47fc-a0f7-72a6d4bf6999",
+        "exec-b09cddc3-87d6-4872-9ecc-1c8f8bd8761f",
+        "exec-a458d001-ef5d-4edf-8df8-d8909c2bb2f1",
+        "exec-04f4fc04-2946-47be-b356-8bdac1a1caf3"
+      ],
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 19
+    },
+    {
+      "atMs": 244197.888379,
+      "type": "packet_started",
+      "packetId": "01_validation_and_validate.md",
+      "sessionId": "01a15ea0-01fe-7b70-abeb-d0767ae12c14",
+      "observedBy": "derived-first-packet-action",
+      "seq": 20
+    },
+    {
+      "atMs": 245045.710876,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "01_validation_and_validate.md:behavior",
+      "phase": "red",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "requirementIds": [
+        "b1-baseline-AR-1",
+        "b1-baseline-AR-2",
+        "b1-baseline-AR-3",
+        "b1-baseline-AR-4"
+      ],
+      "itemId": "exec-d5e3a6c6-6aca-43d5-9989-1b0c1a44b888",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 21
+    },
+    {
+      "atMs": 256631.906526,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-3cca1d6f-00b7-48bf-a676-914385a34f5a",
+      "digest": "e4e931bd5d04d0a94b8998fd43118c38febc248ccbeef4811292f4d12cd41704",
+      "seq": 22
+    },
+    {
+      "atMs": 256631.917447,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-3cca1d6f-00b7-48bf-a676-914385a34f5a",
+      "digest": "ef3fd28fa55695552d06bbb84fa7823c2fb8a289125017c0655bed14594524bf",
+      "seq": 23
+    },
+    {
+      "atMs": 257484.398976,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "01_validation_and_validate.md:behavior",
+      "phase": "green",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "itemId": "exec-c46fe69e-06aa-46e3-9527-3713d9a7c110",
+      "seq": 24
+    },
+    {
+      "atMs": 268933.095417,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-6eac4b30-296d-4235-b625-88bb7993bdab",
+      "digest": "3edaaeea56a1ca26b6f1fd9a1ed0db8fab9c93fd2f166d3379f16a6b0ff22623",
+      "seq": 25
+    },
+    {
+      "atMs": 269077.695861,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: CLI rejects late malformed",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-0d39fbcf-80ba-4ebe-be06-e3a78d8f658d",
+      "itemId": "exec-0d39fbcf-80ba-4ebe-be06-e3a78d8f658d",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 26
+    },
+    {
+      "atMs": 275284.705021,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-e49d9c4f-e2e5-410f-8be0-5e78056beee3",
+      "digest": "e4e931bd5d04d0a94b8998fd43118c38febc248ccbeef4811292f4d12cd41704",
+      "seq": 27
+    },
+    {
+      "atMs": 275284.707912,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-e49d9c4f-e2e5-410f-8be0-5e78056beee3",
+      "digest": "31ead6a21cbc5889e4a46c6d680465b17e8ee58e05d254e9fcea4a05e117ffd8",
+      "seq": 28
+    },
+    {
+      "atMs": 275427.245953,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: CLI rejects +1; validate: parser rejects +1",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-12b01cad-4c78-4da5-9c69-d648ec8c6731",
+      "itemId": "exec-12b01cad-4c78-4da5-9c69-d648ec8c6731",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 29
+    },
+    {
+      "atMs": 280129.243173,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-b2a2390f-ff17-40a3-b5cf-52bb79641da2",
+      "digest": "24954716e9b08bb04b6c7fa5a25082f7288848a5e0080c928cd5cc9593215efa",
+      "seq": 30
+    },
+    {
+      "atMs": 280246.481813,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: parser uniqueness state is per call",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-f02b4cf7-7a6c-4516-b1b6-3c396ffef1ad",
+      "itemId": "exec-f02b4cf7-7a6c-4516-b1b6-3c396ffef1ad",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 31
+    },
+    {
+      "atMs": 286387.978966,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "01_validation_and_validate.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-599cdc0a-8dfb-4b06-8141-9e4f16f54a89",
+      "digest": "ef3fd28fa55695552d06bbb84fa7823c2fb8a289125017c0655bed14594524bf",
+      "seq": 32
+    },
+    {
+      "atMs": 287216.185511,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: CLI rejects late malformed",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-0d39fbcf-80ba-4ebe-be06-e3a78d8f658d",
+      "itemId": "exec-feaf358c-97aa-47f2-8634-63b36aa4c37b",
+      "restorationItemId": "exec-e49d9c4f-e2e5-410f-8be0-5e78056beee3",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 33
+    },
+    {
+      "atMs": 287216.185511,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: CLI rejects +1; validate: parser rejects +1",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-12b01cad-4c78-4da5-9c69-d648ec8c6731",
+      "itemId": "exec-feaf358c-97aa-47f2-8634-63b36aa4c37b",
+      "restorationItemId": "exec-b2a2390f-ff17-40a3-b5cf-52bb79641da2",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 34
+    },
+    {
+      "atMs": 287216.185511,
+      "type": "test_observation",
+      "packetId": "01_validation_and_validate.md",
+      "testId": "validate: parser uniqueness state is per call",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-f02b4cf7-7a6c-4516-b1b6-3c396ffef1ad",
+      "itemId": "exec-feaf358c-97aa-47f2-8634-63b36aa4c37b",
+      "restorationItemId": "exec-599cdc0a-8dfb-4b06-8141-9e4f16f54a89",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 35
+    },
+    {
+      "atMs": 288248.061902,
+      "type": "check",
+      "stage": "implementation",
+      "packetId": "01_validation_and_validate.md",
+      "checkId": "01_validation_and_validate.md:final",
+      "status": "passed",
+      "itemId": "exec-8dce6736-f5cc-40d8-8f2f-405b2230bc3e",
+      "seq": 36
+    },
+    {
+      "atMs": 325738.955141,
+      "type": "packet_completed",
+      "packetId": "01_validation_and_validate.md",
+      "status": "passed",
+      "observedBy": "actor-checklist-and-completion-claim",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 37
+    },
+    {
+      "atMs": 326836.301233,
+      "type": "packet_authorized",
+      "packetId": "02_summarize.md",
+      "classification": "SIMULATION",
+      "source": "initial/b1-baseline-s2-1/implementation-02_summarize.md.jsonl",
+      "evidence": "Explicit single-packet invocation prompt",
+      "seq": 38
+    },
+    {
+      "atMs": 374393.536496,
+      "type": "packet_prerequisites",
+      "packetId": "02_summarize.md",
+      "status": "passed",
+      "itemIds": [
+        "exec-65d73477-433b-413c-a97e-5c9b055725f4",
+        "exec-b3776e41-3fc5-4841-8db3-6680475f07f2",
+        "exec-9c341ab1-6dfc-4311-b792-da8a9eb3c915",
+        "exec-343f076c-5418-4c00-86de-77f3a5fc4e93",
+        "exec-57abaf99-402f-493b-b5e0-250ccca28109",
+        "exec-823aec36-0d8d-4c84-af69-f4dcf513b964",
+        "exec-fc68c621-8b7f-4850-a49e-5233abc31a7a"
+      ],
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 39
+    },
+    {
+      "atMs": 388512.153821,
+      "type": "packet_started",
+      "packetId": "02_summarize.md",
+      "sessionId": "01a15ea2-3715-7951-8f75-0f42c31bdfb9",
+      "observedBy": "derived-first-packet-action",
+      "seq": 40
+    },
+    {
+      "atMs": 389332.870002,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "02_summarize.md:behavior",
+      "phase": "red",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "requirementIds": [
+        "b1-baseline-AR-1",
+        "b1-baseline-AR-2",
+        "b1-baseline-AR-3",
+        "b1-baseline-AR-4"
+      ],
+      "itemId": "exec-2d8f24d2-c3a1-4c1b-b659-bd4623b7f0ac",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 41
+    },
+    {
+      "atMs": 396409.977982,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "02_summarize.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-09537d08-269e-42af-bd9b-6d61fc823d62",
+      "digest": "002d64d46f25d81c69e89dec3d7871324454343a31235f2cfae2c5cc2851de32",
+      "seq": 42
+    },
+    {
+      "atMs": 397298.312906,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "02_summarize.md:behavior",
+      "phase": "green",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "itemId": "exec-de2aa016-9ae4-4f06-ab64-6ef0afcb587e",
+      "seq": 43
+    },
+    {
+      "atMs": 410435.180588,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "02_summarize.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-50e02006-38fd-4a02-af4b-61746c4a2231",
+      "digest": "8455cb47dc9144ffed4c96978e8666cfb4d1ba4c8b6974d3dfa259d949e578ae",
+      "seq": 44
+    },
+    {
+      "atMs": 410580.116606,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "summarize: CLI rejects late malformed",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-2261935b-275c-4af1-b47a-3359a03af0b3",
+      "itemId": "exec-2261935b-275c-4af1-b47a-3359a03af0b3",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 45
+    },
+    {
+      "atMs": 410625.060705,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "02_summarize.md",
+      "artifact": "cli.mjs",
+      "itemId": "exec-6352047e-01b4-460e-bf63-68d6cd9517b7",
+      "digest": "002d64d46f25d81c69e89dec3d7871324454343a31235f2cfae2c5cc2851de32",
+      "seq": 46
+    },
+    {
+      "atMs": 410666.870011,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "02_summarize.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-7d36038b-454b-43ab-b157-59962b5b6dc2",
+      "digest": "1c5ecbf4c7f458f22dbdfe2d0dd88bc53e80df62697f7db2bb6e18a854801778",
+      "seq": 47
+    },
+    {
+      "atMs": 410821.93291,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "validate: CLI accepts ordered with final LF; summarize: CLI accepts ordered with final LF",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-a57c9b3b-d0f9-4ae3-af1f-60fc3ce32dfa",
+      "itemId": "exec-a57c9b3b-d0f9-4ae3-af1f-60fc3ce32dfa",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 48
+    },
+    {
+      "atMs": 410863.25162,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "02_summarize.md",
+      "artifact": "records.mjs",
+      "itemId": "exec-84de77c9-129c-4026-abc9-f2175b47885d",
+      "digest": "ef3fd28fa55695552d06bbb84fa7823c2fb8a289125017c0655bed14594524bf",
+      "seq": 49
+    },
+    {
+      "atMs": 412516.25373,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "summarize: CLI rejects late malformed",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-2261935b-275c-4af1-b47a-3359a03af0b3",
+      "itemId": "exec-18882c1f-53cf-4f5d-b529-9912ac252820",
+      "restorationItemId": "exec-6352047e-01b4-460e-bf63-68d6cd9517b7",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 50
+    },
+    {
+      "atMs": 412516.25373,
+      "type": "test_observation",
+      "packetId": "02_summarize.md",
+      "testId": "validate: CLI accepts ordered with final LF; summarize: CLI accepts ordered with final LF",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-a57c9b3b-d0f9-4ae3-af1f-60fc3ce32dfa",
+      "itemId": "exec-18882c1f-53cf-4f5d-b529-9912ac252820",
+      "restorationItemId": "exec-84de77c9-129c-4026-abc9-f2175b47885d",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 51
+    },
+    {
+      "atMs": 412516.25383,
+      "type": "check",
+      "stage": "implementation",
+      "packetId": "02_summarize.md",
+      "checkId": "02_summarize.md:final",
+      "status": "passed",
+      "itemId": "exec-18882c1f-53cf-4f5d-b529-9912ac252820",
+      "seq": 52
+    },
+    {
+      "atMs": 519894.48972,
+      "type": "packet_completed",
+      "packetId": "02_summarize.md",
+      "status": "passed",
+      "observedBy": "actor-checklist-and-completion-claim",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "seq": 53
+    },
+    {
+      "atMs": 519894.48982,
+      "type": "stage_completed",
+      "stage": "implementation",
+      "status": "passed",
+      "seq": 54
+    },
+    {
+      "atMs": 521996.409415,
+      "type": "external_acceptance",
+      "status": "passed",
+      "requirementIds": [
+        "b1-baseline-AR-1",
+        "b1-baseline-AR-2",
+        "b1-baseline-AR-3",
+        "b1-baseline-AR-4"
+      ],
+      "evidenceRef": "initial/b1-baseline-s2-1/result.json",
+      "evidenceDigest": "cf2b20adb108c9ba5471e971b05e8e65e13d4ca3ef54946b2bd8291ceb060f15",
+      "seq": 55
+    },
+    {
+      "atMs": 521996.410415,
+      "type": "evaluation_claim",
+      "evidenceRef": "initial/b1-baseline-s2-1/evaluation.json",
+      "status": "passed",
+      "seq": 56
+    }
+  ]
+}

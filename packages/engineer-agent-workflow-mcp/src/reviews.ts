@@ -63,10 +63,10 @@ type BatchFailure =
   | { readonly kind: "batch_member"; readonly category: "duplicate" | "unknown" | "foreign" | "stale" | "unknown_requirement" }
   | { readonly kind: "validation"; readonly field?: keyof VerdictArguments };
 
-export async function reviewState(context: Context, source: RequirementSource, ledger: Data, expected?: string): Promise<Data> {
+export async function reviewState(context: Context, source: RequirementSource, ledger: Data, expected?: string, observeApproval = true): Promise<Data> {
   const s = await snapshot(context, ledger, source), runs = reviewRuns(ledger), run = runs.at(-1);
   let approvalCheckpointWritten = false;
-  if (run && run.source_version === s.version && run.status_at_start === "Draft" && source.status === "Approved" && !run.approval_observed) {
+  if (observeApproval && run && run.source_version === s.version && run.status_at_start === "Draft" && source.status === "Approved" && !run.approval_observed) {
     // Observe an author-made status transition; never approve or rewrite spec.md.
     const fresh = await result(context, {});
     await mutate(String(fresh.context), "decisions", "specification_check_state_observe_approval", { review_ref: run.id, source_version: s.version }, async (value, current) => {

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "commonAnswers": {
+    "scope": "The supplied approved behavior and confirmed depth/core profile are fixed. Do not add profiles, design outputs, dependencies, commits or installation.",
+    "agreement": "Accept the concrete proposal only for the tasks explicitly named in this question. If acceptance is unclear, keep it pending.",
+    "packetAuthority": "Each later implementation invocation authorizes only its named packet inside the isolated fixture."
+  },
+  "scenarios": {
+    "b1": {
+      "preferences": [
+        "Prefer small stateless functions or reuse of existing components over a class hierarchy for this dependency-free command-line tool.",
+        "Use one shared validation/parser contract for validate and summarize. Discuss shared ownership once and cover both named packets explicitly.",
+        "Recommend concrete language-appropriate names and contracts; ordinary private helpers remain flexible.",
+        "Do not change the fixed input, output or error behavior."
+      ]
+    },
+    "b2": {
+      "preferences": [
+        "Reuse the existing parseTimeout(raw) function and error boundary; only expand the accepted upper bound from 10 to 60.",
+        "One adequate function/configuration proposal is sufficient. Do not invent a second architectural option or a class.",
+        "Confirm the named packet's concrete implementation; ordinary private details within that boundary remain flexible."
+      ]
+    }
+  }
+}

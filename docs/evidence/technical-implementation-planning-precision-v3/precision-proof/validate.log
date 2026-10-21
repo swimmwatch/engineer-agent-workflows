@@ -1,0 +1,5 @@
+
+> engineer-agent-workflows-maintenance@0.0.0-development validate
+> node scripts/validate.mjs
+
+complete validation passed: 17/17 skills present

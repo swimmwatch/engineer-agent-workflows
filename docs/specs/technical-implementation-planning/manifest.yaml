@@ -1,0 +1,42 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - "One bounded outcome: every planned task carries an explicitly agreed technical implementation that incremental implementation follows."
+  - Standard depth covers the interaction between existing planning, task packets, decision capture, and implementation without a new architecture framework.
+  - Preserve the repository's existing Codex and Claude Code support and host-native question tools; one authoritative template source remains required.
+  - Scope is specification authoring only. Planning outputs remain the existing plan, checklist, handoff and task packets with inline technical decisions; no new standalone profile artifact is warranted.
+  - Do not implement skills, change global installations, commit, publish, or modify unrelated dirty worktree changes.
+profiles:
+  - id: core
+    reason: One portable workflow contract coordinates task-level technical discussion in planning and adherence during incremental implementation for both Codex and Claude Code.
+    state: active
+  - id: ui
+    reason: No visual interface or design artifact is requested.
+    state: not_applicable
+  - id: backend
+    reason: No HTTP or service contract change is established.
+    state: not_applicable
+  - id: events
+    reason: No event-driven contract is requested.
+    state: not_applicable
+  - id: data
+    reason: Reuse existing workflow decision persistence; no independent data model or migration outcome is requested.
+    state: not_applicable
+  - id: operations
+    reason: Installation, publication, releases, and operational changes are excluded.
+    state: not_applicable
+  - id: security
+    reason: Preserve existing safety and authorization rules; no new security subsystem is requested.
+    state: not_applicable
+  - id: cross-surface
+    reason: Planning and implementation form one workflow contract; no separate product surfaces or deployment boundaries are introduced.
+    state: not_applicable
+planning_artifacts: []
+extensions:
+  workflow_mcp_receipts:
+    - id: 2c879ebe5308fe142864f708d8928b829350ffbfa35e648ee258c63ed0930b51
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.

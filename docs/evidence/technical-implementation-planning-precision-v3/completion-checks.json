@@ -1,0 +1,101 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T19:46:49.366Z",
+  "qualificationStatus": "passed",
+  "tradeoffStatus": "explicitly accepted by the user",
+  "checks": {
+    "fullRepositoryTests": {
+      "exitCode": 0,
+      "passed": 1053,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "lint": 0,
+    "generateCheck": 0,
+    "validate": 0,
+    "precisionRegression": {
+      "passed": 2,
+      "redGreenProve": true
+    },
+    "controllerChecklist": {
+      "passed": 5,
+      "redGreenProve": true
+    },
+    "childProofDerivation": {
+      "passed": 6,
+      "redGreenProve": true
+    },
+    "evidenceConsistency": {
+      "exitCode": 0,
+      "findings": 0,
+      "comparisonFindings": 0,
+      "artifacts": 326
+    },
+    "contextSeparation": {
+      "contexts": 43,
+      "reviews": 13,
+      "allUnique": true
+    },
+    "captureIntegrity": {
+      "attempts": 9,
+      "sources": 2,
+      "passed": true
+    },
+    "privacyScan": {
+      "passed": true,
+      "normalizedFiles": 23,
+      "privateOriginalBytesPreserved": true,
+      "reviewerVerdictObjectsPreserved": true
+    },
+    "originalMetricsBytesPreserved": true,
+    "priorFiveVerifierFixSourceDigestsUnchanged": true
+  },
+  "nonpassingPreservedOutcomes": [
+    {
+      "kind": "original controller attempt",
+      "runId": "b2-baseline-precision-v3-1",
+      "status": "incomplete; proven checklist-format false negative",
+      "qualityVerdict": "passed",
+      "recovery": "b2-baseline-precision-v3-checklist-r1-1"
+    },
+    {
+      "kind": "original collector wrapper",
+      "exitCode": 143,
+      "cause": null,
+      "disposition": "Unexplained limitation; every persisted turn/source/final byte verified; corrective collector and subsequent controllers exited 0"
+    },
+    {
+      "kind": "initial aggregate evidence derivation",
+      "exitCode": 1,
+      "findings": 4,
+      "disposition": "Audited child-test exit extraction; latest evidence consistency exits 0"
+    }
+  ],
+  "evidence": {
+    "ref": "evidence.json",
+    "digest": "018b61e381fab5e7c382650bdd37ad135b3169581abaf549b566b7632c6d3ed5"
+  },
+  "verification": {
+    "ref": "verification.json",
+    "digest": "5769f13d7b7eac245ef2bff138e2703c66c26c83cf32e6832d363dc392aac0f3"
+  },
+  "metrics": {
+    "ref": "metrics.json",
+    "digest": "0f9fb85ca961f18d9684594b0e5196bd491f561e915aa9ea01a09e661019c7ce"
+  },
+  "publication": {
+    "ref": "publication-redaction.json",
+    "digest": "b283162e3f2a93c30ac472eea28ba1331e37bc619943e719af7d405fa00680fe"
+  },
+  "nextAction": null,
+  "p03Status": "complete",
+  "decision": {
+    "ref": "tradeoff-decision.json",
+    "digest": "49b23838415f6e289f86ed401f308c111cc74c0b4077f2f60bc2878a1fbaf5e5"
+  },
+  "report": {
+    "ref": "../technical-implementation-planning-precision-v3.md",
+    "digest": "22d25c5ba0d1001e1fa54ed2f0dcc80edfd4c05ef3c5371a8d2afab47526e7a2"
+  }
+}

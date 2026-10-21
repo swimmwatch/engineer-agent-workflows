@@ -92,14 +92,16 @@ Before handoff, verify:
   security, privacy, accessibility, observability, and documentation are either
   covered or evidence-backed `not_applicable`;
 - no task implements behavior before its test or executable check.
+- every task has explicit current technical agreement and passes
+  `planning_packet_check`; drafts with unresolved decisions remain pending.
 
 ## Scenario MCP Access
 
 Read `shared/references/yaml-contracts.md`. Use `specification_open`,
 `scope_get`, `decision_find` and `decision_get`; do not read or edit the four
-workflow YAML files directly. Persist new implementation-local questions with
-`question_prepare`, ask through the native host tool, then record the actual
-answer or non-answer with `question_record_answer` or
-`question_record_no_answer`. Material scope/behavior changes return to the
-specification owner. Main planning does not call design-writing tools or load
-their instructions; it records the separately authorized design stage.
+workflow YAML files directly. For technical proposals, answers, exact task
+bindings and readiness, follow `references/technical-agreement.md` and its
+`planning_*` scenarios. Technical history is separate from behavioral freshness.
+Material scope/behavior changes return to the specification owner. Main planning
+does not call design-writing tools or load their instructions; it records the
+separately authorized design stage.

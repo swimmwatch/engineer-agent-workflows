@@ -1,0 +1,40 @@
+{
+  "classification": "SIMULATION",
+  "kind": "frozen-approved",
+  "depth": "Standard",
+  "profiles": [
+    "core"
+  ],
+  "explicitFixtureScope": true,
+  "before": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "absent",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "da99f1c8f59662d354c8b3dacb99195154570a1cec88906e26ce23c178e88496",
+    "specification_version": "c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877",
+    "review_ref": "49ae2b90-6cb1-4f0d-87fd-31003edd8fe5",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "specificationDigest": "7f96623fd7eb04934070402e7bfac9970e55e3e7a7931ec23904df0bb9ff0090",
+  "inputPolicy": {
+    "ref": "recovery-inputs.json",
+    "digest": "b3f5a2951511486fb4177049cce9534c8c10de85e3cc07a13ddb4fb4a7606f35"
+  },
+  "note": "Frozen fixture setup, not a specification model run or real human consent."
+}

@@ -1,0 +1,84 @@
+{
+  "classification": "SIMULATION",
+  "revision": "exact-integer-precision-v3",
+  "frozenBeforeRuns": "2026-10-21T17:48:19.562Z",
+  "parent": "../technical-implementation-planning/frozen-inputs-stdio-v2.json",
+  "fixtureDigests": {
+    "technical-agreement-registry.json": "2350493b0ea1d9c55db2a6c3c65058e8af1760a44e509d5b7b9d24bde93261eb",
+    "technical-agreement-answers.json": "c94c4705328055a73263163ec80f44c87dc6d8b71a56719c1d665ea575178b61",
+    "technical-agreement-starters.json": "d8420c331a54e4705b6e016ce92a9512c06f0ff728bfaa014608b96efc4f91cb",
+    "technical-agreement-starters-stdio.json": "19751488eb2b6cfb1d244cb307eb00d59bd7b432a8203cbce1a9e6bb9707bd62",
+    "technical-agreement-focused.json": "6a68ad84ed0acf2d8eda01c0a31598baff51e08a88f2a8a48efd6ddb647dbf87",
+    "technical-agreement-oracle.mjs": "ba8a0548f0ba4c10e79f975da40be1cf0f2e799962753f722541254259ee2036",
+    "TRIALS.md": "f27f584f87de922aa1ba69912302134ffaebd87676d1eef4c26adb287af2fc0a"
+  },
+  "sourceDigests": {
+    "baseline": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+    "candidate": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978"
+  },
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "client": "codex-cli 0.163.0",
+  "node": "v24.20.0",
+  "order": [
+    {
+      "id": "b1-baseline-precision-v3-1",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 1
+    },
+    {
+      "id": "b1-candidate-precision-v3-1",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 1
+    },
+    {
+      "id": "b2-candidate-precision-v3-1",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 1
+    },
+    {
+      "id": "b2-baseline-precision-v3-1",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 1
+    },
+    {
+      "id": "b1-candidate-precision-v3-2",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 2
+    },
+    {
+      "id": "b1-baseline-precision-v3-2",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 2
+    },
+    {
+      "id": "b2-baseline-precision-v3-2",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 2
+    },
+    {
+      "id": "b2-candidate-precision-v3-2",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 2
+    }
+  ],
+  "change": "Exact JSON integer aggregate totals are a common product requirement; 9007199254740991 + 2 must emit numeric token 9007199254740993. The implementation architecture remains free.",
+  "decision": {
+    "classification": "ACTUAL",
+    "source": "Direct human answer in originating chat and confirmation in this chat",
+    "choice": "Exact integer JSON sum without rounding"
+  },
+  "proof": {
+    "red": "Previous oracle accepted rounding",
+    "green": "Exact accepted and rounded rejected",
+    "prove": "Rounded expected-token mutation rejected; restored oracle passes"
+  }
+}

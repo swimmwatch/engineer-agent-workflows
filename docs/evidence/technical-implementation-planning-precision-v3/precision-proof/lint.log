@@ -1,0 +1,8 @@
+
+> engineer-agent-workflows-maintenance@0.0.0-development lint
+> npm run lint --workspaces --if-present
+
+
+> @engineer-agent-workflows/engineer-agent-workflow-mcp@0.0.0-development lint
+> eslint src test test-support
+

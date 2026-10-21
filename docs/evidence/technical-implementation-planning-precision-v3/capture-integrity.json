@@ -1,0 +1,145 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T19:10:58.835Z",
+  "status": "passed",
+  "sources": [
+    {
+      "variant": "baseline",
+      "sourceDigest": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "fileCount": 569,
+      "changed": []
+    },
+    {
+      "variant": "candidate",
+      "sourceDigest": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+      "fileCount": 576,
+      "changed": []
+    }
+  ],
+  "captures": [
+    {
+      "runId": "b1-baseline-precision-v3-1",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 3,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b1-baseline-precision-v3-1/result.json",
+        "digest": "967c5bdee87e673759857328ba8a4907dad37e44cf100c923ca8de9bd27ce06d"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b1-candidate-precision-v3-1",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 3,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b1-candidate-precision-v3-1/result.json",
+        "digest": "2372aca7538a888aa76be52dc3fff2958c78a7bad928bba8fa29bde0b50612b7"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b2-candidate-precision-v3-1",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 2,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b2-candidate-precision-v3-1/result.json",
+        "digest": "a235b49ecf47f0c8b49d743c2bd0c831e69c9df036821ada09f0f08a7e127b7b"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b2-baseline-precision-v3-1",
+      "controllerStatus": "incomplete",
+      "stageCount": 2,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-1/result.json",
+        "digest": "031cd4a9b629aebe33caca592f77fd1048c1088099e57d755a655534c948c86f"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b1-candidate-precision-v3-2",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 3,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b1-candidate-precision-v3-2/result.json",
+        "digest": "9f1e9634acc241edf94ff929f3c4a2785e69bdff4b29ac3ace21cc4a63a658fe"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b1-baseline-precision-v3-2",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 3,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b1-baseline-precision-v3-2/result.json",
+        "digest": "c503c3aa9cacd450de03997797a8c79d75a560244665d6aa673c1c6711316ae1"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b2-baseline-precision-v3-2",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 2,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-2/result.json",
+        "digest": "62aa429e7a8783ef4453955da1a78eed99efc53d04e92ada91189bc78d57c5f0"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b2-candidate-precision-v3-2",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 2,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b2-candidate-precision-v3-2/result.json",
+        "digest": "b172f8f812be2213f0da6ee4fb164012f6f4f6870858c0e650db4b9713d76c30"
+      },
+      "finalBytesPreserved": true
+    },
+    {
+      "runId": "b2-baseline-precision-v3-checklist-r1-1",
+      "controllerStatus": "product-checks-passed",
+      "stageCount": 2,
+      "allActualTurnsCompleted": true,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/result.json",
+        "digest": "6f9f46e9b209eeb60a5a98fc7dc941b02122fbce695e9612255bc8a2df8457f2"
+      },
+      "finalBytesPreserved": true
+    }
+  ],
+  "originalCollectorWrapper": {
+    "observedExitCode": 143,
+    "scheduledCapturesPersisted": 8,
+    "completedModelStages": true,
+    "cause": null,
+    "note": "Nonzero wrapper exit is retained as an unexplained collection-process limitation, not relabeled successful or used as a model verdict. Each persisted model turn and final file was independently checked above."
+  }
+}

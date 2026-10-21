@@ -1,0 +1,46 @@
+{
+  "classification": "ACTUAL",
+  "purpose": "Complete initial trace snapshots retained before corrected child-exit derivation",
+  "traces": [
+    {
+      "originalRef": "matrix/b1-baseline-precision-v3-1/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b1-baseline-precision-v3-1/derived-trace.json",
+      "digest": "0cb117cfc03120932a1b705e2ec7ab9cac4fda5e4cb3dc4e5ec7ff3e0c87917b"
+    },
+    {
+      "originalRef": "matrix/b1-candidate-precision-v3-1/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b1-candidate-precision-v3-1/derived-trace.json",
+      "digest": "7ca61b0c36b52207925923106e4151386bee19cdf3521b8f7273ae7a93ab1021"
+    },
+    {
+      "originalRef": "matrix/b2-candidate-precision-v3-1/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b2-candidate-precision-v3-1/derived-trace.json",
+      "digest": "fec3597435b04b63202d0694ee1bc733307f6c225ff4f3cc273427d9fae9543c"
+    },
+    {
+      "originalRef": "matrix/b2-baseline-precision-v3-checklist-r1-1/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b2-baseline-precision-v3-checklist-r1-1/derived-trace.json",
+      "digest": "70e0c179da788750a3d73e0ebe2d4afed570dac0fca27b0d1f2afb53c7738fde"
+    },
+    {
+      "originalRef": "matrix/b1-candidate-precision-v3-2/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b1-candidate-precision-v3-2/derived-trace.json",
+      "digest": "962ad50eebe52f08384b67d083c9d7b4c628979aace6704cba535e3511beb300"
+    },
+    {
+      "originalRef": "matrix/b1-baseline-precision-v3-2/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b1-baseline-precision-v3-2/derived-trace.json",
+      "digest": "5a89b6aa532bd9562e5939fa3161f2ebb246be555a09b6729aede8d35dfbc728"
+    },
+    {
+      "originalRef": "matrix/b2-baseline-precision-v3-2/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b2-baseline-precision-v3-2/derived-trace.json",
+      "digest": "62eefa36b033892a00618052da910c3b2befc35b5c51fdef5a6860e8470fa689"
+    },
+    {
+      "originalRef": "matrix/b2-candidate-precision-v3-2/derived-trace.json",
+      "storedAs": "derivation-attempts/initial/matrix/b2-candidate-precision-v3-2/derived-trace.json",
+      "digest": "da2a8057cb20050b38e1bf2105a241d3ac055bd861147b05537f6fe1f034a3b7"
+    }
+  ]
+}

@@ -1,0 +1,1236 @@
+schema_version: 1
+spec_slug: technical-implementation-planning
+decisions:
+  - category: planning.technical-agreement
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        Я хотел бы доработать наш скилл планирования, который мы используем после составления спецификации. Меня не устраивает, что при планировании агент задаёт мало вопросов, особенно об реализации. Хочется, чтобы он подробнее обсуждал, какую архитектуру выбрать, какие классы создать и какие паттерны использовать. Сначала агент должен самостоятельно обдумать варианты решений, а затем спросить пользователя, какой вариант реализации выбрать. Так нужно поступать для каждой задачи, которую предстоит реализовать.
+
+        План должен описывать этапы реализации. Чтобы заранее понимать, как именно будет устроено решение, агенту нужно уточнять архитектуру и способы реализации, а затем фиксировать согласованные детали в задачах плана. При использовании скилла incremental implementation агент должен реализовывать конкретные решения, согласованные на этапе планирования.
+
+        Иными словами, вызов скилла планирования должен подразумевать описание реализации на уровне классов, функций и других технических деталей. Подумай, как этого добиться без лишних усложнений и затягивания разработки, чтобы при планировании мы согласовывали техническую реализацию кода и продукта.
+      source: Direct user message invoking spec-driven-development in this chat.
+      kind: initial_request
+    related_decisions: []
+    requirement_ids: []
+    question: null
+    answer: null
+    id: fbf5c9c5-b251-41d6-8013-2c5e56426162
+    revision: 1
+    supersedes_revision: null
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: prepared
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - "One bounded outcome: every planned task carries an explicitly agreed technical implementation that incremental implementation follows."
+        - Standard depth covers the interaction between existing planning, task packets, decision capture, and implementation without a new architecture framework.
+        - Preserve the repository's existing Codex and Claude Code support and host-native question tools; one authoritative template source remains required.
+        - Scope is specification authoring only. Planning outputs remain the existing plan, checklist, handoff and task packets with inline technical decisions; no new standalone profile artifact is warranted.
+        - Do not implement skills, change global installations, commit, publish, or modify unrelated dirty worktree changes.
+      profiles:
+        - id: core
+          reason: One portable workflow contract coordinates task-level technical discussion in planning and adherence during incremental implementation for both Codex and Claude Code.
+          state: active
+        - id: ui
+          reason: No visual interface or design artifact is requested.
+          state: not_applicable
+        - id: backend
+          reason: No HTTP or service contract change is established.
+          state: not_applicable
+        - id: events
+          reason: No event-driven contract is requested.
+          state: not_applicable
+        - id: data
+          reason: Reuse existing workflow decision persistence; no independent data model or migration outcome is requested.
+          state: not_applicable
+        - id: operations
+          reason: Installation, publication, releases, and operational changes are excluded.
+          state: not_applicable
+        - id: security
+          reason: Preserve existing safety and authorization rules; no new security subsystem is requested.
+          state: not_applicable
+        - id: cross-surface
+          reason: Planning and implementation form one workflow contract; no separate product surfaces or deployment boundaries are introduced.
+          state: not_applicable
+      planning_artifacts: []
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: answered
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer:
+      text: Подтвердить (Recommended)
+      selected_ids:
+        - confirm
+    status: answered
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - "One bounded outcome: every planned task carries an explicitly agreed technical implementation that incremental implementation follows."
+        - Standard depth covers the interaction between existing planning, task packets, decision capture, and implementation without a new architecture framework.
+        - Preserve the repository's existing Codex and Claude Code support and host-native question tools; one authoritative template source remains required.
+        - Scope is specification authoring only. Planning outputs remain the existing plan, checklist, handoff and task packets with inline technical decisions; no new standalone profile artifact is warranted.
+        - Do not implement skills, change global installations, commit, publish, or modify unrelated dirty worktree changes.
+      profiles:
+        - id: core
+          reason: One portable workflow contract coordinates task-level technical discussion in planning and adherence during incremental implementation for both Codex and Claude Code.
+          state: active
+        - id: ui
+          reason: No visual interface or design artifact is requested.
+          state: not_applicable
+        - id: backend
+          reason: No HTTP or service contract change is established.
+          state: not_applicable
+        - id: events
+          reason: No event-driven contract is requested.
+          state: not_applicable
+        - id: data
+          reason: Reuse existing workflow decision persistence; no independent data model or migration outcome is requested.
+          state: not_applicable
+        - id: operations
+          reason: Installation, publication, releases, and operational changes are excluded.
+          state: not_applicable
+        - id: security
+          reason: Preserve existing safety and authorization rules; no new security subsystem is requested.
+          state: not_applicable
+        - id: cross-surface
+          reason: Planning and implementation form one workflow contract; no separate product surfaces or deployment boundaries are introduced.
+          state: not_applicable
+      planning_artifacts: []
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: scope.manifest
+      revision: 1
+    answer_source: functions.request_user_input; planning_scope; explicit selection
+    answered_question:
+      id: scope.manifest
+      revision: 1
+  - category: planning.technical-detail
+    state: needs_user
+    provenance: user
+    question:
+      text: Насколько подробно фиксировать техническое решение каждой задачи? Например, согласовать основные классы/функции, их контракты и взаимодействия, оставив мелкие вспомогательные функции исполнителю.
+      kind: single_choice
+      options:
+        - id: contracts
+          label: Основные единицы и контракты (Recommended)
+        - id: all_symbols
+          label: Все символы и сигнатуры
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+      revision: 1
+  - category: planning.confirmation-granularity
+    state: needs_user
+    provenance: user
+    question:
+      text: "Как согласовывать решения задач: отдельно по каждой или разрешить один явный ответ для нескольких перечисленных задач, если по каждой уже показано техническое предложение?"
+      kind: single_choice
+      options:
+        - id: small_groups
+          label: Небольшими группами (Recommended)
+        - id: one_by_one
+          label: Каждую отдельно
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+      revision: 1
+  - category: planning.legacy-packets
+    state: needs_user
+    provenance: user
+    question:
+      text: Что делать при incremental implementation со старой задачей, в которой техническое решение ещё не согласовано по новым правилам?
+      kind: single_choice
+      options:
+        - id: return_to_planning
+          label: Вернуть в планирование (Recommended)
+        - id: legacy_exception
+          label: Сохранить старый порядок
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+      revision: 1
+  - category: planning.technical-detail
+    state: answered
+    provenance: user
+    question:
+      text: Насколько подробно фиксировать техническое решение каждой задачи? Например, согласовать основные классы/функции, их контракты и взаимодействия, оставив мелкие вспомогательные функции исполнителю.
+      kind: single_choice
+      options:
+        - id: contracts
+          label: Основные единицы и контракты (Recommended)
+        - id: all_symbols
+          label: Все символы и сигнатуры
+    answer:
+      text: Основные единицы и контракты (Recommended)
+      selected_ids:
+        - contracts
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+      revision: 1
+    answer_source: functions.request_user_input; detail; explicit selection
+    answered_question:
+      id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+      revision: 1
+  - category: planning.confirmation-granularity
+    state: answered
+    provenance: user
+    question:
+      text: "Как согласовывать решения задач: отдельно по каждой или разрешить один явный ответ для нескольких перечисленных задач, если по каждой уже показано техническое предложение?"
+      kind: single_choice
+      options:
+        - id: small_groups
+          label: Небольшими группами (Recommended)
+        - id: one_by_one
+          label: Каждую отдельно
+    answer:
+      text: Небольшими группами (Recommended)
+      selected_ids:
+        - small_groups
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+      revision: 1
+    answer_source: functions.request_user_input; batch; explicit selection
+    answered_question:
+      id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+      revision: 1
+  - category: planning.legacy-packets
+    state: answered
+    provenance: user
+    question:
+      text: Что делать при incremental implementation со старой задачей, в которой техническое решение ещё не согласовано по новым правилам?
+      kind: single_choice
+      options:
+        - id: return_to_planning
+          label: Вернуть в планирование (Recommended)
+        - id: legacy_exception
+          label: Сохранить старый порядок
+    answer:
+      text: Вернуть в планирование (Recommended)
+      selected_ids:
+        - return_to_planning
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+      revision: 1
+    answer_source: functions.request_user_input; legacy; explicit selection
+    answered_question:
+      id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+      revision: 1
+  - category: baseline.planning
+    state: observed
+    provenance: repository
+    fact: Planning already requires language-appropriate units and task contracts, but asks only unresolved implementation choices and has no explicit per-packet technical agreement requirement. Existing packet recovery returns architecture or contract changes to their owning workflow.
+    evidence:
+      - skills/planning-and-task-breakdown/SKILL.md:38-46
+      - skills/planning-and-task-breakdown/references/task-packets.md:60-62
+      - skills/planning-and-task-breakdown/references/task-packets.md:112-116
+      - skills/incremental-implementation/references/packet-recovery.md:17-22
+    question: null
+    answer: null
+    id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f
+    revision: 1
+    supersedes_revision: null
+  - category: baseline.decision-freshness
+    state: observed
+    provenance: repository
+    fact: Planning currently persists implementation-local questions through the shared specification question tools. The local review snapshot hashes all ledger decision revisions together with specification content and confirmed manifest; reviewState treats a changed aggregate hash as stale. Therefore adding technical planning answers can invalidate an otherwise unchanged specification review.
+    evidence:
+      - skills/planning-and-task-breakdown/references/adaptive-planning.md:98-104
+      - packages/engineer-agent-workflow-mcp/src/review-model.ts:11-17
+      - packages/engineer-agent-workflow-mcp/src/reviews.ts:82-84
+    question: null
+    answer: null
+    id: a35ddfde-e586-4b48-943e-8f2869f96fc0
+    revision: 1
+    supersedes_revision: null
+  - category: baseline.portability
+    state: observed
+    provenance: repository
+    fact: The workflow templates preserve target-host question and instruction variables, separate planning authorization from implementation, and keep packet verification and one-packet execution boundaries.
+    evidence:
+      - skills/planning-and-task-breakdown/SKILL.md:38-41
+      - skills/planning-and-task-breakdown/SKILL.md:59-63
+      - skills/incremental-implementation/SKILL.md:10-10
+      - skills/incremental-implementation/SKILL.md:51-62
+    question: null
+    answer: null
+    id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f
+    revision: 1
+    supersedes_revision: null
+  - category: planning.specification-freshness
+    state: needs_user
+    provenance: user
+    question:
+      text: Включить в доработку правило, что согласование чисто технических решений не делает неизменившуюся спецификацию устаревшей, с минимальными изменениями MCP при необходимости? Изменение требований по-прежнему возвращается в спецификацию.
+      kind: single_choice
+      options:
+        - id: isolate
+          label: Включить (Recommended)
+        - id: keep_current
+          label: Оставить текущую проверку
+    answer: null
+    status: prepared
+    context_reason: null
+    requirement_ids: []
+    id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+      revision: 1
+  - category: planning.specification-freshness
+    state: answered
+    provenance: user
+    question:
+      text: Включить в доработку правило, что согласование чисто технических решений не делает неизменившуюся спецификацию устаревшей, с минимальными изменениями MCP при необходимости? Изменение требований по-прежнему возвращается в спецификацию.
+      kind: single_choice
+      options:
+        - id: isolate
+          label: Включить (Recommended)
+        - id: keep_current
+          label: Оставить текущую проверку
+    answer:
+      text: Включить (Recommended)
+      selected_ids:
+        - isolate
+    status: answered
+    context_reason: null
+    requirement_ids: []
+    id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+      revision: 1
+    answer_source: functions.request_user_input; freshness; explicit selection
+    answered_question:
+      id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+      revision: 1
+  - category: planning.specification-freshness
+    state: answered
+    provenance: user
+    question:
+      text: Включить в доработку правило, что согласование чисто технических решений не делает неизменившуюся спецификацию устаревшей, с минимальными изменениями MCP при необходимости? Изменение требований по-прежнему возвращается в спецификацию.
+      kind: single_choice
+      options:
+        - id: isolate
+          label: Включить (Recommended)
+        - id: keep_current
+          label: Оставить текущую проверку
+    answer:
+      text: Включить (Recommended)
+      selected_ids:
+        - isolate
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - TIP-009
+    id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+      revision: 1
+    answer_source: functions.request_user_input; freshness; explicit selection
+    answered_question:
+      id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+      revision: 1
+  - category: planning.technical-detail
+    state: answered
+    provenance: user
+    question:
+      text: Насколько подробно фиксировать техническое решение каждой задачи? Например, согласовать основные классы/функции, их контракты и взаимодействия, оставив мелкие вспомогательные функции исполнителю.
+      kind: single_choice
+      options:
+        - id: contracts
+          label: Основные единицы и контракты (Recommended)
+        - id: all_symbols
+          label: Все символы и сигнатуры
+    answer:
+      text: Основные единицы и контракты (Recommended)
+      selected_ids:
+        - contracts
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - TIP-003
+      - TIP-006
+    id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+      revision: 1
+    answer_source: functions.request_user_input; detail; explicit selection
+    answered_question:
+      id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+      revision: 1
+  - category: baseline.decision-freshness
+    state: observed
+    provenance: repository
+    fact: Planning currently persists implementation-local questions through the shared specification question tools. The local review snapshot hashes all ledger decision revisions together with specification content and confirmed manifest; reviewState treats a changed aggregate hash as stale. Therefore adding technical planning answers can invalidate an otherwise unchanged specification review.
+    evidence:
+      - skills/planning-and-task-breakdown/references/adaptive-planning.md:98-104
+      - packages/engineer-agent-workflow-mcp/src/review-model.ts:11-17
+      - packages/engineer-agent-workflow-mcp/src/reviews.ts:82-84
+    question: null
+    answer: null
+    id: a35ddfde-e586-4b48-943e-8f2869f96fc0
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - TIP-009
+  - category: baseline.planning
+    state: observed
+    provenance: repository
+    fact: Planning already requires language-appropriate units and task contracts, but asks only unresolved implementation choices and has no explicit per-packet technical agreement requirement. Existing packet recovery returns architecture or contract changes to their owning workflow.
+    evidence:
+      - skills/planning-and-task-breakdown/SKILL.md:38-46
+      - skills/planning-and-task-breakdown/references/task-packets.md:60-62
+      - skills/planning-and-task-breakdown/references/task-packets.md:112-116
+      - skills/incremental-implementation/references/packet-recovery.md:17-22
+    question: null
+    answer: null
+    id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - TIP-001
+      - TIP-002
+      - TIP-003
+      - TIP-005
+      - TIP-006
+      - TIP-007
+  - category: planning.confirmation-granularity
+    state: answered
+    provenance: user
+    question:
+      text: "Как согласовывать решения задач: отдельно по каждой или разрешить один явный ответ для нескольких перечисленных задач, если по каждой уже показано техническое предложение?"
+      kind: single_choice
+      options:
+        - id: small_groups
+          label: Небольшими группами (Recommended)
+        - id: one_by_one
+          label: Каждую отдельно
+    answer:
+      text: Небольшими группами (Recommended)
+      selected_ids:
+        - small_groups
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - TIP-004
+      - TIP-005
+      - TIP-007
+    id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+      revision: 1
+    answer_source: functions.request_user_input; batch; explicit selection
+    answered_question:
+      id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+      revision: 1
+  - category: baseline.portability
+    state: observed
+    provenance: repository
+    fact: The workflow templates preserve target-host question and instruction variables, separate planning authorization from implementation, and keep packet verification and one-packet execution boundaries.
+    evidence:
+      - skills/planning-and-task-breakdown/SKILL.md:38-41
+      - skills/planning-and-task-breakdown/SKILL.md:59-63
+      - skills/incremental-implementation/SKILL.md:10-10
+      - skills/incremental-implementation/SKILL.md:51-62
+    question: null
+    answer: null
+    id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+    requirement_ids:
+      - TIP-001
+      - TIP-006
+      - TIP-010
+  - category: planning.legacy-packets
+    state: answered
+    provenance: user
+    question:
+      text: Что делать при incremental implementation со старой задачей, в которой техническое решение ещё не согласовано по новым правилам?
+      kind: single_choice
+      options:
+        - id: return_to_planning
+          label: Вернуть в планирование (Recommended)
+        - id: legacy_exception
+          label: Сохранить старый порядок
+    answer:
+      text: Вернуть в планирование (Recommended)
+      selected_ids:
+        - return_to_planning
+    status: answered
+    context_reason: null
+    requirement_ids:
+      - TIP-008
+    id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+    revision: 3
+    supersedes_revision: 2
+    question_origin:
+      id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+      revision: 1
+    answer_source: functions.request_user_input; legacy; explicit selection
+    answered_question:
+      id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+      revision: 1
+  - category: planning.technical-agreement
+    state: instructed
+    provenance: user
+    instruction:
+      text: |-
+        Я хотел бы доработать наш скилл планирования, который мы используем после составления спецификации. Меня не устраивает, что при планировании агент задаёт мало вопросов, особенно об реализации. Хочется, чтобы он подробнее обсуждал, какую архитектуру выбрать, какие классы создать и какие паттерны использовать. Сначала агент должен самостоятельно обдумать варианты решений, а затем спросить пользователя, какой вариант реализации выбрать. Так нужно поступать для каждой задачи, которую предстоит реализовать.
+
+        План должен описывать этапы реализации. Чтобы заранее понимать, как именно будет устроено решение, агенту нужно уточнять архитектуру и способы реализации, а затем фиксировать согласованные детали в задачах плана. При использовании скилла incremental implementation агент должен реализовывать конкретные решения, согласованные на этапе планирования.
+
+        Иными словами, вызов скилла планирования должен подразумевать описание реализации на уровне классов, функций и других технических деталей. Подумай, как этого добиться без лишних усложнений и затягивания разработки, чтобы при планировании мы согласовывали техническую реализацию кода и продукта.
+      source: Direct user message invoking spec-driven-development in this chat.
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - TIP-001
+      - TIP-002
+      - TIP-003
+      - TIP-004
+      - TIP-005
+      - TIP-006
+      - TIP-007
+      - TIP-010
+    question: null
+    answer: null
+    id: fbf5c9c5-b251-41d6-8013-2c5e56426162
+    revision: 2
+    supersedes_revision: 1
+    context_reason: null
+extensions:
+  workflow_mcp_receipts:
+    - id: cb2a8fcf501caf6cd4fe93dc09724d5ec36cbc28b30926d0d0246b6093caf1ad
+      result:
+        decision_ref:
+          id: fbf5c9c5-b251-41d6-8013-2c5e56426162
+          revision: 1
+        state: instructed
+    - id: 6568a611d5a0757440b6cfbec6610c3e0312cf134870690befe1854060be6d90
+      result:
+        question_ref:
+          id: scope.manifest
+          revision: 1
+        question:
+          text: Confirm this exact scope proposal, or request a correction.
+          kind: single_choice
+          options:
+            - id: confirm
+              label: Confirm this proposal
+            - id: change
+              label: Change the proposal
+        proposal:
+          schema_version: 1
+          depth: standard
+          confirmed: false
+          rationale:
+            - "One bounded outcome: every planned task carries an explicitly agreed technical implementation that incremental implementation follows."
+            - Standard depth covers the interaction between existing planning, task packets, decision capture, and implementation without a new architecture framework.
+            - Preserve the repository's existing Codex and Claude Code support and host-native question tools; one authoritative template source remains required.
+            - Scope is specification authoring only. Planning outputs remain the existing plan, checklist, handoff and task packets with inline technical decisions; no new standalone profile artifact is warranted.
+            - Do not implement skills, change global installations, commit, publish, or modify unrelated dirty worktree changes.
+          profiles:
+            - id: core
+              reason: One portable workflow contract coordinates task-level technical discussion in planning and adherence during incremental implementation for both Codex and Claude Code.
+              state: active
+            - id: ui
+              reason: No visual interface or design artifact is requested.
+              state: not_applicable
+            - id: backend
+              reason: No HTTP or service contract change is established.
+              state: not_applicable
+            - id: events
+              reason: No event-driven contract is requested.
+              state: not_applicable
+            - id: data
+              reason: Reuse existing workflow decision persistence; no independent data model or migration outcome is requested.
+              state: not_applicable
+            - id: operations
+              reason: Installation, publication, releases, and operational changes are excluded.
+              state: not_applicable
+            - id: security
+              reason: Preserve existing safety and authorization rules; no new security subsystem is requested.
+              state: not_applicable
+            - id: cross-surface
+              reason: Planning and implementation form one workflow contract; no separate product surfaces or deployment boundaries are introduced.
+              state: not_applicable
+          planning_artifacts: []
+        next: Ask this saved question with the host-native question tool; then record the actual answer.
+    - id: 3c4fa1a82dfeeba24600d2cd39619e4c1f3bfeb80c5a02c6d65abedc8d1ffa77
+      result:
+        decision_ref:
+          id: scope.manifest
+          revision: 2
+        state: answered
+    - id: 20c53e75e5fc5c4acac1db5c4fcdc17fddf6a6e2bc02edf5ccf3130db7a3c142
+      result:
+        question_ref:
+          id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+          revision: 1
+        question:
+          text: Насколько подробно фиксировать техническое решение каждой задачи? Например, согласовать основные классы/функции, их контракты и взаимодействия, оставив мелкие вспомогательные функции исполнителю.
+          kind: single_choice
+          options:
+            - id: contracts
+              label: Основные единицы и контракты (Recommended)
+            - id: all_symbols
+              label: Все символы и сигнатуры
+        next: Ask the saved question with the callable host-native question tool.
+    - id: b74f56faa401ed2f2d06bb407dea597358c37692d30920983680803a52699664
+      result:
+        question_ref:
+          id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+          revision: 1
+        question:
+          text: "Как согласовывать решения задач: отдельно по каждой или разрешить один явный ответ для нескольких перечисленных задач, если по каждой уже показано техническое предложение?"
+          kind: single_choice
+          options:
+            - id: small_groups
+              label: Небольшими группами (Recommended)
+            - id: one_by_one
+              label: Каждую отдельно
+        next: Ask the saved question with the callable host-native question tool.
+    - id: c55d1c39d649f99aa0e3c72e2dd0277569437c8a22968815f0a1b9e1b8ef72e5
+      result:
+        question_ref:
+          id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+          revision: 1
+        question:
+          text: Что делать при incremental implementation со старой задачей, в которой техническое решение ещё не согласовано по новым правилам?
+          kind: single_choice
+          options:
+            - id: return_to_planning
+              label: Вернуть в планирование (Recommended)
+            - id: legacy_exception
+              label: Сохранить старый порядок
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 65bc524408bfee7f1fb015c590ca37778fd0fd3eb2c70cf5c9d30af188d0acaa
+      result:
+        decision_ref:
+          id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+          revision: 2
+        state: answered
+    - id: fea17af1ce03e821fbc7c7033a228fe63661ebf78ff4bdb6598a1064e0903f7c
+      result:
+        decision_ref:
+          id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+          revision: 2
+        state: answered
+    - id: a3865873d036d23d58894446ec7efcfc2d85fe75c023945a5760f3d484d32b1c
+      result:
+        decision_ref:
+          id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+          revision: 2
+        state: answered
+    - id: 6252ebc33fb8d7968fcca84688d728cf40d9028f25c497ea5e7825b8e77a2e13
+      result:
+        decision_ref:
+          id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f
+          revision: 1
+        state: observed
+    - id: 8440914ac3b8fce3367883ab82283cde9e27d412d623b78ca46cc09dfd782cd3
+      result:
+        decision_ref:
+          id: a35ddfde-e586-4b48-943e-8f2869f96fc0
+          revision: 1
+        state: observed
+    - id: 1201af434ee4f029712862e13f6ed9da40668d6c2b27f9e871f905812d2785b7
+      result:
+        decision_ref:
+          id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f
+          revision: 1
+        state: observed
+    - id: 6681284b63d51ce9dd0093ad9a94adc376d68d960a3cfa3fab661babef60ef17
+      result:
+        question_ref:
+          id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+          revision: 1
+        question:
+          text: Включить в доработку правило, что согласование чисто технических решений не делает неизменившуюся спецификацию устаревшей, с минимальными изменениями MCP при необходимости? Изменение требований по-прежнему возвращается в спецификацию.
+          kind: single_choice
+          options:
+            - id: isolate
+              label: Включить (Recommended)
+            - id: keep_current
+              label: Оставить текущую проверку
+        next: Ask the saved question with the callable host-native question tool.
+    - id: 5c92d14a461b05e31269475681921c416c50fa454390ec2fbf3254a5233f4377
+      result:
+        decision_ref:
+          id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+          revision: 2
+        state: answered
+    - id: 02fd6f274521cb5e29b2c57afd4b849fd9923d2752146fa16ecba4d7078a7b4e
+      result:
+        items:
+          - decision_ref:
+              id: 5c12c61c-8f41-410e-947c-f773a6a4b045
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - TIP-009
+            removed: []
+            requirement_ids:
+              - TIP-009
+            operation_applied: true
+          - decision_ref:
+              id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - TIP-003
+              - TIP-006
+            removed: []
+            requirement_ids:
+              - TIP-003
+              - TIP-006
+            operation_applied: true
+          - decision_ref:
+              id: a35ddfde-e586-4b48-943e-8f2869f96fc0
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - TIP-009
+            removed: []
+            requirement_ids:
+              - TIP-009
+            operation_applied: true
+          - decision_ref:
+              id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - TIP-001
+              - TIP-002
+              - TIP-003
+              - TIP-005
+              - TIP-006
+              - TIP-007
+            removed: []
+            requirement_ids:
+              - TIP-001
+              - TIP-002
+              - TIP-003
+              - TIP-005
+              - TIP-006
+              - TIP-007
+            operation_applied: true
+          - decision_ref:
+              id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - TIP-004
+              - TIP-005
+              - TIP-007
+            removed: []
+            requirement_ids:
+              - TIP-004
+              - TIP-005
+              - TIP-007
+            operation_applied: true
+          - decision_ref:
+              id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - TIP-001
+              - TIP-006
+              - TIP-010
+            removed: []
+            requirement_ids:
+              - TIP-001
+              - TIP-006
+              - TIP-010
+            operation_applied: true
+          - decision_ref:
+              id: f26b0410-987a-49fb-8ca8-9b8d4712ae17
+              revision: 3
+            previous_requirement_ids: []
+            added:
+              - TIP-008
+            removed: []
+            requirement_ids:
+              - TIP-008
+            operation_applied: true
+          - decision_ref:
+              id: fbf5c9c5-b251-41d6-8013-2c5e56426162
+              revision: 2
+            previous_requirement_ids: []
+            added:
+              - TIP-001
+              - TIP-002
+              - TIP-003
+              - TIP-004
+              - TIP-005
+              - TIP-006
+              - TIP-007
+              - TIP-010
+            removed: []
+            requirement_ids:
+              - TIP-001
+              - TIP-002
+              - TIP-003
+              - TIP-004
+              - TIP-005
+              - TIP-006
+              - TIP-007
+              - TIP-010
+            operation_applied: true
+        operation_applied: true
+    - id: 45ca1bc96a3dd8c5069f132622376e26c9c144c2b8c9da5fd5cf28a3d10ddd88
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        source_version: a46e18b6e78751f8a41ecc662ee507f7b7475e994c9111051d5b1eff3e3b000b
+        total_items: 21
+        recorded_items: 0
+        consistency_required: true
+        mechanical_status: pass
+        mechanical_issues: []
+        total_mechanical_issues: 0
+        next: Use a separate context to read every item completely and record an evidence-based verdict.
+    - id: 744c4edff7cfb21151b7c236b1eb9c129150ab1094cb547157cd0bb2c26087d8
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        items:
+          - item_index: 0
+            item_key: source:fbf5c9c5-b251-41d6-8013-2c5e56426162
+            verdict: covered
+        batch_size: 1
+        recorded_items: 1
+    - id: b0657594f07ae9fa4d1251cdec27f765bccf5b9346c584b4d4e551c6c615191e
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        items:
+          - item_index: 1
+            item_key: source:scope.manifest
+            verdict: covered
+          - item_index: 2
+            item_key: source:7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8
+            verdict: covered
+          - item_index: 3
+            item_key: source:cc9e44a5-9bf2-4423-86db-9d8d349c7d53
+            verdict: covered
+        batch_size: 3
+        recorded_items: 4
+    - id: e90cc2a8cdb6d948532a2b6744f1008d8796c7ce1fda82c35464fd56f3998635
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        items:
+          - item_index: 4
+            item_key: source:f26b0410-987a-49fb-8ca8-9b8d4712ae17
+            verdict: covered
+          - item_index: 5
+            item_key: source:a7fd7d68-7432-45b3-88aa-cdcd88f7f72f
+            verdict: covered
+          - item_index: 6
+            item_key: source:a35ddfde-e586-4b48-943e-8f2869f96fc0
+            verdict: covered
+          - item_index: 7
+            item_key: source:eb6e209f-d9f1-43dc-b5d6-5739bda8747f
+            verdict: covered
+          - item_index: 8
+            item_key: source:5c12c61c-8f41-410e-947c-f773a6a4b045
+            verdict: covered
+        batch_size: 5
+        recorded_items: 9
+    - id: 698578f2d2d2f054f5af181036660858696c0da3da21504b1f97c42904aa7629
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        items:
+          - item_index: 9
+            item_key: requirement:TIP-001
+            verdict: covered
+          - item_index: 10
+            item_key: requirement:TIP-002
+            verdict: covered
+          - item_index: 11
+            item_key: requirement:TIP-003
+            verdict: covered
+          - item_index: 12
+            item_key: requirement:TIP-004
+            verdict: covered
+          - item_index: 13
+            item_key: requirement:TIP-005
+            verdict: covered
+          - item_index: 14
+            item_key: requirement:TIP-006
+            verdict: covered
+          - item_index: 15
+            item_key: requirement:TIP-007
+            verdict: covered
+          - item_index: 16
+            item_key: requirement:TIP-008
+            verdict: covered
+          - item_index: 17
+            item_key: requirement:TIP-009
+            verdict: covered
+          - item_index: 18
+            item_key: requirement:TIP-010
+            verdict: covered
+          - item_index: 19
+            item_key: profile:core
+            verdict: covered
+        batch_size: 11
+        recorded_items: 20
+    - id: 8816e454bef2ffa0fee9bf4233e0b9daa0623362c9ff01c9c7e1da91fc47173c
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        consistency_status: consistent
+    - id: 20ce8828729991088072a072b82611ba7720ac0ea98f7083bcb393659ab25ccf
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        coverage_status: reviewed
+        source_version: a46e18b6e78751f8a41ecc662ee507f7b7475e994c9111051d5b1eff3e3b000b
+        semantic_correctness_proven: false
+        reviewer_independence_authenticated: false
+        approved_by_tool: false
+    - id: af38c07d17f7df0bc56eef74ec26335b7c1f04733fb5228a697c2317bdf3d57a
+      result:
+        review_ref: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+        approval_observed: true
+specification_reviews:
+  version: 1
+  runs:
+    - id: a1421d0b-f37b-4b76-a7ca-2a84de7066f3
+      source_version: a46e18b6e78751f8a41ecc662ee507f7b7475e994c9111051d5b1eff3e3b000b
+      specification_version: a1a2739ae5c8d4ea86cac096da0e84cb5b86ded0f6b09081ca4d01873ae23967
+      status_at_start: Draft
+      created_at: 2026-10-21T08:15:17.668Z
+      completed: true
+      outcome: reviewed
+      results:
+        [
+          {
+            item_index: 0,
+            item_key: source:fbf5c9c5-b251-41d6-8013-2c5e56426162,
+            verdict: covered,
+            explanation: "The original request requires investigation before asking, an explicit implementation choice for every task, architecture and significant classes/functions/patterns where useful, staged plans with agreed details in packets, and incremental execution of those choices without undue overhead. TIP-002 requires investigation, recommendation and meaningful alternatives; TIP-003 makes significant units and contracts explicit; TIP-004 requires an actual task-bound answer; TIP-005 preserves staged, executable packets; TIP-006 enforces the agreement during execution; TIP-007 handles material redesign; TIP-001 preserves ownership and host parity; TIP-010 prohibits question quotas and extra review stages. No part of the original compound outcome is deferred or removed.",
+            requirement_ids:
+              [
+                TIP-001,
+                TIP-002,
+                TIP-003,
+                TIP-004,
+                TIP-005,
+                TIP-006,
+                TIP-007,
+                TIP-010,
+              ],
+            source_refs:
+              [{ id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 }],
+          },
+          {
+            item_index: 1,
+            item_key: source:scope.manifest,
+            verdict: covered,
+            explanation: "The confirmed Standard/core scope preserves one outcome across planning and incremental execution. TIP-001 retains host parity, explicit authorization and specification ownership; TIP-005 uses the existing plan/packet bundle; TIP-009 requires managed decision semantics without a second journal; TIP-010 retains existing qualification rather than a new framework. Scope And Support and Non-Goals explicitly exclude new profile artifacts, implementation in this invocation, installation, commits, publication and unrelated edits. Inactive profiles introduce no deferred product feature.",
+            requirement_ids: [TIP-001, TIP-005, TIP-009, TIP-010],
+            source_refs: [{ id: scope.manifest, revision: 2 }],
+          },
+          {
+            item_index: 2,
+            item_key: source:7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8,
+            verdict: covered,
+            explanation: "The selected answer requires main technical units, contracts and interactions while leaving small helper details to the executor. TIP-003 requires meaningful significant units, precise shared signatures and interactions, distinguishes illustrative names, and excludes exhaustive private-helper enumeration. TIP-006 permits only local freedom consistent with these commitments and prohibits silently changing explicitly agreed units.",
+            requirement_ids: [TIP-003, TIP-006],
+            source_refs:
+              [{ id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8, revision: 3 }],
+          },
+          {
+            item_index: 3,
+            item_key: source:cc9e44a5-9bf2-4423-86db-9d8d349c7d53,
+            verdict: covered,
+            explanation: "TIP-004 preserves the selected permission for small groups only after each identified task proposal is shown and the answer clearly covers the tasks and choices. Partial or ambiguous answers leave unresolved choices pending; tool limits and disputed choices constrain grouping. TIP-005 keeps missing agreements visible in readiness, while TIP-007 requires new answers only for affected changed commitments. The original per-task agreement obligation survives grouping.",
+            requirement_ids: [TIP-004, TIP-005, TIP-007],
+            source_refs:
+              [{ id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53, revision: 3 }],
+          },
+          {
+            item_index: 4,
+            item_key: source:f26b0410-987a-49fb-8ca8-9b8d4712ae17,
+            verdict: covered,
+            explanation: "TIP-008 implements the selected return-to-planning rule for old packets lacking the required technical agreement, including resumed incomplete packets. It blocks new dependent production edits, preserves existing changes, permits already-sufficient evidence to be reused and limits supplementation to the affected task. It preserves unrelated/completed tasks instead of imposing an unsupported bulk migration.",
+            requirement_ids: [TIP-008],
+            source_refs:
+              [{ id: f26b0410-987a-49fb-8ca8-9b8d4712ae17, revision: 3 }],
+          },
+          {
+            item_index: 5,
+            item_key: source:a7fd7d68-7432-45b3-88aa-cdcd88f7f72f,
+            verdict: covered,
+            explanation: "The exact referenced planning template and packet/recovery contract preserve language-appropriate units, contract completeness, one authoritative source, bounded implementation and return of material changes to their owner. TIP-001/002/003 preserve those boundaries while adding the requested investigation and agreement. TIP-005 retains the packet's existing evidence, tests, scope and recovery rules; TIP-006/007 preserve evidence-only refreshes and owner-authorized redesign. The factual baseline is not mistaken for permission to alter unrelated workflows.",
+            requirement_ids:
+              [TIP-001, TIP-002, TIP-003, TIP-005, TIP-006, TIP-007],
+            source_refs:
+              [{ id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 }],
+          },
+          {
+            item_index: 6,
+            item_key: source:a35ddfde-e586-4b48-943e-8f2869f96fc0,
+            verdict: covered,
+            explanation: "The inspected adaptive-planning contract persists local technical questions via question_prepare/answer; snapshot hashes rows(ledger.decisions) with specification and manifest, and reviewState marks unequal aggregate versions stale. TIP-009 directly addresses that confirmed interaction by preserving behavioral-specification freshness for pure technical records while retaining revisions, task-specific staleness, conflict checks and behavioral invalidation. No implementation representation is prematurely prescribed.",
+            requirement_ids: [TIP-009],
+            source_refs:
+              [{ id: a35ddfde-e586-4b48-943e-8f2869f96fc0, revision: 2 }],
+          },
+          {
+            item_index: 7,
+            item_key: source:eb6e209f-d9f1-43dc-b5d6-5739bda8747f,
+            verdict: covered,
+            explanation: "TIP-001 preserves target-host native question tools, the existing direct-question fallback, shared templates and isolated distributions; planning and implementation remain separately authorized. TIP-006 retains one-packet execution and verification without a mandatory independent-review stage. TIP-010 retains required checks and artifact isolation/size constraints. These correspond to the inspected planning and incremental template contracts and active repository guidance.",
+            requirement_ids: [TIP-001, TIP-006, TIP-010],
+            source_refs:
+              [{ id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f, revision: 2 }],
+          },
+          {
+            item_index: 8,
+            item_key: source:5c12c61c-8f41-410e-947c-f773a6a4b045,
+            verdict: covered,
+            explanation: "The explicit answer includes minimal MCP changes if needed so purely technical agreement does not make an unchanged specification stale, while requirement changes still return to specification. TIP-009 states both freshness outcomes, requires durable task-bound revisions and provenance, blocks ambiguous/mixed classification, preserves legacy record meaning and blocks incompatible runtimes. Scope And Support keeps the MCP work narrow and leaves its representation for planning.",
+            requirement_ids: [TIP-009],
+            source_refs:
+              [{ id: 5c12c61c-8f41-410e-947c-f773a6a4b045, revision: 3 }],
+          },
+          {
+            item_index: 9,
+            item_key: requirement:TIP-001,
+            verdict: covered,
+            explanation: "The user requests planning-stage technical agreement followed by faithful incremental execution; the inspected baseline preserves specification/planning/implementation ownership, host-native questions and separate authorization. This requirement retains those existing contracts across both confirmed hosts and all planning depths. Its fallback and missing-MCP behavior preserve the existing workflow rather than creating new authority or a new supported platform.",
+            requirement_ids: [TIP-001],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+                { id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 10,
+            item_key: requirement:TIP-002,
+            verdict: covered,
+            explanation: "The original instruction explicitly asks the agent to think through alternatives before asking which implementation to choose, without unnecessary complexity or delay. The existing planning contract requires repository inspection and language-appropriate units. A concrete recommendation, useful alternatives and no artificial option or pattern quota faithfully operationalize these conditions without adding a compulsory architecture style.",
+            requirement_ids: [TIP-002],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 11,
+            item_key: requirement:TIP-003,
+            verdict: covered,
+            explanation: "The original request names architecture, classes, functions and technical details. The exact detail answer chooses significant units and contracts while leaving small helpers flexible. Responsibilities, inputs/outputs, interactions, dependency direction and meaningful signatures refine that chosen granularity using the existing packet contract. Conditional state/error/algorithm detail and illustrative-name distinctions avoid an unauthorized all-symbol requirement.",
+            requirement_ids: [TIP-003],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8, revision: 3 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 12,
+            item_key: requirement:TIP-004,
+            verdict: covered,
+            explanation: "The initial request requires agreement for each implementation task; the exact grouping answer allows small explicitly identified groups after each concrete proposal is shown. The requirement preserves both obligations, requires actual task-bound evidence, and leaves partial, ambiguous or missing answers unresolved. Shared decisions can be referenced once without turning a generic approval into consent to an unseen task.",
+            requirement_ids: [TIP-004],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53, revision: 3 },
+              ],
+          },
+          {
+            item_index: 13,
+            item_key: requirement:TIP-005,
+            verdict: covered,
+            explanation: "The initial request requires implementation stages and agreed technical details in plan tasks, so a fresh incremental executor follows the selected solution. The grouped-answer source requires identifiable task coverage. The inspected packet baseline already requires dependencies, exact bounded inputs, mappings, scope and test-first verification. This requirement preserves those obligations and exposes pending decisions without creating another artifact or planning stage.",
+            requirement_ids: [TIP-005],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53, revision: 3 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 14,
+            item_key: requirement:TIP-006,
+            verdict: covered,
+            explanation: "Faithful execution follows directly from the initial request. The significant-units answer permits minor helpers, not substitution of an agreed structure. Existing packet recovery permits an unchanged moved symbol to be refreshed and retains one-packet scope and required checks. The requirement distinguishes those cases, makes architectural substitution observable in diff/handoff review and adds no independent-review or extra execution-authorization gate.",
+            requirement_ids: [TIP-006],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: 7feaac7f-04ee-4266-8fd2-3adbc7cf5dd8, revision: 3 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+                { id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 15,
+            item_key: requirement:TIP-007,
+            verdict: covered,
+            explanation: "The original requirement to execute agreed decisions cannot be satisfied by silently consuming an obsolete answer. Existing packet recovery returns changed architecture/contracts to the owning separately authorized workflow. Grouped task answers provide bounded affected-task identities. This requirement applies new agreement only to materially changed dependent commitments, preserves unrelated answers/work and keeps behavioral changes with specification ownership.",
+            requirement_ids: [TIP-007],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: cc9e44a5-9bf2-4423-86db-9d8d349c7d53, revision: 3 },
+                { id: a7fd7d68-7432-45b3-88aa-cdcd88f7f72f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 16,
+            item_key: requirement:TIP-008,
+            verdict: covered,
+            explanation: "The exact legacy answer selects return to planning for old tasks whose technical implementation has not been agreed. This requirement implements that prerequisite, including incomplete resumed work, and allows existing sufficient proposal/answer evidence to satisfy it. Focused supplementation and preservation of completed/unrelated tasks keep the change within the affected-task scope rather than imposing a bulk migration.",
+            requirement_ids: [TIP-008],
+            source_refs:
+              [{ id: f26b0410-987a-49fb-8ca8-9b8d4712ae17, revision: 3 }],
+          },
+          {
+            item_index: 17,
+            item_key: requirement:TIP-009,
+            verdict: covered,
+            explanation: "The freshness answer explicitly authorizes narrow MCP changes so technical agreement preserves an unchanged specification while behavioral amendments retain invalidation. The observed shared decision-hash baseline establishes the concrete need. Durable references, revisions, classification safeguards, old-record compatibility and blocked incompatible runtimes preserve existing safety rather than choosing a new storage architecture or expanding installation authority.",
+            requirement_ids: [TIP-009],
+            source_refs:
+              [
+                { id: a35ddfde-e586-4b48-943e-8f2869f96fc0, revision: 2 },
+                { id: 5c12c61c-8f41-410e-947c-f773a6a4b045, revision: 3 },
+              ],
+          },
+          {
+            item_index: 18,
+            item_key: requirement:TIP-010,
+            verdict: covered,
+            explanation: "Focused observable scenarios are the acceptance evidence for the user's concrete workflow outcome and request to avoid unnecessary development overhead. Existing portability/one-packet verification contracts and repository guidance require host isolation, test-first checks and truthful incomplete status on failure. This requirement tests agreement and execution behavior, prohibits quotas and new mandatory review stages, and does not mistake fixture simulation or structural checks for real user consent or live host qualification.",
+            requirement_ids: [TIP-010],
+            source_refs:
+              [
+                { id: fbf5c9c5-b251-41d6-8013-2c5e56426162, revision: 2 },
+                { id: eb6e209f-d9f1-43dc-b5d6-5739bda8747f, revision: 2 },
+              ],
+          },
+          {
+            item_index: 19,
+            item_key: profile:core,
+            verdict: covered,
+            explanation: "The active core profile is relevant to two existing explicitly invoked developer workflows, not a new CLI, configuration product or independent deployment platform. TIP-001/004/005 cover consumers, ownership, native interaction, inputs, outputs, validation and actual-answer invariants. TIP-004/007/008/009 cover missing/partial/custom answers, repeats, interruption, changed commitments, recovery, old packets and incompatible runtimes; TIP-009 preserves exact reads and version/conflict safeguards without premature representation design. TIP-006/010 give observable execution and proportional acceptance. Scope And Support preserves established environments and existing artifact contracts. No new CLI flags, configuration precedence, serialization consumer or OS boundary is established, so optional exhaustive command/configuration or platform matrices would not be a material missing behavior.",
+            requirement_ids:
+              [
+                TIP-001,
+                TIP-002,
+                TIP-003,
+                TIP-004,
+                TIP-005,
+                TIP-006,
+                TIP-007,
+                TIP-008,
+                TIP-009,
+                TIP-010,
+              ],
+            source_refs:
+              [
+                { id: scope.manifest, revision: 2 },
+                { id: 5c12c61c-8f41-410e-947c-f773a6a4b045, revision: 3 },
+              ],
+          },
+          {
+            item_index: 20,
+            item_key: context:specification,
+            verdict: covered,
+            explanation: "After reading all 20 detailed outcomes and the exact complete current specification, the outcome, scope, TIP-001 through TIP-010, non-goals and baseline references are semantically consistent. Significant-unit commitments and bounded private-helper freedom agree; grouped answers preserve explicit coverage for every task; settled decisions remain reusable only until a material change; old packets obtain focused agreement without bulk migration. Pure technical agreement freshness is separated from behavioral invalidation without permitting mixed changes to bypass specification ownership. Planning artifacts remain the existing bundle, with narrow MCP work explicitly authorized by the saved freshness answer and representation deferred to separately authorized planning. Preserved host/tool, validation, required-check and one-packet contracts are available in the referenced repository sources. The narrative introduces no unmatched material promise or additional platform, installation, publication or workflow-redesign authority. The baseline statements are labeled as observations rather than claims that the proposed behavior has already been implemented or qualified.",
+            requirement_ids: [],
+            source_refs: [],
+          },
+        ]
+      consistency_required: true
+      input_snapshot: d8772b1906201407321ce3464d6049a7588f9ceaba5a5dcb9cd36a0048377bca
+      consistency:
+        verdict: consistent
+        explanation: After reading all 20 detailed outcomes and the exact complete current specification, the outcome, scope, TIP-001 through TIP-010, non-goals and baseline references are semantically consistent. Significant-unit commitments and bounded private-helper freedom agree; grouped answers preserve explicit coverage for every task; settled decisions remain reusable only until a material change; old packets obtain focused agreement without bulk migration. Pure technical agreement freshness is separated from behavioral invalidation without permitting mixed changes to bypass specification ownership. Planning artifacts remain the existing bundle, with narrow MCP work explicitly authorized by the saved freshness answer and representation deferred to separately authorized planning. Preserved host/tool, validation, required-check and one-packet contracts are available in the referenced repository sources. The narrative introduces no unmatched material promise or additional platform, installation, publication or workflow-redesign authority. The baseline statements are labeled as observations rather than claims that the proposed behavior has already been implemented or qualified.
+      approval_observed: true

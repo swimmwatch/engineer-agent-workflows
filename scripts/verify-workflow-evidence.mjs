@@ -22,8 +22,10 @@ async function main(args = process.argv.slice(2), io = process) {
   try {
     const evidence = JSON.parse(await fs.readFile(args[0], "utf8"));
     const registry = await loadWorkflowEvidenceRegistry(args[1]);
-    const report = verifyWorkflowEvidence(evidence, registry);
-    report.findings.push(...await verifyCapturedArtifacts(evidence.artifacts, path.dirname(path.resolve(args[0]))));
+    const capturedDocuments = registry.policy.technicalBenchmark ? new Map() : undefined;
+    const captureFindings = await verifyCapturedArtifacts(evidence.artifacts, path.dirname(path.resolve(args[0])), { jsonDocuments: capturedDocuments });
+    const report = verifyWorkflowEvidence(evidence, registry, { capturedDocuments });
+    report.findings.push(...captureFindings);
     report.ok = report.findings.length === 0;
     io.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
     return report.ok ? 0 : 1;

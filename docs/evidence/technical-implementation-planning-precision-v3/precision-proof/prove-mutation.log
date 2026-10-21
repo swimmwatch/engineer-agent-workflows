@@ -1,0 +1,77 @@
+✖ B1 oracle rejects rounded aggregate JSON tokens (496.317861ms)
+✖ B1 oracle accepts exact aggregate JSON integers (121.6858ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 665.206992
+
+✖ failing tests:
+
+test at tests/technical-agreement-oracle.test.mjs:46:1
+✖ B1 oracle rejects rounded aggregate JSON tokens (496.317861ms)
+  AssertionError [ERR_ASSERTION]: {"fixture":"b1","status":"passed","checks":["help-compatibility","validated-records","exact-aggregate-integer","shared-errors-and-empty-input"]}
+  
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file://$SOURCE_ROOT/tests/technical-agreement-oracle.test.mjs:49:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/technical-agreement-oracle.test.mjs:53:1
+✖ B1 oracle accepts exact aggregate JSON integers (121.6858ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/run_main:107
+      triggerUncaughtException(
+      ^
+  
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '9007199254740993'
+  - '9007199254740992'
+                    ^
+  
+      at file://$SOURCE_ROOT/tests/fixtures/workflow-loop/technical-agreement-oracle.mjs:54:12
+      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+      at async node:internal/modules/esm/loader:647:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '9007199254740993',
+    expected: '9007199254740992',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file://$SOURCE_ROOT/tests/technical-agreement-oracle.test.mjs:56:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

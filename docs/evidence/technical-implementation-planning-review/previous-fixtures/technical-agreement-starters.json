@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "fixtures": {
+    "b1": {
+      "files": {
+        "package.json": "{\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test.mjs\"\n  }\n}\n",
+        "cli.mjs": "#!/usr/bin/env node\nconst [command] = process.argv.slice(2);\nif (command === 'help') process.stdout.write('record-report: validate <file> | summarize <file>\\n');\nelse { process.stderr.write('UNKNOWN_COMMAND\\n'); process.exitCode = 2; }\n",
+        "test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\ntest('existing help remains stable', () => { const r=spawnSync(process.execPath,['cli.mjs','help'],{encoding:'utf8'}); assert.equal(r.status,0); assert.equal(r.stdout,'record-report: validate <file> | summarize <file>\\n'); });\n",
+        "unrelated.txt": "Preserve this fixture-owned unrelated content exactly.\n"
+      },
+      "requirements": [
+        "Keep the existing help command and its exact text unchanged. Add validate <file>, emitting a JSON array of {id, amount} records after validating the complete UTF-8 input.",
+        "Input is zero or more LF-separated rows id,amount, optionally ending with one LF. Each id matches [A-Za-z0-9_-]+ and is unique within the input. Each amount is ASCII decimal digits representing a nonnegative safe integer. Malformed, duplicate or invalid records make either data command exit 2 with empty stdout and INVALID_INPUT on stderr; never emit a partial result.",
+        "Add summarize <file>, emitting JSON {count,total} using the same row validation contract as validate. Empty input produces [] for validate and {count:0,total:0} for summarize.",
+        "Use dependency-free Node.js. Delivery has two packets: shared validation and validate first, then summarize consuming that same validation contract. Preserve unrelated fixture content and existing compatibility. No commit, installation or external action is authorized."
+      ]
+    },
+    "b2": {
+      "files": {
+        "package.json": "{\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test.mjs\"\n  }\n}\n",
+        "configuration.mjs": "export function parseTimeout(raw) {\n  if (raw === undefined) return 5000;\n  if (!/^[0-9]+$/.test(raw) || Number(raw) < 1 || Number(raw) > 10) throw new Error('INVALID_TIMEOUT');\n  return Number(raw) * 1000;\n}\n",
+        "cli.mjs": "#!/usr/bin/env node\nimport { parseTimeout } from './configuration.mjs';\ntry { process.stdout.write(JSON.stringify({timeoutMs:parseTimeout(process.env.TIMEOUT_SECONDS),format:'json'})+'\\n'); }\ncatch { process.stderr.write('INVALID_TIMEOUT\\n'); process.exitCode=2; }\n",
+        "test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { parseTimeout } from './configuration.mjs';\ntest('existing default and accepted value remain stable',()=>{assert.equal(parseTimeout(undefined),5000);assert.equal(parseTimeout('5'),5000);assert.throws(()=>parseTimeout('0'),/INVALID_TIMEOUT/);});\n",
+        "unrelated.txt": "Preserve this fixture-owned unrelated content exactly.\n"
+      },
+      "requirements": [
+        "Preserve the existing parseTimeout(raw) export in configuration.mjs, default 5000 milliseconds when raw is undefined, and CLI output {timeoutMs,format:'json'}.",
+        "Expand accepted TIMEOUT_SECONDS from ASCII decimal integer strings 1..10 to 1..60 inclusive, including leading zeroes; return seconds multiplied by 1000.",
+        "Reject zero, values above 60, fractions, signs, surrounding whitespace, empty and nonnumeric input through the existing INVALID_TIMEOUT error. The CLI exits 2 with empty stdout and INVALID_TIMEOUT on stderr.",
+        "Keep this as one compact dependency-free Node.js packet using the existing function/configuration boundary. Preserve unrelated fixture content. No commit, installation or external action is authorized."
+      ]
+    }
+  },
+  "guidance": "# Simulation fixture instructions\n\nThis is an explicitly authorized isolated workflow experiment, not a real customer project. Work only inside this application and the explicitly supplied skill resources. Do not inspect sibling evaluator material, home credentials or unrelated repositories. Do not install dependencies, commit, publish, use external services or modify global configuration. Prefix shell commands with rtk (rtk proxy for exact output). Use only scenario MCP for workflow YAML; no direct reads/parsers/edits. Preserve unrelated.txt exactly. Use the selected workflow for the requested stage and stop at its boundary. Native question replies come from the frozen simulated respondent and apply only to this fixture. Do not infer additional authorization from them.\n"
+}

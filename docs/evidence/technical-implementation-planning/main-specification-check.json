@@ -1,0 +1,30 @@
+{
+  "classification": "ACTUAL",
+  "tool": "specification_check_state",
+  "checkedAt": "2026-10-21",
+  "result": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "recorded",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "a46e18b6e78751f8a41ecc662ee507f7b7475e994c9111051d5b1eff3e3b000b",
+    "specification_version": "a1a2739ae5c8d4ea86cac096da0e84cb5b86ded0f6b09081ca4d01873ae23967",
+    "review_ref": "a1421d0b-f37b-4b76-a7ca-2a84de7066f3",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  }
+}

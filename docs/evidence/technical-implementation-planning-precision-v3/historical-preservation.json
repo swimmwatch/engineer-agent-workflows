@@ -1,0 +1,34 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T18:09:24.277Z",
+  "historicalRegistryDigest": "64c18e1f7445a8e7cd2db15cac509c61399beeca05066be96131d98de5974e4c",
+  "previousFixtureHashes": {
+    "technical-agreement-registry.json": "64c18e1f7445a8e7cd2db15cac509c61399beeca05066be96131d98de5974e4c",
+    "technical-agreement-answers.json": "c94c4705328055a73263163ec80f44c87dc6d8b71a56719c1d665ea575178b61",
+    "technical-agreement-starters.json": "61e8ebc10d28926441146e13cb5a8cdc7346e2f25965b8ab3f919637f041168a",
+    "technical-agreement-oracle.mjs": "9a00509c4c7b483bbdbea411bed595267a66a574342b05b7fa2ff8a9d3f366ef",
+    "TRIALS.md": "f27f584f87de922aa1ba69912302134ffaebd87676d1eef4c26adb287af2fc0a",
+    "technical-agreement-starters-stdio.json": "c0f28b756f23474ead3cf081a1401f857997b03e9dcadbe2f0a27bc372888e51"
+  },
+  "allPreviousFixtureBytesPreserved": true,
+  "oldEvidenceConsistency": {
+    "ok": true,
+    "verificationKind": "evidence-consistency",
+    "behaviorCertified": false,
+    "sourceDigest": "f8dd511a4665a523a5be93939354e7a391cf1dafc5f593dbe0a5ff2b313166a7",
+    "findings": [],
+    "comparisonFindings": [
+      {
+        "code": "required-prove-missing",
+        "message": "Packet 01_shared-validation-and-validate.md lacks PROVE and restored GREEN for V01/V02 successful output assertions missed by initial RED.",
+        "runId": "b1-baseline-s2-2",
+        "traceRef": "initial/b1-baseline-s2-2/derived-trace.json",
+        "comparisonOutcome": "incomplete",
+        "countedAsSuccess": false,
+        "evidenceRef": "initial/b1-baseline-s2-2/evaluation.json",
+        "evidenceDigest": "5020d36affba0ef5fbf2424dd9c24308f1f507efec816546f85d37cd43ebb4f2"
+      }
+    ]
+  },
+  "note": "Historical stdio-v2 uses its saved original registry. Its incomplete baseline is preserved; exact-integer acceptance is only claimed for the new revision."
+}

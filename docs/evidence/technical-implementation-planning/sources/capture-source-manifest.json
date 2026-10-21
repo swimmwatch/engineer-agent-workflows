@@ -1,0 +1,13 @@
+{
+  "classification": "ACTUAL",
+  "purpose": "Exact captures of one-off private qualification controllers, not a new maintained benchmark framework. Restore their original private directory/import context to replay; credentials and real paths are not included.",
+  "files": {
+    "controller-stage-focused.mjs": "bc60143f8296bebe758961edc512becfb9044392787958ad773e0bacb8861489",
+    "controller-focus-v1.mjs": "f31e4f3c835476c66803abcee975c5126ea08da50f6ad0613c6dccad3bb70c51",
+    "controller-focus-v2.mjs": "b681cfdc23bc87e91c26d6e95ba7d2fa2aa05dcfe01f746f0db91f6e340ebc69",
+    "controller-evaluation-full.mjs": "29e76e1f252e948ff3c33d9d7fe0deb865a2f2c8e8eb5ae919f54156a7847d5e",
+    "controller-evaluation-focused-v1.mjs": "283a8432da8ed9901fe4c216cdb905d189e91875f870aea4d707f260d009eb97",
+    "controller-evaluation-focused-v2.mjs": "5a923b9edbc7e1030a7e00434acb9f11c0fe69d57989ca9502437e4675909cf7",
+    "capture-assembler.mjs": "200f81b08201ca5c903a6a1509a19784a11f675cb225ca0c4451362a57a56042"
+  }
+}

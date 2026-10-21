@@ -1,0 +1,9 @@
+{
+  "classification": "SIMULATION",
+  "frozenBeforeFocusedModels": true,
+  "policyDigest": "6a68ad84ed0acf2d8eda01c0a31598baff51e08a88f2a8a48efd6ddb647dbf87",
+  "controllerDigest": "df7d499ccba02996f2060fea5556010080011b186f187885ac2c39d8bce5d347",
+  "captureHelperDigest": "d775603c4380cedea132eece04ca62fe1b2098d7995dd9f1ce0c4ec467c50072",
+  "candidateDigest": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+  "protocol": "Preconfirmed managed states are fixture setup, never native-question or human-consent evidence. Q3 v2 adds a separate fresh unanswered continuation before acceptance resume, so actual dismissal is observed."
+}

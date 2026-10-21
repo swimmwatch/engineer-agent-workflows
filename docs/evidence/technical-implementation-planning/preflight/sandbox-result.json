@@ -1,0 +1,13 @@
+{
+  "classification": "ACTUAL",
+  "cli": "0.163.0",
+  "sandbox": "workspaceWrite",
+  "additionalWritableRoots": [],
+  "runtimeWorkspaceRoots": "application only",
+  "networkAccess": false,
+  "excludeSlashTmp": true,
+  "excludeTmpdirEnvVar": true,
+  "insideWrite": "passed",
+  "outsideOwnedScratchWrite": "denied",
+  "exitCode": 0
+}

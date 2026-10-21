@@ -1,0 +1,68 @@
+{
+  "classification": "ACTUAL",
+  "capturedAt": "2026-10-21T19:43:24.680Z",
+  "files": {
+    "controller-prepare.mjs": "1992f8ee2d5ae7e34b0a3bc85554e3f44994a2cdd05b1ca0c56c786e5b8f04a8",
+    "controller-fixture-setup.mjs": "96ab5b8237642bfb3894bdd511cedcda55849c7d09396ed5d5267eed100a6a43",
+    "controller-freeze.mjs": "40c200e74b8f1669726b9d34203a9a0196850cdbbca505e125c89802364d9204",
+    "controller-matrix.mjs": "d8a0f20aaf87a5c05e0dd467f65af70ee143dcff6baaef2286cda5904895213e",
+    "controller-focused-helper.mjs": "d775603c4380cedea132eece04ca62fe1b2098d7995dd9f1ce0c4ec467c50072",
+    "controller-focused.mjs": "df7d499ccba02996f2060fea5556010080011b186f187885ac2c39d8bce5d347",
+    "controller-evaluation.mjs": "6a5f3cbaeb93c0bf2318f51fcaf1f054710a0f6e655d76eff9fd381c7c150e12",
+    "controller-focused-evaluation.mjs": "e8a6cb3d307a7436a4648f2dfda6fe27ce56536c5da32df843cf73d5d2fbd797",
+    "capture-assembler.mjs": "ce867fde39f86f874d83fb16dcbc76f30e04e392cc4714fb4f66fe4649ed350d",
+    "controller-respondent-check.mjs": "73f188c75a96bbe86cccf9f29d33035b243059265e61cfa2b1d8ac6cf6e3786b",
+    "controller-mcp.mjs": "aebdc0f50a15c0ecc988e28f75ecd2c022842c9601dd4dbc4f95fff724db0fb7",
+    "controller-checklist.mjs": "b7875ffe02859f120405ca0062e82a6d0bb3422b2b11a9fe74c15aaa67dd1ced",
+    "controller-checklist-tests.mjs": "cf325883921f52cd687f5aa6ffd4e5591ca3ffef189810871f888d6de4979dc6",
+    "controller-recovery-setup.mjs": "85119dada36ed8b7bb3a2a9b0df01e98e6cdc6406b5b613f9eef0a95c7ff8d19",
+    "controller-diagnostic.mjs": "950e0a8e0f4c016af067e58e0bb8b0b2237818903a661c6e1e202b38e071dcdb",
+    "controller-attempt-inventory.mjs": "2464380fc4aa6681c68b2b7ae30d9a569411325f945f031a25cbd7338680b857",
+    "controller-capture-audit.mjs": "fd1abe6c70e9fffff3c82f4fce5e3c9520a195ef1c3e5e582f1711eb6bf889b5",
+    "controller-context-audit.mjs": "2260457c25c0b14d1f9c515b23eb0b139ef7d51c797ab0bd0d62f4c7b3f1d5e1",
+    "controller-proof-exit.mjs": "68d6d5e70460a9d9dfab6ece971fff8ce9ad03eb6db2850135fff9ef77fa7376",
+    "controller-proof-exit-tests.mjs": "0cf01a805b3394d234c94efa53ce73c26b2894f646b68885bd748675cf7e6928",
+    "controller-publication-redaction.mjs": "fec6dfc9685a7fb8a5ff907d0b8937d3ff4759f1e3c59e672a0074ca4cea0c6e"
+  },
+  "purpose": "One-off local controllers, preserved for exact capture interpretation; restore their original private directory/import context to replay. No new maintained benchmark platform.",
+  "executionMapping": {
+    "matrix": {
+      "controller": "controller-matrix.mjs",
+      "runIds": [
+        "b1-baseline-precision-v3-1",
+        "b1-candidate-precision-v3-1",
+        "b2-candidate-precision-v3-1",
+        "b2-baseline-precision-v3-1",
+        "b1-candidate-precision-v3-2",
+        "b1-baseline-precision-v3-2",
+        "b2-baseline-precision-v3-2",
+        "b2-candidate-precision-v3-2"
+      ]
+    },
+    "recovery": {
+      "controller": "controller-focused-helper.mjs",
+      "guard": "controller-checklist.mjs",
+      "runIds": [
+        "b2-baseline-precision-v3-checklist-r1-1"
+      ]
+    },
+    "focused": {
+      "controller": "controller-focused.mjs",
+      "stageHelper": "controller-focused-helper.mjs"
+    }
+  },
+  "preparationCorrections": [
+    {
+      "check": "assembler syntax",
+      "first": "failed: over-escaped regex",
+      "corrected": "passed: explicit path predicates",
+      "measuredTrialsAffected": false
+    },
+    {
+      "check": "respondent encoding",
+      "first": "Cyrillic regex alternatives re-encoded during preparation copy",
+      "corrected": "Future helper restores exact original function; matrix controller preserved and actual answers checked separately",
+      "observedPolicyCheck": "../controller-policy-check.json"
+    }
+  ]
+}

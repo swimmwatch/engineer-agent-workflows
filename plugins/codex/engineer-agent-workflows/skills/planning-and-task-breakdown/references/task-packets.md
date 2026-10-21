@@ -23,9 +23,9 @@ docs/specs/<workstream>/
 
 - `spec.md` owns approved observable behavior, constraints, decisions, and
   acceptance; it does not own delivery order.
-- `decisions.yaml` preserves versioned specification decisions; planning queries
-  exact bounded records through the mandatory MCP as evidence and does not
-  rewrite confirmed scope.
+- `decisions.yaml` preserves versioned specification decisions and the separate
+  managed `planning_decisions` technical history. Use exact bounded MCP records;
+  planning does not rewrite confirmed scope or behavioral decisions.
 - `manifest.yaml` is the current confirmed depth, profile, and planning-artifact
   contract. Planning creates only listed profile artifacts and returns material
   scope changes to specification. `planning_artifacts` is specification-relative;
@@ -83,12 +83,42 @@ Every packet states:
    For private-state or absence claims, identify a safe observation surface that
    measures the real operation without exposing the protected mutable state.
 8. External or irreversible steps as separate `MANUAL GATE` items.
-9. Recheck the pinned specification version, update completion and stop after this packet. Mark completion only after
+9. Recheck the pinned specification version and technical agreement, compare the
+   scoped diff with technical commitments, update completion and stop after this packet. Mark completion only after
    every required check passes. A failed or unavailable required check keeps the
    packet incomplete, even when implementation is finished and the blocker is
    documented; do not downgrade it to optional because the environment cannot
    run it. Review is optional and separately invoked, never a completion or
    next-packet prerequisite.
+
+## Technical Proposal And Agreement
+
+Every packet has one exact unique `## Technical proposal` heading. Put its
+binding approach, significant units/contracts, interactions, dependency direction,
+constraints and concise rationale there. Shared technical decisions have one
+authoritative heading under this specification's `tasks/`; list each exact source
+`path` and `heading` in the proposal's `sources`. All binding commitments must be
+in these hashed sections, including precise references to required contracts.
+Keep rejected alternatives only when they explain a material tradeoff. Mark
+illustrative names and minor private helpers as flexible; do not prescribe full
+source listings. Follow `references/technical-agreement.md` before readiness.
+
+Under separate `## Technical agreement`, record the selected `proposal_id`,
+`packet_id`, returned `proposal_digest`, exact `agreement_ref` and source headings.
+Reference the managed question/answer for provenance rather than duplicating a
+transcript. Keep this metadata and progress outside hashed sections. Record
+`planning_packet_check` result and any unresolved decisions or prerequisites;
+only current `ready` agreement plus other checks makes the packet executable.
+Recheck with `expected_proposal_digest` before and after execution. Missing legacy
+agreement returns only this task to planning; never migrate unrelated tasks.
+Plan stages and dependencies must be usable without selecting another architecture.
+
+For alternative approaches, keep their distinct contracts in separate exact
+headings and include only the chosen variant plus common commitments in its
+managed proposal sources. The agreement section identifies that selection;
+do not rewrite hashed proposal text after answering merely to label the winner.
+
+## Bounded Inputs And Preservation
 
 For product-linked packets, declare `## Product context roots` followed by one
 fenced `json` array of exact native `{product_id, artifact, element_id}` roots

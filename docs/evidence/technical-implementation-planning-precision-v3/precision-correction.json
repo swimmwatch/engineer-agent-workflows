@@ -1,0 +1,93 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T17:53:47.727Z",
+  "scope": "B1 exact aggregate integer contract and oracle correction",
+  "decision": "Direct human selection: exact JSON integer sum without rounding",
+  "boundary": {
+    "amounts": [
+      "9007199254740991",
+      "2"
+    ],
+    "expectedNumericToken": "9007199254740993",
+    "rejectedRoundedToken": "9007199254740992"
+  },
+  "checks": {
+    "red": {
+      "exitCode": 1,
+      "reason": "Old oracle accepts rounded totals and lacks exact-aggregate observation"
+    },
+    "green": {
+      "exitCode": 0,
+      "passed": 2
+    },
+    "prove": {
+      "mutationExit": 1,
+      "restoredExit": 0
+    },
+    "fullTests": {
+      "exitCode": 0,
+      "passed": 1053,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "lint": 0,
+    "generateCheck": 0,
+    "validate": 0
+  },
+  "sourceDigests": {
+    "tests/technical-agreement-oracle.test.mjs": "3a3afbf65e7ea187030b07bbe8434b2dfe09c4f3b5388f670814ae8c49a6e8e7",
+    "tests/fixtures/workflow-loop/technical-agreement-oracle.mjs": "ba8a0548f0ba4c10e79f975da40be1cf0f2e799962753f722541254259ee2036",
+    "tests/fixtures/workflow-loop/technical-agreement-starters.json": "d8420c331a54e4705b6e016ce92a9512c06f0ff728bfaa014608b96efc4f91cb",
+    "tests/fixtures/workflow-loop/technical-agreement-starters-stdio.json": "19751488eb2b6cfb1d244cb307eb00d59bd7b432a8203cbce1a9e6bb9707bd62",
+    "tests/fixtures/workflow-loop/technical-agreement-registry.json": "2350493b0ea1d9c55db2a6c3c65058e8af1760a44e509d5b7b9d24bde93261eb"
+  },
+  "artifacts": [
+    {
+      "ref": "precision-proof/red.log",
+      "digest": "11dc525c876bdbd83b13f2d09cbaa6912773deccccd88b85187588e61493b3a8",
+      "originalDigest": "932b602727f794df0df3bba2c7a5e37e03bf60ac272b2f91df703d27cab7f5df",
+      "publicationNormalization": "publication-redaction.json"
+    },
+    {
+      "ref": "precision-proof/green.log",
+      "digest": "5fd4be4095911e4e9c7ba7f0ddba393f0b8a8ff75e669848bfd3df6c67813429"
+    },
+    {
+      "ref": "precision-proof/prove-mutation.log",
+      "digest": "4d930572d936a4f9597a743a192e03af281df6fa5425867d650e5fc17f3d2278",
+      "originalDigest": "6bec4f3839371fa498dadd6074dae6d00d42bd27467185ffa7562a45227d0ef5",
+      "publicationNormalization": "publication-redaction.json"
+    },
+    {
+      "ref": "precision-proof/prove-restored.log",
+      "digest": "301f4cd49d697e70f2c9bfe392ab715bc9c5d18944b53af7968cda6d7bcd2a53"
+    },
+    {
+      "ref": "precision-proof/npm-test.log",
+      "digest": "10e4381f82bc5e4b0eb93247e484b9823ff07b4bd46f2451defd895ffd9ae2b2",
+      "originalDigest": "ce3c4b40229d0f6c5b15829b612477fa9349fc05f8c659c0643670bdb41b0e71",
+      "publicationNormalization": "publication-redaction.json"
+    },
+    {
+      "ref": "precision-proof/lint.log",
+      "digest": "93cf3f54b1955c04651cd5500a2405d05a96520cf5931de533eff35004f153ee"
+    },
+    {
+      "ref": "precision-proof/generate-check.log",
+      "digest": "3584a4c95cc03c8a78ea657287da2a579dc8ad3a16b58ac7e9b44150b1e97ba4"
+    },
+    {
+      "ref": "precision-proof/validate.log",
+      "digest": "b5e8bc9b32a5c710bd95811f9c629f254da48fedd00a5086b618687a39cf2f95"
+    }
+  ],
+  "remaining": [
+    "Fresh actual-model comparison and focused evaluations",
+    "Evidence verification and current handoff completion"
+  ],
+  "limitations": [
+    "These repository checks do not establish fresh benchmark success",
+    "Historical captures and verdicts are preserved under their original input revision"
+  ]
+}

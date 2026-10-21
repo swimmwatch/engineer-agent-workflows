@@ -1,0 +1,360 @@
+{
+  "classification": "ACTUAL",
+  "traceKind": "derived-trace",
+  "note": "Facts derived from raw captures; simulation setup/authorization stays labeled. Actor completion claims do not establish full quality: required proof observations and the independent verdict remain authoritative, including any incomplete baseline.",
+  "events": [
+    {
+      "atMs": 2863014.319938,
+      "type": "stage_started",
+      "stage": "specification",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/inputs/setup.json",
+      "seq": 1
+    },
+    {
+      "atMs": 2863015.319938,
+      "type": "profile_confirmation",
+      "explicit": true,
+      "depth": "Lite",
+      "profiles": [
+        "core"
+      ],
+      "classification": "SIMULATION",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/inputs/setup.json",
+      "seq": 2
+    },
+    {
+      "atMs": 2863016.319938,
+      "type": "artifact_write",
+      "stage": "specification",
+      "target": "specification-artifact",
+      "artifact": "spec.md",
+      "digest": "21bd45e762f399c5aa68595a1c0233254cf97ddff0d31401742ab7b2a587fce0",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/inputs/spec.md",
+      "observedBy": "fixture-setup",
+      "seq": 3
+    },
+    {
+      "atMs": 2863017.319938,
+      "type": "stage_completed",
+      "stage": "specification",
+      "status": "passed",
+      "contractDigest": "21bd45e762f399c5aa68595a1c0233254cf97ddff0d31401742ab7b2a587fce0",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/inputs/setup.json",
+      "seq": 4
+    },
+    {
+      "atMs": 2863019.319938,
+      "type": "stage_started",
+      "stage": "planning",
+      "sessionId": "01a15fbf-f011-7c20-9581-4b7bd5d19bac",
+      "seq": 5
+    },
+    {
+      "atMs": 2882504.786188,
+      "type": "contract_read",
+      "status": "approved",
+      "digest": "21bd45e762f399c5aa68595a1c0233254cf97ddff0d31401742ab7b2a587fce0",
+      "itemId": "exec-661ba6e2-9963-49d8-872c-6b1f2fe38837",
+      "seq": 6
+    },
+    {
+      "atMs": 2886601.350249,
+      "type": "profile_reference_read",
+      "stage": "planning",
+      "profile": "core",
+      "itemId": "exec-377b70e7-ead5-4b79-bf9d-e3beeda77ed5",
+      "seq": 7
+    },
+    {
+      "atMs": 2908948.29389,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_timeout-range.md",
+      "path": "docs/specs/b2/tasks/01_timeout-range.md",
+      "itemId": "exec-d860d02c-6058-4f59-9319-1e133f977d5f",
+      "digest": "184fedee79437935d2982a38e52995c77ea01de566a57bac040cd5785a2d4e7f",
+      "seq": 8
+    },
+    {
+      "atMs": 2979800.553328,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_timeout-range.md",
+      "path": "docs/specs/b2/tasks/01_timeout-range.md",
+      "itemId": "exec-41016714-2253-4ac0-8dbd-81f84be0ffc7",
+      "digest": "9b0ecc6efe1c0c3637bc61b1dd23e76a1823e3b688f4a7b5d837258c0ba51d35",
+      "seq": 9
+    },
+    {
+      "atMs": 2979800.555988,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "handoff.md",
+      "path": "docs/specs/b2/tasks/handoff.md",
+      "itemId": "exec-41016714-2253-4ac0-8dbd-81f84be0ffc7",
+      "digest": "be695f5f70c8cea75b270ee169a07776fed1ecd63cb41f226a873fb001907523",
+      "seq": 10
+    },
+    {
+      "atMs": 2979800.557142,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "plan.md",
+      "path": "docs/specs/b2/tasks/plan.md",
+      "itemId": "exec-41016714-2253-4ac0-8dbd-81f84be0ffc7",
+      "digest": "ead584983118429930fad56cd2faf3c9251d8ffea4d7e4b3732eb7defb83d9a6",
+      "seq": 11
+    },
+    {
+      "atMs": 2979800.557624,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "todo.md",
+      "path": "docs/specs/b2/tasks/todo.md",
+      "itemId": "exec-41016714-2253-4ac0-8dbd-81f84be0ffc7",
+      "digest": "984c5ebace0c125e262cef5fa43100d9547534a466ece0451c2fec502f3bfef3",
+      "seq": 12
+    },
+    {
+      "atMs": 3001005.13016,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_timeout-range.md",
+      "path": "docs/specs/b2/tasks/01_timeout-range.md",
+      "itemId": "exec-f742ed37-da89-41fc-8b79-fb40bfb972da",
+      "digest": "ce648be160ea95f6f7be20b3a9fa9e11d2dc5f33170ee68fe461ac8e63a0fb4f",
+      "seq": 13
+    },
+    {
+      "atMs": 3001005.131641,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "handoff.md",
+      "path": "docs/specs/b2/tasks/handoff.md",
+      "itemId": "exec-f742ed37-da89-41fc-8b79-fb40bfb972da",
+      "digest": "a5d3331856086a7132f6103b028163251b24418782802a5718762f090ac19c45",
+      "seq": 14
+    },
+    {
+      "atMs": 3001005.132405,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "todo.md",
+      "path": "docs/specs/b2/tasks/todo.md",
+      "itemId": "exec-f742ed37-da89-41fc-8b79-fb40bfb972da",
+      "digest": "b6aface4cff0f2a6c6a8308664b1217e7299774324df8fa2cb5b9ef7ccfd9d06",
+      "seq": 15
+    },
+    {
+      "atMs": 3010167.5123,
+      "type": "packet_declared",
+      "packetId": "b2-01",
+      "requirementIds": [
+        "b2-candidate-AR-1",
+        "b2-candidate-AR-2",
+        "b2-candidate-AR-3",
+        "b2-candidate-AR-4"
+      ],
+      "requiredProofs": [
+        "CLI rejects invalidInputs: exact empty stdout assertion, test.mjs:44 (17 cases)"
+      ],
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "seq": 16
+    },
+    {
+      "atMs": 3010167.5223,
+      "type": "stage_completed",
+      "stage": "planning",
+      "status": "passed",
+      "seq": 17
+    },
+    {
+      "atMs": 3011270.027722,
+      "type": "stage_started",
+      "stage": "implementation",
+      "seq": 18
+    },
+    {
+      "atMs": 3011270.027722,
+      "type": "packet_authorized",
+      "packetId": "b2-01",
+      "classification": "SIMULATION",
+      "source": "matrix/b2-candidate-precision-v3-2/implementation-01_timeout-range.md.jsonl",
+      "evidence": "Explicit single-packet invocation prompt",
+      "seq": 19
+    },
+    {
+      "atMs": 3055594.505542,
+      "type": "packet_prerequisites",
+      "packetId": "b2-01",
+      "status": "passed",
+      "itemIds": [
+        "exec-78f15204-1f7c-4a8c-af14-1c095bccb5ee",
+        "exec-deddebec-e1db-4f0f-bd89-c153bcce0f94",
+        "exec-33740c37-d332-48bc-96e3-fbd81176c4ed",
+        "exec-7d107be6-886f-4a94-bc6c-40aa2e4ebfd5",
+        "exec-7dbe93c9-3ccf-4d8f-82ed-51f5ddd16d14",
+        "exec-290036c2-9ed3-40c5-bc5a-80e98f37df58"
+      ],
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "seq": 20
+    },
+    {
+      "atMs": 3076404.1567369998,
+      "type": "packet_started",
+      "packetId": "b2-01",
+      "sessionId": "01a15fc2-3305-7083-b575-bdeb99aac0b8",
+      "observedBy": "derived-first-packet-action",
+      "seq": 21
+    },
+    {
+      "atMs": 3077161.861416,
+      "type": "test_observation",
+      "packetId": "b2-01",
+      "testId": "b2-01:behavior",
+      "phase": "red",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "requirementIds": [
+        "b2-candidate-AR-1",
+        "b2-candidate-AR-2",
+        "b2-candidate-AR-3",
+        "b2-candidate-AR-4"
+      ],
+      "itemId": "exec-5344bfdb-1fb7-42cb-ae07-5ff22d1159fe",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "seq": 22
+    },
+    {
+      "atMs": 3083819.808265,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b2-01",
+      "artifact": "configuration.mjs",
+      "itemId": "exec-701232ee-5cad-4d0a-bc95-d9346436766e",
+      "digest": "899945a207173021697e15f964a5ce9115379b3b93b707fda9316153f301d92c",
+      "seq": 23
+    },
+    {
+      "atMs": 3084471.631176,
+      "type": "test_observation",
+      "packetId": "b2-01",
+      "testId": "b2-01:behavior",
+      "phase": "green",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "itemId": "exec-4f9d38a6-54a5-41d8-8712-f61fd57cc3e0",
+      "seq": 24
+    },
+    {
+      "atMs": 3092255.586087,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b2-01",
+      "artifact": "cli.mjs",
+      "itemId": "exec-513d099e-f33a-4cda-b040-cfce6abf8015",
+      "digest": "26f052d4d9966695bc993875e5644e257e8b33907683bbe60d924dcdfed9fd69",
+      "seq": 25
+    },
+    {
+      "atMs": 3092919.870526,
+      "type": "test_observation",
+      "packetId": "b2-01",
+      "testId": "CLI rejects invalidInputs: exact empty stdout assertion, test.mjs:44 (17 cases)",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-717d0904-0ee3-4527-8748-53d6d4dfb4f2",
+      "itemId": "exec-717d0904-0ee3-4527-8748-53d6d4dfb4f2",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "observedExitCode": 1,
+      "exitOrigin": "outer-command",
+      "outerExitCode": 1,
+      "seq": 26
+    },
+    {
+      "atMs": 3092964.532906,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b2-01",
+      "artifact": "cli.mjs",
+      "itemId": "exec-e69394ff-39ca-468a-8434-ef3a558aaa0e",
+      "digest": "22c6387aeb77eed11452a5858f4e756e4b6838df386f700c5bb5da412e9e9a97",
+      "seq": 27
+    },
+    {
+      "atMs": 3093613.245525,
+      "type": "test_observation",
+      "packetId": "b2-01",
+      "testId": "CLI rejects invalidInputs: exact empty stdout assertion, test.mjs:44 (17 cases)",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-717d0904-0ee3-4527-8748-53d6d4dfb4f2",
+      "itemId": "exec-2655bc73-7de0-4d3e-b3ff-3592ada0523b",
+      "restorationItemId": "exec-2655bc73-7de0-4d3e-b3ff-3592ada0523b",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "seq": 28
+    },
+    {
+      "atMs": 3093613.245625,
+      "type": "check",
+      "stage": "implementation",
+      "packetId": "b2-01",
+      "checkId": "b2-01:final",
+      "status": "passed",
+      "itemId": "exec-2655bc73-7de0-4d3e-b3ff-3592ada0523b",
+      "seq": 29
+    },
+    {
+      "atMs": 3164820.679823,
+      "type": "packet_completed",
+      "packetId": "b2-01",
+      "status": "passed",
+      "observedBy": "actor-checklist-and-completion-claim",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "seq": 30
+    },
+    {
+      "atMs": 3164820.679923,
+      "type": "stage_completed",
+      "stage": "implementation",
+      "status": "passed",
+      "seq": 31
+    },
+    {
+      "atMs": 3165830.389404,
+      "type": "external_acceptance",
+      "status": "passed",
+      "requirementIds": [
+        "b2-candidate-AR-1",
+        "b2-candidate-AR-2",
+        "b2-candidate-AR-3",
+        "b2-candidate-AR-4"
+      ],
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/result.json",
+      "evidenceDigest": "b172f8f812be2213f0da6ee4fb164012f6f4f6870858c0e650db4b9713d76c30",
+      "seq": 32
+    },
+    {
+      "atMs": 3165830.390404,
+      "type": "evaluation_claim",
+      "evidenceRef": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+      "status": "passed",
+      "seq": 33
+    }
+  ]
+}

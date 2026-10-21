@@ -13,6 +13,13 @@ const TASK_SKILLS = Object.freeze([
 ]);
 const read = relativePath => readFile(path.join(projectRoot, relativePath), "utf8");
 
+function assertStandaloneProductBoundary(document) {
+  assert.match(
+    document,
+    /otherwise[^.]*?(?:do\s+not\s+call|skip)\s+product\s+task tools/iu,
+  );
+}
+
 function assertOrdered(document, values) {
   let offset = -1;
   for (const value of values) {
@@ -35,8 +42,20 @@ test("P16 keeps product task integration conditional and legacy-safe", async () 
     const document = await read(`skills/${skill}/SKILL.md`);
     assert.match(document, /shared\/references\/product-workflow\.md/u);
     assert.match(document, /product-linked/iu);
-    assert.match(document, /standalone/iu);
+    assertStandaloneProductBoundary(document);
     assert.doesNotMatch(document, /mcp__engineer_agent_workflow/u);
+  }
+});
+
+test("P16 rejects a missing standalone product-tool restriction", async () => {
+  for (const skill of TASK_SKILLS) {
+    const document = await read(`skills/${skill}/SKILL.md`);
+    const unrestricted = document.replace(
+      /(?:do\s+not\s+call|skip)\s+product\s+task tools/iu,
+      "use product task tools",
+    );
+    assert.notEqual(unrestricted, document);
+    assert.throws(() => assertStandaloneProductBoundary(unrestricted));
   }
 });
 

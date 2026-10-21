@@ -1,10 +1,5 @@
-* text=auto eol=lf
-
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.ico binary
-*.zip binary
-*.gz binary
-*.tgz binary
+# Captured qualification inputs are hash-bound: preserve their exact bytes.
+# Whitespace in immutable transcripts, fixture snapshots and proof logs is data.
+docs/evidence/technical-implementation-planning/** -text -whitespace
+docs/evidence/technical-implementation-planning-precision-v3/** -text -whitespace
+docs/evidence/technical-implementation-planning-review/** -text -whitespace

@@ -1,0 +1,22 @@
+{
+  "classification": "ACTUAL",
+  "kind": "immutable-comparison-input-manifest",
+  "frozenInput": {
+    "ref": "frozen-inputs-stdio-v2.json",
+    "digest": "4f480e7f4c2c9e76c1174f83bb250cf75a09a29e27a6d01f14faefb163b3c73b"
+  },
+  "sources": {
+    "baseline": {
+      "ref": "sources/baseline-stdio-v2.json",
+      "digest": "8234b0f9c186e01c0fe0b0b9c489d74da56bb26ef8450d2e8fa4afd6cdb7f8fc"
+    },
+    "candidate": {
+      "ref": "sources/candidate-r3.json",
+      "digest": "7e3b24ade07d45ff91c34eab8058589e039b4fd5e67b402f4bd82568bc5648d6"
+    }
+  },
+  "sourceIdentities": {
+    "baseline": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+    "candidate": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45"
+  }
+}

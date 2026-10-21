@@ -1,0 +1,387 @@
+{
+  "stage": "implementation",
+  "stageId": "implementation-legacy",
+  "packetId": "01_shared-validation-and-validate.md",
+  "sessionId": "01a15fcb-b93b-7642-b1c6-b535aa2168b5",
+  "requestedModel": "gpt-6.1-sol",
+  "reportedModel": "gpt-6.1-sol",
+  "startMs": 2893.265967,
+  "endMs": 28932.384101,
+  "terminal": "completed",
+  "error": null,
+  "nativeQuestions": [],
+  "writes": [],
+  "items": [
+    {
+      "atMs": 5105.223762,
+      "item": {
+        "type": "userMessage",
+        "id": "01a15fcb-c716-70c3-b1a0-7cb93c7edd51",
+        "clientId": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "$incremental-implementation Implement only the named legacy packet from the current plan and current fixture worktree. Preserve existing work and stop after that packet. No commit or global action is authorized. Packet file: 01_shared-validation-and-validate.md",
+            "text_elements": []
+          },
+          {
+            "type": "skill",
+            "name": "incremental-implementation",
+            "path": "$TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md"
+          }
+        ]
+      }
+    },
+    {
+      "atMs": 7322.116741,
+      "item": {
+        "type": "agentMessage",
+        "id": "msg_0b21d953cef17763016ad9092a211c8191837eacf295471b36",
+        "text": "I’m using the incremental-implementation skill to validate the packet agreement, implement only `01_shared-validation-and-validate.md`, and stop at its handoff boundary.",
+        "phase": "commentary",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null
+      }
+    },
+    {
+      "atMs": 9308.848417,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-358c32fb-4b4b-45fc-a309-c6f904e75e5a",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk proxy node $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/scripts/verify-engineering-manual.mjs $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation'",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app",
+        "processId": "22295",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy node $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/scripts/verify-engineering-manual.mjs $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation"
+          }
+        ],
+        "aggregatedOutput": null,
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 11957.878048,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-8b65c846-8976-421a-a4b5-80304a540fb5",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk proxy cat $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md'",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app",
+        "processId": "21621",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy cat $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md"
+          }
+        ],
+        "aggregatedOutput": "# Workflow YAML Contracts\n\nUse the callable scenario tools of `engineer-agent-workflow-mcp` for all reads,\ncreation, updates and validation of these four workflow documents. Do not hand-edit\nthem, generate YAML payloads, reconstruct entire documents, or use a local reader\nor parser as a fallback. Missing required MCP capability blocks affected work;\nreport it without installing or configuring a server automatically.\n\nExclude these four documents from shell content searches and Git diffs, including\nwhile locating workflow state. Filename-only discovery is allowed; query their\ncontents and revisions through scenario tools.\n\n| File | Authoritative JSON Schema Draft 7 | Content owner |\n| --- | --- | --- |\n| `docs/specs/<slug>/manifest.yaml` | `manifest.schema.json` | Specification |\n| `docs/specs/<slug>/decisions.yaml` | `decisions.schema.json` | Specification decisions; separate managed planning decisions |\n| `design/system/catalog.yaml` | `catalog.schema.json` | Explicit design planning |\n| `design/specs/<slug>/experience.yaml` | `experience.schema.json` | Explicit design planning |\n\nSchemas remain under the matching bundle's `shared/schemas/` and are packaged in\nthe MCP artifact. They are local contract identifiers, not network fetch targets.\nAgents need not load their contents for ordinary scenario calls. Read a schema\nonly when explicitly investigating a contract/version conflict. Product API,\nevent and data contracts retain their own profile formats and authoring process;\nthey are not arbitrary YAML-editing targets for this MCP.\n\n## Context And Changes\n\n1. Use `specification_list` when the specification is unknown, then\n   `specification_open` with the absolute project path from current task context\n   and its exact slug. Pass the returned opaque `context` to subsequent calls.\n   Multiple projects/specifications remain separate; no directory allowlist or\n   implicit global current project is required.\n2. Use the tool appropriate to the owning workflow. Specification routes scope\n   and interviewing; design planning routes catalog/screens only after manifest\n   eligibility. Planning owns implementation-local `planning_*` questions and\n   agreements; implementation checks them. Neither acquires authority to revise\n   scope or design merely by accessing these tools.\n3. Use returned IDs/references with the latest returned context. Every successful\n   context-bearing call supplies the context for the next sequential write.\n   Independent read-only calls may run in parallel. Use\n   `decision_link_requirements_batch` when adding links to multiple decisions;\n   the single and batch tools are additive and never remove existing links. Do\n   not construct paths, revisions, digests, confirmation flags or field-level\n   patches. After a lost reply, repeat the exact call; do not invent a second\n   question or entity. On `CONFLICT`, stop writes, reopen, compare the returned\n   current decision references with the intended addition, and retry only after\n   confirming `operation_applied: false`; never repeat a write blindly.\n4. MCP preserves existing comments and extension metadata, appends decision\n   revisions, validates a single UTF-8 YAML mapping, and rejects duplicate keys,\n   aliases, merge keys, custom tags, unknown contract fields and unsafe paths.\n   Its reserved retry receipts use `extensions.workflow_mcp_receipts`. Before\n   install, it applies pinned Prettier `3.9.6` only for a supported declarative\n   project configuration or declared Prettier dependency. Invalid declarative\n   configuration fails without a write; executable configuration and plugins are\n   not loaded. Do not manually format MCP-owned workflow YAML.\n5. A single-file write is atomic for cooperating MCP writers. Related-file\n   changes are not one transaction. The MCP rechecks dependencies before saving;\n   do not concurrently edit the same files outside MCP during a write.\n   A crash lock remains a blocker for explicit recovery, not automatic deletion.\n\n`manifest.yaml` is the current confirmed scope. The `scope.manifest` decision\npreserves the immutable proposal shown before confirmation, so its nested\n`scope.confirmed: false` is not a competing current-state flag. Do not pass this\nservice record to generic decision-link tools. Completeness review checks the\nscope source and each active profile as dedicated inventory items.\n\n## Specification Completeness Versions\n\nPlanning and incremental call `specification_check_state` before consuming the\nspecification. It also checkpoints an observed author-made Draft-to-Approved\ntransition; it never assigns approval. New-review consumers require `status:\npass`, `coverage_status: reviewed`, and Approved Markdown. Save the returned\n`source_version`, `specification_version` and `review_ref` in plan/packet inputs.\nThese are references, not a second source/requirement map or an execution ledger.\n\nRead linked exact definitions with `requirement_get` and its\n`specification_version` as the tool's `source_version`; follow continuations for\nboth text and decision refs. Planning uses `requirement_list` to cover the full\napproved scope, without rereading a large journal. Incremental uses only its\npacket's linked requirements and contracts, then calls `specification_check_state`\nwith the pinned aggregate `expected_source_version` before work and completion.\nPending, gaps, stale or a mismatched version blocks affected work: return it to\nthe separately invoked specification/planning owner, never edit its product\ncontract from implementation. MCP registration is not semantic proof.\n\nFor `legacy_unverified`, retain previous scope/link/approval checks, use exact\nMarkdown sections when structured definitions are absent, and explicitly record\nthat new completeness assurance is absent. Do not auto-migrate or block solely\nfor this label. Creation or modification by specification enrolls the new cycle.\n\n## Evidence And Ownership\n\n### Technical Agreement Freshness\n\nUse `planning_question_prepare`, `planning_question_record_answer` and\n`planning_question_record_no_answer` for technical proposals and actual outcomes.\nThey persist separate `planning_decisions` history in the existing journal, not\nbehavioral specification decisions. Pure technical writes change the physical\ncontext, not the behavioral reviewed `source_version`; use the latest returned\ncontext nevertheless. Never route technical answers through behavioral question\ntools or relabel behavioral changes to preserve approval. Mixed/ambiguous changes\nstay unresolved; scope, behavior and acceptance return to specification.\n\nPlanning reads exact bounded `planning_decision_find`/`planning_decision_get`\nrecords and binds each packet to the returned agreement and proposal digest.\nImplementation calls `planning_packet_check` with exact `packet_id`,\n`agreement_ref` and `expected_proposal_digest` before bulk reads/edits and before\ncompletion, alongside `specification_check_state` with its pinned aggregate.\nOnly `ready` and valid specification inputs permit dependent execution. Missing,\nstale or blocked agreement returns the affected task to planning, including legacy\ntasks. Technical source changes reopen affected consumers, not unrelated tasks.\nLegacy specification assurance and technical agreement are separate gates.\n\nFollow the planning skill's `references/technical-agreement.md` for source\nheadings, native questions, partial answers and revisions. Missing runtime\ncapability blocks affected work; no direct state fallback, fabricated bindings,\nautomatic migration, installation or second journal is allowed. These checks\ncannot authenticate consent or prove semantic compliance with agreed architecture.\n\n### Evidence Limits\n\n- A recorded answer is not independently authenticated user consent. Preserve\n  the actual host-question outcome and source; silence, errors and default\n  options never become answers. `scope_confirm` requires explicit confirmation\n  of the exact saved proposal, not an agent-supplied `confirmed: true`.\n- Direct user edits remain authoritative. Reconcile them through the owning\n  workflow and new decision revisions. Unsupported legacy shapes require agreed\n  migration; never silently rewrite them to fit a template.\n- An active UI profile alone does not authorize design writes. The confirmed\n  manifest must declare the exact corresponding project artifact. Read-only\n  shared inputs do not authorize library changes or remote Penpot operations.\n- Before stage completion, use its scenario-specific state/design check. Record\n  the actual result and unresolved evidence. Native exports are checked against\n  real saved bytes, identities and shared-library links; a hash or valid schema\n  is not proof of visual quality, restoration or accessibility.\n- Design checks distinguish `local_status` from `external_status`. A local pass\n  with external checks not reproduced is not complete design evidence. Combine\n  it with actual separately obtained Penpot inspection/restoration results.\n- No MCP tool assigns specification approval, authorizes planning/implementation,\n  launches a skill, performs a review, commits, installs or publishes anything.\n\n## Review input archives\n\nNew completeness reviews may reference MCP-owned immutable historical inputs at\n`docs/specs/<slug>/.workflow/review-inputs/<sha256>.json`. They are not another\neditable specification or an agent-authored YAML document. Use review scenario\ntools for bounded comparisons and source reads; do not inspect or modify archive\nJSON as a workflow fallback. Keep referenced snapshots with the specification;\nmissing/corrupt inputs block result inheritance, not a new full review of intact\ncurrent sources. Followups retain attributed prior results and require a fresh\nwhole-specification consistency assessment before completion.\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 14809.665507,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-e04ec157-c505-483a-868d-43607badd868",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc \"rtk proxy rg --files -g '*.md' -g '\"'!node_modules'\"' -g '\"'!**/.workflow/**'\"'\"",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app",
+        "processId": "73273",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy rg --files -g '*.md' -g '!node_modules' -g '!**/.workflow/**'"
+          }
+        ],
+        "aggregatedOutput": "AGENTS.md\ndocs/specs/b1/tasks/02_summarize.md\ndocs/specs/b1/spec.md\ndocs/specs/b1/tasks/01_shared-validation-and-validate.md\ndocs/specs/b1/tasks/todo.md\ndocs/specs/b1/tasks/plan.md\ndocs/specs/b1/tasks/handoff.md\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 18723.440707,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-023a1e26-cbdf-4502-b9bf-c7a7249d10bd",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk proxy git rev-parse --is-inside-work-tree'",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app/docs/specs/b1/tasks",
+        "processId": "71325",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy git rev-parse --is-inside-work-tree"
+          }
+        ],
+        "aggregatedOutput": "true\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 18796.257739,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-08266604-21ec-4f59-be08-c6862dccfb05",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk proxy cat docs/specs/b1/tasks/todo.md docs/specs/b1/tasks/01_shared-validation-and-validate.md docs/specs/b1/tasks/handoff.md'",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app",
+        "processId": "82625",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy cat docs/specs/b1/tasks/todo.md docs/specs/b1/tasks/01_shared-validation-and-validate.md docs/specs/b1/tasks/handoff.md"
+          }
+        ],
+        "aggregatedOutput": "# B1 completion checklist\n\nPackets 01 and 02 are complete under their separate explicit simulation invocations. This is the sole packet completion checklist. Stop after packet 02.\n\n- [x] [01 — Shared validation and validate](01_shared-validation-and-validate.md): RED, GREEN, required PROVE, compatibility/preservation, pinned MCP recheck and evidence recorded.\n- [x] [02 — Summarize](02_summarize.md): packet 01 prerequisite, RED, GREEN, required PROVE, exact integer tokens, shared validation, preservation and pinned MCP recheck recorded.\n# 01 — Shared validation and validate\n\nStatus: complete under the explicit simulation invocation for packet 01. Stop after this packet, without implementing summarize.\n\n## Inputs and prerequisites\n\nRead exact `docs/specs/b1/spec.md` B1-001 (lines 7–10), B1-002 (11–14), B1-003 empty-validate clause (15–18), B1-004 (19–22). The spec owns approved behavior. No manifest-listed profile artifacts exist. MCP pinned inputs:\n\n- source_version: `1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1`\n- specification_version: `c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877`\n- review_ref: `e419e6e9-46aa-472a-98b5-bf918cec84ba`\n\nOpen specification b1 at the application root through scenario MCP, check state with expected_source_version above before work and at completion. Require unchanged pass/approved/reviewed. Never read/edit workflow YAML directly. This is frozen simulation scope, not authorization outside the fixture.\n\nReverify `cli.mjs:2–4` (help/unknown dispatch only), `test.mjs:3–4` (runCli and exact existing help assertions), `test-process.mjs:6,15–25` (real child streams/status and cleanup), `package.json:5` (single-file Node test command). Require readable scoped Git status including staged/untracked files; initial fixture files are staged additions. Do not initialize Git, reset or commit. Installed Node/npm and rtk are the available runners; no installation is authorized.\n\n## Outcome and boundaries\n\nAllowed production paths: `cli.mjs`, new `records.mjs`; tests in `test.mjs`, temporary test fixtures under `.tmp` cleaned in finally. Update only this packet's evidence, `todo.md`, and current-only `handoff.md` after execution. Preserve `test-process.mjs`, `package.json`, unrelated content and all workflow inputs. No summarize implementation, new packages, documentation packet, external actions or global configuration.\n\nCreate `records.mjs:parseRecords(bytes)` as a pure Buffer/Uint8Array -> ordered record-array boundary. Decode all bytes as fatal UTF-8, preserving any BOM for grammar rejection. Empty bytes return []; otherwise split LF and remove at most one final empty segment. Every remaining row has exactly two comma-separated fields. ID matches anchored `[A-Za-z0-9_-]+` and is unique case-sensitively. Amount matches anchored ASCII `[0-9]+` and converts to a nonnegative safe integer Number; leading zeros are valid. No trimming, CRLF normalization, duplicate merging, skipping blanks or partial return. Local array/Set die with the invocation; invalid data throws. No CLI imports or output from this module.\n\nCLI reads full bytes with Node fs, invokes the validator once, serializes the full validated result, then writes JSON plus LF once. Empty input emits `[]\\n`. Each amount is a JSON number. Data read/validation failures map to exit 2, stdout `''`, stderr `INVALID_INPUT\\n` without stack traces or file content; mapping file-read/missing-path failures here is an implementation-local choice. Success has exit 0, null signal and empty stderr. Help remains exactly `record-report: validate <file> | summarize <file>\\n`; existing unknown commands retain exit 2 and `UNKNOWN_COMMAND\\n`. No retry, persistence or migration. Dependency direction: CLI -> records and Node fs; records -> Node decoding built-ins only.\n\n## Test-first acceptance and commands\n\nWorking directory for all commands: `$TRIAL_ROOT/focused/q5-legacy/app`.\n\n1. Add behavior checks to existing `test.mjs` before production edits, using existing `runCli(args, { env })` for real child invocations. Keep its exact existing help assertions and all stream/exit assertions. Create binary/text fixtures in application `.tmp`; clean them in finally. Assertions include status, null signal, stdout and stderr, not imports or mocks in place of CLI checks.\n2. Run `rtk proxy npm test` and record relevant RED from validate acceptance assertions (current dispatch returns UNKNOWN_COMMAND). Collection/import failures are insufficient evidence.\n3. Implement only the boundaries above, fix production code until correct checks pass, and run `rtk proxy npm test` again.\n\n| Acceptance / requirements | Checks to create and expected observations |\n| --- | --- |\n| Valid records B1-001/002 | `a_1,0\\nB-2,0002\\nx,9007199254740991\\n` -> exact `[{\"id\":\"a_1\",\"amount\":0},{\"id\":\"B-2\",\"amount\":2},{\"id\":\"x\",\"amount\":9007199254740991}]\\n`; also no terminal LF and distinct case IDs. Exit 0, stderr empty. |\n| Empty B1-003 | Zero-byte file -> exact `[]\\n`, exit 0, empty stderr. A file containing only LF is invalid: it contains an empty row. |\n| Grammar/limits B1-002 | Table-driven rejection of blank interior row, two trailing LFs, CRLF, missing/extra comma, empty id/amount, spaces, non-ASCII id, `+1`, `-1`, `1.0`, `1e2`, Unicode digits, 9007199254740992, duplicate ID (including after valid earlier rows). Every case: status 2, null signal, stdout empty, exact `INVALID_INPUT\\n`. |\n| Complete UTF-8 B1-001/002 | Invalid byte sequence and valid rows followed by invalid bytes; BOM-prefixed row rejected by grammar. Assert same exact error contract. |\n| Atomic output B1-002 | Several valid rows followed by malformed row or duplicate; exact empty stdout despite valid prefix. |\n| Compatibility B1-001/004 | Preserve existing exact help/status checks; add empty stderr/null signal. Unknown command retains empty stdout, exact `UNKNOWN_COMMAND\\n`, exit 2. Repeat valid invocations to catch retained uniqueness state. |\n\nPROVE is required for the changed no-partial-output guarantee: temporarily emit a prefix before validation completes, confirm the valid-prefix-invalid-suffix CLI check fails on stdout, then restore. If another acceptance RED failed only on missing imports/wiring, mutate its corresponding implemented behavior and record assertion failure after GREEN. Do not weaken a correct check. No mutation is needed solely for unchanged help behavior.\n\nFinal verification: `rtk proxy npm test`; `rtk proxy sha256sum unrelated.txt test-process.mjs package.json`; `rtk proxy git status --short`; inspect scoped diffs for `cli.mjs`, `records.mjs`, `test.mjs` and task Markdown only, including staged/untracked scope. Do not include workflow YAML in content diffs. Expected hashes: unrelated `66d58c226b7ae1af545c81f3d91e17b0d75f0e91fd9e77b3d4416cd9822ded19`; helper `13575770b94cf15658477d715862b18536156e158d9c4fcfffba624e46b4e665`; package `6ea04556db3f66809279c9107d53991ef71c636ffc42cfc30f94b240909c5279`. Record installed Node version using `rtk proxy node --version`; only this fixture runtime is evidenced, no extra platform support is implied.\n\n## Completion and recovery\n\nExecution complete on Node v24.20.0 at the application root. Manual verification exited 0; Git worktree returned true. Added `records.mjs:parseRecords(bytes)`, connected `cli.mjs` and expanded real subprocess assertions in `test.mjs`.\n\nRED: `rtk proxy npm test` exited 1, with 28 validate acceptance failures and 2 compatibility passes. Assertions observed status 2 instead of 0, or UNKNOWN_COMMAND instead of INVALID_INPUT; no collection/import failure. GREEN: the same command exited 0, 30 passed. PROVE: temporarily wrote a prefix before validation; `rtk proxy node --test --test-isolation=none --test-name-pattern=\"suffix after valid prefix\" test.mjs` exited 1, both suffix tests failed specifically on nonempty stdout. Mutation removed; final `rtk proxy npm test` exited 0, 30 passed, 0 failed. No tests weakened.\n\nInitial and final pinned MCP checks returned pass/approved/reviewed, unchanged versions/reference, no issues and no checkpoint write. Exact linked requirements and decision were read completely. `rtk proxy sha256sum unrelated.txt test-process.mjs package.json` matched all three expected hashes before and after implementation. Scoped diffs and new records module inspected; `rtk proxy git diff --check -- cli.mjs test.mjs` passed. Initial staged fixture additions preserved; no staging, commit, installation or external action. No blockers remain; evidence covers only the installed fixture runtime. Packet 02 remains unexecuted.\n\nRecord commands/results, relevant RED/GREEN/PROVE, preservation and MCP recheck in current handoff. Mark checkbox only if every required check passes. An unavailable check leaves the packet incomplete. Recover by inspecting and reverting only owned edits, preserving initial staged files and unrelated work; no whole-tree reset. Local changes are the rollout; no external/irreversible gate is included. Stop after packet 01. Packet 02 needs a separate explicit invocation and packet 01's passing evidence, without review or commit prerequisites.\n# B1 current handoff\n\nPacket [02_summarize.md](02_summarize.md) is complete under its explicit SIMULATION invocation. Both checklist items are complete. No next implementation packet exists; stop here. No review or commit was launched.\n\nChanged `cli.mjs` summary dispatch, added `summary.mjs`, expanded `test.mjs`, and updated packet 02 evidence, `todo.md` and this handoff. Both data commands read and validate the complete input through unchanged `records.mjs:parseRecords` before one output write. `summary.mjs` uses a local bigint accumulator and emits unquoted exact decimal JSON tokens, including 9007199254740993 and 18014398509481982. Safe individual amounts may have an unsafe Number aggregate; converting each amount before addition preserves exactness. Help, validate, unknown-command and bounded error compatibility remain verified.\n\nCommands ran from `$TRIAL_ROOT/focused/q5-legacy/app`, all with `rtk proxy`; Node `v24.20.0`. Manual verifier exited 0; Git worktree check returned true. Test-first `npm test` RED exited 1 with 35 summary failures (UNKNOWN_COMMAND/status 2) and 33 passes. GREEN and final restored runs exited 0 with all 68 tests passing using unchanged real child stream/status capture. Tests retain exact stdout/stderr/status/signal checks, cover the full validation corpus and atomic maximum-prefix failures, and compare exact total text across repeated invocations.\n\nPROVE commands (exit 1 as expected, mutations removed):\n\n- `node --test --test-isolation=none --test-name-pattern=\"exact total above safe integer\" test.mjs`: Number accumulation caused the lexical assertion to observe 9007199254740992 instead of 9007199254740993.\n- `node --test --test-isolation=none --test-name-pattern=\"summarize rejects .*suffix after maximum prefix atomically\" test.mjs`: early prefix output caused all three empty-stdout assertions to fail with a count-1 summary.\n\nFinal `sha256sum unrelated.txt test-process.mjs package.json records.mjs` matched the pre-edit bytes:\n\n- unrelated: `66d58c226b7ae1af545c81f3d91e17b0d75f0e91fd9e77b3d4416cd9822ded19`\n- helper: `13575770b94cf15658477d715862b18536156e158d9c4fcfffba624e46b4e665`\n- package: `6ea04556db3f66809279c9107d53991ef71c636ffc42cfc30f94b240909c5279`\n- records: `dabdb6e9b8a7480dac454404bccb43b8339900fd0e99446eb06a70bd8c2b81df`\n\nScoped final diffs and new module inspected; `git diff --check -- cli.mjs test.mjs` passed. Initial staged fixture state, packet 01 and planning files preserved. Input and child fixtures clean up in finally. Initial staged inspection inadvertently included immutable review archive contents; no archive changed. Workflow authority was queried through scenario MCP.\n\nMCP confirmed Standard/core, no profile artifacts or product linkage; complete B1-001–005 definitions and exact linked behavior decision revision 1 were read. Initial and final pinned state checks returned pass/approved/reviewed, no issues, no checkpoint write, unchanged references:\n\n- source_version: `1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1`\n- specification_version: `c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877`\n- review_ref: `e419e6e9-46aa-472a-98b5-bf918cec84ba`\n\nNo blockers or unresolved decisions. Evidence covers only this installed fixture runtime. Rollout consists of local uncommitted changes. No dependencies, commit, publication, external service or global mutation occurred. Stop after packet 02.\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 18850.158294,
+      "item": {
+        "type": "mcpToolCall",
+        "id": "exec-d3662265-9f6b-48ac-aa5e-3fc8c7408671",
+        "server": "workflow",
+        "tool": "specification_open",
+        "status": "completed",
+        "arguments": {
+          "project": "$TRIAL_ROOT/focused/q5-legacy/app",
+          "specification": "b1"
+        },
+        "appContext": null,
+        "mcpAppUi": null,
+        "pluginId": null,
+        "readOnlyHint": true,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"scope\":\"confirmed\",\"pending_questions\":[],\"pending_count\":0,\"artifacts\":[\"manifest\",\"decisions\"]},\"replayed\":false}"
+            }
+          ],
+          "structuredContent": {
+            "protocol_version": 2,
+            "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+            "result": {
+              "scope": "confirmed",
+              "pending_questions": [],
+              "pending_count": 0,
+              "artifacts": [
+                "manifest",
+                "decisions"
+              ]
+            },
+            "replayed": false
+          },
+          "_meta": null
+        },
+        "error": null,
+        "durationMs": 51
+      }
+    },
+    {
+      "atMs": 24240.56699,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-f67d914e-f3c7-4a1e-b734-9a8b44582b52",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk proxy cat $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/references/packet-recovery.md docs/specs/b1/tasks/plan.md'",
+        "cwd": "$TRIAL_ROOT/focused/q5-legacy/app",
+        "processId": "17098",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk proxy cat $TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/references/packet-recovery.md docs/specs/b1/tasks/plan.md"
+          }
+        ],
+        "aggregatedOutput": "# Packet Recovery\n\nRead only when a packet's inputs conflict, verification fails, or incomplete\nwork is resumed. Diagnose before changing either implementation or acceptance.\n\n## Identify The Cause\n\n- **Implementation defect:** the check matches the current approved behavior\n  and fails at the intended assertion. Correct implementation within the packet,\n  rerun the focused check, and retain unrelated passing behavior.\n- **Incorrect check:** current requirements or reproducible evidence contradict\n  the check itself. Record the exact contradiction and why the corrected check\n  still discriminates good from bad behavior. Correct the check, observe RED or\n  PROVE as required, then verify implementation. A failing result alone is not\n  evidence that a check is wrong. Ask before choosing between conflicting\n  product interpretations; never weaken a correct check to obtain green.\n- **Stale or incomplete input:** compare current requirement IDs and contract\n  sections with the packet, manifest, and repository evidence. A moved symbol\n  with unchanged behavior may be refreshed locally and recorded. Changed\n  behavior, scope, dependencies, architecture, or acceptance requires the\n  owning specification/planning workflow and separate authorization. Stop the\n  affected work without rewriting its contract or generating a replacement plan.\n- **Environment or harness failure:** record the command, working directory,\n  actual exit/result, and missing prerequisite. A dependency/import/collection\n  failure is not a behavioral RED; repair only authorized local prerequisites.\n  Never install globally, bypass controls, skip a required check, or report\n  an unavailable check as passed. Request new authority directly if needed.\n  A replacement runner must preserve the observation layer, assertions,\n  platform/dependency contract and required checks. Importing CLI code or\n  assigning an exit-code property does not prove a real process exit; a mock\n  does not replace required HTTP or browser evidence. If equivalence is not\n  established, keep the check unavailable and ask about any material change.\n\nFor a missing material technical choice, checkpoint it and return the affected\ntask to separately invoked planning and its `references/technical-agreement.md`.\nImplementation must not redesign or manufacture agreement in the handoff. Scope,\nbehavior or acceptance changes belong to specification. Continue only independent,\nalready authorized work that does not depend on the unresolved choice.\n\nFor unreadable or abbreviated tool output, use its published exact retrieval or\ncontinuation mechanism. Do not count a summary as the required source read. If\nexact content remains unavailable, record that input as unavailable and stop\ndependent work. Do not cycle through encodings, character dumps or alternative\nshell representations to defeat transport compression. Continue only unaffected\nauthorized work; output delivery failure does not authorize host reconfiguration.\n\n## Preservation Conflicts\n\nCompare the recorded baseline with actual packet writes, expected native\nworkflow transitions and independent external changes. Never require the entire\ncheckout to differ only in checklist/handoff files. Verify native binding\ntransitions through their owning scenario; do not hand-edit them or exempt the\nwhole workflow directory. Preserve external edits, inspect their overlap and\nrecheck affected inputs. An overlapping planned write, unknown content delta or\nchanged protected data is a blocker; do not silently accept the new baseline.\nGit identity/history and file bytes remain protected. A directory timestamp\nchange alone is not evidence that their contents changed.\n\nCorrect a disproved check before rerunning it, record why the replacement still\ndetects loss, and retain the initial failure and recovery evidence. Do not relax\na valid check or automatically undo another writer's work.\n\n## Resume And Handoff\n\nBefore bulk code reads or production edits, call `planning_packet_check` with\nthe packet's exact `agreement_ref` and `expected_proposal_digest`. Recheck after\nimplementation alongside the pinned specification check. A missing, stale or\nblocked result stops affected work. Compare the scoped diff with the agreed\nsignificant units, contracts, interactions and approach; behavioral tests alone\ndo not justify an architecture substitution. Record this comparison in handoff.\nA private helper within the agreed boundary is flexible. A changed shared\nsignature, ownership, pattern or binding name returns to planning for a revised\nproposal and explicit answer; product changes return to specification. A moved\nexisting symbol with unchanged meaning may be refreshed as evidence and recorded.\n\nFor legacy packets without qualifying agreement, preserve existing work and\nreturn only the affected task to planning. Reuse adequate exact evidence where\npossible, but require a managed ready binding before execution. Do not fabricate\nreferences, bulk-migrate plans or rewrite completed tasks. Missing capability is\na concrete prerequisite, never permission to bypass the gate.\n\nRecheck the packet's pinned completeness version through\n`specification_check_state` before edits and before marking completion, following\n`shared/references/yaml-contracts.md`. Review metadata alone does not invalidate\nthe specification; changed requirements, scope or source decisions do. Stale or\nincomplete new-review inputs return to the specification owner. Do not silently\nrefresh a packet's version to conceal changed behavior. Legacy inputs remain\nexplicitly unverified, not automatically migrated.\n\nReconcile the current packet, checklist, handoff, scoped diff, and actual\nverification evidence. Preserve user edits and unrelated work. Do not restart a\ncompleted slice, assume a stale pass still applies, or trust an unchecked claim\nfrom the previous agent. Reuse checks only while their inputs remain unchanged.\nIf work exists before its check, apply the shared PROVE rule.\n\nKeep one compact current handoff with links to reusable private evidence, not\nrepeated inventories, transcripts or workflow instructions. Preserve executable\ncommands and material results. Replace the handoff's current state with: packet ID; complete/incomplete state;\nchanged paths; commands and working directories; expected versus actual results;\nRED/GREEN/PROVE evidence; unresolved decisions and blocked prerequisites; and\nthe next eligible packet. A missing result remains unknown. Mark completion only\nafter every required check passes. Do not introduce an independent-review gate.\n\nAfter completing or handing off the current packet, stop. User-requested fixes\nto a completed packet are rework of that packet, not authority to start the next.\nNeither an uncommitted previous packet nor absent optional review prevents a\nnew explicitly authorized packet whose actual dependencies are satisfied.\n\n## Workflow YAML Access\n\nFollow `shared/references/yaml-contracts.md`. Use `specification_open`,\n`scope_get`, `decision_find` and `decision_get` for bounded current inputs.\nDo not hand-edit workflow YAML while implementing a packet. A required scope or\ndesign change goes back to its separately authorized owning workflow. Technical\nquestions and answers belong to planning's `planning_*` scenarios, not the\nbehavioral journal. Missing MCP blocks affected work, not permission to use a\nshell reader or synthesize an answer.\n# B1 implementation plan\n\nPlanning only; no packet is executed or authorized by this document. Exactly two behavior packets, in order:\n\n1. [01_shared-validation-and-validate.md](01_shared-validation-and-validate.md): shared complete-input validation and validate.\n2. [02_summarize.md](02_summarize.md): summarize consuming that same validator, with exact integer totals.\n\n## Authoritative inputs\n\n`docs/specs/b1/spec.md` is Approved frozen SIMULATION input. MCP scope is confirmed, Standard, core active, `planning_artifacts: []`; no product linkage or design outputs are declared. No additional profile contract is created. Behavior remains authoritative in B1-001 through B1-005, not in a new schema.\n\nPinned completeness inputs (also pinned in each packet):\n\n- source_version: `1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1`\n- specification_version: `c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877`\n- review_ref: `e419e6e9-46aa-472a-98b5-bf918cec84ba`\n- Exact linked source decision: `facb12e6-52a7-4ec3-b732-66896b09fb20`, revision 1, read completely.\n\nMCP initial check: pass, approved, reviewed, no issues; approval checkpoint absent, no checkpoint written. This is mechanical freshness evidence, not independent authentication of the simulated approval or semantic proof. All five exact requirement definitions were read completely with no continuations.\n\n## Repository evidence and chosen boundaries\n\nReverify these facts before implementation. `cli.mjs:2` reads only the command; `cli.mjs:3` owns exact help output; `cli.mjs:4` owns unknown-command stderr and exit 2. `test.mjs:3` imports the existing real subprocess helper; `test.mjs:4` asserts help status and exact text. `test-process.mjs:6` exports runCli; lines 15–21 launch Node with file-backed streams and return actual status/signal; lines 22–25 clean up. `package.json:2` is dependency-free/private and `package.json:5` owns the single-file test command. Git status is readable; the initial fixture is staged as added files, so a clean tree or an existing commit is not a prerequisite. Preserve that staged state.\n\n| Unit / proposed symbol | Responsibility, inputs and outputs | Lifecycle, errors and invariants | Dependencies / requirements / verification |\n| --- | --- | --- | --- |\n| `records.mjs:parseRecords(bytes)` (new) | Buffer/Uint8Array to ordered array of `{id: string, amount: number}` | Fatal UTF-8 decoding; preserve BOM as input so grammar rejects it; split only on LF, remove at most one terminal LF, special-case zero-byte input. Validate every row, exact ASCII id and digit grammar, uniqueness and safe integer bounds. Leading zero digits accepted. No trim, normalization, partial return or output. Local Set/array per call, throw on any invalid input. | Node built-ins only; no CLI dependency. B1-001/002/003/004. CLI corpus plus focused parser tests if useful. |\n| `cli.mjs` data-command dispatch | Read full file bytes, call parseRecords once, select command and write completed result | One invocation, synchronous read closes its descriptor through Node's readFileSync. Serialize fully before a single stdout write. Data failures yield status 2, empty stdout, `INVALID_INPUT\\n` stderr, no stack/path dump. File read/missing-path failures use the same bounded diagnostic as an implementation-local choice. Preserve help and unknown-command behavior. | CLI -> Node fs and records. B1-001/002/003/004. Real runCli assertions. |\n| `cli.mjs` validate branch | Validated records -> JSON array with numeric amounts, input order retained | JSON.stringify safe individual amounts, then LF. Empty input -> `[]\\n`. No aggregate logic in packet 01. | Uses shared parser; B1-001/002/003. Exact output/status/stream checks. |\n| `summary.mjs:summarizeRecords(records)` (new in packet 02) | Validated records -> `{count: number, total: bigint}` | Pure, per-call total initialized to 0n; add BigInt(record.amount), never sum through Number. No revalidation, I/O, global state or retry. | Summary consumes parser output contract; B1-003/005. Empty, normal and large-total CLI checks. |\n| `summary.mjs:serializeSummary(summary)` | Count and bigint total -> JSON object text | Emit decimal total as an unquoted JSON integer token; never Number(total), JSON.stringify(bigint), or quote total. Count comes from array length; no user strings interpolated. CLI appends LF once. | B1-003/005. Exact lexical output comparison. |\n| `test.mjs` | Own data fixtures, corpus and child-process assertions | Tests create fixtures under application `.tmp`, clean in finally; preserve helper and existing assertions. Assert actual status, signal, stdout, stderr. | Uses unchanged test-process.mjs; B1-001–005. Existing npm test script. |\n\nThese are implementation choices, not changes to approved scope. All successful data output is buffered until validation finishes. No persistent state, concurrent workers, streaming output, new classes, dependencies, global settings, or external boundary is needed.\n\n## Coverage and packet dependency\n\n| Requirement | Owning packet/unit | Discriminating evidence planned |\n| --- | --- | --- |\n| B1-001 | 01: CLI + parser | Exact help regression, numeric record array on valid file |\n| B1-002 | 01: parser/CLI; 02: shared-command wiring | Invalid grammar/duplicate/unsafe/invalid UTF-8 corpus, valid-prefix-invalid-suffix cases, exact empty stdout + diagnostic + status 2 for both commands |\n| B1-003 | 01: validate empty; 02: summary | Empty outputs, count/total, same input acceptance across both commands |\n| B1-004 | Both | Exactly two packets; built-ins only; existing streams/test command/helper and unrelated bytes preserved |\n| B1-005 | 02: summary serialization | Exact raw output for 9007199254740991 + 2 -> numeric token 9007199254740993; reject individually unsafe amounts |\n\nPacket 02 depends on packet 01's passing corpus and recorded evidence; independent verification means each packet has its own acceptance and command, not that packet 02 may bypass this dependency. Optional review and commits are not gates. Both remain unexecuted pending separate explicit authorization.\n\n## Verification, recovery and applicability\n\nEach packet writes and runs checks first, records relevant RED, implements, then runs GREEN and required PROVE. Never weaken a correct check. Commands run at the application root and start with `rtk proxy`. Existing final command is `rtk proxy npm test`; no installation is allowed. This plan does not run tests or create test fixtures.\n\nRuntime coverage is the installed dependency-free Node.js in this isolated fixture; no multi-OS/version support matrix is asserted by the frozen spec. Execution must record actual Node version and environment. No build/generation step, deployment, migration, UI/accessibility, network security, operator configuration, or observability system applies. The material privacy/error boundary is bounded diagnostics without file content or paths. No arbitrary input size cap is added.\n\nRollout is local file changes only. On failed checks leave the packet incomplete, preserve evidence, and correct implementation. To recover, restore only that packet's edits after inspecting scoped staged/unstaged/untracked changes; never reset the fixture wholesale. Packet 02 recovery retains validated packet 01. No external or irreversible step is included; committing, installing, publishing and external services remain unauthorized.\n\nDurable developer documentation: not warranted. Only the non-obvious exact-total rule applies among the documentation signals; this is a local CLI with no operator configuration or new domain vocabulary and no three-layer/process flow. Keep its rationale near the arithmetic implementation/tests in packet 02. No third documentation packet is created.\n\nPreservation baseline: `unrelated.txt` SHA-256 `66d58c226b7ae1af545c81f3d91e17b0d75f0e91fd9e77b3d4416cd9822ded19`. The helper and package script are immutable infrastructure. Before every packet and completion, use MCP specification_check_state with the pinned aggregate source_version. Changed/incomplete scope returns to the separate specification/planning owner; never repair frozen inputs here.\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 24266.420795,
+      "item": {
+        "type": "mcpToolCall",
+        "id": "exec-43b44f4f-039b-4915-8953-4c05c37e09d8",
+        "server": "workflow",
+        "tool": "specification_open",
+        "status": "completed",
+        "arguments": {
+          "project": "$TRIAL_ROOT/focused/q5-legacy/app",
+          "specification": "b1"
+        },
+        "appContext": null,
+        "mcpAppUi": null,
+        "pluginId": null,
+        "readOnlyHint": true,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"scope\":\"confirmed\",\"pending_questions\":[],\"pending_count\":0,\"artifacts\":[\"manifest\",\"decisions\"]},\"replayed\":false}"
+            }
+          ],
+          "structuredContent": {
+            "protocol_version": 2,
+            "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+            "result": {
+              "scope": "confirmed",
+              "pending_questions": [],
+              "pending_count": 0,
+              "artifacts": [
+                "manifest",
+                "decisions"
+              ]
+            },
+            "replayed": false
+          },
+          "_meta": null
+        },
+        "error": null,
+        "durationMs": 24
+      }
+    },
+    {
+      "atMs": 24329.725835,
+      "item": {
+        "type": "mcpToolCall",
+        "id": "exec-eeb24cc9-adb7-4983-bf87-5e0dc7b67f74",
+        "server": "workflow",
+        "tool": "specification_check_state",
+        "status": "completed",
+        "arguments": {
+          "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+          "expected_source_version": "1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1"
+        },
+        "appContext": null,
+        "mcpAppUi": null,
+        "pluginId": null,
+        "readOnlyHint": false,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"status\":\"pass\",\"document_status\":\"approved\",\"approval_checkpoint_status\":\"absent\",\"approval_checkpoint_written\":false,\"coverage_status\":\"reviewed\",\"source_version\":\"1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1\",\"specification_version\":\"c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877\",\"review_ref\":\"e419e6e9-46aa-472a-98b5-bf918cec84ba\",\"semantic_correctness_proven\":false,\"reviewer_independence_authenticated\":false,\"issues\":[],\"checked\":[\"scope_consistency\",\"decision_resolution\",\"requirement_references\",\"review_freshness\"],\"not_checked\":[\"behavior_completeness\",\"user_answer_authenticity\",\"reviewer_independence\"],\"approved_by_tool\":false},\"replayed\":false}"
+            }
+          ],
+          "structuredContent": {
+            "protocol_version": 2,
+            "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+            "result": {
+              "status": "pass",
+              "document_status": "approved",
+              "approval_checkpoint_status": "absent",
+              "approval_checkpoint_written": false,
+              "coverage_status": "reviewed",
+              "source_version": "1acea82a624523b0ea3adc13fd2bd285adc208242bbca6fd93a97b027ae777f1",
+              "specification_version": "c1bdb1c7c8031493f0b3874497844574d7df65fda7f4306307163b5f7b6f2877",
+              "review_ref": "e419e6e9-46aa-472a-98b5-bf918cec84ba",
+              "semantic_correctness_proven": false,
+              "reviewer_independence_authenticated": false,
+              "issues": [],
+              "checked": [
+                "scope_consistency",
+                "decision_resolution",
+                "requirement_references",
+                "review_freshness"
+              ],
+              "not_checked": [
+                "behavior_completeness",
+                "user_answer_authenticity",
+                "reviewer_independence"
+              ],
+              "approved_by_tool": false
+            },
+            "replayed": false
+          },
+          "_meta": null
+        },
+        "error": null,
+        "durationMs": 60
+      }
+    },
+    {
+      "atMs": 24392.614866,
+      "item": {
+        "type": "mcpToolCall",
+        "id": "exec-57c47ae9-f429-4514-bab5-db65041564c0",
+        "server": "workflow",
+        "tool": "planning_packet_check",
+        "status": "completed",
+        "arguments": {
+          "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+          "packet_id": "01_shared-validation-and-validate"
+        },
+        "appContext": null,
+        "mcpAppUi": null,
+        "pluginId": null,
+        "readOnlyHint": true,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"protocol_version\":2,\"context\":\"eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0\",\"result\":{\"status\":\"needs_agreement\",\"issues\":[{\"code\":\"ANSWER_REQUIRED\",\"message\":\"This packet needs an exact technical agreement reference and proposal digest.\"}]},\"replayed\":false}"
+            }
+          ],
+          "structuredContent": {
+            "protocol_version": 2,
+            "context": "eyJwcm9qZWN0IjoiL3RtcC9lYXctdGlwLXAwMy1wcmVjaXNpb24tdjMtSmRwQVl5L2ZvY3VzZWQvcTUtbGVnYWN5L2FwcCIsInNwZWNpZmljYXRpb24iOiJiMSIsInZlcnNpb25zIjp7Im1hbmlmZXN0IjoiZGE0YzM2N2YyODNhZDJmNDFmNWE4ZmJlMGRjZWNiNDlkOTJkODBmMzk1NTZmZjA1NjA5OGU0YThmMTEwMWZjYyIsImRlY2lzaW9ucyI6ImJmYzQ1NmRhMzE0ZWJiYjZmNmY2YzEyNzI3NDk0ZTExNWNlOTEzNjVlOTMzMTdkOWQ1YzBjNjc3ZjhiYjVlOTMiLCJjYXRhbG9nIjpudWxsLCJleHBlcmllbmNlIjpudWxsfX0",
+            "result": {
+              "status": "needs_agreement",
+              "issues": [
+                {
+                  "code": "ANSWER_REQUIRED",
+                  "message": "This packet needs an exact technical agreement reference and proposal digest."
+                }
+              ]
+            },
+            "replayed": false
+          },
+          "_meta": null
+        },
+        "error": null,
+        "durationMs": 61
+      }
+    },
+    {
+      "atMs": 28924.077102,
+      "item": {
+        "type": "agentMessage",
+        "id": "msg_0b21d953cef17763016ad9093dc2048191a11fdae8febca0bb",
+        "text": "Stopped before edits. The specification check passed, but packet 01 returned `needs_agreement` (`ANSWER_REQUIRED`): its legacy inputs lack an exact technical agreement reference and proposal digest.\n\nThe [incremental-implementation skill]($TRIAL_ROOT/sources/candidate/plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md) requires: “Missing, stale or legacy agreement returns only the affected task to planning; never synthesize agreement.”\n\nOnly packet 01 needs separately invoked planning before implementation can proceed. Existing work and completion records remain unchanged. No tests, commits, or global actions ran.",
+        "phase": "final_answer",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null
+      }
+    }
+  ],
+  "configDigest": "b499d44af7af64d161002616d3b98b75011e239d6461753d4f8936823b553733"
+}

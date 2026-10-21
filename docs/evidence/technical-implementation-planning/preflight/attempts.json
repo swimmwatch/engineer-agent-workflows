@@ -1,0 +1,32 @@
+{
+  "classification": "ACTUAL",
+  "attempts": [
+    {
+      "id": "b1-baseline-1",
+      "kind": "pre-model-setup-failure",
+      "reason": "Copied worktree review is stale; no Codex context started."
+    },
+    {
+      "id": "workspace-root-guard",
+      "kind": "pre-model-controller-check",
+      "reason": "CLI 0.163 reports cwd in runtimeWorkspaceRoots and additional writableRoots separately. Corrected after actual inside-write/outside-denial proof.",
+      "traceRef": "preflight/workspace-root-guard/planning.jsonl"
+    },
+    {
+      "id": "mcp-approval-denial",
+      "kind": "actual-model-incomplete",
+      "reason": "Fresh fixture review passed; the native client rejected specification_check_state because no fixture MCP write-tool approval policy had been declared. No application files changed.",
+      "sessionId": "01a15e64-0680-7b43-a3ac-074ecdf0b29b",
+      "traceRef": "preflight/mcp-approval-denial/planning.jsonl",
+      "correction": "Per-tool approvals for four authorized fixture workflow mutations in ephemeral CODEX_HOME only; filesystem sandbox, network denial and top-level never policy preserved.",
+      "documentation": "https://developers.openai.com/codex/config-reference"
+    },
+    {
+      "id": "b1-baseline-1-subprocess",
+      "kind": "actual-model-required-check-failure",
+      "reason": "P01 child-process checks failed with EPERM; P01 remained incomplete and P02 stopped at its missing prerequisite. External local tests: 3 pass, 28 fail; oracle exit 1.",
+      "traceRef": "initial/b1-baseline-1/result.json",
+      "capabilityRef": "preflight/subprocess-capability.json"
+    }
+  ]
+}

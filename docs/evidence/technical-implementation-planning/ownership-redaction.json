@@ -1,0 +1,43 @@
+{
+  "classification": "ACTUAL",
+  "scope": "Replace only personal owner/group labels in captured directory listings. Original captures remain in the private ignored cache; item IDs, timestamps, code, answers, checks and verdicts are unchanged.",
+  "replacement": "$FIXTURE_USER",
+  "files": [
+    {
+      "ref": "initial/b1-baseline-s2-2/evaluation.json",
+      "beforeDigest": "76525b0738c3c28abe9aed1adf78c83fad2387647147cb54674b2b2e5846169a",
+      "afterDigest": "5020d36affba0ef5fbf2424dd9c24308f1f507efec816546f85d37cd43ebb4f2"
+    },
+    {
+      "ref": "initial/b1-baseline-s2-2/evaluation.jsonl",
+      "beforeDigest": "19e112cb348433aa767cb2964742d9c6430f0718aac998d3f921a3379b154b9f",
+      "afterDigest": "8bb349cdd9e5486937bafb45183d93878da96da3f7f3203f449eaff9cb56a2ac"
+    },
+    {
+      "ref": "initial/b2-baseline-s2-2/evaluation.json",
+      "beforeDigest": "d7f25ab01410332173585df393471a06eaf95840858efaebbf76da7342cad42f",
+      "afterDigest": "5187e90a8be26e5bf3d757c251a25fa1af296f5992ddc276f7bf2f9f13eac5ba"
+    },
+    {
+      "ref": "initial/b2-baseline-s2-2/evaluation.jsonl",
+      "beforeDigest": "84bc199f1802841ea6753e810bcda3286614976a2ddec74010a15d33d64aceae",
+      "afterDigest": "436d500c17b09ba46879d7fde0c92c2493ef66fca4c5971bf13bd398b772bd51"
+    },
+    {
+      "ref": "initial/b2-baseline-s2-2/planning.json",
+      "beforeDigest": "d3099c695aa93b936af878b43e41ac1013d7c5c349ac8aafbea6ed9998fc1e08",
+      "afterDigest": "8066f50d1c8fef22793ff3f98e278dac5b9cbcfaf5ce703249588ceaa8a217e3"
+    },
+    {
+      "ref": "initial/b2-baseline-s2-2/planning.jsonl",
+      "beforeDigest": "b900b2e8da4743a3767417f6a15d1c369aaf24c5d4d7e07ec4e4b82f9d2d75ae",
+      "afterDigest": "49e4305ac1210974d3a34dfa27cea60aa0e4631ca160861ba6e98236e268aec3"
+    },
+    {
+      "ref": "initial/b2-baseline-s2-2/result.json",
+      "beforeDigest": "6c7b4af36d4315caf0812b2260c47af36a30028a43fc49bf8c6d20759490f167",
+      "afterDigest": "eb69c6bfcada71affbf5f699276950cbc38bfe74739b9744ac73331cbfe6b343"
+    }
+  ],
+  "remainingTemporaryAuthCopies": 0
+}

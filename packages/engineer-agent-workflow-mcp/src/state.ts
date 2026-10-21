@@ -101,14 +101,15 @@ export async function safePath(project: string, relative: string, create = false
   }
   return current;
 }
-export async function readBytes(project: string, relative: string): Promise<Buffer | null> {
+export async function readBytes(project: string, relative: string, maxBytes = MAX_BYTES): Promise<Buffer | null> {
+  if (!Number.isSafeInteger(maxBytes) || maxBytes < 0 || maxBytes > MAX_BYTES) fail("INVALID_INPUT", "Source byte budget must be a non-negative integer no greater than 16 MiB.");
   const path = await safePath(project, relative);
   let handle;
   try {
     handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
     const before = await handle.stat();
     if (!before.isFile() || before.nlink !== 1) fail("UNSAFE_PATH", "Artifact must be a regular single-link file.");
-    if (before.size > MAX_BYTES) fail("SOURCE_LIMIT", "Artifact exceeds the 16 MiB limit.");
+    if (before.size > maxBytes) fail("SOURCE_LIMIT", maxBytes === MAX_BYTES ? "Artifact exceeds the 16 MiB limit." : "Artifact exceeds the remaining source byte budget.");
     const bytes = Buffer.alloc(before.size);
     let offset = 0;
     while (offset < bytes.length) { const read = await handle.read(bytes, offset, bytes.length - offset, offset); if (!read.bytesRead) fail("CONFLICT", "Artifact changed while being read.", { conflict_cause: "dependency_changed_during_read" }); offset += read.bytesRead; }
@@ -120,8 +121,8 @@ export async function readBytes(project: string, relative: string): Promise<Buff
 }
 const validators = new Map<Kind, Ajv.ValidateFunction>();
 const readGuards = new WeakMap<Context, Map<string, string | null>>();
-export async function readDependency(context: Context, relative: string): Promise<Buffer | null> {
-  const bytes = await readBytes(context.project, relative), version = bytes ? hash(bytes) : null;
+export async function readDependency(context: Context, relative: string, maxBytes?: number): Promise<Buffer | null> {
+  const bytes = await readBytes(context.project, relative, maxBytes), version = bytes ? hash(bytes) : null;
   const guards = readGuards.get(context);
   if (guards?.has(relative) && guards.get(relative) !== version) fail("CONFLICT", "A required source changed during this operation.", { conflict_cause: "dependency_changed_during_read" });
   guards?.set(relative, version);

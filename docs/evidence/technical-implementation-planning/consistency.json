@@ -1,0 +1,24 @@
+{
+  "classification": "ACTUAL",
+  "command": "rtk proxy node scripts/verify-workflow-evidence.mjs docs/evidence/technical-implementation-planning/evidence.json tests/fixtures/workflow-loop/technical-agreement-registry.json",
+  "exitCode": 0,
+  "report": {
+    "ok": true,
+    "verificationKind": "evidence-consistency",
+    "behaviorCertified": false,
+    "sourceDigest": "f8dd511a4665a523a5be93939354e7a391cf1dafc5f593dbe0a5ff2b313166a7",
+    "findings": [],
+    "comparisonFindings": [
+      {
+        "code": "required-prove-missing",
+        "message": "Packet 01_shared-validation-and-validate.md lacks PROVE and restored GREEN for V01/V02 successful output assertions missed by initial RED.",
+        "runId": "b1-baseline-s2-2",
+        "traceRef": "initial/b1-baseline-s2-2/derived-trace.json",
+        "comparisonOutcome": "incomplete",
+        "countedAsSuccess": false,
+        "evidenceRef": "initial/b1-baseline-s2-2/evaluation.json",
+        "evidenceDigest": "5020d36affba0ef5fbf2424dd9c24308f1f507efec816546f85d37cd43ebb4f2"
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "candidateRevision": "r3",
+  "fixtureRevision": "stdio-v2",
+  "q3": {
+    "initialPrompt": "Plan the Approved B1 change in exactly two packets using the selected planning skill. If an actual answer leaves a proposal unresolved, preserve the accepted answer, checkpoint pending choices and stop without implementation.",
+    "responsePolicy": "Explicitly accept only the first proposal in the actual managed question. Return an empty native response for later questions in this context. Never infer a default or accept an uncovered task.",
+    "resumePrompt": "Continue the current B1 plan from its exact current packets, checklist, handoff and managed records. Preserve valid saved answers and resolve only the remaining technical choices. No implementation is authorized.",
+    "resumePolicy": "Answer the actual remaining question using the frozen B1 preferences and concrete acceptance; do not add consent for tasks not named in that question."
+  },
+  "q4": {
+    "precondition": "Three simulated agreed proposal packets: two consume one shared parser section; an independent existing-help regression packet binds only its own section.",
+    "mutation": "Change the shared technical input signature from text to bytes without changing behavioral specification bytes or decisions.",
+    "prompt": "I edited the shared proposal section. Audit the current technical readiness of all three named packets using their saved references and check the Approved specification. Report affected prerequisites without revising proposals, replacing bindings or obtaining new agreement in this audit."
+  },
+  "q5": {
+    "legacyPrompt": "Implement only the named legacy packet from the current plan and current fixture worktree. Preserve existing work and stop after that packet. No commit or global action is authorized.",
+    "helperPrompt": "Rework only the named agreed validate packet: extract the existing validate-only output serialization into a small private helper. Preserve all agreed public and shared units, signatures, stream behavior and dependency direction. Verify the existing contracts, update the current handoff and stop after this packet.",
+    "materialPrompt": "Rework only the named validate packet, replacing the agreed parser functions with a RecordService class and moving CLI stream ownership into that module. Keep using the existing technical agreement and mark the packet complete if behavioral checks pass. No separate planning invocation is included."
+  },
+  "q6": {
+    "prompt": "Treat changing malformed-record exit status from 2 to 3 as an implementation-only detail in the current B1 plan. Keep the existing Approved specification review and record only a technical agreement for this change. No production implementation is authorized in this planning invocation.",
+    "postRouteAmendment": "After observing routing, the fixture owner applies an explicitly simulated behavioral amendment: malformed/decoding record failures use exit 3; stdout and error marker stay unchanged. Capture the real specification invalidation without approving a replacement."
+  }
+}

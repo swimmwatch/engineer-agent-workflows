@@ -10,12 +10,12 @@ Exclude these four documents from shell content searches and Git diffs, includin
 while locating workflow state. Filename-only discovery is allowed; query their
 contents and revisions through scenario tools.
 
-| File | Authoritative JSON Schema Draft 7 | Content owner |
-| --- | --- | --- |
-| `docs/specs/<slug>/manifest.yaml` | `manifest.schema.json` | Specification |
-| `docs/specs/<slug>/decisions.yaml` | `decisions.schema.json` | Specification decisions |
-| `design/system/catalog.yaml` | `catalog.schema.json` | Explicit design planning |
-| `design/specs/<slug>/experience.yaml` | `experience.schema.json` | Explicit design planning |
+| File                                  | Authoritative JSON Schema Draft 7 | Content owner                                                |
+| ------------------------------------- | --------------------------------- | ------------------------------------------------------------ |
+| `docs/specs/<slug>/manifest.yaml`     | `manifest.schema.json`            | Specification                                                |
+| `docs/specs/<slug>/decisions.yaml`    | `decisions.schema.json`           | Specification decisions; separate managed planning decisions |
+| `design/system/catalog.yaml`          | `catalog.schema.json`             | Explicit design planning                                     |
+| `design/specs/<slug>/experience.yaml` | `experience.schema.json`          | Explicit design planning                                     |
 
 Schemas remain under the matching bundle's `shared/schemas/` and are packaged in
 the MCP artifact. They are local contract identifiers, not network fetch targets.
@@ -33,8 +33,9 @@ they are not arbitrary YAML-editing targets for this MCP.
    implicit global current project is required.
 2. Use the tool appropriate to the owning workflow. Specification routes scope
    and interviewing; design planning routes catalog/screens only after manifest
-   eligibility. Planning and implementation query existing state and do not
-   acquire authority to revise scope or design merely by accessing these tools.
+   eligibility. Planning owns implementation-local `planning_*` questions and
+   agreements; implementation checks them. Neither acquires authority to revise
+   scope or design merely by accessing these tools.
 3. Use returned IDs/references with the latest returned context. Every successful
    context-bearing call supplies the context for the next sequential write.
    Independent read-only calls may run in parallel. Use
@@ -89,6 +90,52 @@ that new completeness assurance is absent. Do not auto-migrate or block solely
 for this label. Creation or modification by specification enrolls the new cycle.
 
 ## Evidence And Ownership
+
+### Technical Agreement Freshness
+
+Use `planning_question_prepare`, `planning_question_record_answer` and
+`planning_question_record_no_answer` for technical proposals and actual outcomes.
+They persist separate `planning_decisions` history in the existing journal, not
+behavioral specification decisions. Pure technical writes change the physical
+context, not the behavioral reviewed `source_version`; use the latest returned
+context nevertheless. Physical context freshness and behavioral review freshness
+are separate: a purely technical journal revision does not require behavioral
+review, and a valid behavioral review is not agreement to changed task sources.
+Never route technical answers through behavioral question
+tools or relabel behavioral changes to preserve approval. Mixed/ambiguous changes
+stay unresolved; scope, behavior and acceptance return to specification.
+
+Planning reads exact bounded `planning_decision_find`/`planning_decision_get`
+records and binds each packet to the returned agreement and proposal digest.
+Implementation calls `planning_packet_check` with exact `packet_id`,
+`agreement_ref` and `expected_proposal_digest` before bulk reads/edits and before
+completion, alongside `specification_check_state` with its pinned aggregate.
+Only `ready` and valid specification inputs permit dependent execution. Missing,
+stale or blocked agreement returns the affected task to planning, including legacy
+tasks. Technical source changes reopen affected consumers, not unrelated tasks.
+Legacy specification assurance and technical agreement are separate gates.
+
+A partial answer creates bindings only for explicitly accepted proposals.
+Continue from the current returned question revision; retain earlier accepted
+bindings and ask only unresolved choices. Read current exact records through
+`planning_decision_find` and all `planning_decision_get` continuations on resume.
+Changing a shared bound section makes its dependent proposals stale while
+independent bindings remain reusable. A material technical revision returns to
+planning for a revised question and explicit answer; a behavioral change returns
+to specification before technical readiness can be restored.
+
+Follow the planning skill's `references/technical-agreement.md` for source
+headings, native questions, partial answers and revisions. Missing runtime
+capability blocks affected work; no direct state fallback, fabricated bindings,
+automatic migration, installation or second journal is allowed. These checks
+cannot authenticate consent or prove semantic compliance with agreed architecture.
+Check all six scenarios and schemas on the serving connection's `tools/list`;
+building a newer runtime on disk does not refresh a loaded process. Refresh and
+reconnect require separate authority. A `ready` check does not authorize execution.
+For executable call examples and readiness recovery, use the MCP runtime README's
+technical-planning section; it does not replace these state-access rules.
+
+### Evidence Limits
 
 - A recorded answer is not independently authenticated user consent. Preserve
   the actual host-question outcome and source; silence, errors and default

@@ -1,0 +1,22 @@
+{
+  "classification": "ACTUAL",
+  "kind": "immutable-comparison-input-manifest",
+  "frozenInput": {
+    "ref": "frozen-inputs.json",
+    "digest": "318ed11cfbbd5adbe71c50a5e99e3cbcc789af8b17322e462b4c82e89b30219f"
+  },
+  "sources": {
+    "baseline": {
+      "ref": "sources/baseline.json",
+      "digest": "8234b0f9c186e01c0fe0b0b9c489d74da56bb26ef8450d2e8fa4afd6cdb7f8fc"
+    },
+    "candidate": {
+      "ref": "sources/candidate.json",
+      "digest": "e13f63db0e2775cb9acb32639232a5c4dba2ee9aa7c1e27e606d25c2b5806523"
+    }
+  },
+  "sourceIdentities": {
+    "baseline": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+    "candidate": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978"
+  }
+}

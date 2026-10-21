@@ -1,0 +1,15 @@
+{
+  "stage": "planning",
+  "stageId": "planning",
+  "packetId": null,
+  "sessionId": "01a15e61-85ac-7850-84c6-71e07cd14980",
+  "requestedModel": "gpt-6.1-sol",
+  "reportedModel": "gpt-6.1-sol",
+  "endMs": 1559.356542,
+  "terminal": "incomplete",
+  "error": "Effective permissions differ from the frozen fixture policy",
+  "nativeQuestions": [],
+  "writes": [],
+  "items": [],
+  "configDigest": "d9debe51fe840509dc049f7203d8f4844f646621d93bfdfdf70a0f6907ffd261"
+}

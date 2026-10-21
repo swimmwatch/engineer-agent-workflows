@@ -1,0 +1,39 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T18:48:46.313Z",
+  "correction": "Preparation copy initially re-encoded Cyrillic regex alternatives; measured matrix source is preserved verbatim. Future focused controller restores the exact original respondent function. Every observed matrix answer is checked against both versions and the captured answer.",
+  "originalPolicyDigest": "1e65063ba4914b86567c575010889d562f3b05a6ae23f2e93a325d0b7341e782",
+  "restoredPolicyDigest": "1e65063ba4914b86567c575010889d562f3b05a6ae23f2e93a325d0b7341e782",
+  "measuredPolicyDigest": "e8127090a66178ea580a1b38d6fa120fccd7933bf37114a562296b3cedb38e8f",
+  "checked": [
+    {
+      "runId": "b1-candidate-precision-v3-1",
+      "stageId": "planning",
+      "requestId": "0",
+      "questionId": "technical_plan",
+      "originalPolicyMatched": true
+    },
+    {
+      "runId": "b1-candidate-precision-v3-2",
+      "stageId": "planning",
+      "requestId": "0",
+      "questionId": "b1_technical",
+      "originalPolicyMatched": true
+    },
+    {
+      "runId": "b2-candidate-precision-v3-1",
+      "stageId": "planning",
+      "requestId": "0",
+      "questionId": "b2_technical",
+      "originalPolicyMatched": true
+    },
+    {
+      "runId": "b2-candidate-precision-v3-2",
+      "stageId": "planning",
+      "requestId": "0",
+      "questionId": "b2_01_agreement",
+      "originalPolicyMatched": true
+    }
+  ],
+  "limitation": "Equivalence is established only for observed matrix questions; unused branches are not claimed equivalent."
+}

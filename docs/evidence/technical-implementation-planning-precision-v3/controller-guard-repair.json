@@ -1,0 +1,47 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T18:24:05.843Z",
+  "defect": "The original controller requires the packet filename on a checked checkbox row; it falsely rejects a single explicitly linked packet whose every step is checked.",
+  "scope": "One-off benchmark controller only; no workflow, product oracle or product requirement changes.",
+  "checks": {
+    "red": 1,
+    "green": {
+      "exitCode": 0,
+      "passed": 5
+    },
+    "prove": {
+      "mutationExit": 1,
+      "restoredExit": 0
+    }
+  },
+  "sourceDigests": {
+    "checklist.mjs": "b7875ffe02859f120405ca0062e82a6d0bb3422b2b11a9fe74c15aaa67dd1ced",
+    "checklist.test.mjs": "cf325883921f52cd687f5aa6ffd4e5591ca3ffef189810871f888d6de4979dc6",
+    "run.mjs": "d775603c4380cedea132eece04ca62fe1b2098d7995dd9f1ce0c4ec467c50072"
+  },
+  "proof": [
+    {
+      "ref": "precision-proof/checklist-red.log",
+      "digest": "fa28a6f388ac1936a6bcff311fb49b7146323c5cabaed96bc18a5aec02d12780"
+    },
+    {
+      "ref": "precision-proof/checklist-green.log",
+      "digest": "8bfa6c04de9ad2b38c74e6017f8abbbb9bc5ca06e072f6f62b078feb9c6b50eb"
+    },
+    {
+      "ref": "precision-proof/checklist-prove-mutation.log",
+      "digest": "17bc34f7fa17d4ff4247564a35cea027bf9f623321c68bece5f12fb5a38686ae"
+    },
+    {
+      "ref": "precision-proof/checklist-prove-restored.log",
+      "digest": "9f41bb3748773d967a4b19020d0adc1962f644a096b5c591c9af90dbbaeeaa3f"
+    }
+  ],
+  "originalAttempt": "b2-baseline-precision-v3-1",
+  "originalAttemptStatus": "incomplete; immutable",
+  "diagnostic": "matrix/b2-baseline-precision-v3-1/controller-readback.json",
+  "nextAction": {
+    "owner": "Current qualification chat",
+    "action": "Finish the original alternating matrix, declare correction inputs, then repeat each proven affected attempt with a fresh ID; preserve all original attempts and distinguish recovery timing/order."
+  }
+}

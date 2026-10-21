@@ -1,0 +1,110 @@
+{
+  "classification": "ACTUAL",
+  "scenarioId": "q5-execution-boundaries",
+  "sessionId": "01a15ef0-8e23-75f3-9ee1-a98f0915efde",
+  "actualModel": "gpt-6.1-sol",
+  "startMs": 64.88995,
+  "endMs": 18569.514204,
+  "terminal": "incomplete",
+  "error": "Incomplete focused evaluation",
+  "closeDiagnostic": null,
+  "verdict": null,
+  "items": [
+    {
+      "atMs": 3302.653595,
+      "item": {
+        "type": "userMessage",
+        "id": "01a15ef0-9a37-7703-9296-db3403b94767",
+        "clientId": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Independently evaluate only actual focused qualification q5-execution-boundaries. Read every raw stage JSON/JSONL and result.json under $SOURCE_ROOT/docs/evidence/technical-implementation-planning/focused/q5-execution-boundaries, plus frozen-inputs.json in its parent. Read necessary matching packet/plan/source files under $TRIAL_ROOT/focused; the result uses $TRIAL_ROOT for $TRIAL_ROOT. Do not edit, run implementation, read workflow YAML/.workflow files directly, or inspect other trials/reviewer conclusions/hidden oracle source or answer rubric. Repository instructions still apply; all shell commands use rtk. No MCP is configured: captured real scenario results are the read-only evidence, and any unavailable fact remains unknown. Return observations for exactly [\"legacyStoppedBeforeWrites\",\"privateHelperCompleted\",\"materialChangeReturnedToPlanning\"], each with exact capture path and item.id or trace index. Check actual native partial response/dismissal and reused accepted reference for Q3; dependent stale/stale versus independent ready plus unchanged specification for Q4; legacy no-production-write stop, permitted private serialization helper with actual passing local/oracle outputs, and material signature/class/ownership request routed to planning before writes for Q5; actual actor routing of behavioral exit 2 to 3 back to specification before writes plus subsequent real MCP review invalidation after the explicitly SIMULATION fixture-owner amendment for Q6. Preconfirmed agreement seeding and owner amendments are SIMULATION setup, never fresh native answers or real human consent. Judge actual model behavior and observed guards, not orchestrator labels. Missing required evidence is incomplete, never pass; terminal completed alone is insufficient. Do not make the user's speed/quality tradeoff decision.",
+            "text_elements": []
+          }
+        ]
+      }
+    },
+    {
+      "atMs": 7050.17462,
+      "item": {
+        "type": "agentMessage",
+        "id": "msg_0ab9533eef75aff8016ad8d10f739c8191b276364e18c078ea",
+        "text": "I’ll read the frozen inputs, all q5 captures, and the matching packet and source files, then assess the observed behavior without changing files or running implementation.",
+        "phase": "commentary",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null
+      }
+    },
+    {
+      "atMs": 8309.851899,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-081443ed-0b32-4fe1-a03d-a70378d9b2ab",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk cat docs/index.md'",
+        "cwd": "$SOURCE_ROOT",
+        "processId": "43690",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk cat docs/index.md"
+          }
+        ],
+        "aggregatedOutput": "# Project Index\n\nAll paths are repository-relative.\n\n| Area | Entry points |\n|---|---|\n| Workflow templates and references | `skills/` |\n| Shared guidance and verifiers | `shared/references/`; `shared/scripts/` |\n| Data schemas and collection metadata | `shared/schemas/`; `catalog/` |\n| Generation and packaging | `scripts/generate.mjs`; `scripts/lib/distribution.mjs` |\n| Skill validation | `scripts/validate.mjs`; `scripts/lib/skill-document.mjs` |\n| MCP startup and tool registration | `packages/engineer-agent-workflow-mcp/src/main.ts`; `packages/engineer-agent-workflow-mcp/src/server.ts` |\n| MCP specification reviews | `packages/engineer-agent-workflow-mcp/src/reviews.ts` |\n| MCP product scenarios | `packages/engineer-agent-workflow-mcp/src/product/` |\n| Workflow and packaging checks | `tests/` |\n| MCP behavior checks | `packages/engineer-agent-workflow-mcp/test/` |\n| Specifications and task packets | `docs/specs/` |\n| Local build and installation | `docs/local-development.md` |\n| Generated host distributions | `plugins/codex/`; `plugins/claude-code/` |\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 12553.813647,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-26fe1f78-9b02-4f7a-8dae-61d7d2815446",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk find docs/evidence/technical-implementation-planning/focused/q5-execution-boundaries -type f'",
+        "cwd": "$SOURCE_ROOT",
+        "processId": "73178",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk find docs/evidence/technical-implementation-planning/focused/q5-execution-boundaries -type f"
+          }
+        ],
+        "aggregatedOutput": "implementation-legacy.json\nimplementation-legacy.jsonl\nimplementation-material-change.json\nimplementation-material-change.jsonl\nimplementation-private-helper.json\nimplementation-private-helper.jsonl\nresult.json\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "atMs": 12639.149932,
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-cdd7d132-b832-4196-b70a-4e1ea1fd9124",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/bash -lc 'rtk cat docs/evidence/technical-implementation-planning/focused/frozen-inputs.json'",
+        "cwd": "$SOURCE_ROOT",
+        "processId": "69542",
+        "source": "unifiedExecStartup",
+        "status": "completed",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "rtk cat docs/evidence/technical-implementation-planning/focused/frozen-inputs.json"
+          }
+        ],
+        "aggregatedOutput": "{\n  \"classification\": \"SIMULATION\",\n  \"frozenBeforeFocusedModels\": true,\n  \"policyDigest\": \"6a68ad84ed0acf2d8eda01c0a31598baff51e08a88f2a8a48efd6ddb647dbf87\",\n  \"controllerDigest\": \"f31e4f3c835476c66803abcee975c5126ea08da50f6ad0613c6dccad3bb70c51\",\n  \"captureHelperDigest\": \"bc60143f8296bebe758961edc512becfb9044392787958ad773e0bacb8861489\",\n  \"candidateDigest\": \"1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45\",\n  \"protocol\": \"Preconfirmed managed states are fixture setup, never native-question or human-consent evidence.\"\n}\n",
+        "exitCode": 0,
+        "durationMs": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "classification": "ACTUAL",
+  "kind": "source-capture-not-a-new-supported-runner",
+  "originalPath": ".cache/technical-implementation-planning-qualification/run.mjs",
+  "ref": "sources/controller-stdio-v2.mjs",
+  "digest": "94fd69b1ea49339f47e32f6770822962707f43ebab037dce0fb36e8ef051ca21",
+  "reusedRpc": "docs/research/workflow-probe-plans/p03/rpc.mjs"
+}

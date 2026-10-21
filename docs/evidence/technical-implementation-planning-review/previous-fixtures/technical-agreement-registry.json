@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "classification": "SIMULATION",
+  "policy": {
+    "hostModelRoles": {
+      "codex": {
+        "specification": [
+          "gpt-6.1-sol"
+        ],
+        "planning": [
+          "gpt-6.1-sol"
+        ],
+        "implementation": [
+          "gpt-6.1-sol"
+        ],
+        "review": [
+          "gpt-6.1-sol"
+        ]
+      }
+    },
+    "stablePasses": 2,
+    "holdoutPasses": 0,
+    "fullMatrix": {
+      "codex": [
+        "b1-baseline",
+        "b1-candidate",
+        "b2-baseline",
+        "b2-candidate"
+      ]
+    },
+    "holdoutMatrix": {},
+    "technicalBenchmark": true,
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "clientVersion": "codex-cli 0.163.0",
+    "focusedMatrix": {
+      "codex": [
+        "q3-partial-resume",
+        "q4-shared-drift",
+        "q5-execution-boundaries",
+        "q6-behavior-routing"
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "id": "b1-baseline",
+      "fixture": "b1",
+      "variant": "baseline",
+      "set": "full",
+      "depth": "Standard",
+      "profiles": [
+        "core"
+      ],
+      "prompt": "Plan the approved record-report change in exactly two independently verifiable packets: first shared input validation and the validate command, then the summarize command using that same validation contract. Use the explicitly selected planning skill and stop after planning.",
+      "acceptanceRequirements": [
+        "The existing help command remains compatible; validate emits the complete validated record array as JSON.",
+        "Records contain a nonempty ASCII identifier and a nonnegative safe-integer amount; reject malformed or duplicate identifiers atomically with exit 2 and INVALID_INPUT on stderr.",
+        "summarize emits JSON containing count and total, using the same validation behavior as validate; the empty dataset produces zero count and total.",
+        "Use dependency-free Node.js; preserve unrelated fixture files and execute exactly one authorized packet per implementation invocation."
+      ],
+      "answerMode": "inline-confirmed",
+      "specificationInput": "frozen-approved",
+      "requireTechnicalAgreement": false,
+      "requiredPacketCount": 2,
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The supplied Approved specification and confirmed scope are frozen simulation inputs, not real customer authorization."
+        ]
+      }
+    },
+    {
+      "id": "b1-candidate",
+      "fixture": "b1",
+      "variant": "candidate",
+      "set": "full",
+      "depth": "Standard",
+      "profiles": [
+        "core"
+      ],
+      "prompt": "Plan the approved record-report change in exactly two independently verifiable packets: first shared input validation and the validate command, then the summarize command using that same validation contract. Use the explicitly selected planning skill and stop after planning.",
+      "acceptanceRequirements": [
+        "The existing help command remains compatible; validate emits the complete validated record array as JSON.",
+        "Records contain a nonempty ASCII identifier and a nonnegative safe-integer amount; reject malformed or duplicate identifiers atomically with exit 2 and INVALID_INPUT on stderr.",
+        "summarize emits JSON containing count and total, using the same validation behavior as validate; the empty dataset produces zero count and total.",
+        "Use dependency-free Node.js; preserve unrelated fixture files and execute exactly one authorized packet per implementation invocation."
+      ],
+      "answerMode": "inline-confirmed",
+      "specificationInput": "frozen-approved",
+      "requireTechnicalAgreement": true,
+      "requiredPacketCount": 2,
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The supplied Approved specification and confirmed scope are frozen simulation inputs, not real customer authorization."
+        ]
+      }
+    },
+    {
+      "id": "b2-baseline",
+      "fixture": "b2",
+      "variant": "baseline",
+      "set": "full",
+      "depth": "Lite",
+      "profiles": [
+        "core"
+      ],
+      "prompt": "Plan the approved timeout-range change as one compact implementation packet. Use the explicitly selected planning skill and stop after planning.",
+      "acceptanceRequirements": [
+        "Preserve the existing parseTimeout(raw) export, default 5000 ms and existing CLI output shape.",
+        "Accept ASCII decimal integer seconds 1 through 60, including leading zeroes, and return milliseconds.",
+        "Reject fractions, signs, whitespace, nonnumeric text, zero and out-of-range values through the existing INVALID_TIMEOUT failure with exit 2.",
+        "Use the existing function/configuration boundary without adding dependencies; preserve unrelated fixture files and execute one authorized packet."
+      ],
+      "answerMode": "inline-confirmed",
+      "specificationInput": "frozen-approved",
+      "requireTechnicalAgreement": false,
+      "requiredPacketCount": 1,
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The supplied Approved specification and confirmed scope are frozen simulation inputs, not real customer authorization."
+        ]
+      }
+    },
+    {
+      "id": "b2-candidate",
+      "fixture": "b2",
+      "variant": "candidate",
+      "set": "full",
+      "depth": "Lite",
+      "profiles": [
+        "core"
+      ],
+      "prompt": "Plan the approved timeout-range change as one compact implementation packet. Use the explicitly selected planning skill and stop after planning.",
+      "acceptanceRequirements": [
+        "Preserve the existing parseTimeout(raw) export, default 5000 ms and existing CLI output shape.",
+        "Accept ASCII decimal integer seconds 1 through 60, including leading zeroes, and return milliseconds.",
+        "Reject fractions, signs, whitespace, nonnumeric text, zero and out-of-range values through the existing INVALID_TIMEOUT failure with exit 2.",
+        "Use the existing function/configuration boundary without adding dependencies; preserve unrelated fixture files and execute one authorized packet."
+      ],
+      "answerMode": "inline-confirmed",
+      "specificationInput": "frozen-approved",
+      "requireTechnicalAgreement": true,
+      "requiredPacketCount": 1,
+      "customerFacts": {
+        "classification": "SIMULATION",
+        "facts": [
+          "The supplied Approved specification and confirmed scope are frozen simulation inputs, not real customer authorization."
+        ]
+      }
+    },
+    {
+      "id": "q3-partial-resume",
+      "set": "focused",
+      "safeguard": "partial-resume",
+      "expectation": "Only explicitly accepted tasks are ready; a real non-answer remains pending and a fresh resumed context reuses the saved acceptance.",
+      "classification": "SIMULATION",
+      "variant": "candidate",
+      "profiles": [
+        "core"
+      ]
+    },
+    {
+      "id": "q4-shared-drift",
+      "set": "focused",
+      "safeguard": "shared-drift",
+      "expectation": "After shared-source drift, only dependent agreements are stale; an independent agreement and the unchanged reviewed specification remain valid.",
+      "classification": "SIMULATION",
+      "variant": "candidate",
+      "profiles": [
+        "core"
+      ]
+    },
+    {
+      "id": "q5-execution-boundaries",
+      "set": "focused",
+      "safeguard": "execution-boundaries",
+      "expectation": "Legacy work stops before production edits, a harmless agreed helper can complete, and a material ownership/signature change returns to planning.",
+      "classification": "SIMULATION",
+      "variant": "candidate",
+      "profiles": [
+        "core"
+      ]
+    },
+    {
+      "id": "q6-behavior-routing",
+      "set": "focused",
+      "safeguard": "behavior-routing",
+      "expectation": "A behavioral change labeled technical returns to specification; the actual behavioral amendment invalidates reviewed state rather than preserving it as a technical answer.",
+      "classification": "SIMULATION",
+      "variant": "candidate",
+      "profiles": [
+        "core"
+      ]
+    }
+  ]
+}

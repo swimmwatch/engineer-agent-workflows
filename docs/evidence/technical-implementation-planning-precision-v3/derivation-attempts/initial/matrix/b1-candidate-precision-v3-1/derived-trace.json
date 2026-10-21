@@ -1,0 +1,654 @@
+{
+  "classification": "ACTUAL",
+  "traceKind": "derived-trace",
+  "note": "Facts derived from raw captures; simulation setup/authorization stays labeled. Actor completion claims do not establish full quality: required proof observations and the independent verdict remain authoritative, including any incomplete baseline.",
+  "events": [
+    {
+      "atMs": 504621.350457,
+      "type": "stage_started",
+      "stage": "specification",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/inputs/setup.json",
+      "seq": 1
+    },
+    {
+      "atMs": 504622.350457,
+      "type": "profile_confirmation",
+      "explicit": true,
+      "depth": "Standard",
+      "profiles": [
+        "core"
+      ],
+      "classification": "SIMULATION",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/inputs/setup.json",
+      "seq": 2
+    },
+    {
+      "atMs": 504623.350457,
+      "type": "artifact_write",
+      "stage": "specification",
+      "target": "specification-artifact",
+      "artifact": "spec.md",
+      "digest": "7f96623fd7eb04934070402e7bfac9970e55e3e7a7931ec23904df0bb9ff0090",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/inputs/spec.md",
+      "observedBy": "fixture-setup",
+      "seq": 3
+    },
+    {
+      "atMs": 504624.350457,
+      "type": "stage_completed",
+      "stage": "specification",
+      "status": "passed",
+      "contractDigest": "7f96623fd7eb04934070402e7bfac9970e55e3e7a7931ec23904df0bb9ff0090",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/inputs/setup.json",
+      "seq": 4
+    },
+    {
+      "atMs": 504626.350457,
+      "type": "stage_started",
+      "stage": "planning",
+      "sessionId": "01a15f9b-f32c-7830-9503-3970ed310e8d",
+      "seq": 5
+    },
+    {
+      "atMs": 532325.391057,
+      "type": "contract_read",
+      "status": "approved",
+      "digest": "7f96623fd7eb04934070402e7bfac9970e55e3e7a7931ec23904df0bb9ff0090",
+      "itemId": "exec-549c6b3e-239b-4c87-8dc2-c76c857fbd99",
+      "seq": 6
+    },
+    {
+      "atMs": 540510.834817,
+      "type": "profile_reference_read",
+      "stage": "planning",
+      "profile": "core",
+      "itemId": "exec-b634f8e7-aabb-4ab9-b403-2ce43f5e76ae",
+      "seq": 7
+    },
+    {
+      "atMs": 578942.725237,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_validate.md",
+      "path": "docs/specs/b1/tasks/01_validate.md",
+      "itemId": "exec-d9e370e7-e1d4-4216-ac94-49c3cbf350b0",
+      "digest": "a36433e1d4768946ae44d88ef523de014756e372fbefa586914e9f5bea3938d8",
+      "seq": 8
+    },
+    {
+      "atMs": 578942.72811,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "02_summarize.md",
+      "path": "docs/specs/b1/tasks/02_summarize.md",
+      "itemId": "exec-d9e370e7-e1d4-4216-ac94-49c3cbf350b0",
+      "digest": "137a3723329f735d4b2df119f443c763a688e79ea1cdbad5a809bcc6ff163f76",
+      "seq": 9
+    },
+    {
+      "atMs": 578942.728937,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "plan.md",
+      "path": "docs/specs/b1/tasks/plan.md",
+      "itemId": "exec-d9e370e7-e1d4-4216-ac94-49c3cbf350b0",
+      "digest": "bf4098862a27e2d4c85562058c1968aca04e2f01d7ee115334c3565739a88454",
+      "seq": 10
+    },
+    {
+      "atMs": 648017.134016,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "01_validate.md",
+      "path": "docs/specs/b1/tasks/01_validate.md",
+      "itemId": "exec-e23f2685-3461-4af9-b22f-ec61b4c3cf3c",
+      "digest": "dd5f34154d3ddfbeeb7673fd7a70d3bddf856fbdf2c746b8161b56149565859f",
+      "seq": 11
+    },
+    {
+      "atMs": 648017.135669,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "02_summarize.md",
+      "path": "docs/specs/b1/tasks/02_summarize.md",
+      "itemId": "exec-e23f2685-3461-4af9-b22f-ec61b4c3cf3c",
+      "digest": "4064bdb93f34860f71e087e655ca4b12a494f3eb0c0c23fd2912a42a0709f0ea",
+      "seq": 12
+    },
+    {
+      "atMs": 689217.710444,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "plan.md",
+      "path": "docs/specs/b1/tasks/plan.md",
+      "itemId": "exec-0c7d0c19-954e-4996-a3de-3b98ed010db8",
+      "digest": "36ed5680f0c74d24a20b60f86d428d109394b57819d5e284d4342c9e68f8705e",
+      "seq": 13
+    },
+    {
+      "atMs": 689217.715252,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "handoff.md",
+      "path": "docs/specs/b1/tasks/handoff.md",
+      "itemId": "exec-0c7d0c19-954e-4996-a3de-3b98ed010db8",
+      "digest": "84ce20642e2272a15c0321985469a6996e6954c725adff78cae7e80ca9a7a0fa",
+      "seq": 14
+    },
+    {
+      "atMs": 689217.716545,
+      "type": "artifact_write",
+      "stage": "planning",
+      "target": "planning-artifact",
+      "artifact": "todo.md",
+      "path": "docs/specs/b1/tasks/todo.md",
+      "itemId": "exec-0c7d0c19-954e-4996-a3de-3b98ed010db8",
+      "digest": "3235115d72806c9876482c5b5951276b25248225462608c660269e849b73f90a",
+      "seq": 15
+    },
+    {
+      "atMs": 695236.5529969999,
+      "type": "packet_declared",
+      "packetId": "b1-01",
+      "requirementIds": [
+        "b1-candidate-AR-1",
+        "b1-candidate-AR-2",
+        "b1-candidate-AR-3",
+        "b1-candidate-AR-4"
+      ],
+      "requiredProofs": [
+        "validate rejects unsafe amount without output; pure parser returns ordered numeric records with independent call state",
+        "validate rejects late invalid row without output"
+      ],
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 16
+    },
+    {
+      "atMs": 695236.5529969999,
+      "type": "packet_declared",
+      "packetId": "b1-02",
+      "requirementIds": [
+        "b1-candidate-AR-1",
+        "b1-candidate-AR-2",
+        "b1-candidate-AR-3",
+        "b1-candidate-AR-4",
+        "b1-candidate-AR-5"
+      ],
+      "requiredProofs": [
+        "summarize above safe integer; summarize three maximum amounts; pure summary uses exact per-call totals without mutation",
+        "summarize rejects duplicate without output; summarize rejects unsafe amount without output; summarize rejects late invalid row without output",
+        "summarize rejects late invalid row without output",
+        "paired invalid-input corpus: --test-name-pattern=rejects"
+      ],
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 17
+    },
+    {
+      "atMs": 695236.562997,
+      "type": "stage_completed",
+      "stage": "planning",
+      "status": "passed",
+      "seq": 18
+    },
+    {
+      "atMs": 696355.474104,
+      "type": "stage_started",
+      "stage": "implementation",
+      "seq": 19
+    },
+    {
+      "atMs": 696355.474104,
+      "type": "packet_authorized",
+      "packetId": "b1-01",
+      "classification": "SIMULATION",
+      "source": "matrix/b1-candidate-precision-v3-1/implementation-01_validate.md.jsonl",
+      "evidence": "Explicit single-packet invocation prompt",
+      "seq": 20
+    },
+    {
+      "atMs": 741278.677496,
+      "type": "packet_prerequisites",
+      "packetId": "b1-01",
+      "status": "passed",
+      "itemIds": [
+        "exec-ac5afda3-e17d-4d6e-aa52-14551d0808cf",
+        "exec-ddfb9666-32c4-4439-86d0-a4012ba0e388",
+        "exec-fc629c20-dd37-4388-935d-6ec795d3ddd0",
+        "exec-758ccf14-e8e6-49e8-9798-fee22078f98b",
+        "exec-a4025f55-f543-4f5a-88a9-b1752ab41aa3",
+        "exec-0e31c4cb-a679-4e11-8860-867dd67d2d01",
+        "exec-a779370c-e49b-4a1a-8a82-b515264c0d66"
+      ],
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 21
+    },
+    {
+      "atMs": 762686.52689,
+      "type": "packet_started",
+      "packetId": "b1-01",
+      "sessionId": "01a15f9e-e059-7992-b4fe-eb8bd556c4b2",
+      "observedBy": "derived-first-packet-action",
+      "seq": 22
+    },
+    {
+      "atMs": 763507.292843,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "b1-01:behavior",
+      "phase": "red",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "requirementIds": [
+        "b1-candidate-AR-1",
+        "b1-candidate-AR-2",
+        "b1-candidate-AR-3",
+        "b1-candidate-AR-4"
+      ],
+      "itemId": "exec-7dcc0331-aee2-4d13-a88a-380b085c7258",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 23
+    },
+    {
+      "atMs": 773263.095486,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "cli.mjs",
+      "itemId": "exec-ab2a6534-2f0a-4e8d-b0f4-0138434db639",
+      "digest": "0c8d72e3e246214b7e7872be8a94ed8d7ab058cbf327a2c1fe9733f50955dd67",
+      "seq": 24
+    },
+    {
+      "atMs": 773263.112066,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "records.mjs",
+      "itemId": "exec-ab2a6534-2f0a-4e8d-b0f4-0138434db639",
+      "digest": "0515fd3fdf90844d6c41fe7798b9e68a757fb9397db7ff595816b75a785ae9f2",
+      "seq": 25
+    },
+    {
+      "atMs": 774034.119811,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "b1-01:behavior",
+      "phase": "green",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "itemId": "exec-e1f087f6-7483-4f0a-8ced-ba1947f6bd8c",
+      "seq": 26
+    },
+    {
+      "atMs": 788091.205645,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "records.mjs",
+      "itemId": "exec-68a863e4-5e68-46c8-9d2a-6261299a5d93",
+      "digest": "dcad950b8ed989c1c9297ed0ffe4f641b5d49d55e132dfad67c7dfb7bf4a2ac6",
+      "seq": 27
+    },
+    {
+      "atMs": 788870.396171,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "validate rejects unsafe amount without output; pure parser returns ordered numeric records with independent call state",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-d7b32f4c-e335-4629-b9b9-f0bad09fe7ce",
+      "itemId": "exec-d7b32f4c-e335-4629-b9b9-f0bad09fe7ce",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 28
+    },
+    {
+      "atMs": 789011.041236,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "records.mjs",
+      "itemId": "exec-1eb28f06-655c-4a55-8654-ad9ac6f0c60a",
+      "digest": "0515fd3fdf90844d6c41fe7798b9e68a757fb9397db7ff595816b75a785ae9f2",
+      "seq": 29
+    },
+    {
+      "atMs": 789158.752474,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "cli.mjs",
+      "itemId": "exec-63c20acb-5da2-4fe6-98e6-2972b41bf679",
+      "digest": "5fefd2eaea9b86b4dffb968f2d1311895168a20058ccbedd1785b35eec685036",
+      "seq": 30
+    },
+    {
+      "atMs": 789942.181986,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "validate rejects late invalid row without output",
+      "phase": "prove",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-e7b20846-8993-438b-99c0-08d16f55e939",
+      "itemId": "exec-e7b20846-8993-438b-99c0-08d16f55e939",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 31
+    },
+    {
+      "atMs": 790087.002098,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-01",
+      "artifact": "cli.mjs",
+      "itemId": "exec-5b1c824d-ead8-4eaf-a4d6-55ebcecb1eb9",
+      "digest": "0c8d72e3e246214b7e7872be8a94ed8d7ab058cbf327a2c1fe9733f50955dd67",
+      "seq": 32
+    },
+    {
+      "atMs": 790881.079258,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "validate rejects unsafe amount without output; pure parser returns ordered numeric records with independent call state",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-d7b32f4c-e335-4629-b9b9-f0bad09fe7ce",
+      "itemId": "exec-98c4d552-c53c-4933-83e6-0eaa9091af27",
+      "restorationItemId": "exec-98c4d552-c53c-4933-83e6-0eaa9091af27",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 33
+    },
+    {
+      "atMs": 790881.079258,
+      "type": "test_observation",
+      "packetId": "b1-01",
+      "testId": "validate rejects late invalid row without output",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-e7b20846-8993-438b-99c0-08d16f55e939",
+      "itemId": "exec-98c4d552-c53c-4933-83e6-0eaa9091af27",
+      "restorationItemId": "exec-98c4d552-c53c-4933-83e6-0eaa9091af27",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 34
+    },
+    {
+      "atMs": 790881.079358,
+      "type": "check",
+      "stage": "implementation",
+      "packetId": "b1-01",
+      "checkId": "b1-01:final",
+      "status": "passed",
+      "itemId": "exec-98c4d552-c53c-4933-83e6-0eaa9091af27",
+      "seq": 35
+    },
+    {
+      "atMs": 840921.669771,
+      "type": "packet_completed",
+      "packetId": "b1-01",
+      "status": "passed",
+      "observedBy": "actor-checklist-and-completion-claim",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 36
+    },
+    {
+      "atMs": 841949.965161,
+      "type": "packet_authorized",
+      "packetId": "b1-02",
+      "classification": "SIMULATION",
+      "source": "matrix/b1-candidate-precision-v3-1/implementation-02_summarize.md.jsonl",
+      "evidence": "Explicit single-packet invocation prompt",
+      "seq": 37
+    },
+    {
+      "atMs": 876055.255828,
+      "type": "packet_prerequisites",
+      "packetId": "b1-02",
+      "status": "passed",
+      "itemIds": [
+        "exec-99f9117a-c174-41bf-a3f4-d7a3a7f20f06",
+        "exec-7f689029-8b3a-49f3-a5b1-e50c28041c6a",
+        "exec-03ec1837-4310-432b-b0e4-7a4dd76992a8",
+        "exec-d6e548c1-f1a7-406e-b4fa-bc2d59f8ee3a",
+        "exec-d5401972-dd18-4c7f-9bce-d955395742f9",
+        "exec-55171945-a7d6-4681-a25d-920b012df79a"
+      ],
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 38
+    },
+    {
+      "atMs": 903286.27499,
+      "type": "packet_started",
+      "packetId": "b1-02",
+      "sessionId": "01a15fa1-1963-78a3-92e8-186de1b5a0fc",
+      "observedBy": "derived-first-packet-action",
+      "seq": 39
+    },
+    {
+      "atMs": 904691.254977,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "b1-02:behavior",
+      "phase": "red",
+      "status": "failed",
+      "meaningful": true,
+      "contractAligned": true,
+      "requirementIds": [
+        "b1-candidate-AR-1",
+        "b1-candidate-AR-2",
+        "b1-candidate-AR-3",
+        "b1-candidate-AR-4",
+        "b1-candidate-AR-5"
+      ],
+      "itemId": "exec-d5bf6afd-59ab-49cf-b9dc-eb28bb0ec9da",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 40
+    },
+    {
+      "atMs": 911653.732501,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-02",
+      "artifact": "cli.mjs",
+      "itemId": "exec-8d745080-c0cc-4d71-b8d2-8961ce889945",
+      "digest": "40215056637fd7731a9e8b034f0d9d3efa6b3bd787005cb9f0f60cc848ffefba",
+      "seq": 41
+    },
+    {
+      "atMs": 911653.734775,
+      "type": "artifact_write",
+      "stage": "implementation",
+      "target": "production",
+      "packetId": "b1-02",
+      "artifact": "records.mjs",
+      "itemId": "exec-8d745080-c0cc-4d71-b8d2-8961ce889945",
+      "digest": "0a764593e600ba621d81e68128721152c3d5bdfb219d5992687f3d3985e2a758",
+      "seq": 42
+    },
+    {
+      "atMs": 913036.862763,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "b1-02:behavior",
+      "phase": "green",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "itemId": "exec-16f7da8d-a05d-4fc6-908c-01d5d3003323",
+      "seq": 43
+    },
+    {
+      "atMs": 927950.06875,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize above safe integer; summarize three maximum amounts; pure summary uses exact per-call totals without mutation",
+      "phase": "prove",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-2ea17302-057c-47e1-8d6e-f0d28ff88b84",
+      "itemId": "exec-2ea17302-057c-47e1-8d6e-f0d28ff88b84",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 44
+    },
+    {
+      "atMs": 928217.826206,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize rejects duplicate without output; summarize rejects unsafe amount without output; summarize rejects late invalid row without output",
+      "phase": "prove",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-0421e6af-b6b0-41c8-b82a-1c1ebe40853d",
+      "itemId": "exec-0421e6af-b6b0-41c8-b82a-1c1ebe40853d",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 45
+    },
+    {
+      "atMs": 928411.286619,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize rejects late invalid row without output",
+      "phase": "prove",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-6c9d9682-bde7-43d1-bb03-543a96dc84c3",
+      "itemId": "exec-6c9d9682-bde7-43d1-bb03-543a96dc84c3",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 46
+    },
+    {
+      "atMs": 945331.546909,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "paired invalid-input corpus: --test-name-pattern=rejects",
+      "phase": "prove",
+      "status": "passed",
+      "meaningful": true,
+      "contractAligned": true,
+      "mutationId": "exec-c34879a6-dd1c-4f6d-af1a-934f2ca1062f",
+      "itemId": "exec-c34879a6-dd1c-4f6d-af1a-934f2ca1062f",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 47
+    },
+    {
+      "atMs": 946738.334043,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize above safe integer; summarize three maximum amounts; pure summary uses exact per-call totals without mutation",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-2ea17302-057c-47e1-8d6e-f0d28ff88b84",
+      "itemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "restorationItemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 48
+    },
+    {
+      "atMs": 946738.334043,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize rejects duplicate without output; summarize rejects unsafe amount without output; summarize rejects late invalid row without output",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-0421e6af-b6b0-41c8-b82a-1c1ebe40853d",
+      "itemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "restorationItemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 49
+    },
+    {
+      "atMs": 946738.334043,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "summarize rejects late invalid row without output",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-6c9d9682-bde7-43d1-bb03-543a96dc84c3",
+      "itemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "restorationItemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 50
+    },
+    {
+      "atMs": 946738.334043,
+      "type": "test_observation",
+      "packetId": "b1-02",
+      "testId": "paired invalid-input corpus: --test-name-pattern=rejects",
+      "phase": "restored-green",
+      "status": "passed",
+      "mutationId": "exec-c34879a6-dd1c-4f6d-af1a-934f2ca1062f",
+      "itemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "restorationItemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 51
+    },
+    {
+      "atMs": 946738.334143,
+      "type": "check",
+      "stage": "implementation",
+      "packetId": "b1-02",
+      "checkId": "b1-02:final",
+      "status": "passed",
+      "itemId": "exec-ea2c3a7c-d7c0-4a61-8c72-f3baa07ed620",
+      "seq": 52
+    },
+    {
+      "atMs": 993668.4695440001,
+      "type": "packet_completed",
+      "packetId": "b1-02",
+      "status": "passed",
+      "observedBy": "actor-checklist-and-completion-claim",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "seq": 53
+    },
+    {
+      "atMs": 993668.469644,
+      "type": "stage_completed",
+      "stage": "implementation",
+      "status": "passed",
+      "seq": 54
+    },
+    {
+      "atMs": 995643.453479,
+      "type": "external_acceptance",
+      "status": "passed",
+      "requirementIds": [
+        "b1-candidate-AR-1",
+        "b1-candidate-AR-2",
+        "b1-candidate-AR-3",
+        "b1-candidate-AR-4",
+        "b1-candidate-AR-5"
+      ],
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/result.json",
+      "evidenceDigest": "2372aca7538a888aa76be52dc3fff2958c78a7bad928bba8fa29bde0b50612b7",
+      "seq": 55
+    },
+    {
+      "atMs": 995643.4544790001,
+      "type": "evaluation_claim",
+      "evidenceRef": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+      "status": "passed",
+      "seq": 56
+    }
+  ]
+}

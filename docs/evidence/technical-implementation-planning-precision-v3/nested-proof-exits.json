@@ -1,0 +1,52 @@
+{
+  "classification": "ACTUAL",
+  "capturedStage": {
+    "ref": "matrix/b1-candidate-precision-v3-1/implementation-02_summarize.md.json",
+    "digest": "9b656b7a7ad567dac9950a290ea2274dca597fc4f1fc8801742a2d7a99646c54"
+  },
+  "independentEvaluation": {
+    "ref": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+    "digest": "685b764bf767de6e255aaeb64dbb5f1bbff009ca80dd4ff52dfe39a634c53708",
+    "originalDigest": "1a1652318132ad3b931c1e7113d9df41b76dc0af3883ebc52cc915ab2523c693",
+    "publicationNormalization": "publication-redaction.json"
+  },
+  "explanation": "Four source-bound actual Python subprocess.run calls print r.returncode after real Node test execution and restore original production code in finally. The Python wrapper exits 0 while captured named test failures and MUTATION_EXIT 1 establish child test failure. Pre-publication originals and exact reviewer verdict objects are retained; normalized display digests are recorded separately.",
+  "entries": [
+    {
+      "itemId": "exec-2ea17302-057c-47e1-8d6e-f0d28ff88b84",
+      "commandDigest": "845b2bb9284962ddc2fe70d89e4dd8922fdd049af955bf08fe903d1c370692db",
+      "outputDigest": "fa40032966b83c0e3d341aa9924ade77558a5e02af0af40f0fc13e7df86b1a9a",
+      "marker": "MUTATION_EXIT 1",
+      "childExitCode": 1,
+      "outerExitCode": 0,
+      "testId": "summarize above safe integer; summarize three maximum amounts; pure summary uses exact per-call totals without mutation"
+    },
+    {
+      "itemId": "exec-0421e6af-b6b0-41c8-b82a-1c1ebe40853d",
+      "commandDigest": "b307a993bb0bab8ceff81c234310fabee16d95164c0899fb944bd83eea4e52fa",
+      "outputDigest": "a1b96d84fefa938d4dc81e85181d9d86826af67a0a60e9a0e2776b37fc0015ad",
+      "marker": "MUTATION_EXIT 1",
+      "childExitCode": 1,
+      "outerExitCode": 0,
+      "testId": "summarize rejects duplicate without output; summarize rejects unsafe amount without output; summarize rejects late invalid row without output"
+    },
+    {
+      "itemId": "exec-6c9d9682-bde7-43d1-bb03-543a96dc84c3",
+      "commandDigest": "c2adeb5852c1acc9ff10c2b53a82ae107f7688b07b70e0872e566b2a61fdd79d",
+      "outputDigest": "07ef68272086ba7f301ae0010f0adc0bf66c9e1563da0d0b088791d0384e4b33",
+      "marker": "MUTATION_EXIT 1",
+      "childExitCode": 1,
+      "outerExitCode": 0,
+      "testId": "summarize rejects late invalid row without output"
+    },
+    {
+      "itemId": "exec-c34879a6-dd1c-4f6d-af1a-934f2ca1062f",
+      "commandDigest": "4d807c686b127569be1907264b6379befb43f08d60b490166eedd060546330cc",
+      "outputDigest": "f7d3612113931d2698712ddad6033552ac55815c8eb79036ab56be1fc6aed2a6",
+      "marker": "MUTATION_EXIT 1",
+      "childExitCode": 1,
+      "outerExitCode": 0,
+      "testId": "paired invalid-input corpus: --test-name-pattern=rejects"
+    }
+  ]
+}

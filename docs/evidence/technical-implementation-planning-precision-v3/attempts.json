@@ -1,0 +1,484 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T19:43:21.708Z",
+  "originalOrder": [
+    "b1-baseline-precision-v3-1",
+    "b1-candidate-precision-v3-1",
+    "b2-candidate-precision-v3-1",
+    "b2-baseline-precision-v3-1",
+    "b1-candidate-precision-v3-2",
+    "b1-baseline-precision-v3-2",
+    "b2-baseline-precision-v3-2",
+    "b2-candidate-precision-v3-2"
+  ],
+  "correctiveOrder": [
+    "b2-baseline-precision-v3-checklist-r1-1"
+  ],
+  "selectedForPairedTimings": [
+    "b1-baseline-precision-v3-1",
+    "b1-candidate-precision-v3-1",
+    "b2-candidate-precision-v3-1",
+    "b2-baseline-precision-v3-checklist-r1-1",
+    "b1-candidate-precision-v3-2",
+    "b1-baseline-precision-v3-2",
+    "b2-baseline-precision-v3-2",
+    "b2-candidate-precision-v3-2"
+  ],
+  "attemptCount": 9,
+  "attempts": [
+    {
+      "runId": "b1-baseline-precision-v3-1",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 1,
+      "workflowSourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b1-baseline-precision-v3-1/result.json",
+        "digest": "967c5bdee87e673759857328ba8a4907dad37e44cf100c923ca8de9bd27ce06d"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b1-baseline-precision-v3-1/evaluation.json",
+        "digest": "ca945168b8237cfb3097c9ecb02ad22901551774cf039a9e0bc7072816e3b703"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": null,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 496399.7773699999,
+      "fullElapsedMs": 501069.698284,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15f94-4666-7ac2-9494-7c4a66d36fda",
+          "elapsedMs": 196080.91197100002
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_shared-validation-and-validate.md",
+          "sessionId": "01a15f97-489a-7fb2-85b7-9fc40428253d",
+          "elapsedMs": 162559.644199
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-02_summarize.md",
+          "sessionId": "01a15f99-c7e8-7200-8114-a34ecd0a2e6d",
+          "elapsedMs": 137759.22119999997
+        }
+      ]
+    },
+    {
+      "runId": "b1-candidate-precision-v3-1",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 1,
+      "workflowSourceIdentity": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b1-candidate-precision-v3-1/result.json",
+        "digest": "2372aca7538a888aa76be52dc3fff2958c78a7bad928bba8fa29bde0b50612b7"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b1-candidate-precision-v3-1/evaluation.json",
+        "digest": "685b764bf767de6e255aaeb64dbb5f1bbff009ca80dd4ff52dfe39a634c53708"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 486894.91278999986,
+      "fullElapsedMs": 491017.103022,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15f9b-f32c-7830-9503-3970ed310e8d",
+          "elapsedMs": 190610.21253999992
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_validate.md",
+          "sessionId": "01a15f9e-e059-7992-b4fe-eb8bd556c4b2",
+          "elapsedMs": 144566.19576699997
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-02_summarize.md",
+          "sessionId": "01a15fa1-1963-78a3-92e8-186de1b5a0fc",
+          "elapsedMs": 151718.50448300003
+        }
+      ]
+    },
+    {
+      "runId": "b2-candidate-precision-v3-1",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 1,
+      "workflowSourceIdentity": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b2-candidate-precision-v3-1/result.json",
+        "digest": "a235b49ecf47f0c8b49d743c2bd0c831e69c9df036821ada09f0f08a7e127b7b"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b2-candidate-precision-v3-1/evaluation.json",
+        "digest": "0cd7b4418b3d8411f214147641183c1ffe55fe21b4b3993b960cdac4389f1f05"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 308145.0772470003,
+      "fullElapsedMs": 310459.63118599996,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fa3-79d3-7d93-8af4-ab36026db4e3",
+          "elapsedMs": 186095.54710800003
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_timeout-range.md",
+          "sessionId": "01a15fa6-552e-75e2-b70d-ad86fc4307f5",
+          "elapsedMs": 122049.53013900016
+        }
+      ]
+    },
+    {
+      "runId": "b2-baseline-precision-v3-1",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 1,
+      "workflowSourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "originalControllerStatus": "incomplete",
+      "originalControllerError": "Authorized packet remains incomplete; the next packet was not started",
+      "selectedForCompletePairedTimings": false,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-1/result.json",
+        "digest": "031cd4a9b629aebe33caca592f77fd1048c1088099e57d755a655534c948c86f"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b2-baseline-precision-v3-1/evaluation.json",
+        "digest": "290cf5bd7b2fc7539aae45ccd30f24c234feef3b4a5d472714cf35dc25eac05c"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": {
+        "ref": "matrix/b2-baseline-precision-v3-1/controller-readback.json",
+        "digest": "69396ee5776c559709729f79cab21faa19be73a14aa2c1366701c91a91f3feef"
+      },
+      "observedModelPhaseMs": 277266.6458590003,
+      "fullElapsedMs": null,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fa8-3ef2-7070-b737-732f89676672",
+          "elapsedMs": 146655.25100100017
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_timeout-range.md",
+          "sessionId": "01a15faa-8019-76c2-bc10-2bee58618f74",
+          "elapsedMs": 130611.3948580001
+        }
+      ]
+    },
+    {
+      "runId": "b1-candidate-precision-v3-2",
+      "fixture": "b1",
+      "variant": "candidate",
+      "repetition": 2,
+      "workflowSourceIdentity": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b1-candidate-precision-v3-2/result.json",
+        "digest": "9f1e9634acc241edf94ff929f3c4a2785e69bdff4b29ac3ace21cc4a63a658fe"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b1-candidate-precision-v3-2/evaluation.json",
+        "digest": "66d26296f450b9eb7b3d4f0026064ac58edccffa2780ee01df72c553f7bad510"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 501953.6791289996,
+      "fullElapsedMs": 506598.4887620001,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fac-8660-7f43-91a3-9416770f29ad",
+          "elapsedMs": 228939.651234
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_validate.md",
+          "sessionId": "01a15fb0-0922-7a02-bcfa-7d3c24b22e42",
+          "elapsedMs": 139775.88601300004
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-02_summarize.md",
+          "sessionId": "01a15fb2-2f4a-7261-9bdc-6972d069f7e5",
+          "elapsedMs": 133238.14188200003
+        }
+      ]
+    },
+    {
+      "runId": "b1-baseline-precision-v3-2",
+      "fixture": "b1",
+      "variant": "baseline",
+      "repetition": 2,
+      "workflowSourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b1-baseline-precision-v3-2/result.json",
+        "digest": "c503c3aa9cacd450de03997797a8c79d75a560244665d6aa673c1c6711316ae1"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b1-baseline-precision-v3-2/evaluation.json",
+        "digest": "825b72a3b5dcb344b833544ae13f2c20f348a78dbafc5c275157a835c3471d73"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 481413.31048200047,
+      "fullElapsedMs": 486592.1558270003,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fb4-49fc-7bc2-bb3c-04d0e6dc3848",
+          "elapsedMs": 210828.8255040003
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_shared-validation-and-validate.md",
+          "sessionId": "01a15fb7-85b5-7f52-a4e9-6ad16f8e0bf3",
+          "elapsedMs": 159105.34413600015
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-02_summarize.md",
+          "sessionId": "01a15fb9-f7c8-7741-a6c5-38d37c98ef75",
+          "elapsedMs": 111479.14084200002
+        }
+      ]
+    },
+    {
+      "runId": "b2-baseline-precision-v3-2",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 2,
+      "workflowSourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-2/result.json",
+        "digest": "62aa429e7a8783ef4453955da1a78eed99efc53d04e92ada91189bc78d57c5f0"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b2-baseline-precision-v3-2/evaluation.json",
+        "digest": "bbfec813e9e1299a5e308ac81dc3cb2fdbef632eb5c9043b2b78139303eea66d"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 270915.74260600004,
+      "fullElapsedMs": 272897.452792,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fbb-be3d-7b31-833b-38ccb265016d",
+          "elapsedMs": 143931.7322750003
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_timeout-range.md",
+          "sessionId": "01a15fbd-f4dc-7431-8d3e-0262fce04978",
+          "elapsedMs": 126984.01033099974
+        }
+      ]
+    },
+    {
+      "runId": "b2-candidate-precision-v3-2",
+      "fixture": "b2",
+      "variant": "candidate",
+      "repetition": 2,
+      "workflowSourceIdentity": "52a4ab34d306cf153642e33f2fee46cf996803fa478c7f58ee7abf13c9dea978",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": null,
+      "result": {
+        "ref": "matrix/b2-candidate-precision-v3-2/result.json",
+        "digest": "b172f8f812be2213f0da6ee4fb164012f6f4f6870858c0e650db4b9713d76c30"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b2-candidate-precision-v3-2/evaluation.json",
+        "digest": "f29a31b6214862b1fd27e5e3b25614878d4d63444d66ba6f43ec4561ea36950a"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 300698.8545629997,
+      "fullElapsedMs": 302811.06946599996,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fbf-f011-7c20-9581-4b7bd5d19bac",
+          "elapsedMs": 147148.202362
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_timeout-range.md",
+          "sessionId": "01a15fc2-3305-7083-b575-bdeb99aac0b8",
+          "elapsedMs": 153550.65220099967
+        }
+      ]
+    },
+    {
+      "runId": "b2-baseline-precision-v3-checklist-r1-1",
+      "fixture": "b2",
+      "variant": "baseline",
+      "repetition": 1,
+      "workflowSourceIdentity": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "originalControllerStatus": "product-checks-passed",
+      "originalControllerError": null,
+      "selectedForCompletePairedTimings": true,
+      "recoveryOf": "b2-baseline-precision-v3-1",
+      "result": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/result.json",
+        "digest": "6f9f46e9b209eeb60a5a98fc7dc941b02122fbce695e9612255bc8a2df8457f2"
+      },
+      "independentEvaluation": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.json",
+        "digest": "2890ec181e063ba1c588a232a8fd943fbab576abe011e590c2612067bd4e9522"
+      },
+      "modelQualityVerdict": "passed",
+      "evaluationError": null,
+      "firstAttemptSuccess": true,
+      "correctiveCycles": 0,
+      "diagnosticReadback": null,
+      "observedModelPhaseMs": 235864.910845,
+      "fullElapsedMs": 238045.251281,
+      "phases": [
+        {
+          "stage": "planning",
+          "stageId": "planning",
+          "sessionId": "01a15fc6-3248-7cc2-9bca-3599c72dd8fb",
+          "elapsedMs": 110762.18210600001
+        },
+        {
+          "stage": "implementation",
+          "stageId": "implementation-01_timeout-range.md",
+          "sessionId": "01a15fc7-e77b-78a0-ba99-f41dbbda71e0",
+          "elapsedMs": 125102.72873899998
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/.gitignore",
+      "digest": "bb365513d102c1c0dd7bfc221b7c64594aa548c4e85b6551a9557443bf3546a3"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/AGENTS.md",
+      "digest": "c1e44a90023ffeecda93f05baaa2d17d424195e17613ce81babc1d6ca440117c"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/cli.mjs",
+      "digest": "22c6387aeb77eed11452a5858f4e756e4b6838df386f700c5bb5da412e9e9a97"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/configuration.mjs",
+      "digest": "899945a207173021697e15f964a5ce9115379b3b93b707fda9316153f301d92c"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/package.json",
+      "digest": "6ea04556db3f66809279c9107d53991ef71c636ffc42cfc30f94b240909c5279"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/test-process.mjs",
+      "digest": "13575770b94cf15658477d715862b18536156e158d9c4fcfffba624e46b4e665"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/test.mjs",
+      "digest": "437e0de46f5f878ecd224c3aee967e6311df9442b6b7dbb896bcd3bae04d3e39"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/final/unrelated.txt",
+      "digest": "66d58c226b7ae1af545c81f3d91e17b0d75f0e91fd9e77b3d4416cd9822ded19"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/controller-readback.json",
+      "digest": "69396ee5776c559709729f79cab21faa19be73a14aa2c1366701c91a91f3feef"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/evaluation.json",
+      "digest": "290cf5bd7b2fc7539aae45ccd30f24c234feef3b4a5d472714cf35dc25eac05c"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/evaluation.jsonl",
+      "digest": "60ce422736931a90f374913cffcbff010da227cafbcedaff0da7dae11cc7b868"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/implementation-01_timeout-range.md.json",
+      "digest": "f1b5b01d074a8916f3222e557ef0b1aaa11c014a8d9bfa67ca2ce4d722b2d8f7"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/implementation-01_timeout-range.md.jsonl",
+      "digest": "68d0ad5a288e7b3b0bf5ce044c3fdf5ebf69ac31f0350d566fa04cb26ba0aa99"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/planning.json",
+      "digest": "27a2a97ee700f5b81ca0f7560f2a4d9e3dc9a25e07b4b0407d270c1a5179bda0"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/planning.jsonl",
+      "digest": "34bf9a392d4bc1a6a7a137da0f1837e158b2a069d8e17500b9021b31e13db7c3"
+    },
+    {
+      "ref": "matrix/b2-baseline-precision-v3-1/result.json",
+      "digest": "031cd4a9b629aebe33caca592f77fd1048c1088099e57d755a655534c948c86f"
+    }
+  ],
+  "interpretation": "Original alternating attempts remain unchanged and visible. Proven controller-format false negatives lack an original verification phase and are excluded only from complete paired timing summaries. Fresh corrective attempts follow the original matrix; their order is a timing limitation. Original model-phase durations and independent quality verdicts remain reported; a corrective success never relabels an original attempt."
+}

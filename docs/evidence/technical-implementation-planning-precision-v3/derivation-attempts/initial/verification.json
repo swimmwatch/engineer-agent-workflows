@@ -1,0 +1,33 @@
+{
+  "ok": false,
+  "verificationKind": "evidence-consistency",
+  "behaviorCertified": false,
+  "sourceDigest": "3151b43b018dab206310266feac9ddb9a7966f12e524deb00ea46b5dccfa6465",
+  "findings": [
+    {
+      "code": "required-prove-missing",
+      "message": "Packet b1-02 lacks PROVE and restored GREEN for summarize above safe integer; summarize three maximum amounts; pure summary uses exact per-call totals without mutation.",
+      "runId": "b1-candidate-precision-v3-1",
+      "traceRef": "matrix/b1-candidate-precision-v3-1/derived-trace.json"
+    },
+    {
+      "code": "required-prove-missing",
+      "message": "Packet b1-02 lacks PROVE and restored GREEN for summarize rejects duplicate without output; summarize rejects unsafe amount without output; summarize rejects late invalid row without output.",
+      "runId": "b1-candidate-precision-v3-1",
+      "traceRef": "matrix/b1-candidate-precision-v3-1/derived-trace.json"
+    },
+    {
+      "code": "required-prove-missing",
+      "message": "Packet b1-02 lacks PROVE and restored GREEN for summarize rejects late invalid row without output.",
+      "runId": "b1-candidate-precision-v3-1",
+      "traceRef": "matrix/b1-candidate-precision-v3-1/derived-trace.json"
+    },
+    {
+      "code": "required-prove-missing",
+      "message": "Packet b1-02 lacks PROVE and restored GREEN for paired invalid-input corpus: --test-name-pattern=rejects.",
+      "runId": "b1-candidate-precision-v3-1",
+      "traceRef": "matrix/b1-candidate-precision-v3-1/derived-trace.json"
+    }
+  ],
+  "comparisonFindings": []
+}

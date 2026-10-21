@@ -1,0 +1,19 @@
+{
+  "classification": "ACTUAL",
+  "singleTestFile": true,
+  "policyUnchanged": true,
+  "results": [
+    {
+      "prove": false,
+      "exitCode": 0,
+      "stdout": "✔ real subprocess streams and nonzero exit (22.506236ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 32.497051\n",
+      "stderr": ""
+    },
+    {
+      "prove": true,
+      "exitCode": 1,
+      "stdout": "✖ real subprocess streams and nonzero exit (19.086416ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 25.707425\n\n✖ failing tests:\n\ntest at probe.test.mjs:1:137\n✖ real subprocess streams and nonzero exit (19.086416ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  7 !== 0\n  \n      at TestContext.<anonymous> (file://$TRIAL_ROOT/probes/stdio-runner/probe.test.mjs:1:667)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1397:25)\n      at Test.start (node:internal/test_runner/test:1257:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 7,\n    expected: 0,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "stderr": ""
+    }
+  ]
+}

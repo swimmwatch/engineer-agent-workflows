@@ -1,0 +1,5 @@
+
+> engineer-agent-workflows-maintenance@0.0.0-development generate:check
+> node scripts/generate.mjs --check
+
+generated distribution check passed: 17 skills

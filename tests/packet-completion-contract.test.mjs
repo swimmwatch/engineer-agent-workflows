@@ -14,6 +14,11 @@ test("packet author and executor share the required-check completion gate", asyn
     assert.match(completion, /unavailable.*incomplete/s);
     const executor = await readFile(new URL(
       `../${root}skills/incremental-implementation/SKILL.md`, import.meta.url), "utf8");
-    assert.match(executor, /7\. Only after every required check passes, mark only/);
+    const gate = /after every required check passes, mark only/iu;
+    assert.match(executor, gate);
+    assert.doesNotMatch(
+      executor.replace("every required check passes", "any check passes"),
+      gate,
+    );
   }
 });

@@ -48,6 +48,8 @@ const expectedInventory = [
   "dist/metadata.js",
   "dist/penpot.d.ts",
   "dist/penpot.js",
+  "dist/planning.d.ts",
+  "dist/planning.js",
   "dist/product/bindings.d.ts",
   "dist/product/bindings.js",
   "dist/product/config.d.ts",

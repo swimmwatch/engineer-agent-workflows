@@ -1,0 +1,24 @@
+{
+  "classification": "ACTUAL",
+  "client": "codex-cli 0.163.0",
+  "node": "v24.20.0",
+  "policy": {
+    "sandbox": "workspaceWrite",
+    "networkAccess": false,
+    "excludeSlashTmp": true,
+    "excludeTmpdirEnvVar": true,
+    "writableRoots": "owned fixture only"
+  },
+  "normal": {
+    "exitCode": 0,
+    "stdout": "{\"label\":\"default\",\"error\":\"EPERM\",\"status\":0,\"stdout\":\"\",\"stderr\":\"\",\"signal\":null}\n{\"label\":\"stdin-ignore\",\"status\":0,\"stdout\":\"\",\"stderr\":\"\",\"signal\":null}\n{\"label\":\"all-ignore\",\"status\":0,\"stdout\":null,\"stderr\":null,\"signal\":null}\n",
+    "stderr": ""
+  },
+  "legacy": {
+    "exitCode": 101,
+    "stdout": "",
+    "stderr": "\nthread 'main' (523142) panicked at linux-sandbox/src/linux_run_main.rs:416:9:\nfilesystem-restricted execution requires bubblewrap to isolate app-server sockets\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+  },
+  "ptraceDiagnostic": "strace could not trace under the same sandbox: PTRACE_TRACEME Operation not permitted; no syscall-level root cause established.",
+  "conclusion": "Native child-process output/exit assertions are unavailable under the tested policy. No network or filesystem restriction was relaxed. The application oracle outside this sandbox does not replace required actor checks."
+}

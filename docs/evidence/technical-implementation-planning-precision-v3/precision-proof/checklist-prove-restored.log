@@ -1,0 +1,13 @@
+✔ completed single-packet step checklist accepts its explicit packet link (0.678519ms)
+✔ unfinished single-packet step checklist is rejected (0.224505ms)
+✔ another packet link cannot attest this packet (0.079853ms)
+✔ ambiguous multi-packet step checklist is rejected (0.075124ms)
+✔ existing checked filename rows still support pending sibling packets (3.675547ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.554514

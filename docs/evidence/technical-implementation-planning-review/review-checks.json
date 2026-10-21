@@ -1,0 +1,65 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T17:31:26.408344+00:00",
+  "scope": "benchmark-review-remediation",
+  "checks": {
+    "focusedTests": {
+      "passed": 39,
+      "failed": 0
+    },
+    "fullTests": {
+      "command": "rtk npm test",
+      "passed": 1051,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "lint": 0,
+    "generateCheck": 0,
+    "validate": 0,
+    "historicalConsistency": {
+      "exitCode": 0,
+      "comparisonFindings": [
+        "required-prove-missing"
+      ]
+    },
+    "reviewReproductions": {
+      "reuseP1GatesForP2": "rejected",
+      "relabelBaselineSourceAsCandidate": "rejected"
+    }
+  },
+  "mutationProof": [
+    {
+      "guard": "source-binding",
+      "mutationExit": 1,
+      "expectedAssertionFailure": true
+    },
+    {
+      "guard": "raw-packet-gates",
+      "mutationExit": 1,
+      "expectedAssertionFailure": true
+    },
+    {
+      "restoredExit": 0,
+      "tests": 16
+    }
+  ],
+  "sourceDigests": {
+    "scripts/lib/captured-evidence.mjs": "7220f9a03de1959de2bf82b15768a58937db6b631ae2dfcf8885fea328a8d50a",
+    "scripts/verify-workflow-evidence.mjs": "faecc886cd8a6133af76ed1aa13bd3740026e0e3db49395b98c37add81d60130",
+    "tests/lib/workflow-evidence.mjs": "511ef6bf62c0286f8af476b082d6cb771732a7503d9149944a8f98ac345365bd",
+    "tests/captured-evidence.test.mjs": "452026156c7cf59b5df6634122032788ea432595107d945f1ccfee316d419142",
+    "tests/technical-agreement-evidence.test.mjs": "e836cb0b1da87ece05ae873b695374347227bd63c372cf294c024e8dcbc7ecce"
+  },
+  "remaining": [
+    "User decision on aggregate precision",
+    "Precision-dependent fixture/oracle correction",
+    "Fresh actual-model benchmark in the requested new GPT-6.1 Sol chat"
+  ],
+  "notes": [
+    "Old stdio-v2 captures and frozen workflow trees preserved.",
+    "Full test output retained in the ignored local review cache.",
+    "No real workflow YAML, global configuration, commits or publication changed."
+  ]
+}

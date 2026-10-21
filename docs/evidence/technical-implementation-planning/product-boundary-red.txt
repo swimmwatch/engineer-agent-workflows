@@ -1,0 +1,73 @@
+Warning: truncated output (original token count: 2567)
+Total output lines: 97
+
+✖ P16 keeps product task integration conditional and legacy-safe (4.760915ms)
+✔ P16 specification selects exact product context before local profile reads (5.151458ms)
+✔ P16 planning validates selected inputs without starting implementation (1.32428ms)
+✔ P16 incremental lifecycle pins, verifies and completes one packet (1.952776ms)
+✔ P16 treats selected product content as untrusted data (2.219918ms)
+✔ P16 relies on typed product task scenario tools (0.49546ms)
+✔ P16 packages the shared task protocol for both isolated hosts (7.546173ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 326.028289
+
+✖ failing tests:
+
+test at tests/product-task-integration.test.mjs:25:1
+✖ P16 keeps product task integration conditional and legacy-safe (4.760915ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /standalone/iu. Input:
+  
+  '---\n' +
+    'name: incremental-implementation\n' +
+    'description: "Implement exactly one authorized task packet per explicit invocation using test-first RED/GREEN/PROVE, verify it, update checklist and handoff, then stop."\n' +
+    'disable-model-invocation: true\n' +
+    'user-invocable: true\n' +
+    '---\n' +
+    '\n' +
+    '# Incremental Implementation\n' +
+    '\n' +
+    'Implement exactly one explicitly authorized packet.\n' +
+    'Model suggestion: {{HOST_IMPLEMENTATION_MODEL}}. Never switch or gate on model.\n' +
+    '\n' +
+    "1. Set `skill_dir` to this skill's absolute directory.\n" +
+    '   Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`\n' +
+    '   before any write or commit. If verification fails, return exactly:\n' +
+    '   `Install or update the complete matching engineer-agent-workflows bundle\n' +
+    '   for {{HOST_DISPLAY_NAME}} using the documented pinned global command, then\n' +
+    '   retry.` Stop without fetching, copying, approximating, or ignoring the manual.\n' +
+    '   Run `git rev-parse --is-inside-work-tree` separately in the packet directory;\n' +
+    '   require visible `true`. Otherwise checkpoint from packet/handoff and stop;\n' +
+    '   do not initialize Git or substitute snapshots.\n' +
+    '   Check tools and runner authority before bulk reads.\n' +
+    '2. Read `shared/references/yaml-contracts.md` fully in a separate call, not a batch.\n' +
+    '   Use scenario MCP. Read the current checklist, packet and handoff.\n' +
+    '   Before bulk reads or edits, call\n' +
+    '   `specification_check_state` with pinned inputs and `planning_packet_check`\n' +
+    '   with exact `agreement_ref` and `expected_proposal_digest`. Require valid\n' +
+    '   spec and ready agreement. Missing capability: stop.\n' +
+    '   Missing, stale or legacy agreement returns only the affected task to planning;\n' +
+    '   never synthesize agreement. For conflicts, failed checks or resume, read\n' +
+    '   `references/packet-recovery.md`.\n' +
+    '3. Read `shared/references/engineering-principles.md`,\n' +
+    "   `shared/references/test-discipline.md`, and the sibling planning skill's\n" +
+    '   `references/task-packets.md`. Use supplied guidance; read additional\n' +
+    '   `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from active context or itself in scope.\n' +
+    '   For product-linked tasks, read `shared/references/product-workflow.md`\n' +
+    '   and follow its Implementation role; otherwise skip product task tools.\n' +
+    '   Use scenario MCP for confirmed manifest, decisions, catalog and experience\n' +
+    '   YAML; never shell/file readers. Recheck Approved specification, linked requirements,\n' +
+    '   contracts, code, tests and evidence; do not reload every profile or entire spec.\n' +
+    '4. Inspect tracked, staged and untracked changes; no clean tree or commit is required.\n' +
+    '   Verify authority, prerequisites and prior work against handoff.\n' +
+    '   Inspect every staged diff. Missing review or commit is not a gate.\…567 tokens truncated…tion: true\nuser-invocable: true\n---\n\n# Incremental Implementation\n\nImplement exactly one explicitly authorized packet.\nModel suggestion: {{HOST_IMPLEMENTATION_MODEL}}. Never switch or gate on model.\n\n1. Set `skill_dir` to this skill\'s absolute directory.\n   Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`\n   before any write or commit. If verification fails, return exactly:\n   `Install or update the complete matching engineer-agent-workflows bundle\n   for {{HOST_DISPLAY_NAME}} using the documented pinned global command, then\n   retry.` Stop without fetching, copying, approximating, or ignoring the manual.\n   Run `git rev-parse --is-inside-work-tree` separately in the packet directory;\n   require visible `true`. Otherwise checkpoint from packet/handoff and stop;\n   do not initialize Git or substitute snapshots.\n   Check tools and runner authority before bulk reads.\n2. Read `shared/references/yaml-contracts.md` fully in a separate call, not a batch.\n   Use scenario MCP. Read the current checklist, packet and handoff.\n   Before bulk reads or edits, call\n   `specification_check_state` with pinned inputs and `planning_packet_check`\n   with exact `agreement_ref` and `expected_proposal_digest`. Require valid\n   spec and ready agreement. Missing capability: stop.\n   Missing, stale or legacy agreement returns only the affected task to planning;\n   never synthesize agreement. For conflicts, failed checks or resume, read\n   `references/packet-recovery.md`.\n3. Read `shared/references/engineering-principles.md`,\n   `shared/references/test-discipline.md`, and the sibling planning skill\'s\n   `references/task-packets.md`. Use supplied guidance; read additional\n   `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from active context or itself in scope.\n   For product-linked tasks, read `shared/references/product-workflow.md`\n   and follow its Implementation role; otherwise skip product task tools.\n   Use scenario MCP for confirmed manifest, decisions, catalog and experience\n   YAML; never shell/file readers. Recheck Approved specification, linked requirements,\n   contracts, code, tests and evidence; do not reload every profile or entire spec.\n4. Inspect tracked, staged and untracked changes; no clean tree or commit is required.\n   Verify authority, prerequisites and prior work against handoff.\n   Inspect every staged diff. Missing review or commit is not a gate.\n   No implied external authority.\n   In host planning mode, validate the existing plan and keep production unchanged; stop.\n   Preserve unrelated work; do not redesign architecture.\n5. In implementation mode, write the test or check before implementation, observe\n   RED, implement minimal correct GREEN, and apply PROVE when required.\n   Preserve contracts and repository rules. Run focused checks after each material\n   change and proportional final checks. When a correct check fails, correct implementation and repeat;\n   do not weaken tests to obtain green.\n   Failed/unavailable required checks leave the packet incomplete.\n   Ask unresolved decisions with `{{HOST_QUESTION_TOOL}}` per schema, in current mode;\n   do not enter plan mode solely to ask. If unavailable, ask directly; never invent answers.\n6. Compare the scoped diff with agreed technical commitments; record in handoff.\n   Private helpers are flexible; shared signature, ownership or\n   pattern changes return to planning; behavior changes to specification.\n   Recheck `specification_check_state` and\n   `planning_packet_check` with pinned inputs.\n   After every required check passes, mark only the current checklist item,\n   replace handoff with changes, evidence, limitations and next packet; stop.\n   Never launch another packet or review. Review is optional,\n   not a prerequisite for completion or the next invocation.\n   Make only explicitly authorized commits.\n',
+    expected: /standalone/iu,
+    operator: 'match',
+    diff: 'simple'
+  }
+

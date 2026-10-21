@@ -1,0 +1,614 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T19:43:20.200Z",
+  "status": "passed",
+  "contexts": 43,
+  "independentReviews": 13,
+  "allSessionIdsUnique": true,
+  "actualModel": "gpt-6.1-sol",
+  "requestedEffort": "medium",
+  "entries": [
+    {
+      "folder": "matrix/b1-baseline-precision-v3-1",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15f94-4666-7ac2-9494-7c4a66d36fda",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-1/planning.jsonl",
+        "digest": "402dd462ffe2061ec4e249cfc0b0ae94ccf5c54026607385fb33593a596a8045"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-1",
+      "document": "implementation-01_shared-validation-and-validate.md",
+      "role": "implementation",
+      "sessionId": "01a15f97-489a-7fb2-85b7-9fc40428253d",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-1/implementation-01_shared-validation-and-validate.md.jsonl",
+        "digest": "8cff7f953014cd8cfa35c789f7958f50f75e041d2040f601d1d9179e66498589"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-1",
+      "document": "implementation-02_summarize.md",
+      "role": "implementation",
+      "sessionId": "01a15f99-c7e8-7200-8114-a34ecd0a2e6d",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-1/implementation-02_summarize.md.jsonl",
+        "digest": "3b9935c3ba8a10353f23b2fa52a1b79a01f565a4103e2a91af60b9458c85e66f"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-1",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fcb-b3e7-7df1-a549-7a1b9c9fe671",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-1/evaluation.jsonl",
+        "digest": "4a106535b9e041755b1e4bfe758f0ca0323cf1600cd13054bea362ba704c587b"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-1",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15f9b-f32c-7830-9503-3970ed310e8d",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-1/planning.jsonl",
+        "digest": "383545b569d81bb0ef01d38d40aa60b5ce3f57f08f373cc33fbcc75f7bdf6271"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-1",
+      "document": "implementation-01_validate.md",
+      "role": "implementation",
+      "sessionId": "01a15f9e-e059-7992-b4fe-eb8bd556c4b2",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-1/implementation-01_validate.md.jsonl",
+        "digest": "874a57624069798079d80b23f1927364cbe558fd17b109f7e9207f47ceca17d2"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-1",
+      "document": "implementation-02_summarize.md",
+      "role": "implementation",
+      "sessionId": "01a15fa1-1963-78a3-92e8-186de1b5a0fc",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-1/implementation-02_summarize.md.jsonl",
+        "digest": "57d8c35cee1293f1fd83fef403fe6caa0c4698ae63fb35cbb18e5ce65ca2ffaf"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-1",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fcb-b3c1-7cf1-874f-4e7efd0194c9",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-1/evaluation.jsonl",
+        "digest": "a2635920ef51636957be09bd80cab52a7b2d42864a34fa57c66a18ee1ef23589"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-1",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fa3-79d3-7d93-8af4-ab36026db4e3",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-1/planning.jsonl",
+        "digest": "f7dba9b880f6a38f36a9d2ac9994c3fcbf49a29562c3978084b2fffb4023fa95"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-1",
+      "document": "implementation-01_timeout-range.md",
+      "role": "implementation",
+      "sessionId": "01a15fa6-552e-75e2-b70d-ad86fc4307f5",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-1/implementation-01_timeout-range.md.jsonl",
+        "digest": "8254142976eafa80d78359e94187690deb34ba5d71d057476f93adce5c292ba0"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-1",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fcf-1eb7-73e0-a971-86cc43853b16",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-1/evaluation.jsonl",
+        "digest": "fdaa32862dbec71e5ef92cda1c5d06c02cb51b1427ba69571fe8ee5d29cd10e5"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-1",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fa8-3ef2-7070-b737-732f89676672",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-1/planning.jsonl",
+        "digest": "34bf9a392d4bc1a6a7a137da0f1837e158b2a069d8e17500b9021b31e13db7c3"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-1",
+      "document": "implementation-01_timeout-range.md",
+      "role": "implementation",
+      "sessionId": "01a15faa-8019-76c2-bc10-2bee58618f74",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-1/implementation-01_timeout-range.md.jsonl",
+        "digest": "68d0ad5a288e7b3b0bf5ce044c3fdf5ebf69ac31f0350d566fa04cb26ba0aa99"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-1",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd1-f1cd-7c51-b8f6-27394699a175",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-1/evaluation.jsonl",
+        "digest": "60ce422736931a90f374913cffcbff010da227cafbcedaff0da7dae11cc7b868"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-2",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fac-8660-7f43-91a3-9416770f29ad",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-2/planning.jsonl",
+        "digest": "39828cde52ae137a9f2cc88eb9aaa14f934e93096d979cbe069de16db0cf217f"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-2",
+      "document": "implementation-01_validate.md",
+      "role": "implementation",
+      "sessionId": "01a15fb0-0922-7a02-bcfa-7d3c24b22e42",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-2/implementation-01_validate.md.jsonl",
+        "digest": "ea1886d469773bb5ed10d94eae2943e830eaa69d31bf5ff1a8c34b78e1e1e6cb"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-2",
+      "document": "implementation-02_summarize.md",
+      "role": "implementation",
+      "sessionId": "01a15fb2-2f4a-7261-9bdc-6972d069f7e5",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-2/implementation-02_summarize.md.jsonl",
+        "digest": "ab242e87654f78bfaaef8affcf582c0839d2fdeebb4028609988c8b27b6acbae"
+      }
+    },
+    {
+      "folder": "matrix/b1-candidate-precision-v3-2",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd5-2c3f-78a1-99f7-55a3b1ae07c8",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b1-candidate-precision-v3-2/evaluation.jsonl",
+        "digest": "401ed7c2f0aa32210c1458688eda03d04308313699a11c293c8f3fc6fba14a9c"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-2",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fb4-49fc-7bc2-bb3c-04d0e6dc3848",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-2/planning.jsonl",
+        "digest": "f093b2627877cad7cb3213233a22f4b347f32d1e485f64b01e8ee94821961433"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-2",
+      "document": "implementation-01_shared-validation-and-validate.md",
+      "role": "implementation",
+      "sessionId": "01a15fb7-85b5-7f52-a4e9-6ad16f8e0bf3",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-2/implementation-01_shared-validation-and-validate.md.jsonl",
+        "digest": "eec2e0d142c747c7e4e335d4c6d6e31bab3bf79a019c5651819f48f76ab85a36"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-2",
+      "document": "implementation-02_summarize.md",
+      "role": "implementation",
+      "sessionId": "01a15fb9-f7c8-7741-a6c5-38d37c98ef75",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-2/implementation-02_summarize.md.jsonl",
+        "digest": "577b118242887178409e76f6c62ab2eed5bd32a15f75beef4b5790877b1f9330"
+      }
+    },
+    {
+      "folder": "matrix/b1-baseline-precision-v3-2",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd5-60b1-7d41-ab23-14c12ed722fb",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b1-baseline-precision-v3-2/evaluation.jsonl",
+        "digest": "15d4d8f8a39d2836307ac91584c4bc9caca94c6c6ffb165ed9559f19450575a2"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-2",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fbb-be3d-7b31-833b-38ccb265016d",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-2/planning.jsonl",
+        "digest": "4ccd7a69a2cf33358b7bc1b7a437e50f40c0c0444ab90d8fcd05de79ac08a1f5"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-2",
+      "document": "implementation-01_timeout-range.md",
+      "role": "implementation",
+      "sessionId": "01a15fbd-f4dc-7431-8d3e-0262fce04978",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-2/implementation-01_timeout-range.md.jsonl",
+        "digest": "48f5fd0f992723d159a12c4a32c044be8628c1d2cab5e4e14738eb0ec3f1e7d6"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-2",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd8-653f-7282-ac55-03a4b1a824bf",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-2/evaluation.jsonl",
+        "digest": "1529c3ea24c6aaeb742ae970c95f80dea3a1ccaeda850abf9024ea96a0fc36c2"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-2",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fbf-f011-7c20-9581-4b7bd5d19bac",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-2/planning.jsonl",
+        "digest": "b963d2b8e1a61968b3eccfcfdaf72d7bc2644e625d9efc4e84ae8bcf7145e295"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-2",
+      "document": "implementation-01_timeout-range.md",
+      "role": "implementation",
+      "sessionId": "01a15fc2-3305-7083-b575-bdeb99aac0b8",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-2/implementation-01_timeout-range.md.jsonl",
+        "digest": "777c4c872d46501600a66fb9edf9fb523f66afefe3b9010d062ac9112c88226c"
+      }
+    },
+    {
+      "folder": "matrix/b2-candidate-precision-v3-2",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd8-653e-74c2-8107-e4c069f4d455",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b2-candidate-precision-v3-2/evaluation.jsonl",
+        "digest": "36386fd3c02d883ea5c0dd8a09efc35b3b1c826f1c2394617aba9c3c681b42ca"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-checklist-r1-1",
+      "document": "planning",
+      "role": "planning",
+      "sessionId": "01a15fc6-3248-7cc2-9bca-3599c72dd8fb",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/planning.jsonl",
+        "digest": "3030089c9c80fffcca74b240da1635e5ac58b401b0cdf9b9704b7794a3c80f32"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-checklist-r1-1",
+      "document": "implementation-01_timeout-range.md",
+      "role": "implementation",
+      "sessionId": "01a15fc7-e77b-78a0-ba99-f41dbbda71e0",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/implementation-01_timeout-range.md.jsonl",
+        "digest": "8c1cf57c3ce080c243b5ba7fbcd1e80f4fcee4681394d6ce6e6adb763e44cd77"
+      }
+    },
+    {
+      "folder": "matrix/b2-baseline-precision-v3-checklist-r1-1",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd8-653e-71f2-ae90-cdf59adecfc4",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "matrix/b2-baseline-precision-v3-checklist-r1-1/evaluation.jsonl",
+        "digest": "04f2628ef509f35e7980fd76594bd2e4751bfaf5dcd92eaab78cf10725263d26"
+      }
+    },
+    {
+      "folder": "focused/q3-partial-resume",
+      "document": "planning-dismissed",
+      "role": "planning",
+      "sessionId": "01a15fcd-dadd-7f42-8817-355eacb95c38",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q3-partial-resume/planning-dismissed.jsonl",
+        "digest": "f6ac4d920655ec6aa52c24d898755d1a85e21f2359dcb6b94b9df947de6ffb4e"
+      }
+    },
+    {
+      "folder": "focused/q3-partial-resume",
+      "document": "planning-partial",
+      "role": "planning",
+      "sessionId": "01a15fcb-ed75-7623-8def-3bb7f13fffde",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q3-partial-resume/planning-partial.jsonl",
+        "digest": "270ad0b8a32ebf41d02b0a423834e449e9a7801715d2537f9a0ba7487fe28c2f"
+      }
+    },
+    {
+      "folder": "focused/q3-partial-resume",
+      "document": "planning-resume",
+      "role": "planning",
+      "sessionId": "01a15fd0-3d72-7df0-a31b-bb9e56ab96a1",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q3-partial-resume/planning-resume.jsonl",
+        "digest": "b10c28e3d23b07273eb7946012a00a9f0f3734c48ccaaa4e9288248d92249409"
+      }
+    },
+    {
+      "folder": "focused/q3-partial-resume",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd5-2c3c-7f43-a4cd-b1e565ad9afa",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "focused/q3-partial-resume/evaluation.jsonl",
+        "digest": "b5fc329ea8878b001b44774bde7061900696d2ddc390ade8ac7e8e6cb34d6fab"
+      }
+    },
+    {
+      "folder": "focused/q4-shared-drift",
+      "document": "planning-audit",
+      "role": "planning",
+      "sessionId": "01a15fd2-34c4-7b11-b7ae-d5d6a3bf952f",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q4-shared-drift/planning-audit.jsonl",
+        "digest": "5c29147fc8a057183a5e4361551b691615c5518cf978d7a00fbd7820bcb10671"
+      }
+    },
+    {
+      "folder": "focused/q4-shared-drift",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd8-9a5c-70a3-82cb-a905cb00e9f4",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "focused/q4-shared-drift/evaluation.jsonl",
+        "digest": "4d2618aa460a57059568b212b84d2b13df0218b0dc64c551cbd009e55fa2cc04"
+      }
+    },
+    {
+      "folder": "focused/q5-execution-boundaries",
+      "document": "implementation-legacy",
+      "role": "implementation",
+      "sessionId": "01a15fcb-b93b-7642-b1c6-b535aa2168b5",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q5-execution-boundaries/implementation-legacy.jsonl",
+        "digest": "1ecce3297917f62e2fcefbbdf87496ecb1124ff8abe745ff7e2e159519ce9a2d"
+      }
+    },
+    {
+      "folder": "focused/q5-execution-boundaries",
+      "document": "implementation-material-change",
+      "role": "implementation",
+      "sessionId": "01a15fce-3d06-7771-8dde-cb1e8f1e488a",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q5-execution-boundaries/implementation-material-change.jsonl",
+        "digest": "38d64bf880b9441002121eaccff05c9d84dd59043aa82a21a0d83af139c0ccce"
+      }
+    },
+    {
+      "folder": "focused/q5-execution-boundaries",
+      "document": "implementation-private-helper",
+      "role": "implementation",
+      "sessionId": "01a15fcc-3606-72d2-a007-949f326dc208",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q5-execution-boundaries/implementation-private-helper.jsonl",
+        "digest": "04a3a3abc27fca2fe32a881c0eb04075a92d8346fa80405044464d4274f68fa3"
+      }
+    },
+    {
+      "folder": "focused/q5-execution-boundaries",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fd1-f1cc-7da0-8e88-f4191e0d28f6",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "focused/q5-execution-boundaries/evaluation.jsonl",
+        "digest": "325fff629d640dd4dfea1ba6897471cc7585483370c265d292b2ec202371e8aa"
+      }
+    },
+    {
+      "folder": "focused/q6-behavior-routing",
+      "document": "planning-behavior-request",
+      "role": "planning",
+      "sessionId": "01a15fd5-3feb-7130-abe1-2162f12cac41",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "workspaceWrite",
+      "rawCapture": {
+        "ref": "focused/q6-behavior-routing/planning-behavior-request.jsonl",
+        "digest": "eeff81c8a87e0737f6fc215cc7c55228b04d939b13ee4c50c70dc23b700b0d0d"
+      }
+    },
+    {
+      "folder": "focused/q6-behavior-routing",
+      "document": "evaluation",
+      "role": "review",
+      "sessionId": "01a15fdc-2d7e-7a63-b43a-c85766abc3eb",
+      "actualModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "ephemeral": true,
+      "sandbox": "readOnly",
+      "rawCapture": {
+        "ref": "focused/q6-behavior-routing/evaluation.jsonl",
+        "digest": "730ceb342dc58968a5769a0f918753c4687bd30fa35462b5f9260f35253cf780"
+      }
+    }
+  ]
+}

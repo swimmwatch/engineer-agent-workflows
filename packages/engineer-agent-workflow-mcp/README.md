@@ -1,7 +1,8 @@
 # engineer-agent-workflow-mcp
 
 A local stdio MCP server with scenario-specific tools for scope confirmation,
-interviews, decisions, shared design components, screen behavior and stage checks.
+interviews, technical task agreements, shared design components, screen behavior
+and stage checks.
 It is a separate TypeScript/npm artifact from the Codex and Claude skill bundles.
 Building or packing never installs, registers, commits or publishes anything.
 The [product workflow guide](../../docs/product-workflows.md) explains the
@@ -96,6 +97,9 @@ current client; do not hard-code a generated namespace.
   `decisions_catalog/overview/search/get` remain read-only compatibility tools.
 - Source capture: `decision_record_instruction`, `decision_mark_context`.
 - Exact requirements: `requirement_list`, `requirement_get`.
+- Technical planning: `planning_question_prepare`,
+  `planning_question_record_answer`, `planning_question_record_no_answer`,
+  `planning_decision_find`, `planning_decision_get`, `planning_packet_check`.
 - Completeness: `specification_review_start/status/get/record/complete`. These register
   a separate checker's source, requirement and active-profile judgments; they
   do not launch models or authenticate correctness or independence.
@@ -149,6 +153,186 @@ reopen, inspect the referenced state and reconcile the intended addition before
 retrying; never repeat a write blindly. Repeating start for the same unchanged
 unfinished review is a no-op; use read-only `specification_review_status` for
 observation.
+
+## Technical planning to one-packet implementation
+
+Planning presents concrete implementation choices before asking the user. Every
+task needs explicit coverage by an answer; a small named group may share a
+question. Implementation follows those significant units and contracts after
+its own separate invocation. A `ready` result is a freshness check, not execution
+permission or proof that the implementation follows the agreed architecture.
+
+The authoritative state-access and version rules are in
+[Workflow YAML Contracts](../../shared/references/yaml-contracts.md#technical-agreement-freshness).
+Technical history lives in the journal's managed `planning_decisions` section;
+existing unclassified specification decisions retain their original meaning.
+Technical writes change the opaque `context` because journal bytes change, while
+an unchanged behavioral specification keeps its reviewed `source_version`,
+`specification_version` and `review_ref`. Always use the latest returned context.
+
+Check the serving connection's `tools/list` for all six `planning_*` scenarios
+and their input schemas. `workflow_runtime_info` identifies the loaded build;
+a package version or a rebuilt file alone does not establish capability.
+Missing tools block dependent work. A separately authorized runtime refresh and
+client reconnect must be followed by discovery on that connection. Do not route
+technical answers through `question_record_answer`, hand-edit the journal or
+create a second state file to work around an older runtime.
+
+### Worked group and partial answer
+
+These JavaScript fragments use a connected standard MCP SDK `client` and an
+absolute `project` path. The example specification `planning` is already
+Approved/reviewed and contains `PLAN-001`. Its task files expose these exact,
+unique headings: `tasks/shared.md` has `Shared`; `tasks/p1.md`, `tasks/p2.md` and
+`tasks/independent.md` each have `Technical proposal`. P1 parses validated records,
+P2 summarizes them, and the independent packet updates configuration. Each
+proposal includes every binding source; P1/P2 share the same architectural
+section. Files must be Markdown below this specification's `tasks/` directory.
+
+```js
+// technical-prepare
+let context;
+async function call(name, args = {}) {
+  const response = await client.callTool({
+    name,
+    arguments: { ...(context ? { context } : {}), ...args },
+  });
+  if (response.isError)
+    throw new Error(JSON.stringify(response.structuredContent.error));
+  context = response.structuredContent.context ?? context;
+  return response.structuredContent.result;
+}
+await call("specification_open", { project, specification: "planning" });
+const openedContext = context;
+const state = await call("specification_check_state");
+if (
+  state.status !== "pass" ||
+  state.document_status !== "approved" ||
+  state.coverage_status !== "reviewed"
+) {
+  throw new Error("Current Approved/reviewed specification required");
+}
+const base = "docs/specs/planning/tasks";
+const prepared = await call("planning_question_prepare", {
+  expected_source_version: state.source_version,
+  text: "Accept the presented p1, p2 and independent proposals? Name accepted proposals; others remain pending.",
+  kind: "free_text",
+  proposals: ["p1", "p2", "independent"].map((id) => ({
+    id,
+    packet_id: id,
+    requirement_ids: ["PLAN-001"],
+    sources: [
+      ...(id === "independent"
+        ? []
+        : [{ path: `${base}/shared.md`, heading: "Shared" }]),
+      { path: `${base}/${id}.md`, heading: "Technical proposal" },
+    ],
+  })),
+});
+```
+
+Ask the prepared question with the host's callable native question tool. The
+next fragment assumes the actual unambiguous answer accepts **p1 only**.
+`nativeAnswerText` is that exact answer and `nativeAnswerSource` identifies its
+actual native exchange. They are external inputs, never agent-generated consent.
+For choice questions, provide `options` and `option_bindings`; recorded
+`selected_ids` must match those saved bindings. For a custom/free-text answer,
+name only the proposals explicitly accepted by its meaning.
+
+```js
+// technical-partial-answer
+const first = await call("planning_question_record_answer", {
+  question_ref: prepared.question_ref,
+  text: nativeAnswerText,
+  source: nativeAnswerSource,
+  accepted_proposal_ids: ["p1"],
+});
+const binding = first.agreements.find((value) => value.packet_id === "p1");
+const ready = await call("planning_packet_check", {
+  packet_id: binding.packet_id,
+  agreement_ref: binding.agreement_ref,
+  expected_proposal_digest: binding.proposal_digest,
+});
+const pending = await call("planning_packet_check", { packet_id: "p2" });
+const after = await call("specification_check_state", {
+  expected_source_version: state.source_version,
+});
+```
+
+Here `ready.status` is `ready`, `pending.status` is `needs_agreement`, and
+`first.unresolved_packet_ids` names p2 and independent. Save each returned
+`agreement_ref` and `proposal_digest` in its packet. Do not substitute the
+question reference for an agreement reference or reconstruct either digest.
+
+On resumption, use `planning_decision_find` with `packet_id` to discover current
+`decision_ref` values, then `planning_decision_get` with that exact reference.
+Concatenate every `text` portion using `next_cursor` before interpreting the
+record. History reads are optional; current saved answers need not be asked
+again. In this uninterrupted example `first.question_ref` is already the current
+revision. The next actual answer accepts p2 and independent:
+
+```js
+// technical-resume
+const resumed = await call("planning_question_record_answer", {
+  question_ref: first.question_ref,
+  text: resumedAnswerText,
+  source: resumedAnswerSource,
+  accepted_proposal_ids: ["p2", "independent"],
+});
+```
+
+This retains p1's original agreement while adding the two new bindings. An
+actual non-answer uses `planning_question_record_no_answer` with `question_ref`
+and its real `outcome` (for example, `dismissed`); it creates no agreement. An
+already answered revision cannot be replaced with a non-answer. Preserve its
+accepted bindings while preparing any necessary continuation for unresolved
+proposals. A selected empty option binding rejects the question's proposals;
+an unambiguous custom rejection uses `rejected_proposal_ids`. Rejection revokes
+the affected binding without erasing history.
+
+### Drift and recovery
+
+Implementation checks the exact saved binding before dependent reads/edits and
+again before completion, together with the pinned specification check. It also
+compares the actual diff with the packet's technical commitments. Minor private
+helpers within the agreed boundary are local choices; changed shared signatures,
+ownership or approach return to separately authorized planning. Product behavior,
+scope or acceptance changes return to specification, even if labeled technical.
+
+If planning changes `Shared`, the following calls return `stale` for p1/p2 and
+`ready` for independent. An unrelated progress/handoff edit outside all bound
+sections does not change those agreements.
+
+```js
+// technical-drift-check
+const statuses = {};
+for (const agreement of resumed.agreements) {
+  const checked = await call("planning_packet_check", {
+    packet_id: agreement.packet_id,
+    agreement_ref: agreement.agreement_ref,
+    expected_proposal_digest: agreement.proposal_digest,
+  });
+  statuses[agreement.packet_id] = checked.status;
+}
+```
+
+For a material technical revision, planning updates the affected proposal
+sections and calls `planning_question_prepare` with the exact current `revises`
+reference. It presents the changed commitments and obtains a new explicit
+answer before replacing affected packet bindings. Unchanged agreements can be
+retained; an old answer cannot accept changed sources. `needs_agreement` requires
+planning input; `stale` requires reconciliation of changed inputs; `blocked`
+requires resolving the returned specification/source issue. Malformed or foreign
+references use the normal structured error contract instead of a readiness state.
+A legacy packet without a binding returns `needs_agreement`; supplement only
+that affected task through planning. `legacy_unverified` describes specification
+review assurance and does not waive technical agreement or execution permission.
+
+Stable implementation entry points are `planningTools`, `readProposalSources`
+and `checkPlanningPacket` in `src/planning.ts`; public schemas come from
+`tools/list` and the built `dist/tool-contracts.json`. These checks establish
+record/source identity and freshness. They cannot authenticate a human answer,
+prove semantic conformance or authorize implementation, installation or release.
 
 ## Persistence and limits
 

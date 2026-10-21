@@ -1,0 +1,18 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T15:16:49.730Z",
+  "sources": [
+    {
+      "variant": "baseline",
+      "sourceDigest": "8012e813b1ee865b2eecddd9154fcd686db637fcbc7fe3f5ebe4971314c6d772",
+      "fileCount": 569,
+      "changed": []
+    },
+    {
+      "variant": "candidate-r3",
+      "sourceDigest": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+      "fileCount": 575,
+      "changed": []
+    }
+  ]
+}

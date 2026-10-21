@@ -1,0 +1,10 @@
+{
+  "classification": "ACTUAL",
+  "scope": "User-approved explicit incomplete-baseline comparison support; candidate and other required checks remain strict.",
+  "red": {"command": "rtk proxy node --test tests/technical-agreement-evidence.test.mjs", "exitCode": 1, "tests": 11, "passed": 8, "failed": 3},
+  "green": {"command": "rtk proxy node --test tests/technical-agreement-evidence.test.mjs tests/workflow-evidence.test.mjs", "exitCode": 0, "tests": 30, "passed": 30},
+  "prove": {"mutation": "Remove only the baseline variant restriction from incomplete-comparison eligibility.", "command": "rtk proxy node --test --test-name-pattern='negative baseline accounting' tests/technical-agreement-evidence.test.mjs", "exitCode": 1, "expectedFailure": "Candidate misuse must be rejected; the test fails when that restriction is removed."},
+  "restoredGreen": {"command": "rtk proxy node --test tests/technical-agreement-evidence.test.mjs tests/workflow-evidence.test.mjs", "exitCode": 0, "tests": 30, "passed": 30},
+  "additionalBoundary": "A null comparison outcome first exposed a TypeError. Optional reference reads now produce the required comparison-outcome-invalid finding; null and string cases remain in the discriminating test.",
+  "realEvidenceCheck": {"exitCode": 0, "findingCount": 0, "comparisonFindingCount": 1, "baselineCountedAsSuccess": false, "behaviorCertified": false}
+}

@@ -1,0 +1,8 @@
+$SOURCE_ROOT/.cache/technical-implementation-planning-precision-v3/assemble-preflight-failed.mjs:22
+const production=p=>!p.startsWith('docs/')&&!p.startsWith('.')&&!/(?:^|\\/)(?:test(?:-process)?\\.mjs|.*\\.test\\.mjs|unrelated\\.txt)$/.test(p);
+                                                                 ^^^^^^^^^
+
+SyntaxError: Invalid regular expression: /(?:^|\\/: Unterminated group
+    at checkSyntax (node:internal/main/check_syntax:72:5)
+
+Node.js v24.20.0

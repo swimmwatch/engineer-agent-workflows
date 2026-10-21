@@ -130,7 +130,7 @@ function verifyProvenance(
   }
 }
 
-function verifyStageActors(run, selectedRoles, add) {
+function verifyStageActors(run, selectedRoles, add, scenario) {
   const actors = run.stageActors ?? {};
   const sessions = new Set();
   const actorIds = new Set();
@@ -144,9 +144,10 @@ function verifyStageActors(run, selectedRoles, add) {
         add("stage-actor-missing", `Stage ${stage} lacks actor and session provenance.`, run);
         continue;
       }
-      if (actor.actualModel !== selectedRoles?.[stage]) {
+      const frozenSetup = stage === "specification" && scenario?.specificationInput === "frozen-approved";
+      if (frozenSetup ? actor.kind !== "fixture-setup" || actor.actualModel !== null : actor.actualModel !== selectedRoles?.[stage]) {
         add(
-          "stage-model-mismatch",
+          frozenSetup ? "frozen-specification-invalid" : "stage-model-mismatch",
           `Stage ${stage} model does not match its selected host role.`,
           run,
         );
@@ -162,6 +163,169 @@ function verifyStageActors(run, selectedRoles, add) {
       actorIds.add(actor.actorId);
     }
   }
+}
+
+function intervalDuration(intervals) {
+  let total = 0, end = -Infinity;
+  for (const [start, next] of intervals.sort((a, b) => a[0] - b[0])) {
+    total += Math.max(0, next - Math.max(start, end));
+    end = Math.max(end, next);
+  }
+  return total;
+}
+
+function verifyTechnicalBenchmark(run, scenario, evidence, add, allowSynthetic, verifySyntheticReferences, capturedDocuments) {
+  const timing = run.benchmark ?? {}, phases = timing.phases ?? [], questions = run.nativeQuestions ?? [];
+  const finite = value => typeof value === "number" && Number.isFinite(value);
+  const close = (a, b) => finite(a) && finite(b) && Math.abs(a - b) <= 0.01;
+  let timingValid = timing.clock === "monotonic-ms" && [timing.startMs, timing.endMs, timing.setupMs].every(finite)
+    && timing.endMs >= timing.startMs && timing.setupMs >= 0 && phases.length > 0;
+  let prior = timing.startMs, phaseMs = 0;
+  for (const phase of phases) {
+    timingValid &&= [phase.startMs, phase.endMs].every(finite) && phase.startMs >= prior && phase.endMs >= phase.startMs
+      && phase.endMs <= timing.endMs && !!phase.sessionId && ["planning", "implementation", "verification"].includes(phase.stage);
+    phaseMs += phase.endMs - phase.startMs;
+    prior = phase.endMs;
+  }
+  timingValid &&= phases[0]?.startMs === timing.startMs && phases.at(-1)?.endMs === timing.endMs
+    && phases.filter(x => x.stage === "planning").length === 1
+    && phases.filter(x => x.stage === "implementation").length === scenario.requiredPacketCount
+    && phases.filter(x => x.stage === "verification").length >= 1;
+  const waits = [], blocked = [];
+  for (const question of questions) {
+    timingValid &&= finite(question.askedAtMs) && finite(question.answeredAtMs) && question.answeredAtMs >= question.askedAtMs
+      && phases.some(p => p.startMs <= question.askedAtMs && p.endMs >= question.answeredAtMs);
+    waits.push([question.askedAtMs, question.answeredAtMs]);
+    if (question.blocking === true) blocked.push([question.askedAtMs, question.answeredAtMs]);
+  }
+  const blockedMs = intervalDuration(blocked), respondentMs = intervalDuration(waits);
+  timingValid &&= close(timing.elapsedMs, timing.endMs - timing.startMs) && close(timing.blockingRespondentMs, blockedMs)
+    && close(timing.respondentMs, respondentMs) && close(timing.activeMs, phaseMs - blockedMs)
+    && close(timing.orchestrationMs, timing.elapsedMs - phaseMs) && timing.orchestrationMs >= 0;
+  if (!timingValid) add("technical-timing-invalid", "Benchmark intervals or derived durations are missing, overlapping or inconsistent.", run);
+
+  if (scenario.specificationInput === "frozen-approved") {
+    const input = run.specificationSetup;
+    if (!input || input.kind !== "frozen-approved" || input.status !== "approved" || !DIGEST_PATTERN.test(input.digest ?? "")
+      || !DIGEST_PATTERN.test(input.sourceVersion ?? "") || !DIGEST_PATTERN.test(input.specificationVersion ?? "") || !input.reviewRef) {
+      add("frozen-specification-invalid", "Frozen Approved input requires exact reviewed setup evidence, without a fabricated specification model.", run);
+    } else verifyReference(input.ref, input.digest, evidence, run, add, allowSynthetic, verifySyntheticReferences);
+  }
+  if (run.workflowSource?.variant !== scenario.variant || !DIGEST_PATTERN.test(run.workflowSource?.digest ?? "")) {
+    add("technical-source-invalid", "The captured workflow source must identify this run's frozen baseline or candidate variant.", run);
+  } else verifyReference(run.workflowSource.ref, run.workflowSource.digest, evidence, run, add, allowSynthetic, verifySyntheticReferences);
+
+  if (capturedDocuments) {
+    verifyCapturedTechnicalBenchmark(run, scenario, evidence, capturedDocuments, add);
+  } else if (!(allowSynthetic && run.provenance?.classification === "SYNTHETIC")) {
+    add("technical-capture-missing", "Technical reports require hash-verified source manifests and raw invocation documents.", run);
+  }
+
+  if (!scenario.requireTechnicalAgreement) return;
+  const agreements = run.technicalAgreements ?? [];
+  const events = indexEvents(run.events);
+  const declared = events.filter(event => event.type === "packet_declared").map(event => event.packetId);
+  let valid = agreements.length === scenario.requiredPacketCount && sameMembers(agreements.map(x => x.packetId), declared);
+  for (const agreement of agreements) {
+    const starts = events.filter(event => event.type === "packet_started" && event.packetId === agreement.packetId);
+    const phase = phases.find(value => value.stage === "implementation" && value.sessionId === starts[0]?.sessionId);
+    const writes = events.filter(event => event.type === "artifact_write" && event.target === "production" && event.packetId === agreement.packetId);
+    const question = questions.find(x => x.requestId === agreement.requestId);
+    valid &&= starts.length === 1 && !!phase && writes.length > 0
+      && writes.every(write => finite(write.atMs) && write.atMs >= phase.startMs && write.atMs <= phase.endMs)
+      && agreement.firstWriteAtMs === Math.min(...writes.map(write => write.atMs))
+      && agreement.lastWriteAtMs === Math.max(...writes.map(write => write.atMs))
+      && question?.explicit === true && question.outcome === "answered" && question.answeredAtMs <= agreement.entry?.atMs
+      && DIGEST_PATTERN.test(agreement.proposalDigest ?? "") && !!agreement.agreementRef?.id
+      && Number.isInteger(agreement.agreementRef?.revision) && agreement.agreementRef.revision > 0
+      && finite(agreement.firstWriteAtMs) && finite(agreement.lastWriteAtMs) && agreement.lastWriteAtMs >= agreement.firstWriteAtMs;
+    for (const [name, gate] of [["entry", agreement.entry], ["exit", agreement.exit]]) {
+      valid &&= gate?.status === "ready" && gate.observedBy === "actor" && finite(gate.atMs)
+        && gate.atMs >= phase.startMs && gate.atMs <= phase.endMs
+        && gate.proposalDigest === agreement.proposalDigest && JSON.stringify(gate.agreementRef) === JSON.stringify(agreement.agreementRef)
+        && (name === "entry" ? gate.atMs < agreement.firstWriteAtMs : gate.atMs > agreement.lastWriteAtMs);
+    }
+  }
+  if (!valid) add("technical-agreement-invalid", "Candidate packets require explicit native answers and matching actor readiness checks before and after production writes.", run);
+}
+
+function verifyCapturedTechnicalBenchmark(run, scenario, evidence, documents, add) {
+  // Documents are supplied only after the CLI verifies their captured bytes.
+  const captured = reference => {
+    if (!reference?.ref || !DIGEST_PATTERN.test(reference.digest ?? "")) return undefined;
+    const artifact = (evidence.artifacts ?? []).find(value => value.ref === reference?.ref);
+    return artifact && artifact.digest === reference.digest ? documents.get(reference.ref) : undefined;
+  };
+  const bundle = captured({ ref: run.provenance?.bundleRef, digest: run.provenance?.bundleDigest });
+  const source = run.workflowSource;
+  const expected = bundle?.sources?.[scenario.variant];
+  const identity = bundle?.sourceIdentities?.[scenario.variant];
+  const manifest = captured(source);
+  const frozen = captured(bundle?.frozenInput);
+  const results = (run.provenance?.sourceRefs ?? []).map(captured)
+    .filter(value => value?.id === run.runId && Array.isArray(value.stages));
+  const result = results.length === 1 ? results[0] : undefined;
+  if (bundle?.kind !== "immutable-comparison-input-manifest" || !expected || !source
+    || source.ref !== expected.ref || source.digest !== expected.digest
+    || !DIGEST_PATTERN.test(identity ?? "") || source.sourceIdentity !== identity
+    || manifest?.sourceDigest !== identity || manifest?.variant !== scenario.variant
+    || frozen?.sourceDigests?.[scenario.variant] !== identity
+    || result?.variant !== scenario.variant || result?.workflowSourceDigest !== identity) {
+    add("technical-source-invalid", "The run, captured source and frozen variant binding must identify the same workflow bytes.", run);
+  }
+  if (!scenario.requireTechnicalAgreement) return;
+
+  const sameAgreement = (left, right) => !!left && !!right && left.id === right.id && left.revision === right.revision;
+  const events = indexEvents(run.events);
+  let valid = !!result;
+  for (const agreement of run.technicalAgreements ?? []) {
+    const start = events.find(event => event.type === "packet_started" && event.packetId === agreement.packetId);
+    const stages = (result?.stages ?? []).filter(stage => stage.stage === "implementation" && stage.sessionId === start?.sessionId);
+    const stage = stages.length === 1 ? stages[0] : undefined;
+    const questions = (result?.stages ?? []).filter(value => value.stage === "planning")
+      .flatMap(value => value.nativeQuestions ?? []).filter(value => value.requestId === agreement.requestId);
+    const question = (run.nativeQuestions ?? []).find(value => value.requestId === agreement.requestId);
+    const rawQuestion = questions[0];
+    valid &&= !!stage && questions.length === 1 && !!question && rawQuestion.explicit === true
+      && rawQuestion.outcome === "answered" && rawQuestion.askedAtMs === question.askedAtMs
+      && rawQuestion.answeredAtMs === question.answeredAtMs
+      && JSON.stringify(rawQuestion.answers) === JSON.stringify(question.answers);
+    for (const gate of [agreement.entry, agreement.exit]) {
+      const items = (stage?.items ?? []).filter(value => value.item?.id === gate?.itemId);
+      const observation = items.length === 1 ? items[0] : undefined;
+      const item = observation?.item, output = item?.result?.structuredContent?.result;
+      valid &&= !!gate && !!observation && observation.atMs === gate.atMs
+        && item.type === "mcpToolCall" && item.tool === "planning_packet_check"
+        && item.status === "completed" && !item.error && !item.result?.isError
+        && item.arguments?.packet_id === agreement.packetId
+        && item.arguments?.expected_proposal_digest === agreement.proposalDigest
+        && sameAgreement(item.arguments?.agreement_ref, agreement.agreementRef)
+        && output?.status === "ready" && output.proposal_digest === agreement.proposalDigest
+        && sameAgreement(output.agreement_ref, agreement.agreementRef);
+    }
+    for (const write of events.filter(event => event.type === "artifact_write" && event.target === "production" && event.packetId === agreement.packetId)) {
+      valid &&= (stage?.writes ?? []).some(value => value.path === write.artifact && value.itemId === write.itemId
+        && value.atMs === write.atMs && value.after === write.digest);
+    }
+  }
+  if (!valid) add("technical-agreement-invalid", "Each agreement must resolve to its own captured packet session, native answer, MCP gates and production writes.", run);
+}
+
+function verifyFocusedSafeguard(run, scenario, evidence, selectedRoles, add, allowSynthetic, verifySyntheticReferences) {
+  const observed = run.focusedObservations ?? {};
+  const predicates = {
+    "partial-resume": () => observed.acceptedOnly === true && observed.nonAnswerPending === true && observed.savedAnswerReused === true,
+    "shared-drift": () => observed.dependentAgreementsStale === true && observed.independentAgreementReady === true && observed.behavioralVersionUnchanged === true,
+    "execution-boundaries": () => observed.legacyStoppedBeforeWrites === true && observed.privateHelperCompleted === true && observed.materialChangeReturnedTo === "planning",
+    "behavior-routing": () => observed.returnedTo === "specification" && observed.behavioralReviewInvalidated === true && observed.noProductionWrites === true,
+  };
+  const actors = Object.entries(run.stageActors ?? {}).flatMap(([role, value]) => [value].flat().map(actor => ({ role, ...actor })));
+  if (!predicates[scenario.safeguard]?.() || !observed.evidenceRef || !DIGEST_PATTERN.test(observed.evidenceDigest ?? "")
+    || !actors.length || actors.some(a => !a.actorId || !a.sessionId || a.actualModel !== selectedRoles?.[a.role])
+    || new Set(actors.map(a => a.sessionId)).size !== actors.length) {
+    add("technical-safeguard-invalid", "Focused safeguard requires its actual observations, fresh model contexts and captured result evidence.", run);
+  } else verifyReference(observed.evidenceRef, observed.evidenceDigest, evidence, run, add, allowSynthetic, verifySyntheticReferences);
+  if (!eventOf(indexEvents(run.events), "evaluation_claim")) add("evaluation-claim-missing", "Focused observations require an attributed evaluation claim.", run);
 }
 
 function verifyStages(
@@ -275,6 +439,9 @@ function verifyStages(
     }
   }
   for (const stage of ["specification", "planning"]) {
+    const actor = run.stageActors?.specification;
+    if (stage === "specification" && scenario.specificationInput === "frozen-approved"
+      && actor?.kind === "fixture-setup" && actor.actualModel === null) continue;
     const bounds = stageBounds.get(stage);
     for (const profile of scenario.profiles) {
       if (
@@ -690,6 +857,7 @@ function verifyMatrix(runs, matrix, repetitions, code, add) {
 
 export function verifyWorkflowEvidence(evidence, registry, options = {}) {
   const findings = [];
+  const comparisonFindings = [];
   const seenFindings = new Set();
   const add = (code, message, run) => {
     const key = `${code}:${run?.runId ?? "bundle"}:${message}`;
@@ -759,9 +927,12 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
   const scenarios = new Map(
     registry.scenarios.map((scenario) => [scenario.id, scenario]),
   );
-  const allRuns = [...fullPasses.flatMap((pass) => pass.runs ?? []), ...holdoutRuns];
+  const focusedRuns = registry.policy.focusedMatrix ? (evidence.focusedRuns ?? []) : [];
+  if (registry.policy.focusedMatrix) verifyMatrix(focusedRuns, registry.policy.focusedMatrix, 1, "focused-run-missing", add);
+  const allRuns = [...fullPasses.flatMap((pass) => pass.runs ?? []), ...holdoutRuns, ...focusedRuns];
   const runIds = new Set();
   for (const run of allRuns) {
+    const firstRunFinding = findings.length;
     if (!run.runId || runIds.has(run.runId)) {
       add("run-id-invalid", "Run identifiers must be present and unique.", run);
     }
@@ -771,6 +942,12 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
       add("scenario-unknown", `Unknown scenario ${run.scenarioId ?? "missing"}.`, run);
       continue;
     }
+    const comparison = run.comparisonOutcome;
+    const incompleteBaseline = registry.policy.technicalBenchmark === true &&
+      scenario.variant === "baseline" && scenario.set !== "focused" &&
+      scenario.requireTechnicalAgreement !== true && comparison?.status === "incomplete" &&
+      Array.isArray(comparison.findingCodes) && comparison.findingCodes.length === 1 &&
+      comparison.findingCodes[0] === "required-prove-missing";
     const allowSynthetic = options.allowSynthetic === true;
     const verifySyntheticReferences = options.verifySyntheticReferences === true;
     verifyProvenance(
@@ -786,25 +963,24 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
         run.provenance.bundleDigest !== pass.sourceDigest) {
       add("run-source-mismatch", "Run source does not match the captured frozen bundle.", run);
     }
-    verifyStageActors(run, evidence.selectedHostRoles?.[run.host], add);
-    verifyStages(
-      run,
-      scenario,
-      evidence,
-      add,
-      allowSynthetic,
-      verifySyntheticReferences,
-    );
+    if (scenario.set === "focused") {
+      verifyFocusedSafeguard(run, scenario, evidence, evidence.selectedHostRoles?.[run.host], add, allowSynthetic, verifySyntheticReferences);
+    } else {
+      verifyStageActors(run, evidence.selectedHostRoles?.[run.host], add, scenario);
+      verifyStages(run, scenario, evidence, add, allowSynthetic, verifySyntheticReferences);
+      if (registry.policy.technicalBenchmark) verifyTechnicalBenchmark(run, scenario, evidence, add, allowSynthetic, verifySyntheticReferences, options.capturedDocuments);
+    }
 
     const claim = eventOf(indexEvents(run.events), "evaluation_claim");
+    const review = (evidence.evaluations ?? []).find(
+      (evaluation) => evaluation.runId === run.runId,
+    );
+    let validReviewer = false;
     if (claim) {
-      const review = (evidence.evaluations ?? []).find(
-        (evaluation) => evaluation.runId === run.runId,
-      );
       if (
         !review ||
         review.reviewerType !== "external" ||
-        review.status !== "passed" ||
+        (review.status !== "passed" && !(incompleteBaseline && review.status === "incomplete")) ||
         !review.reviewerActorId ||
         !review.reviewerSessionId ||
         !review.evidenceRef ||
@@ -820,8 +996,10 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
           run,
         );
       } else {
+        validReviewer = true;
         if (!review.reviewerModel ||
             review.reviewerModel !== evidence.selectedHostRoles?.[run.host]?.review) {
+          validReviewer = false;
           add("review-model-mismatch", "External reviewer model does not match the selected review role.", run);
         }
         verifyReference(
@@ -835,6 +1013,26 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
         );
       }
     }
+    if (comparison !== undefined) {
+      const omittedProofs = findings.slice(firstRunFinding).filter(
+        (finding) => finding.code === "required-prove-missing",
+      );
+      const capturedReview = (evidence.artifacts ?? []).some(
+        (artifact) => artifact.ref === comparison?.evidenceRef && artifact.digest === comparison?.evidenceDigest,
+      );
+      if (!incompleteBaseline || !validReviewer || review?.status !== "incomplete" ||
+          !sameMembers(comparison.findingCodes, [...new Set(omittedProofs.map(finding => finding.code))]) ||
+          comparison.evidenceRef !== review.evidenceRef || comparison.evidenceDigest !== review.evidenceDigest ||
+          !DIGEST_PATTERN.test(comparison.evidenceDigest ?? "") || !capturedReview) {
+        add("comparison-outcome-invalid", "Only an explicitly attributed baseline proof omission may be recorded as an incomplete comparison; candidate and evidence checks remain required.", run);
+      } else {
+        for (const finding of omittedProofs) {
+          comparisonFindings.push({ ...finding, comparisonOutcome: "incomplete", countedAsSuccess: false,
+            evidenceRef: comparison.evidenceRef, evidenceDigest: comparison.evidenceDigest });
+          findings.splice(findings.indexOf(finding), 1);
+        }
+      }
+    }
   }
 
   return {
@@ -843,5 +1041,6 @@ export function verifyWorkflowEvidence(evidence, registry, options = {}) {
     behaviorCertified: false,
     sourceDigest: sourceDigests.size === 1 ? [...sourceDigests][0] : null,
     findings,
+    comparisonFindings,
   };
 }

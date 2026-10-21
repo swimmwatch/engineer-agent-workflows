@@ -1,0 +1,43 @@
+{
+  "classification": "ACTUAL",
+  "checkedAt": "2026-10-21T19:20:55.164Z",
+  "scope": "One-off report derivation only; frozen workflow source, product oracle, pre-publication originals, reviewer verdict objects and timing inputs remain preserved. Display normalization is separately audited.",
+  "defect": "Outer Python wrappers return 0 after finally restoration; four captured real Node mutation test subprocesses return 1. Original derivation incorrectly reported the outer exit as the test outcome.",
+  "sourceBinding": "Only audited item IDs with exact command/output SHA-256 and a matching captured MUTATION_EXIT 1 can supply a child test exit.",
+  "checks": {
+    "red": 1,
+    "green": {
+      "exitCode": 0,
+      "passed": 6
+    },
+    "prove": {
+      "unboundCommandMutationExit": 1,
+      "restoredExit": 0
+    }
+  },
+  "sourceDigests": {
+    "proof-exit.mjs": "68d6d5e70460a9d9dfab6ece971fff8ce9ad03eb6db2850135fff9ef77fa7376",
+    "proof-exit.test.mjs": "0cf01a805b3394d234c94efa53ce73c26b2894f646b68885bd748675cf7e6928",
+    "assemble.mjs": "ce867fde39f86f874d83fb16dcbc76f30e04e392cc4714fb4f66fe4649ed350d"
+  },
+  "proof": [
+    {
+      "ref": "precision-proof/proof-exit-red.log",
+      "digest": "c2b40cf6f327cb01b36d5773bd8e5646f16aed1cf55a1d4e219815395833c6e5"
+    },
+    {
+      "ref": "precision-proof/proof-exit-green.log",
+      "digest": "b66e9f4d9b134ecc251f344fc08fcdf533e52b2a98fe24bb2a781a778e5f6732"
+    },
+    {
+      "ref": "precision-proof/proof-exit-prove-mutation.log",
+      "digest": "ae5236cc4e52c6be477d47cd2b4aa4ff7baa2720d9ea796dc68a15e68ddc3014"
+    },
+    {
+      "ref": "precision-proof/proof-exit-prove-restored.log",
+      "digest": "2cd796cbce1a032f57c50f840afb4942295467e6dc9bc7ca69b3a485563952de"
+    }
+  ],
+  "initialFailedCheck": "derivation-attempts/initial/verification.json",
+  "initialDerivation": "derivation-attempts/initial/evidence.json"
+}

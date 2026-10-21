@@ -1,0 +1,9 @@
+{
+  "classification": "SIMULATION",
+  "frozenBeforeFocusedModels": true,
+  "policyDigest": "6a68ad84ed0acf2d8eda01c0a31598baff51e08a88f2a8a48efd6ddb647dbf87",
+  "controllerDigest": "f31e4f3c835476c66803abcee975c5126ea08da50f6ad0613c6dccad3bb70c51",
+  "captureHelperDigest": "bc60143f8296bebe758961edc512becfb9044392787958ad773e0bacb8861489",
+  "candidateDigest": "1eea219184ff424ff41a3a16078a68e0a329c5ec28c5c958d2aeae6d4b79ac45",
+  "protocol": "Preconfirmed managed states are fixture setup, never native-question or human-consent evidence."
+}
