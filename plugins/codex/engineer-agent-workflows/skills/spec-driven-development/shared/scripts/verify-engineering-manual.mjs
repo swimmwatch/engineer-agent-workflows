@@ -48,6 +48,10 @@ const PRODUCT_PROTOCOL_PARTS = Object.freeze([
   "references",
   "product-workflow.md",
 ]);
+const WORKFLOW_CONTEXT_REFERENCES = Object.freeze([
+  "references/workflow-state-access.md",
+  "references/implementation-context.md",
+]);
 const DIGEST_PATTERN = /^[a-f0-9]{64}\n$/;
 const SKILL_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -241,6 +245,25 @@ async function readExpectedTestDisciplineDigest(fromSkillDir) {
   return text.slice(0, 64);
 }
 
+async function verifyWorkflowContext(skillDirectory) {
+  const hash = crypto.createHash("sha256");
+  for (const relativePath of WORKFLOW_CONTEXT_REFERENCES) {
+    const bytes = await readRegularFile(path.join(skillDirectory, "shared", ...relativePath.split("/")),
+      "E_WORKFLOW_CONTEXT_FILE", "workflow context resource is unavailable");
+    if (bytes.length === 0 || bytes.at(-1) !== 0x0a) {
+      throw failure("E_WORKFLOW_CONTEXT_FILE", "workflow context resource is invalid");
+    }
+    hash.update(relativePath).update("\0").update(bytes).update("\0");
+  }
+  const marker = await readRegularFile(path.join(skillDirectory, "shared", "workflow-context.sha256"),
+    "E_WORKFLOW_CONTEXT_MARKER", "workflow context marker is unavailable");
+  const expected = marker.toString("utf8");
+  if (!DIGEST_PATTERN.test(expected)) throw failure("E_WORKFLOW_CONTEXT_MARKER", "workflow context marker is invalid");
+  const digest = hash.digest("hex");
+  if (digest !== expected.slice(0, 64)) throw failure("E_WORKFLOW_CONTEXT_MISMATCH", "workflow context does not match the installed bundle");
+  return digest;
+}
+
 async function verifyOwnedResources(skillDirectory) {
   const [expected, testDisciplineExpected, manual, testDiscipline] =
     await Promise.all([
@@ -318,7 +341,8 @@ async function verifyOwnedResources(skillDirectory) {
       );
     }
   }
-  return { digest, testDisciplineDigest, productProtocolDigest };
+  const workflowContextDigest = await verifyWorkflowContext(skillDirectory);
+  return { digest, testDisciplineDigest, productProtocolDigest, workflowContextDigest };
 }
 
 export async function verifyEngineeringManual(fromSkillDir) {
@@ -327,6 +351,9 @@ export async function verifyEngineeringManual(fromSkillDir) {
     [callerSkill, ...dependencySkills].map(verifyOwnedResources),
   );
   for (const dependency of dependencies) {
+    if (dependency.workflowContextDigest !== owned.workflowContextDigest) {
+      throw failure("E_WORKFLOW_CONTEXT_MISMATCH", "workflow context does not match the installed bundle");
+    }
     if (dependency.digest !== owned.digest) {
       throw failure(
         "E_MANUAL_MISMATCH",

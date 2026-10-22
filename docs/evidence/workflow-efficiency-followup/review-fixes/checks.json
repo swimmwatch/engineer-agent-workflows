@@ -1,0 +1,33 @@
+{
+  "scope": "Post-review evidence adapters and evaluator only; no new model trials or production matrix run",
+  "checks": [
+    {
+      "command": "rtk proxy <node-22.20.0> --test docs/evidence/workflow-efficiency-followup/sources/*.test.mjs tests/workflow-efficiency.test.mjs",
+      "exit": 0,
+      "log": "check-0.log",
+      "runtime": "22.20.0",
+      "tests": 76,
+      "passed": 76,
+      "failed": 0
+    },
+    {
+      "command": "rtk proxy <node-24.14.0> --test docs/evidence/workflow-efficiency-followup/sources/*.test.mjs tests/workflow-efficiency.test.mjs",
+      "exit": 0,
+      "log": "check-1.log",
+      "runtime": "24.14.0",
+      "tests": 76,
+      "passed": 76,
+      "failed": 0
+    },
+    {
+      "command": "rtk proxy npm run validate",
+      "exit": 0,
+      "log": "check-2.log"
+    },
+    {
+      "command": "rtk proxy git diff --check",
+      "exit": 0,
+      "log": "check-3.log"
+    }
+  ]
+}

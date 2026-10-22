@@ -32,7 +32,7 @@ test("generated workflow bundles route YAML ownership to scenario tools without 
     const root = new URL(`../plugins/${host}/engineer-agent-workflows/skills/`, import.meta.url);
     const interview = await readFile(new URL("spec-driven-development/references/specification-interview.md", root), "utf8");
     const design = await readFile(new URL("design-planning/references/penpot-workflow.md", root), "utf8");
-    const common = await readFile(new URL("spec-driven-development/shared/references/yaml-contracts.md", root), "utf8");
+    const common = await readFile(new URL("spec-driven-development/shared/references/workflow-state-access.md", root), "utf8");
     assert.match(interview, /question_prepare/);
     assert.match(interview, /question_record_no_answer/);
     assert.doesNotMatch(interview, /screen_add_transition|component_register/);

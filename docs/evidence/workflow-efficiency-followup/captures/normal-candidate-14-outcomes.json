@@ -1,0 +1,96 @@
+{
+  "sources": [
+    {
+      "id": "entry",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "version": "3d0f12db812834a63f5519c93e3deb9d3164d3a6c27012714af9157604b92d1a",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "access",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/workflow-state-access.md",
+      "version": "a43f2457dfc9116331d8b4a9a4c9cca00927dd95fe4ae0f9a9840a330dc25baf",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "principles",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "version": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "discipline",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "version": "732a42dbcae122795c89cb7fec58c467b9d43e5d72ab9e54d87e78ee36dcc94b",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "execution",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/implementation-context.md",
+      "version": "bf369711d8056f6a849467095cdc74585a5c6dd05e8165d7f7994d52223d2390",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    }
+  ],
+  "triggers": [],
+  "changes": [],
+  "actions": [
+    {
+      "id": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "465e02b051104074c069e5225560cf552bc5358d78b49aacae5c2ca27a065509"
+        },
+        {
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "465e02b051104074c069e5225560cf552bc5358d78b49aacae5c2ca27a065509"
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "465e02b051104074c069e5225560cf552bc5358d78b49aacae5c2ca27a065509"
+        },
+        {
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "465e02b051104074c069e5225560cf552bc5358d78b49aacae5c2ca27a065509"
+        }
+      ]
+    }
+  ]
+}

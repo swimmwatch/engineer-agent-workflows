@@ -1,0 +1,54 @@
+[
+  {
+    "id": "capture-integrity",
+    "source": "audit-startup.mjs",
+    "sourceSha256": "69cc6eee64a3e0aa65c7826b7c62430b475c05f523c641992bee865a5386b1e2",
+    "exit": 1,
+    "detected": true,
+    "failures": [
+      "invalid native intervals cannot certify startup even with passing final state"
+    ]
+  },
+  {
+    "id": "completion-order",
+    "source": "audit-startup.mjs",
+    "sourceSha256": "69cc6eee64a3e0aa65c7826b7c62430b475c05f523c641992bee865a5386b1e2",
+    "exit": 1,
+    "detected": true,
+    "failures": [
+      "late-edit after final gates invalidates completion",
+      "late-test after final gates invalidates completion",
+      "late-prove after final gates invalidates completion",
+      "late-restore after final gates invalidates completion",
+      "a final gate requested before a check finishes is premature",
+      "repeating premature gates after restoration does not erase their failure",
+      "reviewed read-only snapshot is exact; altered executable input is not exempt"
+    ]
+  },
+  {
+    "id": "authentication-cleanup",
+    "source": "trial-home.mjs",
+    "sourceSha256": "de303edb9456502861ea6fbb5b71b52da32d94a7fc80590a5968f06d2fef0785",
+    "exit": 1,
+    "detected": true,
+    "failures": [
+      "preparation failure removes copied authentication without touching the profile",
+      "client shutdown failure still removes authentication and fails the run",
+      "copy failure cleans authentication left by partial preparation",
+      "an unreaped process fails cleanup instead of certifying completion",
+      "successful cleanup retains non-secret evidence and returns the outcome"
+    ]
+  },
+  {
+    "id": "unreaped-process",
+    "source": "trial-home.mjs",
+    "sourceSha256": "de303edb9456502861ea6fbb5b71b52da32d94a7fc80590a5968f06d2fef0785",
+    "exit": 1,
+    "detected": true,
+    "failures": [
+      "client shutdown failure still removes authentication and fails the run",
+      "an unreaped process fails cleanup instead of certifying completion",
+      "successful cleanup retains non-secret evidence and returns the outcome"
+    ]
+  }
+]

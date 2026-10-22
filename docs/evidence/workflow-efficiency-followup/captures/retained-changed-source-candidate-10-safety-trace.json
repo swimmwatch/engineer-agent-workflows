@@ -1,0 +1,12 @@
+{
+  "events": [
+    {
+      "id": "completion",
+      "actor": "root",
+      "context": "actual",
+      "action": "edit",
+      "kind": "blocked",
+      "atMs": 258895.540592
+    }
+  ]
+}

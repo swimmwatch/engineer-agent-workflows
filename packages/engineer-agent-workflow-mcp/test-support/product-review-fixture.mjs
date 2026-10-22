@@ -6,11 +6,12 @@ import { join } from "node:path";
 
 import {
   completeProductReview,
-  getProductReviewStatus,
+  readProductReviewBatch,
   readProductReviewConsistency,
   readProductReviewItem,
   recordProductReviewConsistency,
   recordProductVerdict,
+  recordProductVerdictBatch,
   startProductReview,
 } from "../dist/product/review.js";
 import { saveGeneration, saveObject } from "../dist/product/storage.js";
@@ -275,16 +276,28 @@ async function completeReview(f, contextValue, { gapText, mode = "full", parentR
     ...(parentCandidateRef === undefined ? {} : { parentCandidateRef }),
   });
   let currentContext = started.context;
-  let status = started.result;
+  const status = started.result;
+  let nextIndex = status.next_item_index;
   let gapKey = null;
-  while (status.next_item_index !== null) {
-    const item = await readItemFully(f, status.review_ref, status.next_item_index, currentContext);
-    const verdict = gapText !== undefined && item.text.includes(gapText) ? "gap" : "covered";
-    const recorded = await recordProductVerdict({
-      root: f.root,
-      context: currentContext,
-      reviewRef: status.review_ref,
-      value: {
+  while (nextIndex !== null) {
+    const page = await readProductReviewBatch({
+      root: f.root, context: currentContext, reviewRef: status.review_ref,
+      startIndex: nextIndex, limit: 20, pendingOnly: true,
+    });
+    currentContext = page.context;
+    const verdicts = [];
+    for (const entry of page.result.items) {
+      let item = entry.portion, text = item.text;
+      while (!item.complete) {
+        const portion = await readProductReviewItem({
+          root: f.root, context: currentContext, reviewRef: status.review_ref,
+          itemIndex: entry.item_index, cursor: item.next_cursor,
+        });
+        currentContext = portion.context;
+        item = portion.result; text += item.text;
+      }
+      const verdict = gapText !== undefined && text.includes(gapText) ? "gap" : "covered";
+      verdicts.push({
         item_key: item.item_key,
         verdict,
         explanation: verdict === "covered" ? "Synthetic evidence covers this item." : "Synthetic correction is required.",
@@ -293,13 +306,16 @@ async function completeReview(f, contextValue, { gapText, mode = "full", parentR
         evidence_sources: [],
         read_receipt: item.read_receipt,
         inherited_from: null,
-      },
-    });
-    if (verdict === "gap") gapKey = item.item_key;
-    currentContext = recorded.context;
-    status = (await getProductReviewStatus({
-      root: f.root, context: currentContext, reviewRef: status.review_ref,
-    })).result;
+      });
+      if (verdict === "gap") gapKey = item.item_key;
+    }
+    if (verdicts.length) {
+      const recorded = await recordProductVerdictBatch({
+        root: f.root, context: currentContext, reviewRef: status.review_ref, items: verdicts,
+      });
+      currentContext = recorded.context;
+    }
+    nextIndex = page.result.next_item_index;
   }
   if (status.inventory_contract === "semantic-v2") {
     await recordConsistency(f, status.review_ref, currentContext);

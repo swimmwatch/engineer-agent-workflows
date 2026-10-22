@@ -296,8 +296,10 @@ test("shared engineering manual is authoritative and covers the complete quality
     files,
     [
       "references/engineering-principles.md",
+      "references/implementation-context.md",
       "references/product-workflow.md",
       "references/test-discipline.md",
+      "references/workflow-state-access.md",
     "references/yaml-contracts.md",
     "schemas/catalog.schema.json",
     "schemas/decisions.schema.json",
@@ -395,7 +397,11 @@ test("planning task packet reference is generalized and bounded", async () => {
   assert.match(reference, /correct.*check.*implementation/is);
   assert.match(reference, /`file:line`/);
   assert.match(reference, /`MANUAL GATE`/);
-  assert.match(reference, /explicit authorization/);
+  assert.match(reference, /implementation-context\.md/);
+  const implementation = await fs.readFile(
+    path.join(projectRoot, "shared/references/implementation-context.md"), "utf8",
+  );
+  assert.match(implementation, /explicit authorization/);
   assert.doesNotMatch(reference, /Go\/MCP|prompt-mcp|GTK|Zenity/);
 });
 

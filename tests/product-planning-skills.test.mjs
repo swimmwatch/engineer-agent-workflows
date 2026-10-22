@@ -83,10 +83,11 @@ test("P15 registers the four-stage product authoring chain", async () => {
 });
 
 test("P15 skills require exact ready inputs and stop before downstream work", async () => {
-  const [technical, roadmap, protocol] = await Promise.all([
+  const [technical, roadmap, protocol, access] = await Promise.all([
     read("skills/technical-design/SKILL.md"),
     read("skills/product-roadmap/SKILL.md"),
     read("shared/references/product-workflow.md"),
+    read("shared/references/workflow-state-access.md"),
   ]);
 
   assertReadyPrdPins(technical);
@@ -119,7 +120,10 @@ test("P15 skills require exact ready inputs and stop before downstream work", as
 
   for (const document of [technical, roadmap, protocol]) {
     assert.doesNotMatch(document, /mcp__engineer_agent_workflow/u);
-    assert.match(document, /returned context/iu);
+    if (document === protocol) {
+      assert.match(protocol, /workflow-state-access\.md/iu);
+      assert.match(access, /returned context/iu);
+    } else assert.match(document, /returned context/iu);
     assert.match(document, /product_candidate_check/u);
     assert.match(document, /product_review_start/u);
     assert.match(document, /independent reviewer/iu);

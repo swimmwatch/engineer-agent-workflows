@@ -1,0 +1,187 @@
+{
+  "evidenceKind": "SYNTHETIC",
+  "events": [
+    {
+      "id": "pre-bundle",
+      "kind": "prerequisite",
+      "actor": "implementer",
+      "context": "cold",
+      "name": "bundle",
+      "result": "pass"
+    },
+    {
+      "id": "pre-git",
+      "kind": "prerequisite",
+      "actor": "implementer",
+      "context": "cold",
+      "name": "git",
+      "result": "pass"
+    },
+    {
+      "id": "pre-runner",
+      "kind": "prerequisite",
+      "actor": "implementer",
+      "context": "cold",
+      "name": "runner",
+      "result": "pass"
+    },
+    {
+      "id": "read-access",
+      "kind": "delivery",
+      "actor": "implementer",
+      "context": "cold",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 100,
+      "receipt": "final-receipt",
+      "bulk": true
+    },
+    {
+      "id": "read-execution",
+      "kind": "delivery",
+      "actor": "implementer",
+      "context": "cold",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 100,
+      "receipt": "final-receipt",
+      "bulk": true
+    },
+    {
+      "id": "read-requirement",
+      "kind": "delivery",
+      "actor": "implementer",
+      "context": "cold",
+      "source": "requirement",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 100,
+      "receipt": "final-receipt",
+      "bulk": true
+    },
+    {
+      "id": "entry-specification",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "specification",
+      "owner": "entry",
+      "input": "source-v1",
+      "result": "pass"
+    },
+    {
+      "id": "entry-agreement",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "agreement",
+      "owner": "entry",
+      "input": "proposal-v1",
+      "result": "pass"
+    },
+    {
+      "id": "reuse-source",
+      "kind": "reuse",
+      "actor": "implementer",
+      "context": "cold",
+      "source": "requirement",
+      "delivery": "read-requirement"
+    },
+    {
+      "id": "reuse-check",
+      "kind": "reuse-check",
+      "actor": "implementer",
+      "context": "cold",
+      "check": "entry-specification",
+      "purpose": "specification",
+      "owner": "entry",
+      "input": "source-v1"
+    },
+    {
+      "id": "edit",
+      "kind": "action",
+      "actor": "implementer",
+      "context": "cold",
+      "action": "edit"
+    },
+    {
+      "id": "preserve-binding",
+      "kind": "preservation",
+      "actor": "implementer",
+      "context": "cold",
+      "change": "binding",
+      "disposition": "accept",
+      "inspected": true
+    },
+    {
+      "id": "preserve-directory",
+      "kind": "preservation",
+      "actor": "implementer",
+      "context": "cold",
+      "change": "directory",
+      "disposition": "accept",
+      "inspected": true
+    },
+    {
+      "id": "preserve-external",
+      "kind": "preservation",
+      "actor": "implementer",
+      "context": "cold",
+      "change": "external",
+      "disposition": "accept",
+      "inspected": true
+    },
+    {
+      "id": "completion-specification",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "specification",
+      "owner": "completion",
+      "input": "source-v1",
+      "result": "pass"
+    },
+    {
+      "id": "completion-agreement",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "agreement",
+      "owner": "completion",
+      "input": "proposal-v1",
+      "result": "pass"
+    },
+    {
+      "id": "completion-local-tests",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "local-tests",
+      "owner": "completion",
+      "input": "code-v1",
+      "result": "pass"
+    },
+    {
+      "id": "completion-read-back",
+      "kind": "validation",
+      "actor": "implementer",
+      "context": "cold",
+      "purpose": "read-back",
+      "owner": "completion",
+      "input": "state-v2",
+      "result": "pass"
+    },
+    {
+      "id": "complete",
+      "kind": "action",
+      "actor": "implementer",
+      "context": "cold",
+      "action": "complete"
+    }
+  ]
+}

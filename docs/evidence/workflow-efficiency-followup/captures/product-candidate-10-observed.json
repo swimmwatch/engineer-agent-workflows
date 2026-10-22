@@ -1,0 +1,142 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 13420.191304,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-entry-exec-79be2907-2c00-41b4-9611-738b6580c77a",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 23577.533774,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-access-exec-04b0b419-9808-447a-80dc-1258c9725283",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 35999.128537,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-18eb3c69-f75d-4b5c-8641-8636e32295b3",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "dc1b26bca30d342ffe76f05708c8f05e78dcfb2ea9699c7f9b98f4b43b7055be",
+      "result": "pass",
+      "atMs": 53117.463965
+    },
+    {
+      "id": "exec-5aff1e5b-065b-4803-be6f-65c135fd643b",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "dc1b26bca30d342ffe76f05708c8f05e78dcfb2ea9699c7f9b98f4b43b7055be",
+      "result": "pass",
+      "atMs": 53177.418112
+    },
+    {
+      "id": "delivery-principles-exec-6c96d296-5a52-4bdb-8781-d4a45eec3451",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 60255.182732,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-6c96d296-5a52-4bdb-8781-d4a45eec3451",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7916,
+      "atMs": 60255.182732,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-execution-exec-6c96d296-5a52-4bdb-8781-d4a45eec3451",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 6436,
+      "atMs": 60255.182732,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 152502.950823
+    },
+    {
+      "id": "exec-240ad22c-e854-4a69-87d8-6ed870f4cade",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "dc1b26bca30d342ffe76f05708c8f05e78dcfb2ea9699c7f9b98f4b43b7055be",
+      "result": "pass",
+      "atMs": 217467.034652
+    },
+    {
+      "id": "exec-9e580838-d617-448c-8019-68c29e98c7dc",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "dc1b26bca30d342ffe76f05708c8f05e78dcfb2ea9699c7f9b98f4b43b7055be",
+      "result": "pass",
+      "atMs": 217527.066671
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 270831.830246
+    }
+  ]
+}

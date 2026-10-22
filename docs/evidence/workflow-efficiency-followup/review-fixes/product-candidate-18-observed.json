@@ -1,0 +1,149 @@
+{
+  "events": [
+    {
+      "id": "capture-integrity",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "prerequisite",
+      "name": "capture-integrity",
+      "result": "pass",
+      "atMs": 13620.065191
+    },
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3975,
+      "atMs": 13620.065191,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-access-exec-6b75b43a-b3e4-418a-a5fe-cd5633045f5a",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 29400.699452,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-4a3f257c-2e61-45fb-9fed-d93f851e2d64",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+      "result": "pass",
+      "atMs": 46233.017433
+    },
+    {
+      "id": "exec-ccb0c151-795b-4f09-bb0a-9e3ac0328727",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+      "result": "pass",
+      "atMs": 46285.942888
+    },
+    {
+      "id": "delivery-principles-exec-372eb7f4-6c39-4b36-a583-16b091e5c8e6",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 54303.619676,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-372eb7f4-6c39-4b36-a583-16b091e5c8e6",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7916,
+      "atMs": 54303.619676,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-execution-exec-372eb7f4-6c39-4b36-a583-16b091e5c8e6",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7129,
+      "atMs": 54303.619676,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 169480.194752
+    },
+    {
+      "id": "exec-d80ef377-5956-469f-992e-29f8bd747ee6",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+      "result": "pass",
+      "atMs": 280075.871007
+    },
+    {
+      "id": "exec-5188051a-a020-4c91-8bfb-5ab0831a5ed7",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+      "result": "pass",
+      "atMs": 280135.710962
+    },
+    {
+      "id": "completion-order",
+      "kind": "validation",
+      "actor": "root",
+      "context": "fresh",
+      "purpose": "completion:order",
+      "owner": "capture-adapter",
+      "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+      "result": "pass",
+      "atMs": 364791.799126
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 364791.799126
+    }
+  ]
+}

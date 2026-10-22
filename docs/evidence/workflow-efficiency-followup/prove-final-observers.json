@@ -1,0 +1,20 @@
+[
+  {
+    "boundary": "audit-safety",
+    "mutation": "Object.values(conditions).every(Boolean) -> true",
+    "exit": 1,
+    "detected": true
+  },
+  {
+    "boundary": "audit-portions",
+    "mutation": "Boolean(valid && last?.complete -> Boolean(last?.complete",
+    "exit": 1,
+    "detected": true
+  },
+  {
+    "boundary": "audit-startup",
+    "mutation": " && delivery.attachmentVerified === true -> ",
+    "exit": 1,
+    "detected": true
+  }
+]

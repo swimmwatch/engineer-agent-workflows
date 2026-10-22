@@ -62,7 +62,7 @@ test("incremental skill is explicit, bounded, bundle-required, and catalog-align
   assert.ok(validated.bytes <= 4096);
   for (const pattern of [
     /verify-engineering-manual/,
-    /references\/task-packets\.md/,
+    /references\/implementation-context\.md/,
     /exactly one explicitly authorized packet/,
     /explicitly authorized commits/,
     /Inspect every\s+staged diff/is,

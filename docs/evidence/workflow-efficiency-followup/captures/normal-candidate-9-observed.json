@@ -1,0 +1,142 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 2771.743673,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-entry-exec-9087636e-73e7-4e3e-aea0-1f3c26862d10",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 14629.619803,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-access-exec-71ebee58-fbfc-4985-bc5e-684b2c9b9b04",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 21702.862364,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-e7300718-58be-4bd8-a814-0574cde02cd3",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "85a8945fbe87dc5677e92701ffbb5b4d2edebfd59616a50b737b314175d9c299",
+      "result": "pass",
+      "atMs": 44803.343451
+    },
+    {
+      "id": "exec-4892d65d-7f7c-4d12-8d1e-2676e3fa23b0",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "85a8945fbe87dc5677e92701ffbb5b4d2edebfd59616a50b737b314175d9c299",
+      "result": "pass",
+      "atMs": 44870.225041
+    },
+    {
+      "id": "delivery-execution-exec-35ce6d8d-bdef-4522-a3f2-13aa5252ff72",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 6436,
+      "atMs": 57285.395344,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-principles-exec-981ef9bd-7ebb-4551-b1a1-2e79d426eb1f",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 57287.32102,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-0de63f22-de60-4e9d-8f2e-cfcea0d1b065",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7916,
+      "atMs": 57289.405958,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 169602.418537
+    },
+    {
+      "id": "exec-f44e6916-0ead-40a7-8d01-9bd8128a9ea1",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "85a8945fbe87dc5677e92701ffbb5b4d2edebfd59616a50b737b314175d9c299",
+      "result": "pass",
+      "atMs": 237112.543583
+    },
+    {
+      "id": "exec-1cb84292-0343-4b22-8ee9-03a30601b5b8",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "85a8945fbe87dc5677e92701ffbb5b4d2edebfd59616a50b737b314175d9c299",
+      "result": "pass",
+      "atMs": 237177.58667
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 276502.852288
+    }
+  ]
+}

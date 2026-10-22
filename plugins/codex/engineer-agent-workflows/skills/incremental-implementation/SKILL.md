@@ -2,13 +2,12 @@
 name: incremental-implementation
 description: "Implement exactly one authorized task packet per explicit invocation using test-first RED/GREEN/PROVE, verify it, update checklist and handoff, then stop."
 ---
-
 # Incremental Implementation
 
 Implement exactly one explicitly authorized packet.
 Model suggestion: Terra. Never switch or gate on model.
-
-1. Set `skill_dir` to this skill's absolute directory.
+Do not reread supplied SKILL.md or references; retrieve gaps or stop; never rerender.
+1. Set `skill_dir` to its absolute directory.
    Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`
    before any write or commit. If verification fails, return exactly:
    `Install or update the complete matching engineer-agent-workflows bundle
@@ -18,7 +17,7 @@ Model suggestion: Terra. Never switch or gate on model.
    require visible `true`. Otherwise checkpoint from packet/handoff and stop;
    do not initialize Git or substitute snapshots.
    Check tools and runner authority before bulk reads.
-2. Read `shared/references/yaml-contracts.md` fully in a separate call, not a batch.
+2. Read `shared/references/workflow-state-access.md` fully in its own call.
    Use scenario MCP. Read the current checklist, packet and handoff.
    Before bulk reads or edits, call
    `specification_check_state` with pinned inputs and `planning_packet_check`
@@ -28,11 +27,11 @@ Model suggestion: Terra. Never switch or gate on model.
    never synthesize agreement. For conflicts, failed checks or resume, read
    `references/packet-recovery.md`.
 3. Read `shared/references/engineering-principles.md`,
-   `shared/references/test-discipline.md`, and the sibling planning skill's
-   `references/task-packets.md`. Use supplied guidance; read additional
+   `shared/references/test-discipline.md`, and
+   `shared/references/implementation-context.md`. Use supplied guidance; read additional
    `AGENTS.md` only if absent from active context or itself in scope.
-   For product-linked tasks, read `shared/references/product-workflow.md`
-   and follow its Implementation role; otherwise skip product task tools.
+   For product-linked tasks, follow its conditional Product-linked execution
+   section; otherwise skip product task tools.
    Use scenario MCP for confirmed manifest, decisions, catalog and experience
    YAML; never shell/file readers. Recheck Approved specification, linked requirements,
    contracts, code, tests and evidence; do not reload every profile or entire spec.
@@ -42,7 +41,7 @@ Model suggestion: Terra. Never switch or gate on model.
    No implied external authority.
    In host planning mode, validate the existing plan and keep production unchanged; stop.
    Preserve unrelated work; do not redesign architecture.
-5. In implementation mode, write the test or check before implementation, observe
+5. Write the test or check before implementation, observe
    RED, implement minimal correct GREEN, and apply PROVE when required.
    Preserve contracts and repository rules. Run focused checks after each material
    change and proportional final checks. When a correct check fails, correct implementation and repeat;

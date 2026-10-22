@@ -1,0 +1,142 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3969,
+      "atMs": 12270.105984,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-access-exec-7363225c-45d1-4361-92d4-7daf054174c8",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 11397,
+      "atMs": 27962.007418,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-40e39190-b243-4ce6-848e-0b6eb7f3fec6",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+      "result": "pass",
+      "atMs": 45237.074888
+    },
+    {
+      "id": "exec-c073e12f-e480-44a5-ae53-cee1becfaf55",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+      "result": "pass",
+      "atMs": 45274.600822
+    },
+    {
+      "id": "delivery-principles-exec-a19da4ac-1857-435e-8c6f-e5047078c592",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 50456.442562,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-a19da4ac-1857-435e-8c6f-e5047078c592",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7057,
+      "atMs": 50456.442562,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-product-exec-a19da4ac-1857-435e-8c6f-e5047078c592",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "product",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 17264,
+      "atMs": 50456.442562,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-execution-exec-a420c4dc-7056-420d-93ac-b9e320608bef",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 10505,
+      "atMs": 90422.112125,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 164895.912402
+    },
+    {
+      "id": "exec-cddaf36f-fa2b-4ac0-bc0c-0fff4054fde7",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+      "result": "pass",
+      "atMs": 247106.952433
+    },
+    {
+      "id": "exec-99407c6d-9232-4c44-8551-5b3adbacb1d1",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+      "result": "pass",
+      "atMs": 247202.506386
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 309617.668594
+    }
+  ]
+}

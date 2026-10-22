@@ -1,0 +1,106 @@
+{
+  "sources": [
+    {
+      "id": "entry",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "version": "b4e835552d038bd4a011278a3b2cc1db4ea1dc05a33fa3baba25297ce2f1dd2e",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "access",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md",
+      "version": "ff9451404e1da0cf9cca4d92dd11818b9e41d96e9ca35aa3827e2850298f1e89",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "principles",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "version": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "discipline",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "version": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "execution",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md",
+      "version": "de2f84be49f302bb41cf71ebce4efcfb181c22a9221250f28b363c1510700760",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "product",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/product-workflow.md",
+      "version": "43dca8ec153eb05097f49a182a7f2504a10314f76ee8764ea29e869befcfa185",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    }
+  ],
+  "triggers": [],
+  "changes": [],
+  "actions": [
+    {
+      "id": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution",
+        "product"
+      ],
+      "checks": [
+        {
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6"
+        },
+        {
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6"
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution",
+        "product"
+      ],
+      "checks": [
+        {
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6"
+        },
+        {
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6"
+        }
+      ]
+    }
+  ]
+}

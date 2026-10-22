@@ -1,0 +1,254 @@
+[
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "started": 1792691127.6551793,
+    "ended": 1792691127.6596098,
+    "log": "final-v8/22.20.0-00.log",
+    "logSha256": "1506cdf8613ebb6c1198a9587c5e1b708b3e779b139a0b59f937efa199e2ecae"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "started": 1792691127.6597831,
+    "ended": 1792691131.7406514,
+    "log": "final-v8/22.20.0-01.log",
+    "logSha256": "2c2d8a1d2eda7a0d45a94b39e68ef699eba3607c1bbe2d9707ba63006c8d78e0"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "npm",
+      "run",
+      "generate:check"
+    ],
+    "exit": 0,
+    "started": 1792691131.741198,
+    "ended": 1792691131.9715211,
+    "log": "final-v8/22.20.0-02.log",
+    "logSha256": "3584a4c95cc03c8a78ea657287da2a579dc8ad3a16b58ac7e9b44150b1e97ba4"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "exit": 0,
+    "started": 1792691131.9718533,
+    "ended": 1792691137.4867694,
+    "log": "final-v8/22.20.0-03.log",
+    "logSha256": "93cf3f54b1955c04651cd5500a2405d05a96520cf5931de533eff35004f153ee"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "node",
+      "scripts/run-tests.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/transport.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-actor-lifecycle.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs",
+      "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+      "tests/workflow-efficiency.test.mjs",
+      "tests/incremental-skill.test.mjs"
+    ],
+    "exit": 0,
+    "started": 1792691137.4873495,
+    "ended": 1792691313.3147755,
+    "log": "final-v8/22.20.0-04.log",
+    "logSha256": "9e97d159e249db2720a5e6da170ac9fa24c1c901891ead4a3bc6c83a99d4a39a"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "node",
+      "--test",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-safety.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/capture.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-portions.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/retrieval-delivery.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-startup.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/fault-delivery.test.mjs"
+    ],
+    "exit": 0,
+    "started": 1792691313.3162816,
+    "ended": 1792691313.391299,
+    "log": "final-v8/22.20.0-05.log",
+    "logSha256": "6b0f1c707fe86a1db5a2a5f85c1f7d05308db2626eaef37895d2576cec30542f"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "node",
+      "scripts/qualify-product-workflows.mjs",
+      "--run",
+      "--skip-model-trials"
+    ],
+    "exit": 0,
+    "started": 1792691313.3917427,
+    "ended": 1792691327.2832897,
+    "log": "final-v8/22.20.0-06.log",
+    "logSha256": "1702724cd5dba3a52aec933fe18e95668403bf5fffdef7bcbe5c42a7545f79c9"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "npm",
+      "run",
+      "validate"
+    ],
+    "exit": 0,
+    "started": 1792691327.2836864,
+    "ended": 1792691327.4659324,
+    "log": "final-v8/22.20.0-07.log",
+    "logSha256": "b5e8bc9b32a5c710bd95811f9c629f254da48fedd00a5086b618687a39cf2f95"
+  },
+  {
+    "runtime": "22.20.0",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "started": 1792691327.4665015,
+    "ended": 1792691327.486129,
+    "log": "final-v8/22.20.0-08.log",
+    "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "started": 1792691327.48655,
+    "ended": 1792691327.4894385,
+    "log": "final-v8/24.14.0-09.log",
+    "logSha256": "66067cd148ad9719b8fd48e9e233a4dcfa29b9a5e449f9463f9f6b0fb2c58ada"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "started": 1792691327.4898076,
+    "ended": 1792691331.360866,
+    "log": "final-v8/24.14.0-10.log",
+    "logSha256": "2c2d8a1d2eda7a0d45a94b39e68ef699eba3607c1bbe2d9707ba63006c8d78e0"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "npm",
+      "run",
+      "generate:check"
+    ],
+    "exit": 0,
+    "started": 1792691331.3612654,
+    "ended": 1792691331.5550637,
+    "log": "final-v8/24.14.0-11.log",
+    "logSha256": "3584a4c95cc03c8a78ea657287da2a579dc8ad3a16b58ac7e9b44150b1e97ba4"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "exit": 0,
+    "started": 1792691331.5557566,
+    "ended": 1792691336.341732,
+    "log": "final-v8/24.14.0-12.log",
+    "logSha256": "93cf3f54b1955c04651cd5500a2405d05a96520cf5931de533eff35004f153ee"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "node",
+      "scripts/run-tests.mjs"
+    ],
+    "exit": 0,
+    "started": 1792691336.342481,
+    "ended": 1792691519.836818,
+    "log": "final-v8/24.14.0-13.log",
+    "logSha256": "20e2ac06c97de0070af2937f78f026abf3698955a4087712787e10e183acac6e"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "node",
+      "--test",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-safety.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/capture.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-portions.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/retrieval-delivery.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/audit-startup.test.mjs",
+      "docs/evidence/workflow-efficiency-followup/sources/fault-delivery.test.mjs"
+    ],
+    "exit": 0,
+    "started": 1792691519.838017,
+    "ended": 1792691519.9158545,
+    "log": "final-v8/24.14.0-14.log",
+    "logSha256": "4990b784d933f5a923d1d507340bb9d00bd19d3365e283e55acc067922b50b44"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "node",
+      "scripts/qualify-product-workflows.mjs",
+      "--run",
+      "--skip-model-trials"
+    ],
+    "exit": 0,
+    "started": 1792691519.9162707,
+    "ended": 1792691531.3411572,
+    "log": "final-v8/24.14.0-15.log",
+    "logSha256": "4a6f88a8f93b23b4c2179129c08fa33fd7b43b31bf69a803dc9a10550d4e1f87"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "npm",
+      "run",
+      "validate"
+    ],
+    "exit": 0,
+    "started": 1792691531.34167,
+    "ended": 1792691531.539421,
+    "log": "final-v8/24.14.0-16.log",
+    "logSha256": "b5e8bc9b32a5c710bd95811f9c629f254da48fedd00a5086b618687a39cf2f95"
+  },
+  {
+    "runtime": "24.14.0",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "started": 1792691531.5401082,
+    "ended": 1792691531.5567575,
+    "log": "final-v8/24.14.0-17.log",
+    "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

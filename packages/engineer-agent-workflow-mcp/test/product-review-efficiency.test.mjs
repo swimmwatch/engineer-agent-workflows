@@ -15,6 +15,103 @@ import { fixture, snapshot, expectCode, recordItem, recordConsistency, digest, b
 const valueFor = (portion) => ({ item_key: portion.item_key, verdict: "covered", explanation: "Synthetic block evidence.",
   counterexample: null, evidence_refs: [], evidence_sources: [], read_receipt: portion.read_receipt, inherited_from: null });
 
+test("pending stdio scan consumes Unicode continuations, skips acknowledged items and terminates empty", async (t) => {
+  const f = await fixture(t, "prd");
+  await replaceArtifactDocument(f, "prd", `# PRD\n\n### PRD-0001: Unicode\n\n${"🙂".repeat(18000)}\n`);
+  const harness = createSharedStdioHarness({
+    entrypoint: fileURLToPath(new URL("../dist/main.js", import.meta.url)), name: "pending-scan",
+    createClient: async ({ entrypoint, name }) => {
+      const client = new Client({ name, version: "1" });
+      await client.connect(new StdioClientTransport({ command: process.execPath, args: [entrypoint], stderr: "pipe",
+        env: { ...process.env, EAW_PRODUCT_DATA_DIR: f.root } }));
+      return client;
+    },
+  });
+  t.after(() => harness.close());
+  let current = f.context;
+  const call = async (name, args = {}) => {
+    const raw = await harness.callTool({ name, arguments: { context: current, ...args } });
+    const response = raw.structuredContent ?? JSON.parse(raw.content.find((entry) => entry.type === "text").text);
+    assert.ok(Buffer.byteLength(JSON.stringify(raw)) <= 64 * 1024);
+    assert.ok(Buffer.byteLength(JSON.stringify(response)) <= 24 * 1024);
+    if (response.context) current = response.context;
+    return response;
+  };
+  const started = await call("product_review_start", { candidate_ref: f.candidateRef, mode: "full" });
+  assert.equal(started.error, undefined);
+  const input = { review_ref: started.result.review_ref };
+  assert.equal((await call("product_review_complete", input)).error.code, "PREREQUISITE_REQUIRED");
+  let index = started.result.next_item_index, retained = 0, empty = 0, continuations = 0;
+  const keys = new Set();
+  // Acknowledged suffix leaves the multi-portion element as the final pending item.
+  const suffix = [];
+  for (let itemIndex = 2; itemIndex < started.result.total_items; itemIndex++) {
+    const item = await call("product_review_get", { ...input, item_index: itemIndex });
+    assert.equal(item.error, undefined);
+    assert.equal(item.result.complete, true);
+    suffix.push(valueFor(item.result)); keys.add(item.result.item_key);
+  }
+  assert.ok(suffix.length > 0);
+  assert.equal((await call("product_review_record_batch", { ...input, items: suffix })).error, undefined);
+  while (index !== null) {
+    const page = await call("product_review_get_batch", { ...input, start_index: index, pending_only: true, limit: 20 });
+    assert.equal(page.error, undefined);
+    const verdicts = [];
+    for (const item of page.result.items) {
+      let portion = item.portion, text = portion.text;
+      assert.equal(keys.has(portion.item_key), false, "Acknowledged items must not be delivered again.");
+      if (!portion.complete) {
+        assert.equal(page.result.next_item_index, item.item_index);
+        retained++;
+        assert.equal((await call("product_review_record_batch", { ...input, items: [valueFor(portion)] })).error.code, "INVALID_INPUT");
+      }
+      while (!portion.complete) {
+        const next = await call("product_review_get", { ...input, item_index: item.item_index, cursor: portion.next_cursor });
+        assert.equal(next.error, undefined);
+        portion = next.result; text += portion.text; continuations++;
+      }
+      if (text.includes("🙂")) assert.equal(text.match(/🙂/gu).length, 18000);
+      keys.add(portion.item_key); verdicts.push(valueFor(portion));
+    }
+    if (verdicts.length) {
+      assert.equal((await call("product_review_record_batch", { ...input, items: verdicts })).error, undefined);
+    } else {
+      assert.deepEqual(page.result.items, []);
+      assert.equal(page.result.next_item_index, null); empty++;
+    }
+    index = page.result.next_item_index;
+  }
+  assert.ok(retained > 0 && continuations > 0);
+  assert.equal(empty, 1);
+  assert.equal(keys.size, started.result.total_items);
+  assert.equal((await call("product_review_complete", input)).error.code, "PREREQUISITE_REQUIRED");
+  let consistency = await call("product_review_consistency_get", input);
+  while (!consistency.result.complete) consistency = await call("product_review_consistency_get", { ...input, cursor: consistency.result.next_cursor });
+  assert.equal((await call("product_review_consistency_record", { ...input, read_receipt: consistency.result.read_receipt,
+    verdict: "covered", explanation: "Synthetic consistency judgment.", counterexample: null })).error, undefined);
+  assert.equal((await call("product_review_complete", input)).result.coverage_status, "reviewed");
+});
+
+test("completeReview resumes an acknowledged suffix and finds a gap in the final Unicode portion", async (t) => {
+  const f = await fixture(t, "prd");
+  await replaceArtifactDocument(f, "prd", `# PRD\n\n### PRD-0001: Unicode\n\n${"🙂".repeat(18000)}\nFINAL_GAP_MARKER\n`);
+  const started = await review.startProductReview({ ...f, candidateRef: f.candidateRef, mode: "full" });
+  const args = { root: f.root, context: started.context, reviewRef: started.result.review_ref };
+  const suffix = [];
+  for (let itemIndex = 2; itemIndex < started.result.total_items; itemIndex++) {
+    const item = await review.readProductReviewItem({ ...args, itemIndex });
+    assert.equal(item.result.complete, true);
+    suffix.push(valueFor(item.result));
+  }
+  assert.ok(suffix.length > 0);
+  const recorded = await review.recordProductVerdictBatch({ ...args, items: suffix });
+  const result = await completeReview(f, recorded.context, { gapText: "FINAL_GAP_MARKER" });
+  assert.equal(result.reviewRef, started.result.review_ref);
+  assert.equal(result.gapKey, "element:prd:PRD-0001");
+  assert.equal(result.status.recorded_items, started.result.total_items);
+  assert.equal(result.status.coverage_status, "gaps");
+});
+
 test("product review exposes bounded batch tools", () => {
   for (const name of ["product_review_get_batch", "product_review_record_batch"]) {
     assert.ok(workflowTools.find((tool) => tool.name === name), name);

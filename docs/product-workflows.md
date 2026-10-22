@@ -655,6 +655,94 @@ to `product_review_start` in `recheck` mode. Legacy inputs without adequate
 history use full review. `product_review_get_batch.pending_only` omits already
 recorded judgments; explicit rereads and reviewer scope expansion remain valid.
 
+### Serial pending-only progression
+
+In an uninterrupted serial review, the existing read and acknowledged record
+responses are sufficient to advance. `product_review_status` is not needed after
+each successful batch merely to find another item. The consumer loop in
+[`benchmark-roadmap-retirement.mjs`](../scripts/benchmark-roadmap-retirement.mjs)
+illustrates this progression; its scripted verdicts are not a reviewer example.
+
+1. Begin with `product_review_start.result.next_item_index`. While it is not
+   `null`, pass it as `start_index` to `product_review_get_batch` with
+   `pending_only: true`, the same `review_ref` and the latest returned context.
+2. For every returned item, retain its `item_index` and append `portion.text`.
+   If `portion.complete` is false, call `product_review_get` with that item index
+   and its exact `next_cursor` as `cursor`, preserving source and representation.
+   Continue until the complete item supplies its current `read_receipt`.
+3. If the batch contains items, judge the complete blocks and call
+   `product_review_record_batch` with their final receipts. Require successful
+   acknowledgement before advancing. For `items: []`, skip the record call;
+   a terminal page proceeds directly to consistency and completion below.
+4. Use the **batch response's** `result.next_item_index` for the next scan, even
+   when it equals the previous index. Do not increment it yourself or substitute
+   the next index embedded in an individual portion.
+
+The batch index describes the scan at read time, before subsequent verdict
+writes. For example, a partial item at index 7 retains `next_item_index: 7`.
+After finishing its continuations and recording its verdict, scanning again from
+7 with `pending_only: true` skips that now-recorded item. This is progress, not
+an infinite loop. Already-recorded and inherited verdicts are skipped as well.
+A final scan can return `items: []` and `next_item_index: null`; that terminal
+scan is a legitimate cost, not a reason to add a progress-status poll.
+
+A completely delivered batch response does not imply complete item text.
+`product_review_get_batch` has no page-level `complete` field: inspect each
+`item.portion.complete`. Separately, `product_sources_get_batch.complete` ends
+its batch pagination, while each source's own continuations still matter, as
+described under [Artifact and version lifecycle](#artifact-and-version-lifecycle).
+An empty or terminal pending page ends only item traversal. Complete the
+`product_review_consistency_get` continuations, record a fresh whole-artifact
+judgment with `product_review_consistency_record`, and call
+`product_review_complete`. None of these checks is replaced by a scan index.
+
+### Reusing exact input and validation
+
+The workflow's authoritative rules remain in
+[`workflow-state-access.md`](../shared/references/workflow-state-access.md),
+[`implementation-context.md`](../shared/references/implementation-context.md)
+and the review roles of
+[`product-workflow.md`](../shared/references/product-workflow.md). The guide
+explains their boundaries; it does not define a second workflow or a server cache.
+
+An actor can reuse exact text only while it still holds every required portion
+in its current context and the owning project/product, selected version or
+generation, element/decision revision and selection identity still match.
+Matching text or a familiar element name alone is insufficient. First delivery,
+changed inputs, lost exact text, missing portions and an independent reviewer's
+own consumption require the applicable exact read. Reusing text never suppresses
+server integrity checks or grants execution authority. If supported retrieval
+cannot recover exact text, dependent work stops; repeated encodings or alternate
+renderings are not recovery.
+
+A passing validation is reusable only for unchanged actual inputs, relevant
+state, purpose and owning transition. Equal verdicts do not make different
+checks interchangeable. The owning start/completion operation may already
+perform a check; only a demonstrably duplicate call can be omitted. Pinned
+specification and technical-agreement checks at entry and completion, required
+local tests, frozen-task checks and distinct post-mutation read-back remain.
+Complete local verification and restore PROVE mutations before final readiness
+checks. A changed source, local input or task state, overlap, conflict or resume
+requires the applicable fresh validation; failure or unavailable evidence keeps
+dependent work incomplete. Cheap prerequisite discovery precedes bulk reading,
+and preserving tracked, staged and untracked work remains mandatory.
+
+### Recovery and observers still need status
+
+The serial optimization assumes one uninterrupted reviewer with acknowledged
+writes. After a lost acknowledgement, interruption, scope expansion, conflict
+or concurrent change, that assumption no longer holds. Use the existing owning
+status/recovery path to establish saved effects and current coverage before
+resuming; do not advance from an old scan index or blindly resend a mutation.
+Independent concurrent observers and gates needing authoritative coverage still
+use `product_review_status`. Logical sessions retain `product_session_status`
+and explicit `product_session_resume`; uncertain activation retains
+`product_amendment_activation_status` and its exact-request rules below.
+These observations and required post-mutation read-back have a different purpose
+from redundant progress polling. They are not removed or counted as avoidable
+advancement calls. See [Logical sessions and complete delivery](#logical-sessions-and-complete-delivery)
+and [Recovery and safety](#recovery-and-safety) for the unchanged retry boundaries.
+
 A corrections-only followup can map changed document prose through exact
 `fixes[].changed_item_keys` when a recorded `__consistency__` finding owns the
 correction. Element changes still use `changed_refs`. Always read corrected
@@ -683,3 +771,33 @@ not extend logical-session support to activation or introduce lock removal.
 measures the full-review baseline. Replace `full` with `recheck` for bounded
 inheritance and `stdio` with `direct` to separate native scenario execution from
 transport overhead. Outputs use synthetic judgments, not semantic certification.
+
+### Qualification and measurement limits
+
+The [workflow-efficiency report](evidence/workflow-efficiency-followup.md), including
+its linked post-review reassessment, owns measured counts, timings, exact inputs
+and failed/corrective run identities. Keep those transient results there rather
+than treating a number in this guide as a performance promise. The response-budget
+correction predates this optimization and remains present in both compared variants.
+
+| Evidence | What it establishes | What it does not establish |
+| --- | --- | --- |
+| Matched public stdio fixtures | Protocol coverage, complete-response bytes, fewer public operations and absence of advancement-only status polling | Semantic correctness of scripted verdicts or independent reviewer comprehension |
+| Controlled actual Codex agent captures | Observed source consumption, readiness/recovery behavior and instruction-delivery costs for the recorded model, settings and fixtures | Universal live latency improvement, all future agent behavior or ordinary external-compressor qualification |
+| Linux checks on Node.js 22.20.0 and 24.14.0 | The recorded checks for the exact qualified implementation snapshot | Native macOS/Windows execution; those platforms are excluded from this workstream, not passed |
+| Generated Codex/Claude Code bundle checks | Structural host isolation and matching generated artifacts | Live Claude Code behavior |
+
+The earlier native-platform obligations described under
+[Proof limits and compatibility](#proof-limits-and-compatibility) belong to a
+separate workstream; this Linux-only qualification does not close them.
+Controlled fault injection changes delivery conditions, not the agent's choices,
+and simulated fixture answers are not human consent. Receipts alone do not prove
+model consumption after external compression; that claim needs observed exact
+delivery to the relevant actor.
+
+Timing separates fixture/server wall time, summed tool intervals and their union
+(overlap counted once). Unassigned wall time is not measured reasoning time;
+unavailable model-stage, token or human-wait measurements remain unavailable,
+not zero. Fewer calls or smaller instruction input can coexist with a slower
+individual run. Historical failures remain failures even when a later candidate
+passes; use the linked reassessment when interpreting startup-order outcomes.

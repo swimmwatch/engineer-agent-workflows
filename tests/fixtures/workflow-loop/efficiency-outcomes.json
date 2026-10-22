@@ -1,0 +1,117 @@
+{
+  "sources": [
+    {
+      "id": "access",
+      "owner": "fixture/spec",
+      "version": "v1",
+      "revision": 1,
+      "selection": "access",
+      "portions": 1,
+      "trigger": "always"
+    },
+    {
+      "id": "execution",
+      "owner": "fixture/spec",
+      "version": "v1",
+      "revision": 1,
+      "selection": "execution",
+      "portions": 1,
+      "trigger": "always"
+    },
+    {
+      "id": "requirement",
+      "owner": "fixture/spec",
+      "version": "v1",
+      "revision": 1,
+      "selection": "requirement",
+      "portions": 1,
+      "trigger": "always",
+      "requiresReceipt": true
+    }
+  ],
+  "prerequisites": [
+    "bundle",
+    "git",
+    "runner"
+  ],
+  "triggers": [],
+  "changes": [
+    {
+      "id": "binding",
+      "kind": "native",
+      "overlap": false,
+      "protectedLoss": false,
+      "before": "a",
+      "after": "b",
+      "expectedBefore": "a",
+      "expectedAfter": "b"
+    },
+    {
+      "id": "directory",
+      "kind": "directory-metadata",
+      "overlap": false,
+      "protectedLoss": false,
+      "contentChanged": false
+    },
+    {
+      "id": "external",
+      "kind": "external",
+      "overlap": false,
+      "protectedLoss": false
+    }
+  ],
+  "actions": [
+    {
+      "id": "edit",
+      "actor": "implementer",
+      "context": "cold",
+      "sources": [
+        "access",
+        "execution",
+        "requirement"
+      ],
+      "checks": [
+        {
+          "purpose": "specification",
+          "owner": "entry",
+          "input": "source-v1"
+        },
+        {
+          "purpose": "agreement",
+          "owner": "entry",
+          "input": "proposal-v1"
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "actor": "implementer",
+      "context": "cold",
+      "sources": [
+        "requirement"
+      ],
+      "checks": [
+        {
+          "purpose": "specification",
+          "owner": "completion",
+          "input": "source-v1"
+        },
+        {
+          "purpose": "agreement",
+          "owner": "completion",
+          "input": "proposal-v1"
+        },
+        {
+          "purpose": "local-tests",
+          "owner": "completion",
+          "input": "code-v1"
+        },
+        {
+          "purpose": "read-back",
+          "owner": "completion",
+          "input": "state-v2"
+        }
+      ]
+    }
+  ]
+}

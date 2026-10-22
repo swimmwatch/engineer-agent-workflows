@@ -70,6 +70,11 @@ const PRODUCT_WORKFLOW_VERIFIER = "scripts/verify-product-workflow.mjs";
 const MANUAL_VERIFIER = "scripts/verify-engineering-manual.mjs";
 const MANUAL_MARKER = "engineering-manual.sha256";
 const TEST_DISCIPLINE_MARKER = "test-discipline.sha256";
+const WORKFLOW_CONTEXT_REFERENCES = Object.freeze([
+  "references/workflow-state-access.md",
+  "references/implementation-context.md",
+]);
+const WORKFLOW_CONTEXT_MARKER = "workflow-context.sha256";
 const CONTRACT_ASSETS = Object.freeze([
   "references/yaml-contracts.md",
   "schemas/catalog.schema.json",
@@ -92,12 +97,15 @@ const MANUAL_SKILL_ASSETS = Object.freeze([
   `${SHARED_ROOT}/${TEST_DISCIPLINE_MARKER}`,
   `${SHARED_ROOT}/${TEST_DISCIPLINE_REFERENCE}`,
   `${SHARED_ROOT}/${MANUAL_VERIFIER}`,
+  `${SHARED_ROOT}/${WORKFLOW_CONTEXT_MARKER}`,
+  ...WORKFLOW_CONTEXT_REFERENCES.map(asset => `${SHARED_ROOT}/${asset}`),
   ...CONTRACT_ASSETS.map(asset => `${SHARED_ROOT}/${asset}`),
 ]);
 const PRODUCT_WORKFLOW_SKILL_ASSETS = Object.freeze([
   `${SHARED_ROOT}/${PRODUCT_WORKFLOW_MARKER}`,
   `${SHARED_ROOT}/${PRODUCT_WORKFLOW_REFERENCE}`,
   `${SHARED_ROOT}/${PRODUCT_WORKFLOW_VERIFIER}`,
+  ...WORKFLOW_CONTEXT_REFERENCES.map(asset => `${SHARED_ROOT}/${asset}`),
 ]);
 const PRODUCT_TASK_SKILLS = Object.freeze([
   "spec-driven-development",
@@ -251,6 +259,7 @@ JSON.stringify([
         MANUAL_VERIFIER,
       ...CONTRACT_ASSETS,
       ...MCP_ONLY_ASSETS,
+    ...WORKFLOW_CONTEXT_REFERENCES,
     ].sort((left, right) => left.localeCompare(right, "en")))
   ) {
     throw new ValidationError(
@@ -293,6 +302,14 @@ JSON.stringify([
     [TEST_DISCIPLINE_REFERENCE, Buffer.from(testDiscipline)],
     [MANUAL_VERIFIER, Buffer.from(verifier)],
   ]);
+  for (const asset of WORKFLOW_CONTEXT_REFERENCES) {
+    const bytes = await readRegularFile(root, `${SHARED_ROOT}/${asset}`);
+    if (bytes.length === 0 || bytes.at(-1) !== 0x0a) {
+      throw new ValidationError("E_INVALID_MANIFEST", "workflow context is unavailable or invalid", { relativePath: asset });
+    }
+    sharedManual.set(asset, bytes);
+  }
+  sharedManual.set(WORKFLOW_CONTEXT_MARKER, workflowContextMarker(sharedManual));
   for (const asset of CONTRACT_ASSETS) {
     sharedManual.set(asset, await readRegularFile(root, `${SHARED_ROOT}/${asset}`));
   }
@@ -436,7 +453,9 @@ function productWorkflowMarker(source, catalog, sharedManual, callerName, host) 
         ? renderCodexSkillDocument(entry, skill.document, relativePath)
         : render(skill.document, relativePath);
       const references = (PRODUCT_WORKFLOW_SKILL_REFERENCES[name] ?? []).map(referencePath => {
-        const source = skill.assets.get(referencePath);
+        const source = referencePath.startsWith("shared/")
+          ? sharedManual.get(referencePath.slice("shared/".length))
+          : skill.assets.get(referencePath);
         if (source === undefined) throw new ValidationError(
           "E_INVALID_MANIFEST", "product workflow reference is unavailable",
           { relativePath: `skills/${name}/${referencePath}` },
@@ -447,6 +466,14 @@ function productWorkflowMarker(source, catalog, sharedManual, callerName, host) 
     });
   const digest = productWorkflowDigest(protocol, profiles, skillDocuments);
   return Buffer.from(`${digest}\n`, "ascii");
+}
+
+function workflowContextMarker(sharedManual) {
+  const hash = crypto.createHash("sha256");
+  for (const relativePath of WORKFLOW_CONTEXT_REFERENCES) {
+    hash.update(relativePath).update("\0").update(sharedManual.get(relativePath)).update("\0");
+  }
+  return Buffer.from(`${hash.digest("hex")}\n`, "ascii");
 }
 
 function productProtocolMarker(sharedManual, host, relativePath) {
@@ -481,7 +508,7 @@ export function buildGeneratedFiles(source) {
   const release = validateReleaseMetadata(source.release);
   if (
     !(source.sharedManual instanceof Map) ||
-    source.sharedManual.size !== 7 + CONTRACT_ASSETS.length ||
+    source.sharedManual.size !== 8 + CONTRACT_ASSETS.length + WORKFLOW_CONTEXT_REFERENCES.length ||
     [...source.sharedManual].some(
       ([relativePath, bytes]) =>
         ![
@@ -492,6 +519,8 @@ export function buildGeneratedFiles(source) {
         MANUAL_VERIFIER,
           PRODUCT_WORKFLOW_REFERENCE,
           PRODUCT_WORKFLOW_VERIFIER,
+          WORKFLOW_CONTEXT_MARKER,
+          ...WORKFLOW_CONTEXT_REFERENCES,
         ...CONTRACT_ASSETS,
         ].includes(relativePath) || !(bytes instanceof Uint8Array),
     )
@@ -533,6 +562,15 @@ export function buildGeneratedFiles(source) {
       "E_INVALID_MANIFEST",
       "release shared resources do not match the manual digest",
     );
+  }
+  for (const resource of WORKFLOW_CONTEXT_REFERENCES) {
+    const bytes = sharedManual.get(resource);
+    if (bytes.length === 0 || bytes.at(-1) !== 0x0a) {
+      throw new ValidationError("E_INVALID_MANIFEST", "workflow context is invalid");
+    }
+  }
+  if (!sharedManual.get(WORKFLOW_CONTEXT_MARKER).equals(workflowContextMarker(sharedManual))) {
+    throw new ValidationError("E_INVALID_MANIFEST", "workflow context does not match its digest");
   }
   const files = new Map();
   for (const [index, skill] of source.skills.entries()) {

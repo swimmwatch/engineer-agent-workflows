@@ -1,0 +1,16 @@
+[
+  {
+    "id": "missing-tool-candidate-2",
+    "bulkInstructionReadCount": 0,
+    "codeReadCount": 0,
+    "codeUnchanged": true,
+    "rawSha256": "cee0cf7cb6cb8032297008ae73f616ad26f081f4b6e79c8d3f23c3fb61ff1969"
+  },
+  {
+    "id": "missing-agreement-candidate-2",
+    "bulkInstructionReadCount": 0,
+    "codeReadCount": 0,
+    "codeUnchanged": true,
+    "rawSha256": "2baa40f3581a9b0c392c4e31de752ef85ea5f84fe9373b5101f242bfec965b84"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "boundary": "entry",
+    "removed": "Do not reread supplied SKILL.md or references; retrieve gaps or stop; never rerender.",
+    "exit": 1,
+    "detected": true
+  },
+  {
+    "boundary": "loss",
+    "removed": "Unexplained deletion or loss of protected content blocks edits and completion,",
+    "exit": 1,
+    "detected": true
+  },
+  {
+    "boundary": "completion-order",
+    "removed": "Finish all required local checks and restore PROVE mutations before final",
+    "exit": 1,
+    "detected": true
+  }
+]

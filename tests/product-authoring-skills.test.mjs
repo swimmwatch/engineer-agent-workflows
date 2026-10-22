@@ -83,10 +83,11 @@ test("P14 registers explicit Idea and Product Definition ownership", async () =>
 });
 
 test("P14 skills preserve the ready chain and concrete MCP workflow", async () => {
-  const [idea, definition, protocol] = await Promise.all([
+  const [idea, definition, protocol, access] = await Promise.all([
     read("skills/idea-refine/SKILL.md"),
     read("skills/product-definition/SKILL.md"),
     read("shared/references/product-workflow.md"),
+    read("shared/references/workflow-state-access.md"),
   ]);
 
   assert.match(idea, /Standalone mode/u);
@@ -104,7 +105,10 @@ test("P14 skills preserve the ready chain and concrete MCP workflow", async () =
 
   for (const document of [idea, definition, protocol]) {
     assert.doesNotMatch(document, /mcp__engineer_agent_workflow/u);
-    assert.match(document, /returned context/iu);
+    if (document === protocol) {
+      assert.match(protocol, /workflow-state-access\.md/iu);
+      assert.match(access, /returned context/iu);
+    } else assert.match(document, /returned context/iu);
     assert.match(document, /product_candidate_check/u);
     assert.match(document, /product_review_start/u);
     assert.match(document, /independent reviewer/iu);

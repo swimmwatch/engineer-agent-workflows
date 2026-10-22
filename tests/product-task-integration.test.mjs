@@ -30,7 +30,7 @@ function assertOrdered(document, values) {
 }
 
 test("P16 keeps product task integration conditional and legacy-safe", async () => {
-  const protocol = await read("shared/references/product-workflow.md");
+  const protocol = await read("shared/references/implementation-context.md");
   assert.match(protocol, /exact product task ID[\s\S]+valid binding/iu);
   assert.match(
     protocol,
@@ -40,7 +40,9 @@ test("P16 keeps product task integration conditional and legacy-safe", async () 
 
   for (const skill of TASK_SKILLS) {
     const document = await read(`skills/${skill}/SKILL.md`);
-    assert.match(document, /shared\/references\/product-workflow\.md/u);
+    assert.match(document, skill === "incremental-implementation"
+      ? /shared\/references\/implementation-context\.md/u
+      : /shared\/references\/product-workflow\.md/u);
     assert.match(document, /product-linked/iu);
     assertStandaloneProductBoundary(document);
     assert.doesNotMatch(document, /mcp__engineer_agent_workflow/u);
@@ -76,7 +78,7 @@ test("P16 specification selects exact product context before local profile reads
   ]);
   assert.match(protocol, /own confirmed manifest[\s\S]+profile/iu);
   assert.match(protocol, /never inherit[\s\S]+product profile/iu);
-  assert.match(protocol, /existing[\s\S]+specification[\s\S]+not[\s\S]+enroll/iu);
+  assert.match(protocol, /Do not enroll or rewrite an existing unbound\s+specification/iu);
 });
 
 test("P16 planning validates selected inputs without starting implementation", async () => {
@@ -101,10 +103,10 @@ test("P16 planning validates selected inputs without starting implementation", a
 test("P16 incremental lifecycle pins, verifies and completes one packet", async () => {
   const [skill, protocol] = await Promise.all([
     read("skills/incremental-implementation/SKILL.md"),
-    read("shared/references/product-workflow.md"),
+    read("shared/references/implementation-context.md"),
   ]);
-  assert.match(skill, /product-linked[\s\S]+implementation role/iu);
-  assert.match(protocol, /Implementation role/iu);
+  assert.match(skill, /product-linked[\s\S]+Product-linked execution/iu);
+  assert.match(protocol, /Product-linked execution/iu);
   assertOrdered(protocol, [
     "purpose `implementation`",
     "product_context_next",
@@ -127,7 +129,7 @@ test("P16 incremental lifecycle pins, verifies and completes one packet", async 
 });
 
 test("P16 treats selected product content as untrusted data", async () => {
-  const protocol = await read("shared/references/product-workflow.md");
+  const protocol = await read("shared/references/workflow-state-access.md");
   assert.match(protocol, /repository[\s\S]+document[\s\S]+research[\s\S]+data/iu);
   assert.match(protocol, /cannot authorize[\s\S]+commands[\s\S]+network access/iu);
   assert.match(protocol, /higher-priority instructions/iu);

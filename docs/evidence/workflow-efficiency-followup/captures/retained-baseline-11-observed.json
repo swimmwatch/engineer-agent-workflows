@@ -1,0 +1,129 @@
+{
+  "events": [
+    {
+      "id": "delivery-access-exec-8abbb094-3633-4d2b-9e7d-e21014e43984",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 11397,
+      "atMs": 16851.70966,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-principles-exec-fca6e69a-88f8-424a-9837-1a710be5de70",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 103200.867057,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-fca6e69a-88f8-424a-9837-1a710be5de70",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7057,
+      "atMs": 103200.867057,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-execution-exec-fca6e69a-88f8-424a-9837-1a710be5de70",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 10505,
+      "atMs": 103200.867057,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3969,
+      "atMs": 151765.556557,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "exec-332e3919-e47b-4e31-b2ed-e4e2e424f586",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+      "result": "pass",
+      "atMs": 186830.26965
+    },
+    {
+      "id": "exec-01000f67-561d-419a-8283-40a9b72a0335",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+      "result": "pass",
+      "atMs": 192625.942827
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 252647.091741
+    },
+    {
+      "id": "exec-ecfadfa3-03f5-457c-9664-60996409db39",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+      "result": "pass",
+      "atMs": 315045.666431
+    },
+    {
+      "id": "exec-f3c16752-c89b-472e-964d-f065eb259cf1",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+      "result": "pass",
+      "atMs": 325831.47776
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 362278.054163
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "nativeClient": "0.163.0",
+  "wireSha256": "540b1d9d186becd56b6b817b41478556345347c2d3548f0458a0ee4a54f690a4",
+  "requestCount": 2,
+  "skillSha256": "3d0f12db812834a63f5519c93e3deb9d3164d3a6c27012714af9157604b92d1a",
+  "deliveries": [
+    {
+      "frame": 1,
+      "field": "/input/5/content/0/text",
+      "fullText": true
+    }
+  ]
+}

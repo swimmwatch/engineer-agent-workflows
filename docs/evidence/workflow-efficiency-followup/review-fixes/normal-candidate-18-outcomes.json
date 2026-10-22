@@ -1,0 +1,104 @@
+{
+  "sources": [
+    {
+      "id": "entry",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "version": "d8a287847ada5f991fa4770c5ff70c45666630bf2a456328a0f9f26f57a78574",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "access",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/workflow-state-access.md",
+      "version": "a43f2457dfc9116331d8b4a9a4c9cca00927dd95fe4ae0f9a9840a330dc25baf",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "principles",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "version": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "discipline",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "version": "732a42dbcae122795c89cb7fec58c467b9d43e5d72ab9e54d87e78ee36dcc94b",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "execution",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/implementation-context.md",
+      "version": "b2cbbd3e3d26a4355375b6bea82e11f37d97c3364a3692817b2ae20b63872668",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    }
+  ],
+  "triggers": [],
+  "changes": [],
+  "prerequisites": [
+    "capture-integrity"
+  ],
+  "actions": [
+    {
+      "id": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab"
+        },
+        {
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab"
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab"
+        },
+        {
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab"
+        },
+        {
+          "purpose": "completion:order",
+          "owner": "capture-adapter",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab"
+        }
+      ]
+    }
+  ]
+}

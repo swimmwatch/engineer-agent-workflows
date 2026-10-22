@@ -40,7 +40,7 @@ test("implementation establishes scenario access before discovering packet state
       `plugins/${host}/engineer-agent-workflows/skills/incremental-implementation/SKILL.md`),
   ]) {
     const text = await readFile(new URL(`../${source}`, import.meta.url), "utf8");
-    const access = text.indexOf("shared/references/yaml-contracts.md");
+    const access = text.indexOf("shared/references/workflow-state-access.md");
     const discovery = text.search(/Read the\s+current checklist/);
     assert.ok(access >= 0 && discovery > access, source);
     assert.match(text.slice(access, discovery), /scenario MCP/);

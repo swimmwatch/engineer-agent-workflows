@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "id": "actor-0-0",
+      "kind": "delivery",
+      "actor": "actor-0",
+      "context": "actor-0",
+      "source": "requirement-actor-0",
+      "portion": 0,
+      "total": 2,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 69110.629507
+    },
+    {
+      "id": "actor-0-1",
+      "kind": "delivery",
+      "actor": "actor-0",
+      "context": "actor-0",
+      "source": "requirement-actor-0",
+      "portion": 1,
+      "total": 2,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 101648.378094
+    },
+    {
+      "id": "consume-actor-0",
+      "kind": "action",
+      "action": "actor-0",
+      "actor": "actor-0",
+      "context": "actor-0"
+    },
+    {
+      "id": "actor-1-0",
+      "kind": "delivery",
+      "actor": "actor-1",
+      "context": "actor-1",
+      "source": "requirement-actor-0",
+      "portion": 0,
+      "total": 2,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 195914.449301
+    },
+    {
+      "id": "consume-actor-1",
+      "kind": "action",
+      "action": "actor-1",
+      "actor": "actor-1",
+      "context": "actor-1"
+    }
+  ]
+}

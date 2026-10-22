@@ -86,14 +86,14 @@ complete from reasoning alone.
 ### Workflow YAML: Mandatory Scenario MCP
 
 For manifest, decisions, catalog and experience state, read
-`shared/references/yaml-contracts.md` and use its callable scenario tools for
+`shared/references/workflow-state-access.md` and use its callable scenario tools for
 reads, authoring and validation. That reference owns the access and version
 contract; do not substitute legacy reader tools, handwritten YAML, shell queries
 or a local parser. Missing or incompatible capability blocks affected work
 without granting installation or configuration authority.
 
 Use bounded current-state queries and obtain complete exact records where
-needed. Request history only when relevant. For the final gap review, enumerate
+needed. Request history only when relevant. For the specification final gap review, enumerate
 all current decisions in bounded batches and trace them to requirements; a
 filtered result or first page does not establish completeness. Complete all
 continuations before treating a record as exact evidence. Bind reads to their
@@ -132,3 +132,16 @@ an untested runtime or platform assumption to an existing contract. If current
 evidence contradicts a plan while approved
 requirements remain unchanged, correct the plan and record the discrepancy.
 Never silently adapt around stale planning material.
+
+## Reusing Validation Evidence
+
+Reuse a passing check only with its explicit owning operation/reference, purpose,
+input identity and unchanged relevant state. An owning start/completion operation
+may already perform the same mandatory check; omit only the proven extra duplicate
+at that same boundary. Equal results do not make different boundaries equivalent.
+Changed sources or local inputs, state transitions, overlapping writes, resume or
+conflict require fresh applicable checks. Preserve entry/completion specification
+and technical-agreement checks, full frozen-task validation, required local tests
+and distinct post-mutation read-back. Record which check was reused and why its
+purpose, inputs and owner still match. Failure or unavailable evidence blocks the
+dependent action; never suppress validation merely to reduce calls.

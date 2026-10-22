@@ -1,0 +1,34 @@
+{
+  "sources": [
+    {
+      "id": "requirement-actor-0",
+      "owner": "2931235744bee44c16e6c6042826dc63f3d4d137b04a19f2ec258954944c1bdb",
+      "version": "bcb0ef8953f5e998ae6191f4bff9d53ce78291b7ace2ae0b56947e053c9a99c1",
+      "revision": 1,
+      "selection": "PLAN-001",
+      "portions": 2
+    }
+  ],
+  "changes": [],
+  "triggers": [],
+  "actions": [
+    {
+      "id": "actor-0",
+      "actor": "actor-0",
+      "context": "actor-0",
+      "sources": [
+        "requirement-actor-0"
+      ],
+      "checks": []
+    },
+    {
+      "id": "actor-1",
+      "actor": "actor-1",
+      "context": "actor-1",
+      "sources": [
+        "requirement-actor-0"
+      ],
+      "checks": []
+    }
+  ]
+}

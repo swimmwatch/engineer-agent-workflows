@@ -1,0 +1,60 @@
+{
+  "baseline": {
+    "source": "baseline-startup-v2",
+    "files": {
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md": {
+        "bytes": 3969,
+        "sha256": "b4e835552d038bd4a011278a3b2cc1db4ea1dc05a33fa3baba25297ce2f1dd2e"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md": {
+        "bytes": 4199,
+        "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md": {
+        "bytes": 7057,
+        "sha256": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md": {
+        "bytes": 11397,
+        "sha256": "ff9451404e1da0cf9cca4d92dd11818b9e41d96e9ca35aa3827e2850298f1e89"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md": {
+        "bytes": 10505,
+        "sha256": "de2f84be49f302bb41cf71ebce4efcfb181c22a9221250f28b363c1510700760"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/product-workflow.md": {
+        "bytes": 17264,
+        "sha256": "43dca8ec153eb05097f49a182a7f2504a10314f76ee8764ea29e869befcfa185"
+      }
+    },
+    "standaloneBytes": 37127,
+    "productBytes": 54391
+  },
+  "candidate": {
+    "source": "candidate-entry-v8",
+    "files": {
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md": {
+        "bytes": 3975,
+        "sha256": "d8a287847ada5f991fa4770c5ff70c45666630bf2a456328a0f9f26f57a78574"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md": {
+        "bytes": 4199,
+        "sha256": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md": {
+        "bytes": 7916,
+        "sha256": "732a42dbcae122795c89cb7fec58c467b9d43e5d72ab9e54d87e78ee36dcc94b"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/workflow-state-access.md": {
+        "bytes": 8159,
+        "sha256": "a43f2457dfc9116331d8b4a9a4c9cca00927dd95fe4ae0f9a9840a330dc25baf"
+      },
+      "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/implementation-context.md": {
+        "bytes": 7129,
+        "sha256": "b2cbbd3e3d26a4355375b6bea82e11f37d97c3364a3692817b2ae20b63872668"
+      }
+    },
+    "standaloneBytes": 31378,
+    "productBytes": 31378
+  }
+}

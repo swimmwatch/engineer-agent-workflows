@@ -1,0 +1,113 @@
+{
+  "evidenceKind": "frozen-source-mapping",
+  "obligations": [
+    {
+      "id": "scenario-access-and-context",
+      "target": "shared/references/workflow-state-access.md",
+      "start": "Use the callable scenario tools of `engineer-agent-workflow-mcp` for all reads,\n",
+      "characters": 4721,
+      "sha256": "e2dced9cd186f2867d3d4e4fb7e36ec29b21bf3c07b41c34c1369f524f7d31dd",
+      "readers": [
+        "spec-driven-development",
+        "planning-and-task-breakdown",
+        "design-planning",
+        "incremental-implementation",
+        "product-workflows"
+      ],
+      "trigger": "applicable workflow entry"
+    },
+    {
+      "id": "specification-freshness",
+      "target": "shared/references/implementation-context.md",
+      "start": "## Specification Completeness Versions\n\nPlanning and incremental call `specifica",
+      "characters": 1524,
+      "sha256": "78480f2ca0b58d81b33251cc26c19a44ff9554909c62b6d3568fab46ca85c626",
+      "readers": [
+        "incremental-implementation"
+      ],
+      "trigger": "applicable workflow entry"
+    },
+    {
+      "id": "technical-readiness",
+      "target": "shared/references/implementation-context.md",
+      "start": "Implementation calls `planning_packet_check` with exact `packet_id`,\n`agreement_",
+      "characters": 548,
+      "sha256": "324969d4962e4b1e5ac17b9ccf9dca501e67a607283162457386fdd96ada5b3d",
+      "readers": [
+        "incremental-implementation"
+      ],
+      "trigger": "applicable workflow entry"
+    },
+    {
+      "id": "state-evidence-and-authority",
+      "target": "shared/references/workflow-state-access.md",
+      "start": "### Evidence Limits\n\n- A recorded answer is not independently authenticated user",
+      "characters": 1474,
+      "sha256": "144fa89b2104fef4a6bda43523b51ddce77dfa1f78553a62f49dbf82eefb31df",
+      "readers": [
+        "spec-driven-development",
+        "planning-and-task-breakdown",
+        "design-planning",
+        "incremental-implementation",
+        "product-workflows"
+      ],
+      "trigger": "applicable workflow entry"
+    },
+    {
+      "id": "product-access-and-trust",
+      "target": "shared/references/workflow-state-access.md",
+      "start": "Call `product_open` with the absolute workspace. Use the returned context from\ne",
+      "characters": 857,
+      "sha256": "86598cd9b7884b213147f05b2c723ed8ea1a11bd1ba5338070b8921aecb4a1dd",
+      "readers": [
+        "spec-driven-development",
+        "planning-and-task-breakdown",
+        "design-planning",
+        "incremental-implementation",
+        "product-workflows"
+      ],
+      "trigger": "exact product binding"
+    },
+    {
+      "id": "exact-product-binding",
+      "target": "shared/references/implementation-context.md",
+      "start": "Apply this section only when the invocation supplies an exact product task ID\nan",
+      "characters": 333,
+      "sha256": "4b36a43d8fbc976c75ae91d439a6f8260c3b592020237d219f12a19f41377582",
+      "readers": [
+        "incremental-implementation"
+      ],
+      "trigger": "exact product binding"
+    },
+    {
+      "id": "product-execution",
+      "target": "shared/references/implementation-context.md",
+      "start": "Call `product_context_prepare` with purpose `implementation`, the exact task ID\n",
+      "characters": 2756,
+      "sha256": "d881cf6b924293acf60c318476b61ec7f849233a8900883a47713d3230f7d253",
+      "readers": [
+        "incremental-implementation"
+      ],
+      "trigger": "exact product binding"
+    },
+    {
+      "id": "packet-ownership",
+      "target": "shared/references/implementation-context.md",
+      "start": "- Implementation begins only after explicit authorization for a specific\n  packe",
+      "characters": 384,
+      "sha256": "2ff83a637348ddce0fc72f0e6f90e1780d9b1c9b8034f9313f41f3ce16a7def9",
+      "readers": [
+        "incremental-implementation"
+      ],
+      "trigger": "applicable workflow entry"
+    }
+  ],
+  "baselineBytes": {
+    "skills/incremental-implementation/SKILL.md": 4085,
+    "shared/references/yaml-contracts.md": 11397,
+    "shared/references/engineering-principles.md": 4199,
+    "shared/references/test-discipline.md": 7057,
+    "skills/planning-and-task-breakdown/references/task-packets.md": 10505,
+    "shared/references/product-workflow.md": 17264
+  }
+}

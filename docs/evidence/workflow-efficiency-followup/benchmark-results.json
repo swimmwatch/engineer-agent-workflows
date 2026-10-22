@@ -1,0 +1,170 @@
+[
+  {
+    "id": "full-baseline-1",
+    "scenario": "full",
+    "variant": "baseline",
+    "exit": 0,
+    "calls": 761,
+    "response_bytes": 5823367,
+    "elapsed_ms": 146683.907584,
+    "advancement_status": 155,
+    "blocks": 212,
+    "delivered": 212,
+    "inherited": 0,
+    "consistencyPortions": 31,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "a018e221932a35cb3106c93cd94a942b27e42a945439c2bc33bfe1bf26113f5f"
+  },
+  {
+    "id": "full-candidate-2",
+    "scenario": "full",
+    "variant": "candidate",
+    "exit": 0,
+    "calls": 606,
+    "response_bytes": 5440937,
+    "elapsed_ms": 128791.85408800001,
+    "advancement_status": 0,
+    "blocks": 212,
+    "delivered": 212,
+    "inherited": 0,
+    "consistencyPortions": 31,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "0f2eb0620aea4d888b2b567717d17dc1895e7d394f74397bce537e34e76effb6"
+  },
+  {
+    "id": "full-candidate-3",
+    "scenario": "full",
+    "variant": "candidate",
+    "exit": 0,
+    "calls": 606,
+    "response_bytes": 5440937,
+    "elapsed_ms": 125300.96966099998,
+    "advancement_status": 0,
+    "blocks": 212,
+    "delivered": 212,
+    "inherited": 0,
+    "consistencyPortions": 31,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "a9a948ead4eeeaaa260d03955faec18d41ab28c55555a099266844aa3c9d9bc1"
+  },
+  {
+    "id": "full-baseline-4",
+    "scenario": "full",
+    "variant": "baseline",
+    "exit": 0,
+    "calls": 761,
+    "response_bytes": 5823367,
+    "elapsed_ms": 129725.891729,
+    "advancement_status": 155,
+    "blocks": 212,
+    "delivered": 212,
+    "inherited": 0,
+    "consistencyPortions": 31,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "f78146aaac32d370c76613ef683d65d5add118395782cb13d92c06b72a4dd0e4"
+  },
+  {
+    "id": "recheck-baseline-1",
+    "scenario": "recheck",
+    "variant": "baseline",
+    "exit": 0,
+    "calls": 195,
+    "response_bytes": 1382921,
+    "elapsed_ms": 84371.201421,
+    "advancement_status": 36,
+    "blocks": 212,
+    "delivered": 36,
+    "inherited": 176,
+    "consistencyPortions": 11,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "e0a3e26b692c4bfb7ba98ed33448e8987cb318e39c36e6107552bf83608efd99"
+  },
+  {
+    "id": "recheck-candidate-2",
+    "scenario": "recheck",
+    "variant": "candidate",
+    "exit": 0,
+    "calls": 159,
+    "response_bytes": 1283081,
+    "elapsed_ms": 71581.432793,
+    "advancement_status": 0,
+    "blocks": 212,
+    "delivered": 36,
+    "inherited": 176,
+    "consistencyPortions": 11,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "00062c3f22e4f0dcfc3839b24ada13b8f5e82b5dc6ecc0050a704e93b5bcd52e"
+  },
+  {
+    "id": "recheck-candidate-3",
+    "scenario": "recheck",
+    "variant": "candidate",
+    "exit": 0,
+    "calls": 159,
+    "response_bytes": 1283081,
+    "elapsed_ms": 66612.372573,
+    "advancement_status": 0,
+    "blocks": 212,
+    "delivered": 36,
+    "inherited": 176,
+    "consistencyPortions": 11,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "d80f709d1e12676fbfcd3910509c1834268aec82f54b89671bd6b2084d9c1d49"
+  },
+  {
+    "id": "recheck-baseline-4",
+    "scenario": "recheck",
+    "variant": "baseline",
+    "exit": 0,
+    "calls": 195,
+    "response_bytes": 1382921,
+    "elapsed_ms": 72030.70692499999,
+    "advancement_status": 36,
+    "blocks": 212,
+    "delivered": 36,
+    "inherited": 176,
+    "consistencyPortions": 11,
+    "correction": {
+      "blocks": 212,
+      "delivered": 1,
+      "inherited": 211,
+      "consistencyPortions": 8
+    },
+    "privateCaptureSha256": "45cda3405270ea35114680dd4e35857c5ba2b5ffa37c27362d9292763e559de8"
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 17579.935698,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-access-exec-4d76c307-ed8e-4ed9-abdc-a542bca114fe",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 33109.384134,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-35a5535f-98da-4bc8-a070-91ed24bcaef3",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "5419655e514f81e83ad021a88fb9582311da400405a2dddabdb16b2d462a0236",
+      "result": "pass",
+      "atMs": 57999.47667
+    },
+    {
+      "id": "exec-67fe2d83-ca61-4ef9-ae1b-b9ed76ed8ba0",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "5419655e514f81e83ad021a88fb9582311da400405a2dddabdb16b2d462a0236",
+      "result": "pass",
+      "atMs": 58044.673685
+    },
+    {
+      "id": "delivery-execution-exec-a0c82544-ced7-4c78-a897-a5bd3ad2ec6a",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 6817,
+      "atMs": 64746.89474,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-discipline-exec-b59d89d5-721b-45aa-952a-a378c5aa5c48",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7916,
+      "atMs": 64751.322996,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-principles-exec-80dd0266-4250-4956-97d4-6217010f6f1a",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 64753.450248,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 848916.624299
+    },
+    {
+      "id": "exec-2179f3d7-bb5e-4611-81f1-b559f862b9c0",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "5419655e514f81e83ad021a88fb9582311da400405a2dddabdb16b2d462a0236",
+      "result": "pass",
+      "atMs": 938720.482677
+    },
+    {
+      "id": "exec-5f6e1b76-d6cf-440c-b217-d73d05725982",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "5419655e514f81e83ad021a88fb9582311da400405a2dddabdb16b2d462a0236",
+      "result": "pass",
+      "atMs": 938786.113277
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 1031290.064939
+    }
+  ]
+}

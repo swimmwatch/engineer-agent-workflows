@@ -97,12 +97,13 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
     const start = await call("product_review_start", { context: current, candidate_ref: candidate, mode,
       ...(parent ? { parent_review_ref: parent, ...(parentCandidate ? { parent_candidate_ref: parentCandidate } : {}) } : {}),
       ...(fixes ? { fixes } : {}) });
-    let status = start.result, portions = 0, delivered = 0;
+    const status = start.result;
+    let nextIndex = status.next_item_index, portions = 0, delivered = 0;
     const atoms = new Set(); let atomOccurrences = 0;
     let proseKey;
-    while (status.next_item_index !== null) {
-      const page = await call("product_review_get_batch", { context: current, review_ref: status.review_ref, start_index: status.next_item_index, limit: 20,
-        ...(mode !== "full" ? { pending_only: true } : {}) });
+    while (nextIndex !== null) {
+      const page = await call("product_review_get_batch", { context: current, review_ref: status.review_ref, start_index: nextIndex, limit: 20,
+        pending_only: true });
       const verdicts = [];
       for (const item of page.result.items) {
         let portion = item.portion; portions++; let text = portion.text;
@@ -115,8 +116,8 @@ export async function benchmarkRetirement({ mode = "full", transport = "stdio", 
         verdicts.push({ item_key: portion.item_key, verdict: gap ? "gap" : "covered", explanation: "Synthetic current-source protocol measurement.",
           counterexample: gap ? `Summary still states ${elements} active tasks after task retirement.` : null, evidence_refs: [], evidence_sources: [], read_receipt: portion.read_receipt, inherited_from: null }); delivered++;
       }
-      await call("product_review_record_batch", { context: current, review_ref: status.review_ref, items: verdicts });
-      status = (await call("product_review_status", { context: current, review_ref: status.review_ref })).result;
+      if (verdicts.length) await call("product_review_record_batch", { context: current, review_ref: status.review_ref, items: verdicts });
+      nextIndex = page.result.next_item_index;
     }
     const representation = mode !== "full" ? { representation: "compact-v1" } : {};
     let portion = (await call("product_review_consistency_get", { context: current, review_ref: status.review_ref, ...representation })).result;

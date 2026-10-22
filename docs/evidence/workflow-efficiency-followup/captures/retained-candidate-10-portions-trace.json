@@ -1,0 +1,23 @@
+{
+  "events": [
+    {
+      "id": "actor-0-0",
+      "kind": "delivery",
+      "actor": "actor-0",
+      "context": "actor-0",
+      "source": "requirement-actor-0",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 77109.819303
+    },
+    {
+      "id": "consume-actor-0",
+      "kind": "action",
+      "action": "actor-0",
+      "actor": "actor-0",
+      "context": "actor-0"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "sources": [
+    {
+      "id": "entry",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md",
+      "version": "b4e835552d038bd4a011278a3b2cc1db4ea1dc05a33fa3baba25297ce2f1dd2e",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "access",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/yaml-contracts.md",
+      "version": "ff9451404e1da0cf9cca4d92dd11818b9e41d96e9ca35aa3827e2850298f1e89",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "principles",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/engineering-principles.md",
+      "version": "c5b85c4e25c1de77a9f22bdce417fde2861b3310e7f3cc96b13e070d2c3b0637",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "discipline",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/test-discipline.md",
+      "version": "b34296d759fdb8add3eb785b0af2fcb075e059cb6530d7d58680b29fb025411b",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    },
+    {
+      "id": "execution",
+      "owner": "plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/references/task-packets.md",
+      "version": "de2f84be49f302bb41cf71ebce4efcfb181c22a9221250f28b363c1510700760",
+      "revision": 1,
+      "selection": "whole",
+      "portions": 1
+    }
+  ],
+  "triggers": [],
+  "changes": [],
+  "prerequisites": [
+    "capture-integrity"
+  ],
+  "actions": [
+    {
+      "id": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179"
+        },
+        {
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179"
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "sources": [
+        "entry",
+        "access",
+        "principles",
+        "discipline",
+        "execution"
+      ],
+      "checks": [
+        {
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179"
+        },
+        {
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179"
+        },
+        {
+          "purpose": "completion:order",
+          "owner": "capture-adapter",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179"
+        }
+      ]
+    }
+  ]
+}

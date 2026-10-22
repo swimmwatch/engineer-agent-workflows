@@ -1,0 +1,42 @@
+{
+  "events": [
+    {
+      "id": "actor-0-0",
+      "kind": "delivery",
+      "actor": "actor-0",
+      "context": "actor-0",
+      "source": "requirement-actor-0",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 80042.034845
+    },
+    {
+      "id": "consume-actor-0",
+      "kind": "action",
+      "action": "actor-0",
+      "actor": "actor-0",
+      "context": "actor-0"
+    },
+    {
+      "id": "actor-1-0",
+      "kind": "delivery",
+      "actor": "actor-1",
+      "context": "actor-1",
+      "source": "requirement-actor-0",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 227,
+      "atMs": 197771.593214
+    },
+    {
+      "id": "consume-actor-1",
+      "kind": "action",
+      "action": "actor-1",
+      "actor": "actor-1",
+      "context": "actor-1"
+    }
+  ]
+}

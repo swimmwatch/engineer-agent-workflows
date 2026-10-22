@@ -12,9 +12,13 @@ export const PRODUCT_WORKFLOW_SKILL_CHAIN = Object.freeze([
   "product-roadmap",
 ]);
 const MARKER_PARTS = Object.freeze(["shared", "product-workflow.sha256"]);
-export const PRODUCT_WORKFLOW_SKILL_REFERENCES = Object.freeze({
-  "technical-design": Object.freeze(["references/technology-decisions.md"]),
-});
+export const PRODUCT_WORKFLOW_SKILL_REFERENCES = Object.freeze(Object.fromEntries(
+  PRODUCT_WORKFLOW_SKILL_CHAIN.map(name => [name, Object.freeze([
+    "shared/references/workflow-state-access.md",
+    "shared/references/implementation-context.md",
+    ...(name === "technical-design" ? ["references/technology-decisions.md"] : []),
+  ])]),
+));
 const PROTOCOL_PARTS = Object.freeze([
   "shared",
   "references",

@@ -81,7 +81,7 @@ a concrete prerequisite, never permission to bypass the gate.
 
 Recheck the packet's pinned completeness version through
 `specification_check_state` before edits and before marking completion, following
-`shared/references/yaml-contracts.md`. Review metadata alone does not invalidate
+`shared/references/implementation-context.md`. Review metadata alone does not invalidate
 the specification; changed requirements, scope or source decisions do. Stale or
 incomplete new-review inputs return to the specification owner. Do not silently
 refresh a packet's version to conceal changed behavior. Legacy inputs remain
@@ -108,7 +108,7 @@ new explicitly authorized packet whose actual dependencies are satisfied.
 
 ## Workflow YAML Access
 
-Follow `shared/references/yaml-contracts.md`. Use `specification_open`,
+Follow `shared/references/workflow-state-access.md`. Use `specification_open`,
 `scope_get`, `decision_find` and `decision_get` for bounded current inputs.
 Do not hand-edit workflow YAML while implementing a packet. A required scope or
 design change goes back to its separately authorized owning workflow. Technical

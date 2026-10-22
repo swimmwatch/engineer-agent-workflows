@@ -172,10 +172,8 @@ from deleted throwaway probes in the packet notes or handoff.
 - At Lite depth, keep the bundle to `plan.md`, `todo.md`, current-only
   `handoff.md`, and exactly one compact numbered packet unless the confirmed
   manifest explicitly requires another reviewable planning artifact.
-- Implementation begins only after explicit authorization for a specific
-  packet. Preserve unrelated changes, complete scoped verification, update the
-  checklist and handoff, and stop after that packet. Do not launch review or
-  execute the next packet automatically. On a new explicit invocation, actual
-  dependencies and checks govern eligibility, not optional review or commit.
+- Execution follows `shared/references/implementation-context.md`, section
+  Packet ownership. Include these obligations in the packet without adding
+  review or commit gates.
 - A later packet may commit a completed previous packet only when the user
   explicitly authorizes the commit and its exact scope.

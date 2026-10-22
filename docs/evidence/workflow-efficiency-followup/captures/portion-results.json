@@ -1,0 +1,167 @@
+[
+  {
+    "id": "partial-source-candidate-14",
+    "actors": [
+      {
+        "actor": "actor-0",
+        "complete": true,
+        "portions": 27,
+        "characters": 27623
+      }
+    ],
+    "findings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "partial-source-candidate-14-portions-trace.json",
+        "digest": "6b78320bc1510276e2954debc722569ea25a14874914aa19432e411d608948a2"
+      },
+      "outcomes": {
+        "ref": "partial-source-candidate-14-portions-outcomes.json",
+        "digest": "1bd0348e82d922c2de5d90cd471decf0d11048ab4cf28678ac4abaf06b3ef9d5"
+      }
+    },
+    "nativeSha256": "8698298558274bfde296c82483dd05410635e7d063aac42e62c74cee1bafdad3",
+    "independentReviewer": null,
+    "interrupted": false,
+    "passed": true
+  },
+  {
+    "id": "independent-reviewer-candidate-14",
+    "actors": [
+      {
+        "actor": "actor-0",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      },
+      {
+        "actor": "actor-1",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      }
+    ],
+    "findings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "independent-reviewer-candidate-14-portions-trace.json",
+        "digest": "c92a6aea126fe0e8fcf8e95c213cc37bcfbee1cd6374bff9e3aecffe5e3c27cb"
+      },
+      "outcomes": {
+        "ref": "independent-reviewer-candidate-14-portions-outcomes.json",
+        "digest": "28ebfe1bd13ab16b4bfd1fc719fcf1c0eb770a3f0ce12c1d54cf8f0936b3b9e2"
+      }
+    },
+    "nativeSha256": "f0d4530a6d7a8394c92475eed7ec73b88f7ea2a221f472ac66b3f7b4862e8d9f",
+    "independentReviewer": true,
+    "interrupted": false,
+    "passed": true
+  },
+  {
+    "id": "retained-candidate-10",
+    "actors": [
+      {
+        "actor": "actor-0",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      }
+    ],
+    "findings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "retained-candidate-10-portions-trace.json",
+        "digest": "a250a072c1361462d9785ee002ddd6c8cdc31c7b4d8c94f9b180136338c347df"
+      },
+      "outcomes": {
+        "ref": "retained-candidate-10-portions-outcomes.json",
+        "digest": "b037a6d209f9e171977d4379c8ce0a9b19baab277f5047ef4487b86e5027dea6"
+      }
+    },
+    "nativeSha256": "3b82bbc1c1bbfec0e1326997e348225f3984cad3e40d6bac7c7f0beaeb032828",
+    "independentReviewer": null,
+    "interrupted": null,
+    "passed": true
+  },
+  {
+    "id": "lost-text-candidate-10",
+    "actors": [
+      {
+        "actor": "actor-0",
+        "complete": false,
+        "portions": 2,
+        "characters": 454
+      },
+      {
+        "actor": "actor-1",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      }
+    ],
+    "findings": [
+      {
+        "code": "invalid-delivery",
+        "event": "actor-0-0"
+      },
+      {
+        "code": "missing-source-portion",
+        "event": "consume-actor-0"
+      },
+      {
+        "code": "invalid-delivery",
+        "event": "actor-1-0"
+      },
+      {
+        "code": "missing-source-portion",
+        "event": "consume-actor-1"
+      }
+    ],
+    "artifacts": {
+      "trace": {
+        "ref": "lost-text-candidate-10-portions-trace.json",
+        "digest": "ad241d620dfdb892a0f48a71aca8854542c8d98e4cbf016526b5ce866cffa2e4"
+      },
+      "outcomes": {
+        "ref": "lost-text-candidate-10-portions-outcomes.json",
+        "digest": "9c154d7fe430c6b08a7cd8d79385b3e16deeeb258d67f160c79993aa2e53bf19"
+      }
+    },
+    "nativeSha256": "59942895c352c3c5643a31912fcdfec0b5729665d081a45f1ec06f419bc734b6",
+    "independentReviewer": null,
+    "interrupted": null,
+    "passed": false
+  },
+  {
+    "id": "lost-text-candidate-15",
+    "actors": [
+      {
+        "actor": "actor-0",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      },
+      {
+        "actor": "actor-1",
+        "complete": true,
+        "portions": 1,
+        "characters": 227
+      }
+    ],
+    "findings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "lost-text-candidate-15-portions-trace.json",
+        "digest": "9ba75f74645a3160226a6c803e5b3afd6354e9aaf97ba384685e3aa9bca9777d"
+      },
+      "outcomes": {
+        "ref": "lost-text-candidate-15-portions-outcomes.json",
+        "digest": "c4b3cdc6512b5e843b8de0a19ad59ab4e7b1a734c7f549cfb5cb79869cd891f6"
+      }
+    },
+    "nativeSha256": "70ea0a9c3ad463ea3ebee2777465c0264cde156cf3f898455d1e8183a7b4730b",
+    "independentReviewer": null,
+    "interrupted": false,
+    "passed": true
+  }
+]

@@ -1,0 +1,49 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - "One outcome: remove evidenced unnecessary workflow operations while retaining exact source coverage, independent review and fresh validation at state-changing boundaries."
+  - Standard depth covers interacting read, record, pagination, completion, resume and conflict states without redesigning the existing architecture.
+  - Include serial review progression without unconditional per-batch status calls, disciplined reuse of consumed immutable sources, and consolidation only of checks demonstrably duplicated by the same current validation boundary.
+  - Include focused qualification for source continuations, failed output recovery, changed inputs, preflight ordering and preservation behavior; keep already implemented safeguards and report historical fixes separately.
+  - Exclude reimplementing bounded retirement review, blanket caching, new status APIs, global installation, unrelated source-audit redesign, implementation, commits and publication.
+  - Preserve established Node.js >=22.20.0 runtime compatibility on Linux, macOS and Windows and matching Codex/Claude Code bundles. Per the user's explicit amendment, qualification for this workstream runs only on Linux at Node.js 22.20.0 and 24.14.0. Native macOS/Windows checks are outside this workstream and must not be reported as passed; earlier separate workstream obligations are not rewritten.
+  - Keep behavioral requirements and acceptance scenarios in spec.md; reuse existing authoritative MCP schemas instead of declaring a duplicate contract artifact.
+profiles:
+  - id: core
+    reason: "Existing MCP tooling and shared engineering-workflow behavior: serial review progression, exact source consumption, repeated validation boundaries and recovery. No new service, UI, storage schema or public protocol is proposed."
+    state: active
+  - id: ui
+    reason: No visual interface or design changes.
+    state: not_applicable
+  - id: backend
+    reason: Existing MCP operations and schemas are preserved; no new HTTP/RPC service contract.
+    state: not_applicable
+  - id: events
+    reason: No event delivery or asynchronous message contract change.
+    state: not_applicable
+  - id: data
+    reason: No storage schema, migration, retention or persistent cache change.
+    state: not_applicable
+  - id: operations
+    reason: No deployment, installation, scheduling or new operational service; performance evidence stays within existing isolated qualification.
+    state: not_applicable
+  - id: security
+    reason: Existing integrity, ownership, privacy and authorization controls are preserved as core acceptance constraints; no new security mechanism.
+    state: not_applicable
+  - id: cross-surface
+    reason: Shared source remains portable to Codex and Claude Code with existing generation; no new cross-client interaction or architecture.
+    state: not_applicable
+planning_artifacts: []
+extensions:
+  workflow_mcp_receipts:
+    - id: c7911173e971e4046e52e63291fc77bcdd3a5df4643bebabaee14579b9215c2d
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.
+    - id: b326d1c64f8322f86d338bc8405a1f7d4912abeb928d66b14913282c6ebf3f31
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.

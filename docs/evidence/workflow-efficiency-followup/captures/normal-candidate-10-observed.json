@@ -1,0 +1,142 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 2265.716041,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-entry-exec-7780abde-4de6-4961-938c-5d5251f37dac",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3980,
+      "atMs": 10003.761126,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-access-exec-d2d7b8d6-f2c2-469c-adaf-ab0a1fba372f",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 22648.893337,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "exec-9653cae6-967b-44c5-938e-ffa95fc046fd",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "specification_check_state",
+      "input": "7d83c0c20ca0e1f8a21de55e21cfbee2c99766f0de650c0d785bb7df8490a2a7",
+      "result": "pass",
+      "atMs": 38024.99421
+    },
+    {
+      "id": "exec-971cbfd1-49ea-43bb-b57e-fad06da9752e",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "entry:readiness",
+      "owner": "planning_packet_check",
+      "input": "7d83c0c20ca0e1f8a21de55e21cfbee2c99766f0de650c0d785bb7df8490a2a7",
+      "result": "pass",
+      "atMs": 38079.392362
+    },
+    {
+      "id": "delivery-discipline-exec-4647a454-d017-490d-ba78-559fdffe9557",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "discipline",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 7916,
+      "atMs": 46539.339724,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-principles-exec-39a51ad2-78ae-4f93-94fa-0236dde05d98",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "principles",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 4199,
+      "atMs": 46539.537784,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "delivery-execution-exec-9ad4230e-2e4b-4791-b5de-7364ea8cec78",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "execution",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 6436,
+      "atMs": 46540.840395,
+      "evidence": "exact-whole-output-without-provider-transform"
+    },
+    {
+      "id": "first-edit",
+      "kind": "action",
+      "action": "edit",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 133827.758954
+    },
+    {
+      "id": "exec-51aa8404-58c9-4e68-b67c-2489d9e991e7",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "planning_packet_check",
+      "input": "7d83c0c20ca0e1f8a21de55e21cfbee2c99766f0de650c0d785bb7df8490a2a7",
+      "result": "pass",
+      "atMs": 189239.507191
+    },
+    {
+      "id": "exec-b0a80b82-9081-4918-810e-f8db509900ae",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "validation",
+      "purpose": "completion:readiness",
+      "owner": "specification_check_state",
+      "input": "7d83c0c20ca0e1f8a21de55e21cfbee2c99766f0de650c0d785bb7df8490a2a7",
+      "result": "pass",
+      "atMs": 189279.819483
+    },
+    {
+      "id": "completed",
+      "kind": "action",
+      "action": "complete",
+      "actor": "root",
+      "context": "fresh",
+      "atMs": 235176.318522
+    }
+  ]
+}

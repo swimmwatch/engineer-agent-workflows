@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "id": "skill-attachment",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "entry",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 3975,
+      "atMs": 2371.334201,
+      "evidence": "native-skill-attachment"
+    },
+    {
+      "id": "delivery-access-exec-d5b7cd4f-7358-413b-9ed5-90778ce11eb9",
+      "actor": "root",
+      "context": "fresh",
+      "kind": "delivery",
+      "source": "access",
+      "portion": 0,
+      "total": 1,
+      "complete": true,
+      "bytes": 8159,
+      "atMs": 14944.955747,
+      "evidence": "exact-whole-output-without-provider-transform"
+    }
+  ]
+}

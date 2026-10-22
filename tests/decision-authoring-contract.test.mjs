@@ -22,7 +22,7 @@ test("mandatory test discipline delegates workflow YAML to the scenario contract
   for (const source of sources) {
     const reference = await readFile(path.join(root, source), "utf8");
     assert.doesNotMatch(reference, /Require protocol version 1|MCP is read-only|Journal Authoring Format|```yaml/, source);
-    assert.match(reference, /shared\/references\/yaml-contracts\.md/, source);
+    assert.match(reference, /shared\/references\/workflow-state-access\.md/, source);
     assert.match(reference, /scenario tools/, source);
   }
 });

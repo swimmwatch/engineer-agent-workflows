@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-22T17:53:13.045Z",
+  "specification_check_state": {
+    "status": "pass",
+    "document_status": "approved",
+    "approval_checkpoint_status": "recorded",
+    "approval_checkpoint_written": false,
+    "coverage_status": "reviewed",
+    "source_version": "76293b6d3f506fb927801c3b5f2bbd926b2ed0e03b82208d650ac98ff73af853",
+    "specification_version": "b6b5db5ac1c359ed36ddcbce59d398ec3e4f49e993e1e14e4d9bd554fc764ff1",
+    "review_ref": "63aeeff2-66e1-4eb9-bdc8-e624ec02fe52",
+    "semantic_correctness_proven": false,
+    "reviewer_independence_authenticated": false,
+    "issues": [],
+    "checked": [
+      "scope_consistency",
+      "decision_resolution",
+      "requirement_references",
+      "review_freshness"
+    ],
+    "not_checked": [
+      "behavior_completeness",
+      "user_answer_authenticity",
+      "reviewer_independence"
+    ],
+    "approved_by_tool": false
+  },
+  "planning_packet_check": {
+    "status": "ready",
+    "issues": [],
+    "agreement_ref": {
+      "id": "f114d948-e904-4dff-a75c-086cd1f0b75f",
+      "revision": 2
+    },
+    "proposal_id": "startup-qualification",
+    "proposal_digest": "bf8c2ccd7978c1e7b1876c10ff0831f66bfaac6ab835cb74ec17afda66bcbfbc",
+    "source_version": "76293b6d3f506fb927801c3b5f2bbd926b2ed0e03b82208d650ac98ff73af853",
+    "specification_version": "b6b5db5ac1c359ed36ddcbce59d398ec3e4f49e993e1e14e4d9bd554fc764ff1",
+    "review_ref": "63aeeff2-66e1-4eb9-bdc8-e624ec02fe52"
+  }
+}

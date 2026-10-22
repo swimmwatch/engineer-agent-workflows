@@ -173,6 +173,7 @@ test("finding-linked prose correction retains unrelated judgments and requires f
 
 test("public stdio retirement reads pending blocks only, completes and replays activation after restart", { timeout: 120000 }, async () => {
   const result = await benchmarkRetirement({ mode: "recheck", transport: "stdio", elements: 30, findings: true, profile: true });
+  assert.equal(result.timings.filter((entry) => entry.name === "product_review_status").length, 0);
   assert.ok(result.inherited >= 20);
   assert.equal(result.delivered + result.inherited, result.blocks);
   assert.ok(result.source_atoms_delivered < result.atoms);
@@ -182,4 +183,17 @@ test("public stdio retirement reads pending blocks only, completes and replays a
   assert.ok(result.server_profile.reads > 0);
   assert.ok(result.timings.some((entry) => entry.name === "product_amendment_activation_status"));
   assert.equal(result.timings.filter((entry) => entry.name === "product_amendment_activate").length, 2);
+});
+
+test("public stdio full retirement and correction finish without advancement status", { timeout: 120000 }, async () => {
+  const result = await benchmarkRetirement({ mode: "full", transport: "stdio", elements: 30, findings: true });
+  assert.equal(result.timings.filter((entry) => entry.name === "product_review_status").length, 0);
+  assert.ok(result.timings.filter((entry) => entry.name === "product_review_get_batch").length > 2);
+  assert.equal(result.delivered, result.blocks);
+  assert.equal(result.source_atoms_delivered, result.atoms);
+  assert.ok(result.portions > result.delivered);
+  assert.equal(result.correction.delivered, 1);
+  assert.equal(result.correction.delivered + result.correction.inherited, result.correction.blocks);
+  assert.equal(result.timings.filter((entry) => entry.name === "product_review_complete").length, 2);
+  assert.equal(result.timings.filter((entry) => entry.name === "product_review_consistency_record").length, 2);
 });

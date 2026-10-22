@@ -1,0 +1,1182 @@
+[
+  {
+    "id": "lost-text-candidate-15",
+    "scenario": "lost-text",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "70ea0a9c3ad463ea3ebee2777465c0264cde156cf3f898455d1e8183a7b4730b",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v6",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 232896.64038800003,
+    "captureIssues": [],
+    "handoffWords": 179,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "lost-text-candidate-15-observed.json",
+        "digest": "de91f8ac9182871c789be146eca9d537209cac83da5c9463814e57ade601470a"
+      },
+      "outcomes": {
+        "ref": "lost-text-candidate-15-outcomes.json",
+        "digest": "bb5a0cc28ef549b8da080ce15343bfe6d7c9a164a3269d27ac280c1d3fc71334"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 117516.749491,
+      "completedAtMs": 350413.389879,
+      "entryReadyAtMs": 159324.638968,
+      "firstEditAtMs": 229002.638581,
+      "completionBoundaryAtMs": 277150.731401,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-3b227e7b-974e-4879-996c-6904a4600e03",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "ef1406a86b0b93bf6a559080a3dc0cef3e7d591a7ee02af52062bb158fb7e8d7",
+          "result": "pass",
+          "atMs": 154434.602422,
+          "requestedAtMs": 154363.747559
+        },
+        {
+          "id": "exec-cffb31ae-e30b-419f-9ebb-7bfb72e69044",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "ef1406a86b0b93bf6a559080a3dc0cef3e7d591a7ee02af52062bb158fb7e8d7",
+          "result": "pass",
+          "atMs": 159324.638968,
+          "requestedAtMs": 159212.95238
+        },
+        {
+          "id": "exec-2a23b254-87e3-4c50-8374-5d199240e897",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "ef1406a86b0b93bf6a559080a3dc0cef3e7d591a7ee02af52062bb158fb7e8d7",
+          "result": "pass",
+          "atMs": 289135.899428,
+          "requestedAtMs": 289020.961167
+        },
+        {
+          "id": "exec-b137e4ba-bff3-4806-96e0-7ef9ab2c3102",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "ef1406a86b0b93bf6a559080a3dc0cef3e7d591a7ee02af52062bb158fb7e8d7",
+          "result": "pass",
+          "atMs": 294387.373386,
+          "requestedAtMs": 294305.601303
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-dc3888e6-359b-4a76-88bf-b2a8df0ba346",
+          "requestedAtMs": 132348.511431,
+          "returnedAtMs": 132348.686093,
+          "paths": [
+            "references/workflow-state-access.md"
+          ],
+          "nativeOutputBytes": 8159
+        },
+        {
+          "item": "exec-69e27ee8-7b8c-4d43-8121-802626639f20",
+          "requestedAtMs": 180582.36183,
+          "returnedAtMs": 180582.571861,
+          "paths": [
+            "references/packet-recovery.md"
+          ],
+          "nativeOutputBytes": 7431
+        },
+        {
+          "item": "exec-b30a12fc-1bf0-4329-aabe-ec60e24ceffe",
+          "requestedAtMs": 180582.475286,
+          "returnedAtMs": 180582.63195,
+          "paths": [
+            "references/implementation-context.md"
+          ],
+          "nativeOutputBytes": 6817
+        },
+        {
+          "item": "exec-7146e826-c874-4a0d-8afc-707bcfe1c93d",
+          "requestedAtMs": 180587.873411,
+          "returnedAtMs": 180588.023916,
+          "paths": [
+            "references/engineering-principles.md"
+          ],
+          "nativeOutputBytes": 4199
+        },
+        {
+          "item": "exec-172ee216-35ee-4916-84d7-2a0152af5200",
+          "requestedAtMs": 180590.372202,
+          "returnedAtMs": 180590.476027,
+          "paths": [
+            "references/test-discipline.md"
+          ],
+          "nativeOutputBytes": 7916
+        }
+      ],
+      "firstExplorationAtMs": 188777.442589,
+      "firstTestAtMs": 231930.06795,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 841.459601999959,
+      "toolIntervalUnionMs": 712.5558679999813,
+      "toolOverlapMs": 128.9037339999777,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 0
+    }
+  },
+  {
+    "id": "normal-baseline-8",
+    "scenario": "normal",
+    "variant": "baseline",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "6aa1e3072be90d7222f0cc016762c6d679269ad709e6947fbb1d72c0a0435c51",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "baseline-startup-v2",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 236519.74314900002,
+    "captureIssues": [],
+    "handoffWords": null,
+    "packetCompleted": null,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "normal-baseline-8-observed.json",
+        "digest": "8ee1081b3b8bae1cce5e57f59f7eebf1b90efc0d94506da506cd550e82f57867"
+      },
+      "outcomes": {
+        "ref": "normal-baseline-8-outcomes.json",
+        "digest": "ce235aee2cab8585cd498d7273de4e9199e5c662b8cc1a42ceddcc6a82ef8b19"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 2824.964629,
+      "completedAtMs": 239344.707778,
+      "entryReadyAtMs": 49023.538415,
+      "firstEditAtMs": 135049.061031,
+      "completionBoundaryAtMs": 154793.664034,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-53d2805c-ff53-4b76-8b20-d435bed9e5ef",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "f07597a962b3278039790cb17fde1bbb9c1f97621d4bd054c96a7ac3e0e50562",
+          "result": "pass",
+          "atMs": 48963.52398,
+          "requestedAtMs": 48881.879754
+        },
+        {
+          "id": "exec-cec90257-2fc8-4c0c-a4b4-d4d01123b752",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "f07597a962b3278039790cb17fde1bbb9c1f97621d4bd054c96a7ac3e0e50562",
+          "result": "pass",
+          "atMs": 49023.538415,
+          "requestedAtMs": 48964.116144
+        },
+        {
+          "id": "exec-be1eab86-843d-441c-b5de-c68c6b306e57",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "f07597a962b3278039790cb17fde1bbb9c1f97621d4bd054c96a7ac3e0e50562",
+          "result": "pass",
+          "atMs": 178379.709757,
+          "requestedAtMs": 178290.183555
+        },
+        {
+          "id": "exec-14ae7808-f377-481a-a393-3f598c729a08",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "f07597a962b3278039790cb17fde1bbb9c1f97621d4bd054c96a7ac3e0e50562",
+          "result": "pass",
+          "atMs": 178446.454887,
+          "requestedAtMs": 178380.15283
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-01aa16d5-ac37-4c6b-9805-2bec38fe9340",
+          "requestedAtMs": 24155.362845,
+          "returnedAtMs": 24155.59252,
+          "paths": [
+            "references/yaml-contracts.md"
+          ],
+          "nativeOutputBytes": 11397
+        },
+        {
+          "item": "exec-eb1ff95a-2ac7-45d3-ae67-05523b31ae63",
+          "requestedAtMs": 63041.292578,
+          "returnedAtMs": 63041.43629,
+          "paths": [
+            "references/engineering-principles.md",
+            "references/test-discipline.md",
+            "references/task-packets.md"
+          ],
+          "nativeOutputBytes": 11487
+        },
+        {
+          "item": "exec-b0ad488c-b3fe-46a8-88b4-cb5c458cbf2e",
+          "requestedAtMs": 94453.109054,
+          "returnedAtMs": 94453.265683,
+          "paths": [
+            "references/task-packets.md"
+          ],
+          "nativeOutputBytes": 10505
+        }
+      ],
+      "firstExplorationAtMs": 71026.124167,
+      "firstTestAtMs": 119036.475363,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 864.3509620000841,
+      "toolIntervalUnionMs": 645.8676960000375,
+      "toolOverlapMs": 218.48326600004657,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 0
+    }
+  },
+  {
+    "id": "normal-candidate-18",
+    "scenario": "normal",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "1e9fdab1e20324999c8d13cdca0546524b760d399d2b67d3d1b25d7986dcd6c1",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v8",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 184655.024708,
+    "captureIssues": [],
+    "handoffWords": 162,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "normal-candidate-18-observed.json",
+        "digest": "d9b48404aa001bc436e75520697e0e5555288f7287b42b3d178c5fc54ffa93f1"
+      },
+      "outcomes": {
+        "ref": "normal-candidate-18-outcomes.json",
+        "digest": "92ecb7f381116cd43d2fd3a6a827b6307d13733a9a97fe7b9cc0d76855515a03"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 2717.335945,
+      "completedAtMs": 187372.360653,
+      "entryReadyAtMs": 35397.263952,
+      "firstEditAtMs": 112751.256236,
+      "completionBoundaryAtMs": 135928.731856,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-55ddcf8a-5d85-47ea-b582-d7b246c20bab",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab",
+          "result": "pass",
+          "atMs": 35352.828593,
+          "requestedAtMs": 35246.040017
+        },
+        {
+          "id": "exec-50ebfefa-3cfc-46cc-b9d3-a7c02e0f512a",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab",
+          "result": "pass",
+          "atMs": 35397.263952,
+          "requestedAtMs": 35352.983787
+        },
+        {
+          "id": "exec-cf1cd10b-be89-4f63-b445-01c4abd0a846",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab",
+          "result": "pass",
+          "atMs": 157058.089732,
+          "requestedAtMs": 156957.028671
+        },
+        {
+          "id": "exec-0b0ae51d-5269-4d29-899f-7eb13a74b98a",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "1536e5cac9f961e08fa50d3bf196e9a3f24806a06966ef22253fa3f200c62fab",
+          "result": "pass",
+          "atMs": 157100.68047,
+          "requestedAtMs": 157058.236429
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-5c2b467b-e617-4498-90e3-4862f62f5a33",
+          "requestedAtMs": 15571.518709,
+          "returnedAtMs": 15571.803852,
+          "paths": [
+            "references/workflow-state-access.md"
+          ],
+          "nativeOutputBytes": 8159
+        },
+        {
+          "item": "exec-989660e0-fbe6-4576-9c07-028d254c3175",
+          "requestedAtMs": 42810.521752,
+          "returnedAtMs": 42810.862322,
+          "paths": [
+            "references/test-discipline.md"
+          ],
+          "nativeOutputBytes": 7916
+        },
+        {
+          "item": "exec-903a90f5-6582-41b0-abb5-1f52c0dd9b50",
+          "requestedAtMs": 42810.694216,
+          "returnedAtMs": 42810.988533,
+          "paths": [
+            "references/implementation-context.md"
+          ],
+          "nativeOutputBytes": 7129
+        },
+        {
+          "item": "exec-a767be9b-1ece-445a-8134-01992eb45836",
+          "requestedAtMs": 42812.386289,
+          "returnedAtMs": 42812.495606,
+          "paths": [
+            "references/engineering-principles.md"
+          ],
+          "nativeOutputBytes": 4199
+        }
+      ],
+      "firstExplorationAtMs": 80370.297525,
+      "firstTestAtMs": 112940.873314,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 749.0759710000129,
+      "toolIntervalUnionMs": 617.3913230000107,
+      "toolOverlapMs": 131.6846480000022,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 1
+    }
+  },
+  {
+    "id": "product-baseline-3",
+    "scenario": "product",
+    "variant": "baseline",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "90a8a42ed5a5e30d1b02eaba2674402641716f2bdc3a2133ef68f639e07b2ea0",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "baseline-startup-v2",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 297347.56260999996,
+    "captureIssues": [],
+    "handoffWords": 172,
+    "packetCompleted": true,
+    "evaluatorFindings": [
+      {
+        "code": "missing-owning-validation",
+        "event": "completed"
+      }
+    ],
+    "artifacts": {
+      "trace": {
+        "ref": "product-baseline-3-observed.json",
+        "digest": "2de277ccb97d1b78f396a50999b4637412b74fb3572fb0bf55fffce9f747fe56"
+      },
+      "outcomes": {
+        "ref": "product-baseline-3-outcomes.json",
+        "digest": "86641083d3d51f5aef0ef7730aa584074eeee32e15c608aa9b473f74cf2fdcad"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 12270.105984,
+      "completedAtMs": 309617.668594,
+      "entryReadyAtMs": 45274.600822,
+      "firstEditAtMs": 164895.912402,
+      "completionBoundaryAtMs": 247151.758338,
+      "captureValid": true,
+      "prematureCompletionGates": [
+        "exec-cddaf36f-fa2b-4ac0-bc0c-0fff4054fde7"
+      ],
+      "gates": [
+        {
+          "id": "exec-40e39190-b243-4ce6-848e-0b6eb7f3fec6",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+          "result": "pass",
+          "atMs": 45237.074888,
+          "requestedAtMs": 45145.437168
+        },
+        {
+          "id": "exec-c073e12f-e480-44a5-ae53-cee1becfaf55",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+          "result": "pass",
+          "atMs": 45274.600822,
+          "requestedAtMs": 45237.242773
+        },
+        {
+          "id": "exec-cddaf36f-fa2b-4ac0-bc0c-0fff4054fde7",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+          "result": "pass",
+          "atMs": 247106.952433,
+          "requestedAtMs": 246994.444042
+        },
+        {
+          "id": "exec-99407c6d-9232-4c44-8551-5b3adbacb1d1",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "54a0682f14bcef5d90c4f347225db6c6d657bd73645c1e28aed3d524e31f3cb6",
+          "result": "pass",
+          "atMs": 247202.506386,
+          "requestedAtMs": 247151.852028
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-7363225c-45d1-4361-92d4-7daf054174c8",
+          "requestedAtMs": 27961.68956,
+          "returnedAtMs": 27962.007418,
+          "paths": [
+            "references/yaml-contracts.md"
+          ],
+          "nativeOutputBytes": 11397
+        },
+        {
+          "item": "exec-a19da4ac-1857-435e-8c6f-e5047078c592",
+          "requestedAtMs": 50456.233069,
+          "returnedAtMs": 50456.442562,
+          "paths": [
+            "references/engineering-principles.md",
+            "references/test-discipline.md",
+            "references/task-packets.md",
+            "references/product-workflow.md"
+          ],
+          "nativeOutputBytes": 28781
+        },
+        {
+          "item": "exec-a420c4dc-7056-420d-93ac-b9e320608bef",
+          "requestedAtMs": 90421.920649,
+          "returnedAtMs": 90422.112125,
+          "paths": [
+            "references/task-packets.md"
+          ],
+          "nativeOutputBytes": 10505
+        },
+        {
+          "item": "exec-e8ac0ab6-ac79-4afa-b2b6-43eb2078bf87",
+          "requestedAtMs": 176093.901268,
+          "returnedAtMs": 176094.160717,
+          "paths": [
+            "references/packet-recovery.md"
+          ],
+          "nativeOutputBytes": 7416
+        }
+      ],
+      "firstExplorationAtMs": 90424.484694,
+      "firstTestAtMs": 167804.035334,
+      "nativeStartAtMs": 109640.733072,
+      "toolDurationSumMs": 1846.9470120000187,
+      "toolIntervalUnionMs": 1730.3471110000173,
+      "toolOverlapMs": 116.59990100000141,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 0
+    }
+  },
+  {
+    "id": "product-candidate-17",
+    "scenario": "product",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "293e7e1c473317bcc1e4a41195688b57fff281423deef50d017d0d450d538200",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v7",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 347724.932793,
+    "captureIssues": [],
+    "handoffWords": 174,
+    "packetCompleted": true,
+    "evaluatorFindings": [
+      {
+        "code": "redundant-check",
+        "event": "exec-9d93da00-51d7-4bb1-a975-6edaa09d0397"
+      },
+      {
+        "code": "redundant-check",
+        "event": "exec-89fe74d3-f901-45c2-b483-6902f6c5d818"
+      },
+      {
+        "code": "missing-owning-validation",
+        "event": "completed"
+      }
+    ],
+    "artifacts": {
+      "trace": {
+        "ref": "product-candidate-17-observed.json",
+        "digest": "82ce1d44bde614636e48ffb918cc1a4f77da371861e292db960dcf11f58a7baa"
+      },
+      "outcomes": {
+        "ref": "product-candidate-17-outcomes.json",
+        "digest": "f39e769d23c1f6d3ce102b03945a9d80e35937032ac30a76f3d1135774fe037b"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 13289.908593,
+      "completedAtMs": 361014.841386,
+      "entryReadyAtMs": 51638.181731,
+      "firstEditAtMs": 171682.355166,
+      "completionBoundaryAtMs": 278272.185216,
+      "captureValid": true,
+      "prematureCompletionGates": [
+        "exec-0368156b-032b-41f3-a518-78feb2e56419",
+        "exec-a1148b1f-9458-484b-a786-ddda0583d2ec"
+      ],
+      "gates": [
+        {
+          "id": "exec-9ae8dba8-f29b-478d-9586-da2d1e4546d1",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 51592.386361,
+          "requestedAtMs": 51504.497312
+        },
+        {
+          "id": "exec-2f11f25b-8bca-4202-a26f-d3fc239eaaf6",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 51638.181731,
+          "requestedAtMs": 51592.528189
+        },
+        {
+          "id": "exec-0368156b-032b-41f3-a518-78feb2e56419",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 255330.403451,
+          "requestedAtMs": 255244.765812
+        },
+        {
+          "id": "exec-a1148b1f-9458-484b-a786-ddda0583d2ec",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 255416.992796,
+          "requestedAtMs": 255330.522729
+        },
+        {
+          "id": "exec-9d93da00-51d7-4bb1-a975-6edaa09d0397",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 298028.576161,
+          "requestedAtMs": 297977.818426
+        },
+        {
+          "id": "exec-89fe74d3-f901-45c2-b483-6902f6c5d818",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "c3ff920d0ff369a795a3527aec986c947e5e5c267ded32cf2b57d83b846f8176",
+          "result": "pass",
+          "atMs": 298088.491695,
+          "requestedAtMs": 298028.764579
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-9d7251da-5c5e-445f-924f-33decf675837",
+          "requestedAtMs": 30490.363298,
+          "returnedAtMs": 30490.679264,
+          "paths": [
+            "references/workflow-state-access.md"
+          ],
+          "nativeOutputBytes": 8159
+        },
+        {
+          "item": "exec-0b4995c9-dabf-4fd5-a68a-49f15175e1c4",
+          "requestedAtMs": 63014.282322,
+          "returnedAtMs": 63014.634427,
+          "paths": [
+            "references/engineering-principles.md",
+            "references/test-discipline.md",
+            "references/implementation-context.md"
+          ],
+          "nativeOutputBytes": 18932
+        },
+        {
+          "item": "exec-663b2ac4-e545-4e3a-8f58-2245ea9a3b5c",
+          "requestedAtMs": 244317.753716,
+          "returnedAtMs": 244317.981807,
+          "paths": [
+            "references/packet-recovery.md"
+          ],
+          "nativeOutputBytes": 7431
+        }
+      ],
+      "firstExplorationAtMs": 95943.920809,
+      "firstTestAtMs": 171870.950129,
+      "nativeStartAtMs": 115495.280924,
+      "toolDurationSumMs": 2557.725228000083,
+      "toolIntervalUnionMs": 2330.5675300001094,
+      "toolOverlapMs": 227.1576979999736,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 1
+    }
+  },
+  {
+    "id": "product-candidate-18",
+    "scenario": "product",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "b422d32947adb31b7572ea0abd2b5774d1dabca2ba23562bbd3879cf0d47fcdb",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v8",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 351171.733935,
+    "captureIssues": [],
+    "handoffWords": 171,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "product-candidate-18-observed.json",
+        "digest": "a444c9e31465fb9bbb6173e99b33abce37133accc4eab406c7aa8ccfebe909f3"
+      },
+      "outcomes": {
+        "ref": "product-candidate-18-outcomes.json",
+        "digest": "19b26701238f46f986cbd646e5a23e3378c82380f93e79042d40fd767998aeec"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 13620.065191,
+      "completedAtMs": 364791.799126,
+      "entryReadyAtMs": 46285.942888,
+      "firstEditAtMs": 169480.194752,
+      "completionBoundaryAtMs": 268967.881117,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-4a3f257c-2e61-45fb-9fed-d93f851e2d64",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+          "result": "pass",
+          "atMs": 46233.017433,
+          "requestedAtMs": 46164.279808
+        },
+        {
+          "id": "exec-ccb0c151-795b-4f09-bb0a-9e3ac0328727",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+          "result": "pass",
+          "atMs": 46285.942888,
+          "requestedAtMs": 46233.272959
+        },
+        {
+          "id": "exec-d80ef377-5956-469f-992e-29f8bd747ee6",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+          "result": "pass",
+          "atMs": 280075.871007,
+          "requestedAtMs": 279943.429287
+        },
+        {
+          "id": "exec-5188051a-a020-4c91-8bfb-5ab0831a5ed7",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "c2a1e78d70abf6b00394acb13aa7e342b833f72e818a8e902430a1c9aebe920f",
+          "result": "pass",
+          "atMs": 280135.710962,
+          "requestedAtMs": 280076.039402
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-6b75b43a-b3e4-418a-a5fe-cd5633045f5a",
+          "requestedAtMs": 29400.430141,
+          "returnedAtMs": 29400.699452,
+          "paths": [
+            "references/workflow-state-access.md"
+          ],
+          "nativeOutputBytes": 8159
+        },
+        {
+          "item": "exec-372eb7f4-6c39-4b36-a583-16b091e5c8e6",
+          "requestedAtMs": 54303.368155,
+          "returnedAtMs": 54303.619676,
+          "paths": [
+            "references/engineering-principles.md",
+            "references/test-discipline.md",
+            "references/implementation-context.md"
+          ],
+          "nativeOutputBytes": 19244
+        }
+      ],
+      "firstExplorationAtMs": 96201.972384,
+      "firstTestAtMs": 106671.933398,
+      "nativeStartAtMs": 114797.105043,
+      "toolDurationSumMs": 2274.541879999917,
+      "toolIntervalUnionMs": 2056.5750639999387,
+      "toolOverlapMs": 217.96681599997828,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 0
+    }
+  },
+  {
+    "id": "resume-candidate-14",
+    "scenario": "resume",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "065a8662325d6f405800775e370d53f1625a1b6096d6058341e0b90d2dc8ed44",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v5",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 199604.287556,
+    "captureIssues": [],
+    "handoffWords": 184,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "resume-candidate-14-observed.json",
+        "digest": "bac8a0010695ef9cf63ddd7db634c9b95e4917949146d785652fad0901fffc7b"
+      },
+      "outcomes": {
+        "ref": "resume-candidate-14-outcomes.json",
+        "digest": "03f24a97c1509aea611c6ed1cc0f7ace8707f4e89d60e913196dad209c25c2c6"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 65823.294882,
+      "completedAtMs": 265427.582438,
+      "entryReadyAtMs": 97279.654051,
+      "firstEditAtMs": 165733.021271,
+      "completionBoundaryAtMs": 190346.664815,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-cd186c56-052d-4ac1-9563-b18e4e878f90",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "d363c5b736fd3f15867bfdb8f1f04687ccf760a40e0c37fb6dae1930369335e0",
+          "result": "pass",
+          "atMs": 97224.029974,
+          "requestedAtMs": 97183.620312
+        },
+        {
+          "id": "exec-d8873dc0-06db-4f71-a539-d8b21bcd2f57",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "d363c5b736fd3f15867bfdb8f1f04687ccf760a40e0c37fb6dae1930369335e0",
+          "result": "pass",
+          "atMs": 97279.654051,
+          "requestedAtMs": 97224.151586
+        },
+        {
+          "id": "exec-1ab69fdf-3395-49d8-bae8-b2f460fc2b77",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "d363c5b736fd3f15867bfdb8f1f04687ccf760a40e0c37fb6dae1930369335e0",
+          "result": "pass",
+          "atMs": 214355.475353,
+          "requestedAtMs": 214261.10161
+        },
+        {
+          "id": "exec-5911bace-1cd7-4092-ba65-c0bb7d9cd64f",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "d363c5b736fd3f15867bfdb8f1f04687ccf760a40e0c37fb6dae1930369335e0",
+          "result": "pass",
+          "atMs": 214432.132716,
+          "requestedAtMs": 214355.671007
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-d9119707-d118-4866-ab60-afe5e1699563",
+          "requestedAtMs": 75813.740453,
+          "returnedAtMs": 75813.855781,
+          "paths": [
+            "references/packet-recovery.md"
+          ],
+          "nativeOutputBytes": 7431
+        }
+      ],
+      "firstExplorationAtMs": 214424.723445,
+      "firstTestAtMs": 169569.973401,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 729.4599009999074,
+      "toolIntervalUnionMs": 610.5426039999293,
+      "toolOverlapMs": 118.91729699997813,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 1
+    }
+  },
+  {
+    "id": "retained-baseline-11",
+    "scenario": "retained",
+    "variant": "baseline",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "0e83165b64d0dce329689dd489e6b91c033b3cf5c2efd3215b33d34511c427bc",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "baseline-startup-v2",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 210512.49760600002,
+    "captureIssues": [],
+    "handoffWords": 173,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "retained-baseline-11-observed.json",
+        "digest": "12c121ce41a6fb7f5c79f073f55ea449e387bbcdaf5394a302c357449d47b795"
+      },
+      "outcomes": {
+        "ref": "retained-baseline-11-outcomes.json",
+        "digest": "c13c6fde24142e3b67ad3db69046757d284dac9d64295309a111a5fdc149df89"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 151765.556557,
+      "completedAtMs": 362278.054163,
+      "entryReadyAtMs": 192625.942827,
+      "firstEditAtMs": 252647.091741,
+      "completionBoundaryAtMs": 304945.091607,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-332e3919-e47b-4e31-b2ed-e4e2e424f586",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+          "result": "pass",
+          "atMs": 186830.26965,
+          "requestedAtMs": 186767.056027
+        },
+        {
+          "id": "exec-01000f67-561d-419a-8283-40a9b72a0335",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+          "result": "pass",
+          "atMs": 192625.942827,
+          "requestedAtMs": 192555.342312
+        },
+        {
+          "id": "exec-ecfadfa3-03f5-457c-9664-60996409db39",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+          "result": "pass",
+          "atMs": 315045.666431,
+          "requestedAtMs": 314971.485585
+        },
+        {
+          "id": "exec-f3c16752-c89b-472e-964d-f065eb259cf1",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "e6e07a92e37bbef6006d067487302fcacb8747f195407fcd5af8ed6a89577179",
+          "result": "pass",
+          "atMs": 325831.47776,
+          "requestedAtMs": 325756.576096
+        }
+      ],
+      "references": [
+        {
+          "item": "exec-a78f0e23-a9de-4ceb-9e5d-fdd5c675e646",
+          "requestedAtMs": 181587.722264,
+          "returnedAtMs": 181587.831341,
+          "paths": [
+            "references/packet-recovery.md"
+          ],
+          "nativeOutputBytes": 7416
+        }
+      ],
+      "firstExplorationAtMs": 262064.752612,
+      "firstTestAtMs": 255580.245874,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 641.0092470000382,
+      "toolIntervalUnionMs": 555.1385640000517,
+      "toolOverlapMs": 85.87068299998646,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 1
+    }
+  },
+  {
+    "id": "retained-candidate-10",
+    "scenario": "retained",
+    "variant": "candidate",
+    "status": "completed",
+    "errorPresent": false,
+    "nativeSha256": "3b82bbc1c1bbfec0e1326997e348225f3984cad3e40d6bac7c7f0beaeb032828",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "profileSha256": "7dc5d2ffec47cd0cf4f2243d198c82b9c3c025d07d815b9c2736240326573e30",
+    "sourceName": "candidate-entry-v4",
+    "localExit": 0,
+    "oracleExit": 0,
+    "questions": 0,
+    "codeUnchanged": false,
+    "elapsedMs": 210656.04404200002,
+    "captureIssues": [],
+    "handoffWords": 175,
+    "packetCompleted": true,
+    "evaluatorFindings": [],
+    "artifacts": {
+      "trace": {
+        "ref": "retained-candidate-10-observed.json",
+        "digest": "dbffe8c9eb1ba83d60c3d92fd485973c4aea3def76cfdc21eafc5a106709723e"
+      },
+      "outcomes": {
+        "ref": "retained-candidate-10-outcomes.json",
+        "digest": "6eb2501d2472f18d69b7a2903cd473dd64db6125dce74c75fb6f0618810ba56a"
+      }
+    },
+    "metrics": {
+      "invokedAtMs": 111517.388615,
+      "completedAtMs": 322173.432657,
+      "entryReadyAtMs": 138573.669958,
+      "firstEditAtMs": 202532.210153,
+      "completionBoundaryAtMs": 248822.951037,
+      "captureValid": true,
+      "prematureCompletionGates": [],
+      "gates": [
+        {
+          "id": "exec-e499be9d-7215-4212-a9ea-5336eab97a7b",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "specification_check_state",
+          "input": "be13b1ddbbee6183d9a025a4c9ca1629cbc5b08404e24ecc20fe169c12d7032d",
+          "result": "pass",
+          "atMs": 138512.658381,
+          "requestedAtMs": 138466.731827
+        },
+        {
+          "id": "exec-5695c747-b185-479e-8709-e403f3753a5a",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "entry:readiness",
+          "owner": "planning_packet_check",
+          "input": "be13b1ddbbee6183d9a025a4c9ca1629cbc5b08404e24ecc20fe169c12d7032d",
+          "result": "pass",
+          "atMs": 138573.669958,
+          "requestedAtMs": 138514.615752
+        },
+        {
+          "id": "exec-aa6dccba-0e1f-4f1c-9f6f-1778cba3c833",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "specification_check_state",
+          "input": "be13b1ddbbee6183d9a025a4c9ca1629cbc5b08404e24ecc20fe169c12d7032d",
+          "result": "pass",
+          "atMs": 276702.343856,
+          "requestedAtMs": 276631.700179
+        },
+        {
+          "id": "exec-75d7f4f2-5945-4f80-b393-d80e6be5ba74",
+          "actor": "root",
+          "context": "fresh",
+          "kind": "validation",
+          "purpose": "completion:readiness",
+          "owner": "planning_packet_check",
+          "input": "be13b1ddbbee6183d9a025a4c9ca1629cbc5b08404e24ecc20fe169c12d7032d",
+          "result": "pass",
+          "atMs": 276776.864021,
+          "requestedAtMs": 276703.232359
+        }
+      ],
+      "references": [],
+      "firstExplorationAtMs": 187373.265491,
+      "firstTestAtMs": 205897.04002,
+      "nativeStartAtMs": null,
+      "toolDurationSumMs": 431.8626899999799,
+      "toolIntervalUnionMs": 430.8900669999566,
+      "toolOverlapMs": 0.9726230000233045,
+      "captureIssues": [],
+      "modelReceipt": "controlled passthrough: exact outputs and native skill attachment",
+      "humanWaitMs": null,
+      "childActors": 2
+    }
+  }
+]
