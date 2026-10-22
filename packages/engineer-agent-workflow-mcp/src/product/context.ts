@@ -992,7 +992,7 @@ export async function readProductSourcesBatch(input: {
       }),
     };
     const wire = { protocol_version: 2, context: input.context, result: candidate, replayed: false, operation_ref: null };
-    if (Buffer.byteLength(JSON.stringify(candidate)) > 24 * 1024
+    if (Buffer.byteLength(JSON.stringify(wire)) > 24 * 1024
       || Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: JSON.stringify(wire) }], structuredContent: wire })) > 64 * 1024) break;
     items.push({ index, portion: outcome.result });
     result = { ...candidate, items };

@@ -5,6 +5,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { performance } from "node:perf_hooks";
 import test from "node:test";
+import { fileURLToPath, URL } from "node:url";
+import { Client } from "@modelcontextprotocol/client";
+import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import * as contextOperations from "../dist/product/context.js";
 
 import {
@@ -255,6 +258,86 @@ test("exact source batches preserve portions, byte bounds and query-bound contin
   await assert.rejects(contextOperations.readProductSourcesBatch({
     root: f.root, context: f.context, requests: [{ decision_ref: f.historicalRef }],
   }), (error) => ["SOURCE_CHANGED", "INVALID_STATE"].includes(error?.code));
+});
+
+test("public source batches budget the complete envelope and preserve every continuation", { timeout: 30000 }, async (t) => {
+  for (const [name, taskText] of [["ASCII", "x".repeat(3425)], ["Unicode", `${"я".repeat(1712)}x`]]) {
+    await t.test(name, async (t) => {
+      const f = await fixture(t, { taskText });
+      const selection = await prepareProductContext({
+        root: f.root, context: f.context, purpose: "implementation", taskId: f.refs.task.element_id,
+      });
+      const pin = selection.result.required.find((candidate) => candidate.element_ids.includes(f.refs.task.element_id));
+      const client = new Client({ name: "source-batch-budget", version: "1" });
+      t.after(() => client.close());
+      await client.connect(new StdioClientTransport({
+        command: process.execPath,
+        args: [fileURLToPath(new URL("../dist/main.js", import.meta.url))],
+        env: { ...process.env, EAW_PRODUCT_DATA_DIR: f.root },
+        stderr: "pipe",
+      }));
+      const request = { element_ref: f.refs.task, pin };
+      const single = await client.callTool({ name: "product_element_get", arguments: { context: f.context, ...request } });
+      assert.notEqual(single.isError, true, JSON.stringify(single));
+      const portion = single.structuredContent.result;
+      assert.equal(portion.complete, true);
+      const requests = Array.from({ length: 6 }, () => request);
+      const expected = requests.map((_, index) => ({ index, portion }));
+      const full = { ...single.structuredContent, result: { items: expected, complete: true, next_cursor: null } };
+      // The sources fit by themselves; only the complete structured envelope exceeds the limit.
+      assert.ok(Buffer.byteLength(JSON.stringify(full.result)) <= 24 * 1024);
+      assert.ok(Buffer.byteLength(JSON.stringify(full)) > 24 * 1024);
+      assert.ok(Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: JSON.stringify(full) }], structuredContent: full })) <= 64 * 1024);
+      const items = [];
+      let cursor;
+      let pages = 0;
+      do {
+        assert.ok(pages < requests.length, "Every page must advance through the ordered requests.");
+        const reply = await client.callTool({
+          name: "product_sources_get_batch",
+          arguments: { context: f.context, requests, ...(cursor === undefined ? {} : { cursor }) },
+        });
+        assert.notEqual(reply.isError, true, JSON.stringify(reply));
+        assert.ok(Buffer.byteLength(JSON.stringify(reply.structuredContent)) <= 24 * 1024);
+        assert.ok(Buffer.byteLength(JSON.stringify(reply)) <= 64 * 1024);
+        assert.deepEqual(JSON.parse(reply.content[0].text), reply.structuredContent);
+        assert.equal(reply.structuredContent.context, f.context);
+        const page = reply.structuredContent.result;
+        assert.ok(page.items.length > 0);
+        items.push(...page.items);
+        cursor = page.next_cursor ?? undefined;
+        assert.equal(page.complete, cursor === undefined);
+        pages++;
+      } while (cursor !== undefined);
+      assert.ok(pages > 1, "Envelope overhead must trigger pagination.");
+      assert.deepEqual(items, expected);
+    });
+  }
+});
+
+test("public source batches reject one genuinely oversized portion with the reader diagnostic", { timeout: 30000 }, async (t) => {
+  const f = await fixture(t, { taskText: "\u0001".repeat(5000) });
+  const selection = await prepareProductContext({
+    root: f.root, context: f.context, purpose: "implementation", taskId: f.refs.task.element_id,
+  });
+  const pin = selection.result.required.find((candidate) => candidate.element_ids.includes(f.refs.task.element_id));
+  const client = new Client({ name: "source-batch-oversized", version: "1" });
+  t.after(() => client.close());
+  await client.connect(new StdioClientTransport({
+    command: process.execPath,
+    args: [fileURLToPath(new URL("../dist/main.js", import.meta.url))],
+    env: { ...process.env, EAW_PRODUCT_DATA_DIR: f.root },
+    stderr: "pipe",
+  }));
+  const reply = await client.callTool({
+    name: "product_sources_get_batch",
+    arguments: { context: f.context, requests: [{ element_ref: f.refs.task, pin }] },
+  });
+  assert.equal(reply.isError, true);
+  assert.equal(reply.structuredContent.protocol_version, 2);
+  assert.equal(reply.structuredContent.error.code, "RESULT_LIMIT");
+  assert.match(reply.structuredContent.error.message, /cannot fit one exact portion/u);
+  assert.ok(Buffer.byteLength(JSON.stringify(reply)) <= 64 * 1024);
 });
 
 test("element continuations preserve Unicode ranges when JSON fields are reordered", async (t) => {
