@@ -1,0 +1,383 @@
+schema_version: 1
+status: planned
+specification:
+  slug: product-roadmap-task-graph
+  source_version: 6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5
+  specification_version: e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8
+  review_ref: fd840f43-b70d-463d-991c-204f891f1b2e
+environment:
+  runtime_targets:
+    - Linux
+    - macOS
+    - Windows
+  desktop_browser_targets:
+    - Chrome/Edge stable
+    - Firefox stable
+    - Safari stable
+  executable_verification: Linux only
+  required_linux_browsers:
+    - Chromium-family
+    - Firefox
+  proof_limits:
+    - No native macOS/Windows/Safari execution is claimed.
+    - Linux WebKit is supplemental, not native Safari proof.
+    - Unavailable required Linux capability leaves P09 incomplete; no automatic installation.
+scenarios:
+  - id: Q-GRAPH
+    owner_packet: P01
+    requirement_ids:
+      - REQ-006
+      - REQ-007
+      - REQ-008
+      - REQ-009
+      - REQ-010
+      - REQ-011
+      - REQ-012
+      - REQ-013
+      - REQ-014
+      - REQ-036
+    fixture: Diamond/redundant edge, longest-path branch, Backlog round trip, unknown external prerequisite, explicit status/Stage/Sprint/tag variants, permuted inputs.
+    observe: Compare complete/active/reduced edges, reachability, layer numbers, exact status, Ready/Blocked and Needs Spec independently.
+    expected: Equal normalized inputs are deterministic; every invalid internal component is identified; Backlog source edges survive; no phantom Ready or dependency.
+    check_to_create: product-graph.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph.test.mjs
+    red: Behavioral mismatch before the kernel is implemented; an absent import is harness evidence only.
+    prove: Individually remove a source edge, use shortest-path layers, or treat Testing as Done; each relevant assertion must fail.
+    threshold:
+      maximum_tasks: 1000
+      maximum_source_dependencies: 10000
+  - id: Q-STORE
+    owner_packet: P02
+    requirement_ids:
+      - REQ-003
+      - REQ-006
+      - REQ-021
+      - REQ-024
+      - REQ-026
+      - REQ-027
+      - REQ-034
+      - REQ-035
+      - REQ-036
+    fixture: Isolated product root, Unicode/spaced paths, unsafe traversal/symlink/hardlink targets, supported previous snapshot, corrupt/incompatible records, fault at every persistent write boundary.
+    observe: Reopen after interruption and inspect current pointer/snapshot validity, binding identity, other-product/source/specification digests and restored relationships.
+    expected: Only a complete valid previous/new snapshot is visible; unsafe writes fail; generated graph markup/layout is absent; restore selects a supported explicit snapshot.
+    check_to_create: product-graph-store.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-store.test.mjs
+    red: An interrupted or stale-context write must distinguish the unsafe candidate from a committed valid state.
+    prove: Bypass the digest compare or a path guard separately; preservation/negative assertions must fail.
+    threshold:
+      source_bytes: 16777216
+  - id: Q-PROVIDER
+    owner_packet: P03
+    requirement_ids:
+      - REQ-004
+      - REQ-005
+      - REQ-006
+      - REQ-010
+      - REQ-012
+      - REQ-021
+      - REQ-022
+      - REQ-028
+      - REQ-029
+      - REQ-033
+    fixture: Fake gh executable with paginated Project/labels/field/dependency connections, closed Milestones, oversized numeric-looking string IDs, wrong scope, GraphQL errors and malicious strings.
+    observe: Capture actual executable/arguments/stdin and normalized saved fields; trace all page cursors and required-field completeness.
+    expected: Only fixed read queries execute; all required pages/IDs are exact; no title guessing, unrelated item import, raw bodies/comments/rosters, credentials or mutation.
+    check_to_create: product-graph-github.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-github.test.mjs
+    red: A later-page prerequisite and missing required field discriminate complete and falsely empty observations.
+    prove: Skip a page or allow a caller query/executable override separately; trace/schema assertions must fail.
+    threshold:
+      read_deadline_ms: 30000
+      automatic_retries_per_read: 1
+  - id: Q-PARTIAL
+    owner_packet: P04
+    requirement_ids:
+      - REQ-003
+      - REQ-007
+      - REQ-018
+      - REQ-023
+      - REQ-024
+      - REQ-025
+      - REQ-026
+      - REQ-034
+      - REQ-038
+    fixture: Two independent dependency components; one failed read, one complete update, one complete-membership deletion, surviving native link to the removed Issue and a proposed cycle.
+    observe: Read identical post-run task/binding inventories and graph/list output; compare immutable source/specification/checkpoint digests.
+    expected: Independent updates publish; conflicting/failed component retains valid stale values; confirmed absence removes current records/bindings and becomes an external prerequisite where referenced.
+    check_to_create: product-graph-sync.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-sync.test.mjs
+    red: The retained/deleted/independent task sets and stale causes differ from all-or-nothing, archival and false-deletion implementations.
+    prove: Delete after incomplete membership, retain an archived ghost, or rewrite source pins separately; each guard must catch its mutation.
+  - id: Q-CONCURRENCY
+    owner_packet: P04
+    requirement_ids:
+      - REQ-020
+      - REQ-023
+      - REQ-026
+      - REQ-027
+      - REQ-036
+      - REQ-038
+    fixture: Simultaneous MCP/HTTP starts, two processes for one product, another isolated product and a binding/source change while provider read is paused.
+    observe: Actual provider-read invocation count, lease/operation identities and head publication attempts.
+    expected: One active read/publisher or stable busy before duplicate reads; wrong/stale source cannot commit; different products remain isolated.
+    check_to_create: product-graph-sync.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-sync.test.mjs
+    red: A race exposes duplicate reads or stale publication before coordination exists.
+    prove: Bypass the lease or final source/binding guard separately; the corresponding race assertion must fail.
+  - id: Q-CLEANUP
+    owner_packet: P06
+    requirement_ids:
+      - REQ-018
+      - REQ-027
+      - REQ-028
+      - REQ-029
+      - REQ-030
+      - REQ-033
+    fixture: Hanging direct fake-gh process, manual cancellation, exhausted read/run deadline, rate-limit retry delay, explicit viewer stop and MCP protocol/transport/SIGINT/SIGTERM shutdown.
+    observe: Owned child/listener probes, terminal operation status and retained snapshot after cleanup; status/read calls do not restart work.
+    expected: No owned listener/child remains after ordinary stop/cancellation; later explicit open/run recovers. Closing a tab never terminates MCP.
+    check_to_create: product-graph-http.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-http.test.mjs
+    red: An open listener or surviving owned direct gh process remains until cleanup is implemented.
+    prove: Remove one disposer/abort path; the actual endpoint/process observation must fail.
+    threshold:
+      run_deadline_ms: 120000
+      cleanup_ms: 5000
+      start_stop_ms: 5000
+  - id: Q-MCP
+    owner_packet: P05
+    requirement_ids:
+      - REQ-001
+      - REQ-003
+      - REQ-005
+      - REQ-020
+      - REQ-021
+      - REQ-023
+      - REQ-024
+      - REQ-029
+      - REQ-035
+      - REQ-036
+      - REQ-040
+    fixture: Actual built stdio server; full graph with byte-heavy escaped Unicode fields and a record requiring multiple portions; stale/wrong-product cursors; missing gh/graph capability.
+    observe: tools/list schemas, measured serialized structured/wire sizes, complete inventory reconstruction and actual provider/file traces.
+    expected: Complete source-bound data without truncation; reads have zero provider calls/state writes; commands respect ownership; no installation or hidden workflow invocation.
+    check_to_create: product-graph-mcp.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-mcp.test.mjs
+    red: Oversized/mixed-page or missing capability behavior must fail the intended transport assertions.
+    prove: Disable byte packing, cursor revision validation or read-only isolation separately.
+    threshold:
+      structured_bytes: 24576
+      wire_bytes: 65536
+  - id: Q-SPEC
+    owner_packet: P05
+    requirement_ids:
+      - REQ-003
+      - REQ-012
+      - REQ-013
+      - REQ-014
+      - REQ-036
+      - REQ-038
+    fixture: Missing/Draft/Approved/stale/unreadable specifications, one Approved task without plan.md, independent board states and one Done task.
+    observe: The shared read-only specification evidence helper, graph/list/filter counters and unchanged workflow state.
+    expected: An Approved current specification does not need a plan to suppress Needs Spec; unknown evidence never becomes approval; Done only suppresses the signal.
+    check_to_create: product-graph-mcp.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-mcp.test.mjs
+    red: Reusing execution readiness incorrectly marks the Approved-without-plan fixture as Needs Spec.
+    prove: Replace current review check by description length or suppress Needs Spec for Working; the fixture must fail.
+  - id: Q-HTTP
+    owner_packet: P06
+    requirement_ids:
+      - REQ-018
+      - REQ-019
+      - REQ-020
+      - REQ-023
+      - REQ-026
+      - REQ-027
+      - REQ-030
+      - REQ-031
+      - REQ-032
+      - REQ-033
+      - REQ-036
+      - REQ-038
+    fixture: Real loopback listener, two simultaneous viewers/products, separate path-scoped cookies, valid and forged sessions/origins/hosts/methods/product paths, malicious asset paths and direct navigation.
+    observe: HTTP status/body/headers, actual socket address, provider/file traces and surviving listener identities.
+    expected: Only the owned loopback origin/session can perform privileged POST; GET does not sync/write product state; cookie scopes do not collide or expose another product; no broad CORS/file serving.
+    check_to_create: product-graph-http.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-http.test.mjs
+    red: A foreign Origin, wrong cookie or GET-triggered sync produces an observable forbidden call before guards exist.
+    prove: Remove one origin/session/method/path check at a time; the negative boundary assertion must fail.
+    threshold:
+      http_json_page_bytes: 1048576
+  - id: Q-RENDER
+    owner_packet: P07
+    requirement_ids:
+      - REQ-008
+      - REQ-009
+      - REQ-010
+      - REQ-011
+      - REQ-012
+      - REQ-013
+      - REQ-014
+      - REQ-015
+      - REQ-017
+      - REQ-018
+      - REQ-019
+      - REQ-024
+      - REQ-032
+      - REQ-035
+      - REQ-040
+    fixture: Synthetic 40-task/3-Stage/8-layer/63-source-edge/59-display-edge shape with all combined signals; hostile titles/tags/goals and a post-sync selected-task deletion.
+    observe: Fresh server-generated SVG/list DOM, exact counts/edges/source labels, dynamic response revisions, no generated graph files, no unexpected executable/resource nodes or network requests.
+    expected: HTTP derives current markup on each view; no saved HTML/SVG/layout authority; safe full graph/list remain usable from packaged assets; deleted selection has no ghost.
+    check_to_create: product-graph-render.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-render.test.mjs
+    red: Missing full card/list, server escaping or current-state render gives a direct output mismatch.
+    prove: Interpolate raw hostile text or reuse stale markup after a changed input fingerprint separately.
+  - id: Q-INTERACTION
+    owner_packet: P07
+    requirement_ids:
+      - REQ-002
+      - REQ-015
+      - REQ-016
+      - REQ-017
+      - REQ-018
+      - REQ-019
+      - REQ-024
+      - REQ-032
+      - REQ-037
+    fixture: Actual Linux browser; multi-facet OR/AND cases, zero matches, removed facet values, selected task, expanded layer, non-default pan/zoom; blocked remote network.
+    observe: Keyboard journey, matching/context/muted classes in both views, preserved viewport/focus, live announcements and measured contrast.
+    expected: Search/reset/fit/whole-graph have distinct effects; true pan/zoom survives refresh; full text and essential controls remain reachable; no color-only state meaning.
+    driver: Already authorized Linux browser automation plus actual HTTP fixture; record exact browser/version and actions.
+    red: Run the journey before interaction implementation; missing/wrong matches or focus produce behavioral failures.
+    prove: Mutate facet OR to AND, reset viewport on refresh, or hide text alternatives separately.
+    threshold:
+      viewport: 1024x768
+      browser_zoom_percent: 200
+      small_text_contrast: 4.5
+      large_text_or_control_contrast: 3
+  - id: Q-CAPACITY
+    owner_packet: P09
+    requirement_ids:
+      - REQ-002
+      - REQ-008
+      - REQ-015
+      - REQ-018
+      - REQ-026
+      - REQ-028
+      - REQ-030
+      - REQ-036
+      - REQ-037
+      - REQ-038
+    fixture: Synthetic valid DAG at 1000 tasks/10000 source edges, plus task/edge/source-size over-limit variants.
+    observe: Actual complete SVG/list counts/reachability, server derivation/render time, browser initial presentation and 20 representative local search/filter interaction timings.
+    expected: Meet local budgets without silently splitting/truncating web tasks. Separate provider latency; over-limit publication preserves prior valid source data.
+    driver: Documented Linux Chromium-family and Firefox runs; use existing authorized capability, not an automatic install.
+    check_to_create: product-graph-acceptance.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-acceptance.test.mjs
+    red: Run the baseline/over-limit checks before capacity corrections; a missing harness/import is not adequate RED.
+    prove: If measured-only evidence is otherwise non-discriminating, add one intentional omitted-card or delay mutation and show the observation fails, then restore.
+    threshold:
+      tasks: 1000
+      source_dependencies: 10000
+      initial_presentation_ms: 5000
+      interaction_samples: 20
+      interaction_p95_ms: 250
+  - id: Q-E2E
+    owner_packet: P09
+    requirement_ids:
+      - REQ-001
+      - REQ-003
+      - REQ-004
+      - REQ-005
+      - REQ-006
+      - REQ-007
+      - REQ-010
+      - REQ-012
+      - REQ-013
+      - REQ-014
+      - REQ-018
+      - REQ-020
+      - REQ-021
+      - REQ-022
+      - REQ-023
+      - REQ-024
+      - REQ-025
+      - REQ-026
+      - REQ-027
+      - REQ-028
+      - REQ-029
+      - REQ-030
+      - REQ-031
+      - REQ-032
+      - REQ-033
+      - REQ-034
+      - REQ-035
+      - REQ-036
+      - REQ-038
+      - REQ-040
+    fixture: Actual MCP stdio + actual HTTP server + browser + isolated store + fake provider. Journey A changes title/status/tags/Sprint/dependencies; journey B combines deletion, independent failure, cancellation and explicit retry.
+    observe: Cross-surface product/source/graph/evidence identities, counts/signals, source/history digests, provider call types and all terminal resources.
+    expected: Both entry points converge to equal data/view outcomes without approval divergence, ghost cards, false Ready, leaked secret or unauthorized workflow transition.
+    check_to_create: product-graph-acceptance.test.mjs
+    command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-acceptance.test.mjs
+    red: Observe the discriminating public result before implementing or fixing each journey.
+    prove: A negative/no-side-effect assertion requires one relevant boundary mutation and restoration.
+  - id: Q-PACKAGING
+    owner_packet: P08
+    requirement_ids:
+      - REQ-001
+      - REQ-002
+      - REQ-003
+      - REQ-005
+      - REQ-020
+      - REQ-029
+      - REQ-030
+      - REQ-032
+      - REQ-035
+      - REQ-039
+      - REQ-040
+    fixture: Generated Codex/Claude bundles, isolated MCP pack contents, old unbound record and old feature-incapable runtime fixtures.
+    observe: Host metadata/invocation isolation, matching shared resources, asset/contract inventory, no personal reference path or installer/configuration trace.
+    expected: Pre-feature preview works; incompatible mutation fails without loss; required assets and new operation discovery are complete; no installed/global state changes.
+    commands:
+      - rtk proxy npm run generate:check
+      - rtk proxy node --test tests/product-authoring-skills.test.mjs tests/product-task-integration.test.mjs tests/packaging.test.mjs
+      - rtk proxy npm run validate
+    red: Add failing guidance/asset/capability assertions before integration changes.
+    prove: Remove one packaged asset or introduce a cross-host-only field; the owning check must fail.
+  - id: Q-DOCUMENTATION
+    owner_packet: P10
+    requirement_ids:
+      - REQ-001
+      - REQ-002
+      - REQ-003
+      - REQ-004
+      - REQ-005
+      - REQ-009
+      - REQ-010
+      - REQ-012
+      - REQ-013
+      - REQ-014
+      - REQ-018
+      - REQ-020
+      - REQ-021
+      - REQ-023
+      - REQ-024
+      - REQ-025
+      - REQ-028
+      - REQ-029
+      - REQ-030
+      - REQ-031
+      - REQ-033
+      - REQ-034
+      - REQ-035
+      - REQ-038
+      - REQ-040
+    fixture: Final existing product/MCP guides plus isolated example identities.
+    observe: An independent reader explains the runtime flow, dynamic rendering versus source persistence, three status signals, board-priority deletion, recovery and proof limits; commands/examples execute on fixtures.
+    expected: Every claimed documented behavior is answerable and verified after P09 passes; no implementation/publication permission is implied.
+    driver: Reader check and copy-ready examples, not a newly invented documentation framework.
+    red: Write the reader questions and example checks before editing; missing/incorrect coverage is the discriminating initial failure.
+    prove: Omit or contradict one covered rule in a temporary document mutation when a negative coverage assertion otherwise lacks evidence.

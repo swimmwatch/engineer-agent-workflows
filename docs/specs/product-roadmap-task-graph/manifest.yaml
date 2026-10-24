@@ -1,0 +1,48 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - One integrated Product Roadmap planning outcome; preserve the confirmed Idea Refine scope in docs/ideas/product-roadmap-task-graph.md without reopening settled choices.
+  - Deep coverage is warranted by external board authority, interacting graph/projection states, multiple public surfaces, durable state and partial-failure recovery.
+  - Target runtime portability is Linux, macOS and Windows; executable verification is Linux-only per the user's explicit instruction.
+  - Target UI support is current stable desktop Chrome/Edge, Firefox and Safari; mobile is excluded. Linux-only verification must not be presented as macOS, Windows or native Safari runtime proof.
+  - Reuse authoritative shared JSON schemas rather than introduce a second data contract source. Declare MCP/API contracts, quality scenarios and an ownership/dependency model as later planning outputs only.
+  - Reuse the studied Task Management presentation; do not declare new Penpot libraries, screen design artifacts or a separate design-planning stage.
+  - "Specification only: no planning artifacts, runtime implementation, global installation, configuration changes, commits or publication in this invocation."
+profiles:
+  - id: core
+    reason: Explicit skill and MCP contracts, two generated host bundles, and a provider-neutral synchronization boundary.
+    state: active
+  - id: ui
+    reason: Interactive task graph, state presentation, filters, accessible controls, and a manual synchronization action.
+    state: active
+  - id: backend
+    reason: A local HTTP viewer exposes reads and an explicit state-changing local synchronization action.
+    state: active
+  - id: data
+    reason: Durable task identities, complete and active dependency graphs, sprint/tag metadata, external bindings, observations and recovery.
+    state: active
+  - id: operations
+    reason: MCP-owned viewer lifecycle, external gh reads, partial failure, freshness and repeatable reconciliation.
+    state: active
+  - id: security
+    reason: Local HTTP access, untrusted external board content, provider subprocess execution and credentials must remain bounded.
+    state: active
+  - id: cross-surface
+    reason: The agent, MCP, local HTTP viewer, provider tools and external board share one state and authority contract.
+    state: active
+  - id: events
+    reason: No message broker, event integration, webhooks or background board synchronization is in scope.
+    state: not_applicable
+planning_artifacts:
+  - contracts/mcp.md
+  - contracts/openapi.yaml
+  - quality/scenarios.yaml
+  - architecture/model.dsl
+extensions:
+  workflow_mcp_receipts:
+    - id: 37101e78b8eb7772def1beb70bbdd3187c4f8ececed0e7e7aebe359a66d12d6a
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.

@@ -1,0 +1,506 @@
+openapi: 3.1.0
+info:
+  title: EAW Local Roadmap Viewer
+  version: 1.0.0
+  description: Planning contract only. A separately owned local HTTP listener serves the browser directly; browser responses do not pass through MCP. No generated graph files, remote writes or task editing.
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+  - url: http://127.0.0.1:{port}/v/{viewer_id}
+    description: Owned loopback listener; actual port is OS-assigned. The default is an example, not fixed configuration.
+    variables:
+      port:
+        default: "49152"
+      viewer_id:
+        default: 00000000-0000-4000-8000-000000000001
+        description: Public owned-viewer identifier, not a session secret. Cookie Path is scoped to this unique base path.
+security:
+  - viewerSession: []
+x-eaw-source-version: 6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5
+x-eaw-design-status: Planning only. Canonical graph selectors listed below are created by P02/P04/P05; complete cross-file resolution is a required implementation check.
+x-eaw-planned-schema-definitions:
+  - RoadmapGraphPage
+  - RoadmapGraphSyncStatus
+  - RoadmapGraphProblem
+x-eaw-runtime-rules:
+  - Literal IPv4 loopback only; exact Host for every request.
+  - In-memory HttpOnly SameSite=Strict session cookie; no session secret in URL, durable logs or artifacts.
+  - Privileged POST additionally requires exact Origin, JSON content type and the fixed custom header.
+  - No CORS grants; reject foreign Origin and cross-site fetch metadata on protected reads.
+  - GET navigation only bootstraps an ephemeral browser session and reads local data; never starts gh or writes product data.
+  - All API responses are no-store; add nosniff, no-referrer and self-only CSP without inline scripts, external assets or framing.
+  - A complete view is derived from one pinned graph/evidence revision; no mixed partial replacement.
+  - Source data are bounded by the canonical 16 MiB limit. Bound streamed rendered output from that validated input; do not silently truncate.
+  - Stop owned listeners, sessions, sockets and viewer-initiated child work within five seconds; never terminate MCP from tab close.
+  - The URL base /v/<viewer_id>/ must match this owned listener; a unique cookie Path isolates simultaneous viewers on the same loopback host.
+paths:
+  /:
+    get:
+      operationId: viewerGet
+      summary: Dynamically render the current local graph and task list.
+      security: []
+      x-eaw-requirements:
+        - REQ-015
+        - REQ-018
+        - REQ-019
+        - REQ-030
+        - REQ-031
+        - REQ-032
+      responses:
+        "200":
+          description: Dynamically rendered complete current SVG/HTML list. Not a stored/exported graph. External text is escaped by the local renderer. First-party navigation issues the scoped ephemeral session cookie.
+          headers:
+            ETag:
+              description: Current projection fingerprint, including graph and specification evidence.
+              schema:
+                type: string
+            X-EAW-Graph-Revision:
+              description: Semantic graph revision.
+              schema:
+                type: string
+            X-EAW-Evidence-Revision:
+              description: Current specification evidence fingerprint.
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        "400":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /view:
+    get:
+      operationId: viewGet
+      summary: Dynamically render a complete replacement graph/list fragment.
+      description: The browser retains selection, filters, expansions and viewport, then swaps only after receiving the complete same-origin view. No provider read.
+      x-eaw-requirements:
+        - REQ-014
+        - REQ-015
+        - REQ-017
+        - REQ-018
+        - REQ-024
+        - REQ-026
+        - REQ-032
+      responses:
+        "200":
+          description: Dynamically rendered complete current SVG/HTML list. Not a stored/exported graph. External text is escaped by the local renderer.
+          headers:
+            ETag:
+              description: Current projection fingerprint, including graph and specification evidence.
+              schema:
+                type: string
+            X-EAW-Graph-Revision:
+              description: Semantic graph revision.
+              schema:
+                type: string
+            X-EAW-Evidence-Revision:
+              description: Current specification evidence fingerprint.
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        "401":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "403":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/graph:
+    get:
+      operationId: graphGet
+      summary: Read local domain inventory for this viewer source.
+      description: Up to 1 MiB JSON per HTTP page; independent of MCP's agent-response limits. Follow all source-bound pages/portions; never reassemble across revisions.
+      x-eaw-requirements:
+        - REQ-018
+        - REQ-020
+        - REQ-026
+        - REQ-031
+        - REQ-036
+        - REQ-038
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 32768
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: Source-bound complete page or explicit continuation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphPage"
+          headers:
+            ETag:
+              description: Current projection fingerprint, including graph and specification evidence.
+              schema:
+                type: string
+            X-EAW-Graph-Revision:
+              description: Semantic graph revision.
+              schema:
+                type: string
+            X-EAW-Evidence-Revision:
+              description: Current specification evidence fingerprint.
+              schema:
+                type: string
+        "400":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "401":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "403":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "413":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/sync:
+    post:
+      operationId: syncStart
+      summary: Explicitly start one manual synchronization.
+      description: The source/product is listener-owned, not chosen by arbitrary body fields. Return an operation identity immediately; status reads do not schedule new runs.
+      x-eaw-requirements:
+        - REQ-023
+        - REQ-024
+        - REQ-025
+        - REQ-026
+        - REQ-027
+        - REQ-028
+        - REQ-031
+        - REQ-033
+        - REQ-038
+      parameters:
+        - name: Origin
+          in: header
+          required: true
+          description: Must equal the literal loopback origin for this owned viewer.
+          schema:
+            type: string
+            format: uri
+        - name: X-EAW-Viewer
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - "1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SyncRequest"
+      responses:
+        "202":
+          description: Started manual operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncStatus"
+        "400":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "401":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "403":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Not-ready/stale source or busy with the current operation identity; zero duplicate provider reads.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "413":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "415":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    get:
+      operationId: syncStatus
+      summary: Read the current/last selected manual operation.
+      description: Read-only local operation status; never starts or retries provider calls.
+      x-eaw-requirements:
+        - REQ-018
+        - REQ-020
+        - REQ-027
+        - REQ-028
+        - REQ-031
+        - REQ-038
+      parameters:
+        - name: operation_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 32768
+      responses:
+        "200":
+          description: Current operation state, publication revision, times, counts and bounded causes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncStatus"
+        "400":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "401":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "403":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "404":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/sync/cancel:
+    post:
+      operationId: syncCancel
+      summary: Cancel this viewer's selected owned synchronization.
+      description: Do not cancel another product or an unrelated MCP-initiated operation.
+      x-eaw-requirements:
+        - REQ-027
+        - REQ-028
+        - REQ-030
+        - REQ-031
+      parameters:
+        - name: Origin
+          in: header
+          required: true
+          description: Must equal the literal loopback origin for this owned viewer.
+          schema:
+            type: string
+            format: uri
+        - name: X-EAW-Viewer
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - "1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelRequest"
+      responses:
+        "200":
+          description: Cancellation/terminal result; owned child cleanup is bounded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncStatus"
+        "400":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "401":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "403":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "404":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "415":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /assets/{asset}:
+    get:
+      operationId: assetGet
+      summary: Read a fixed packaged browser asset.
+      security: []
+      x-eaw-requirements:
+        - REQ-018
+        - REQ-030
+        - REQ-032
+        - REQ-035
+      parameters:
+        - name: asset
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - viewer.mjs
+              - view-state.mjs
+              - viewer.css
+      responses:
+        "200":
+          description: Fixed allowlist only; no caller-selected filesystem path.
+          content:
+            text/javascript:
+              schema:
+                type: string
+            text/css:
+              schema:
+                type: string
+        "404":
+          description: Bounded safe failure; prior committed data are preserved unless publication is explicitly reported.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+components:
+  securitySchemes:
+    viewerSession:
+      type: apiKey
+      in: cookie
+      name: eaw_viewer
+      description: Ephemeral listener/product-scoped session; never a provider credential. Cookie Path is /v/<viewer_id>/, preventing cookie collisions across loopback ports/products.
+  schemas:
+    GraphPage:
+      $ref: ../../../../shared/schemas/product.schema.json#/definitions/RoadmapGraphPage
+    SyncStatus:
+      $ref: ../../../../shared/schemas/product.schema.json#/definitions/RoadmapGraphSyncStatus
+    Problem:
+      $ref: ../../../../shared/schemas/product.schema.json#/definitions/RoadmapGraphProblem
+    SyncRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - expected_state_revision
+      properties:
+        expected_state_revision:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+    CancelRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - operation_id
+      properties:
+        operation_id:
+          type: string
+          format: uuid
