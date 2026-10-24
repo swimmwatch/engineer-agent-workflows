@@ -37,6 +37,15 @@ installation. Model sessions and live Penpot are not part of npm tests.
 
 ## Product reliability tools
 
+`task_inputs_reconcile` also supports explicitly authorized active-queue recovery.
+Pass the current packet's start `operation_ref` as `owner_ref`, a fresh task-wide
+`check_ref`, and `packet_ids` containing the current packet and every remaining
+packet. Shared and local bindings must identify the same active owner and packet.
+The scenario archives the previous execution, releases that owner and leaves the
+task planned. It neither completes work nor starts another packet. Recheck the
+selected packet's inputs and technical agreement before resuming it. Omit
+`owner_ref` when reconciling a paused task.
+
 The [product workflow guide](../../docs/product-workflows.md) owns the executable
 examples and recovery rules. Prefer MCP tools for workflow state; shell commands
 are needed only to build/test the package or start its normal stdio connection.

@@ -1235,11 +1235,13 @@ export async function reconcileTaskInputs(input: {
   readonly checkRef: string;
   readonly packetIds: readonly string[];
   readonly invocationSource: string;
+  readonly ownerRef?: string;
 }): Promise<TaskOutcome<TaskMutationResult>> {
   if (!TASK_PATTERN.test(input.taskId) || !DIGEST_PATTERN.test(input.checkRef)
     || input.packetIds.length === 0 || input.packetIds.length >= MAX_PLAN_PINS
     || new Set(input.packetIds).size !== input.packetIds.length
-    || input.invocationSource.length === 0 || input.invocationSource.length > 512) {
+    || input.invocationSource.length === 0 || input.invocationSource.length > 512
+    || (input.ownerRef !== undefined && !UUID_PATTERN.test(input.ownerRef))) {
     return fail("INVALID_INPUT", "Reconciliation requires an exact check, unique active packets and explicit invocation provenance.");
   }
   const packetIds = [...input.packetIds].sort();
@@ -1252,6 +1254,7 @@ export async function reconcileTaskInputs(input: {
   const intent = { schema_version: 1, kind: "operation_intent", scenario, input: {
     context: input.context, task_id: input.taskId, check_ref: input.checkRef,
     packet_ids: packetIds, invocation_source: input.invocationSource,
+    ...(input.ownerRef === undefined ? {} : { owner_ref: input.ownerRef }),
   } };
   const operationId = deterministicUuid(`${scenario}:${requested.product_id}:${input.taskId}:${digest(canonicalOperationValue(intent))}`);
   const replayed = await replay(input.root, requested, operationId, scenario, intent);
@@ -1259,11 +1262,19 @@ export async function reconcileTaskInputs(input: {
   const context = await currentContext(input.root, input.context);
   const bindings = await requireTaskBinding(input.root, context, input.taskId);
   const previous = bindings.shared.value;
-  if ([previous, bindings.local.value].some((binding) => binding.state === "started"
-    || binding.owner_session !== null || binding.current_packet !== null)) {
-    return fail("CONFLICT", "A running packet must be completed by its current owner before reconciliation.");
+  const active = [previous, bindings.local.value].some((binding) => binding.state === "started"
+    || binding.owner_session !== null || binding.current_packet !== null);
+  if (active) {
+    if (input.ownerRef === undefined || previous.current_packet === null
+      || !packetIds.includes(previous.current_packet)
+      || [previous, bindings.local.value].some((binding) => binding.state !== "started"
+        || binding.owner_session !== input.ownerRef || binding.current_packet !== previous.current_packet)) {
+      return fail("CONFLICT", "Active reconciliation requires the current packet owner and must retain that packet.");
+    }
+  } else if (input.ownerRef !== undefined) {
+    return fail("CONFLICT", "An owner reference is only valid for its active packet.");
   }
-  if (previous.state !== "planned" || !hasFrozenInputs(previous)) {
+  if ((!active && previous.state !== "planned") || !hasFrozenInputs(previous)) {
     return fail("INVALID_STATE", "Only a paused task with frozen inputs can be explicitly replanned.");
   }
   const checked = await checkTaskInputs({ root: input.root, context: input.context, taskId: input.taskId });

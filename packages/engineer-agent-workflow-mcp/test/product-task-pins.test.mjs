@@ -1033,6 +1033,90 @@ test("task reconciliation rejects stale checks and unsafe packet selections with
   assert.deepEqual(await snapshotFiles(f.workspace), beforeWorkspace);
 });
 
+async function activeTaskForReconciliation(t) {
+  const f = await fixture(t);
+  const reserved = await reserveTaskSpecification({ root: f.root, context: f.context, taskId: "TASK-0001",
+    specificationSlug: "active-reconciliation" });
+  await createReviewedSpecification(f.workspace, "active-reconciliation");
+  const started = await startTaskPacket({ root: f.root, context: reserved.context, taskId: "TASK-0001", packetId: "P01",
+    invocationSource: "fixture-customer:active-owner" });
+  const checked = await checkTaskInputsSummary({ root: f.root, context: started.context, taskId: "TASK-0001" });
+  return { ...f, started, checked, bindingPath: join(f.workspace, "docs/specs/active-reconciliation/.workflow/product-binding.yaml") };
+}
+
+test("active packet owner can restore the remaining queue without completing the task", async (t) => {
+  const f = await activeTaskForReconciliation(t);
+  const previousBytes = await readFile(f.bindingPath);
+  const input = { root: f.root, context: f.started.context, taskId: "TASK-0001",
+    checkRef: f.checked.result.check_ref, packetIds: ["P01", "P02"], ownerRef: f.started.operationRef,
+    invocationSource: "fixture-customer:restore-remaining-packets" };
+  const recovered = await taskOperations.reconcileTaskInputs(input);
+  const binding = JSON.parse(await readFile(f.bindingPath, "utf8"));
+  assert.equal(binding.state, "planned");
+  assert.equal(binding.owner_session, null);
+  assert.equal(binding.current_packet, null);
+  assert.deepEqual(binding.active_packet_ids, ["P01", "P02"]);
+  assert.deepEqual(binding.completed_packets, []);
+  const archived = await readObject(f.root, { productId: f.initialized.result.product_id,
+    kind: "record", sha256: binding.previous_binding_sha256 });
+  assert.deepEqual(Buffer.from(archived), previousBytes);
+  assert.equal((await taskOperations.reconcileTaskInputs(input)).replayed, true);
+  await assert.rejects(completeTaskPacket({ root: f.root, context: recovered.context, taskId: "TASK-0001",
+    packetId: "P01", ownerRef: f.started.operationRef, evidenceRefs: ["fixture:old-owner"], taskFinished: false }),
+  expectCode("CONFLICT"));
+  const checked = await checkTaskInputsSummary({ root: f.root, context: recovered.context, taskId: "TASK-0001", packetId: "P01" });
+  assert.equal(checked.result.status, "pass");
+  const resumed = await startTaskPacket({ root: f.root, context: recovered.context, taskId: "TASK-0001", packetId: "P01",
+    checkRef: checked.result.check_ref, invocationSource: "fixture-customer:resume-current-packet" });
+  await completeTaskPacket({ root: f.root, context: resumed.context, taskId: "TASK-0001", packetId: "P01",
+    ownerRef: resumed.operationRef, evidenceRefs: ["fixture:current-packet-verification"], taskFinished: false });
+  const completed = JSON.parse(await readFile(f.bindingPath, "utf8"));
+  assert.equal(completed.state, "planned");
+  assert.deepEqual(completed.completed_packets.map((packet) => packet.packet_id), ["P01"]);
+  assert.deepEqual(completed.active_packet_ids, ["P01", "P02"]);
+});
+
+for (const failure of ["missing-owner", "wrong-owner", "mismatched-binding", "omitted-current-packet", "stale-check"]) {
+  test(`active packet recovery rejects ${failure} without changing workflow state`, async (t) => {
+    const f = await activeTaskForReconciliation(t);
+    if (failure === "mismatched-binding") {
+      const local = JSON.parse(await readFile(f.bindingPath, "utf8"));
+      await writeFile(f.bindingPath, bytes({ ...local, owner_session: randomUUID() }));
+    }
+    if (failure === "stale-check") {
+      const planPath = join(f.workspace, "docs/specs/active-reconciliation/tasks/plan.md");
+      await writeFile(planPath, `${await readFile(planPath, "utf8")}\nUpdated recovery inputs.\n`);
+    }
+    const beforeStore = await snapshotFiles(f.root);
+    const beforeWorkspace = await snapshotFiles(f.workspace);
+    const ownerRef = failure === "wrong-owner" ? randomUUID() : f.started.operationRef;
+    await assert.rejects(taskOperations.reconcileTaskInputs({ root: f.root, context: f.started.context, taskId: "TASK-0001",
+      checkRef: f.checked.result.check_ref, packetIds: failure === "omitted-current-packet" ? ["P02"] : ["P01", "P02"],
+      ...(failure === "missing-owner" ? {} : { ownerRef }), invocationSource: "fixture-customer:active-recovery" }),
+    expectCode(failure === "stale-check" ? "SOURCE_CHANGED" : "CONFLICT"));
+    assert.deepEqual(await snapshotFiles(f.root), beforeStore);
+    assert.deepEqual(await snapshotFiles(f.workspace), beforeWorkspace);
+  });
+}
+
+test("active packet recovery is available through the MCP scenario", async (t) => {
+  const f = await activeTaskForReconciliation(t);
+  const client = new Client({ name: "active-task-recovery", version: "1" });
+  t.after(() => client.close());
+  await client.connect(new StdioClientTransport({ command: process.execPath,
+    args: [fileURLToPath(new URL("../dist/main.js", import.meta.url))],
+    env: Object.fromEntries(Object.entries({ ...process.env, EAW_PRODUCT_DATA_DIR: f.root }).filter(([, value]) => value !== undefined)) }));
+  const result = await client.callTool({ name: "task_inputs_reconcile", arguments: { context: f.started.context,
+    task_id: "TASK-0001", check_ref: f.checked.result.check_ref, packet_ids: ["P01", "P02"],
+    owner_ref: f.started.operationRef, invocation_source: "fixture-customer:stdio-active-recovery" } });
+  assert.notEqual(result.isError, true, JSON.stringify(result.structuredContent));
+  assert.equal(result.structuredContent.result.applied, true);
+  const binding = JSON.parse(await readFile(f.bindingPath, "utf8"));
+  assert.deepEqual(binding.active_packet_ids, ["P01", "P02"]);
+  assert.equal(binding.owner_session, null);
+  assert.equal(binding.state, "planned");
+});
+
 test("task reconciliation cannot take ownership from a running implementation packet", async (t) => {
   const f = await fixture(t);
   const reserved = await reserveTaskSpecification({ root: f.root, context: f.context, taskId: "TASK-0001",

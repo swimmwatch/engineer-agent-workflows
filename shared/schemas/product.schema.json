@@ -10210,6 +10210,9 @@
         "check_ref": {
           "$ref": "#/definitions/Digest"
         },
+        "owner_ref": {
+          "$ref": "#/definitions/Uuid"
+        },
         "packet_ids": {
           "type": "array",
           "minItems": 1,

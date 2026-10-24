@@ -1102,7 +1102,7 @@ export const productTools: WorkflowTool[] = [
   ),
   productTool(
     "task_inputs_reconcile",
-    "Explicitly replan a paused task from an exact check; retain prior execution immutably, select active packets and require fresh planning checks. Never starts implementation.",
+    "Explicitly replan a paused task or recover its active queue with the current owner_ref; retain the active packet and prior execution, and require fresh planning checks. Never starts implementation.",
     "task_inputs_reconcile_input",
     "Success_MutationResult",
     true,
@@ -1110,6 +1110,7 @@ export const productTools: WorkflowTool[] = [
       root: resolveProductRoot(), context: String(input.context), taskId: String(input.task_id),
       checkRef: String(input.check_ref), packetIds: input.packet_ids as string[],
       invocationSource: String(input.invocation_source),
+      ...(typeof input.owner_ref === "string" ? { ownerRef: input.owner_ref } : {}),
     })),
   ),
   productTool(
