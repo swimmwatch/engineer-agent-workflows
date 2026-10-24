@@ -9,6 +9,7 @@ coverage/
 # Temporary and cache directories
 .cache/
 .tmp/
+/.local/
 tmp/
 temp/
 
@@ -35,7 +36,6 @@ Thumbs.db
 # Local release/build output
 packages/*/dist/
 artifacts/
-.local/product-review-efficiency-baseline/
 /docs/research/workflow-probe-plans/p02-fixture/
 *.tgz
 *.zip
