@@ -17,11 +17,43 @@ outcome. If one approach is adequate, ask for agreement without inventing anothe
 Functions, existing components and configuration are valid; classes, patterns,
 interfaces and dependencies need a demonstrated purpose, not a question quota.
 
-Before the native question, explain the choice in the conversation: the named
-tasks, concrete units and contracts, viable alternatives and their tradeoffs,
-and your recommendation with reasons. If only one approach is adequate, explain
-why. Agreement must not depend on choices described only in files or proposal identifiers.
-Keep this explanation concise; do not duplicate the complete proposal.
+Before the native question, explain each named packet's proposed implementation
+in the conversation. Give enough context to understand what will be built and how
+it will work without opening the packet:
+
+- Start with the packet's purpose and concrete change in product or developer
+  behavior. Explain what the current implementation does where relevant.
+- Describe the significant existing components to reuse or change and the new
+  classes, functions, modules or configuration to introduce. Explain each unit's
+  responsibility in plain language; distinguish existing units from proposed ones.
+- Walk through how a representative action or input passes between these units
+  to produce the result. Explain important contracts, state changes and failure
+  handling where they affect the choice. Use a small example when it makes an
+  otherwise abstract proposal understandable.
+- Explain why you recommend this approach and how viable alternatives would
+  change the implementation and its practical consequences. If only one approach
+  is adequate, explain why without inventing alternatives.
+
+State exactly which implementation decision the upcoming tool question will
+collect and what accepting the proposal commits the packet to. Keep the actual
+question and selectable options in the native question tool, preserving the
+unavailable-tool fallback below.
+
+Scale the explanation to the packet: a simple change may need one concrete
+paragraph; interacting components may need several paragraphs or a short list.
+Make longer explanations easy to scan with short blocks and bold lead-ins,
+such as **Outcome**, **Implementation**, **Flow**, **Rationale**, **Verification**
+and **Decision to confirm**, in the conversation's language. Choose, combine or
+omit blocks to fit the packet; this is not a mandatory template. Use numbered
+lists for sequential steps and bullets for responsibilities, alternatives or
+checks. Put identifiers in backticks and bold short anchors rather than whole
+paragraphs.
+
+Explain technical terms when first used. A list of symbols or pattern names is
+not an explanation of how the solution works. Agreement must not depend on
+choices described only in files or proposal identifiers. Do not duplicate the
+complete proposal, enumerate private helpers or turn the explanation into a
+separate approval step.
 
 Draft only the binding proposal sections needed for that choice before asking;
 complete only the remaining packet details after agreement, outside those sections.
