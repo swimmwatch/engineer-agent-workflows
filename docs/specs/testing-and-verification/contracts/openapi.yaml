@@ -1,0 +1,866 @@
+openapi: 3.1.1
+jsonSchemaDialect: https://spec.openapis.org/oas/3.1/dialect/base
+info:
+  title: Testing Workspace Local HTTP Access
+  version: 1.0.0-proposed
+  description: >-
+    Proposed P07 contract, not implemented or agreed. One canonical operation
+    endpoint reuses the fourteen CaseStore envelopes; authentication and static
+    artifact access are transport operations, not new CaseStore commands.
+    All schemas are references into the sole authored Draft 7 family. Its root
+    $schema controls its dialect; do not reinterpret it as OAS 2020-12 or copy DTOs.
+servers:
+  - url: /
+    description: Actual mutation origin printed only after verified loopback bind.
+security:
+  - browserSession: []
+    csrf: []
+x-requirements: [MT-027, MT-028, MT-029, MT-030, MT-034, MT-035, MT-036, MT-037]
+x-data-contract:
+  uri: schemas/data.schema.json
+  id: urn:engineer-agent-workflows:testing-workspace:v1
+  startup-schema:
+    $ref: schemas/data.schema.json#/definitions/OperatorConfiguration
+  dialect: http://json-schema.org/draft-07/schema#
+  content-pin-algorithm: P01 Shared data contract selector-closure SHA-256, not managed proposal digest.
+  core-roots: [Request, Response, ErrorResponse]
+  core-pin: 25ff58433578f4dc7bb94de58254100cd7276736fc8c96d41049023fb5d73621
+  access-roots:
+    [
+      EmptyParams,
+      RuntimeInfoResult,
+      OperatorConfiguration,
+      BrowserSessionRequest,
+      BrowserSessionResult,
+      ReportAccessRequest,
+      ReportAccessResult,
+      ReportBridgeRequest,
+      ArtifactMetadata,
+      ErrorResponse,
+    ]
+  access-pin: 4199ae05bb36606b3fefefad6ce91567a44f929a23cd629157ef553ddc07aee3
+x-listener-policy:
+  startup: >-
+    NEW testing-workspace serve --library-grant-file <absolute-file> [--port <0..65535>]
+    [--report-port <0..65535>]. Validate owned OperatorConfiguration, library roots
+    and the fixed per-operator origin-retirement ledger before publishing endpoints.
+    Bind exactly 127.0.0.1, no DNS/all-interface/proxy fallback. Ports default to 0;
+    kernel candidates are bound DENY-ALL first and claimed under x-origin-retirement
+    before UI/API/report activation. Report listeners are allocated on explicit
+    report-access only, one fresh origin per immutable artifact grant. At most
+    eight active/held listeners total per instance (one UI plus at most seven
+    report listeners); retired report listeners remain deny-only until shutdown.
+    Explicit occupied/retired ports fail BUSY without another-port fallback or
+    foreign service adoption/kill. Default port0 may try at most 32 kernel candidates
+    within the ten-second startup/allocation deadline; exhaustion fails explicitly.
+    Print actual endpoint, minimal instance/project/library IDs, never roots/secrets.
+  owner: >-
+    One explicit foreground serve process owns its node:http listeners, their
+    sockets, memory sessions and operator stdin console. No mandatory daemon,
+    detached child or MCP process/UI auto-start. Console approve <public-code>
+    approves only the exact pending browser/library request, after local operator
+    compares its browser-displayed code and identity. stop or EOF initiates owned
+    shutdown; closed/missing approval channel prevents new pairing, never auto-pairs.
+  shutdown: >-
+    Stop admission, revoke this instance's sessions/tickets, stop only its listeners,
+    drain admitted core operations to bounded safe checkpoints (15 seconds plus one
+    SQLite call/lock bound), then close remaining owned sockets/handles. Never kill
+    native jobs, another serve/MCP process or a service found by PID/port alone.
+    Uncertain operation effects retain inspect/recovery guidance and evidence. P08
+    separately bounds its owned async renderer drain; core15s is not renderer300s.
+  no-read-writes: >-
+    GET/HEAD never create, migrate, repair, renew sessions, generate reports or
+    materialize snapshots. Use P02 readOnly SQLite handles and fail recovery-required
+    without writable fallback. Static views are validated existing artifacts only.
+x-origin-retirement:
+  selected-architecture: >-
+    P07 recommends a persistent private per-operator SQLite origin-retirement ledger,
+    shared by ALL this operator's serve instances, not a daemon, CaseStore, library,
+    report renderer or public privileged API. It covers BOTH mutation/UI origins and
+    report origins: once assigned, an origin is never assigned again to UI, privileged
+    API or active content, regardless of former role, process restart or reboot.
+    Fixed scheme/host are http://127.0.0.1; the exact bound nonzero port completes the
+    origin. No TLS/DNS/hosts/browser-profile/global-client changes are implied.
+  state-area: >-
+    Binding deterministic location is os.userInfo().homedir + /.testing-workspace/operator-state,
+    with origin-retirement.sqlite and private SQLite sidecars. The anchor MUST come
+    from the actual effective OS account/profile, not os.homedir(), HOME, USERPROFILE,
+    cwd or caller input. Native Windows Known Folder account-profile lookup is an
+    equivalent account-derived source, not an environment override. Missing account
+    home fails closed. All serve instances resolve/verify the same owned canonical
+    anchor; no production arbitrary-home/state-dir/realm override. Fixture checks
+    inject trusted test PlatformContext at composition only, never the real profile
+    or a production CLI/env bypass. Reject links/junction/reparse/aliases and insecure
+    access under the shared private-root policy, including Windows ACL equivalent.
+    If required ownership/private-access verification is unavailable, fail closed;
+    no supported-platform or native-security qualification is inferred from Node APIs.
+  initialization: >-
+    Ordinary serve never creates a missing ledger or directory. Only explicit NEW
+    testing-workspace serve --initialize-operator-state may initialize the first
+    absent owned empty state area, with exclusive creation, a creation marker and
+    format version 1, after the operator establishes this is first use with no prior
+    workspace browser contexts. An existing/partial area with absent ledger, missing
+    marker, newer/invalid format or integrity failure is UNAVAILABLE, never a fresh
+    empty history. Interrupted initialization needs explicit operator recovery.
+    Reset, relocation, alternate home/realm or migration is separate authorized
+    maintenance, not an HTTP/MCP operation; preserve all tombstones unless established
+    browser quiescence (including restored pages/worker contexts) permits explicit
+    retirement reset. No automatic browser/profile cleanup, migration or ledger reset.
+  records: >-
+    One metadata row binds format 1 and state-area identity; an append-only table
+    keyed by canonical (scheme,host,port) records role ui|report and unique claim/owner
+    process-instance IDs. No cookies, CSRF, tickets, artifact bodies, private library
+    paths or case/run data. Retain at most 65535 origins, also bounded by the real
+    1..65535 TCP port space; never evict tombstones by age or prune on logout/close.
+    Port-space/row exhaustion is explicit UNAVAILABLE, not proof of isolation or a
+    reason to switch realms/hosts automatically. Normal restart cannot free origins.
+  claim-algorithm: >-
+    Use Node22.20 node:sqlite DatabaseSync with journal_mode DELETE, synchronous FULL,
+    foreign keys ON, allowExtension false, timeout 1000ms, fixed bound SQL and owned
+    verified DB/sidecars; this is operating metadata, not an import of CaseStore
+    business modules. Each candidate node:http listener starts with a DENY-ALL handler
+    before listen, sends no HTML/assets/cookies, then checks its actual bound address.
+    In BEGIN IMMEDIATE verify metadata/integrity, capacity and origin absence, INSERT
+    the unique claim and COMMIT. Only a known committed retained claim owned by this
+    exact still-bound server instance permits handler activation/endpoint publication.
+    All competing serve processes obey the same unique-key transaction. Crash after
+    COMMIT burns the origin even if activation never happened. Duplicate claim,
+    failed/uncertain commit, unsafe path or identity drift never activates content;
+    close only that owned candidate and preserve unknown outcomes/tombstones.
+    Duplicate retired port0 candidates may retry up to 32 within ten seconds; explicit
+    ports never retry elsewhere. Ledger BUSY/I/O/corruption fails the operation, not
+    a fresh empty-ledger fallback. No transaction spans browser sessions or rendering.
+  loss-and-shutdown: >-
+    Keep committed rows through logout, shutdown, crash and reboot. Closing a listener
+    never deletes its claim. On detected state-area/ledger loss, corruption or identity
+    uncertainty, stop new origin claims and switch this process's owned listeners to
+    denial/revoke sessions before further protected service; report actionable private
+    operator-state recovery guidance without paths/secrets. Do not reconstruct unknown
+    history from currently open ports or assume old browsers closed. A stale backup
+    can omit used origins: never roll back to it or treat it as complete retirement
+    history without separately authorized established-browser-quiescence maintenance.
+    Verify native
+    local locking/durability/private-directory behavior during implementation; no
+    network/cloud-synced filesystem guarantee, universal power-loss proof or extra
+    all-platform native completion gate is claimed by this planning choice.
+x-request-policy:
+  gate-order: loopback peer, exact single Host, exact route/method, Origin, session/project authority, bytes/decode/schema, common core.
+  origin: >-
+    API POST/sensitive reads require exact mutation Origin; null/foreign/reportOrigin
+    are denied even with SameSite cookies. ONLY generic GET/HEAD /, exact sealed
+    /ui-assets/{manifest-key} and minimal runtime-info may omit Origin; any supplied
+    Origin must match mutation origin. Public assets never read/renew/persist auth or
+    disclose project/root/secrets. Exact Host/loopback remain required. No CORS wildcard,
+    reflected origin, proxy trust, absolute targets or localhost aliases. Sec-Fetch
+    checks are additional where present, not authority. Sensitive data uses POST.
+  csrf: >-
+    All approved-session API POST require the session-bound X-CSRF-Token except
+    session-status, which accepts only its pending/approved HttpOnly cookie plus
+    exact Origin and cannot broaden authority. Session request needs exact Origin
+    but has no prior session. Never authorize by project IDs, source refs, path,
+    pairing code or process permissions alone. No caller-supplied trusted context.
+  parse: >-
+    Only application/json with UTF-8 for API bodies; no compression, query strings,
+    GET bodies, implicit numeric/boolean conversion, defaults or unknown fields.
+    Bound bytes while streaming, fatal UTF-8 decode, standard JSON.parse, then P01
+    decoded-value and Ajv checks. Duplicate JSON keys follow JSON.parse decoded-value
+    semantics; no duplicate-key lexer claim. Reject duplicate Host/Origin/Content-Type/
+    Content-Length/CSRF headers, duplicate relevant cookies and ambiguous framing.
+    No arbitrary URL/path, filesystem browse, SQL or execution endpoint.
+  limits:
+    raw_json_body_bytes: 1048576
+    canonical_decoded_request_bytes: 1048576
+    decoded_depth: 32
+    decoded_visits: 1000000
+    json_response_bytes: 24576
+    header_bytes: 16384
+    url_bytes: 2048
+    header_receive_ms: 5000
+    body_receive_ms: 10000
+    cooperative_operation_ms: 15000
+    sqlite_busy_ms: 1000
+    admitted_operations: 4
+    pending_sessions: 8
+    approved_sessions: 8
+    pending_expiry_seconds: 120
+    session_expiry_seconds: 28800
+    pairing_requests_per_minute: 10
+    listeners_per_instance_including_ui_and_retired: 8
+    origin_claim_attempts: 32
+    persistent_origin_rows: 65535
+    report_tickets: 8
+    report_ticket_expiry_seconds: 30
+    report_streams: 4
+    artifact_bytes: 67108864
+    report_stream_ms: 30000
+    sockets_per_listener: 32
+  effects: >-
+    No hidden work queue or automatic mutation retry. Exceeding admission returns
+    BUSY; limits fail before effects. Deadlines/cancellation are cooperative: Node's
+    synchronous SQLite call is not a hard interrupt. Lost socket/timeout cannot
+    erase a committed receipt or prove not-applied. Inspect original ID/digest
+    before exact replay/recovery. Never trim canonical data or a run denominator.
+  privacy: >-
+    All JSON and auth/bridge responses use Cache-Control no-store, Referrer-Policy
+    no-referrer, X-Content-Type-Options nosniff. Bounded redacted errors only; no raw
+    request, SQL, stack, absolute path, token, cookie, bridge body or validator dump
+    in logs/errors. Issues and acknowledgment/effect/next_action use ErrorResponse.
+x-browser-session:
+  flow: >-
+    Operator first configures exact grants and copies the desired project/library
+    IDs into the browser request (later UI may present a safe approved selection).
+    POST session-requests creates a 256-bit random pending secret in an HttpOnly,
+    host-only SameSite=Strict cookie, plus an independent public eight-character
+    display code. No library data is returned before approval. The operator explicitly
+    enters approve <matching-code> on this instance's stdin console. POST session-status
+    with the pending cookie exchanges an approved pending request once for a fresh
+    256-bit session cookie and CSRF token. Replay of the old pending cookie is denied.
+    Approved status may return the existing token without changing expiry or scope.
+    BrowserSessionResult is pending or approved, never silently authenticated.
+  cookies: >-
+    Names include a random process-instance suffix, so different ports/instances
+    cannot overwrite each other's cookies. Pending/session cookies use Path=/api/v1;
+    no Domain attribute. Secrets never appear in URL/fragment, public links, localStorage,
+    retained files, console output or logs. HttpOnly+SameSite protect only in conjunction
+    with exact Host/Origin and CSRF; cookies are NOT port-isolated. Plain HTTP is
+    explicitly loopback-only; do not assert TLS/Secure-cookie protection here.
+  lifetime: >-
+    Memory-only, fixed eight-hour expiry from approval, no sliding renewal from GET
+    or POST. Logout invalidates only its own session and associated report grants;
+    restart/authority change revokes this instance's sessions/tickets. Re-pair explicitly
+    on expiry/project switch; no in-flight request can retarget another library.
+    Later UI preserves unsaved input locally where safe but never treats it as saved.
+    Basic settings cannot add roots, permissions, commands or global configuration.
+x-report-isolation:
+  origin: >-
+    Separate loopback port/origin and node:http listener; never mount upstream active
+    Allure/HTML on the credentialed mutation origin, and never expose /api routes on
+    the report listener. Do not proxy upstream Set-Cookie, redirects, CORS or arbitrary
+    filesystem routes. Report metadata/rendering/generation belongs to future P08;
+    these routes only gate an already ready, sanitized immutable artifact manifest.
+    Without that validated manifest provider return UNSUPPORTED_CAPABILITY/UNAVAILABLE,
+    not a fake report or an undefined Renderer request.
+  bridge: >-
+    Authorized POST report-access checks exact session library, reports permission,
+    ready artifact metadata/manifest, digest, paths and bytes. Return ReportAccessResult
+    with an independent 256-bit single-use bridge ticket, stored only in memory and
+    bound to this session/library/artifact/fresh reportOrigin for at most 30 seconds.
+    Each grant has its own permanently retired origin under x-origin-retirement,
+    so active reports cannot inherit later report/UI/API origins after restart.
+    Missing/corrupt/uncertain origin ownership denies active access; port0 alone is
+    never isolation evidence. ReportAccessResult, its CSRF/session-related peers and
+    bridge ticket are HTTP-browser-only, memory-only and Cache-Control no-store:
+    never expose them in MCP structured/text results, logs, durable CaseData or public
+    descriptors. Any future MCP view descriptor contains only a nonsecret pairing-needed
+    URL; it cannot mint browser/report authority or export a bridge ticket.
+    Later UI opens a fresh noopener browsing context and sends an application/x-www-form-urlencoded
+    POST body {ticket} to reportOrigin/reports/session. Never put ticket in URL,
+    Referer, fragment or log. That sole bootstrap POST requires the exact mutation
+    Origin, consumes ticket once and sets a distinct HttpOnly host-only SameSite=Strict
+    cookie Path=/reports, then 303 to its public entry_path. Unknown/expired/reused
+    tickets, wrong Origin/Host/instance/project or revoked parent session fail closed.
+    No browser credentialed CORS or approval SDK hook is needed for the form navigation.
+  scope: >-
+    Report cookie grants GET/HEAD access to only one immutable artifact manifest and
+    its explicitly enumerated sanitized assets, never another project/report or API.
+    Fixed expiry is min(parent expiry, one hour). It cannot grant API authority,
+    extend parent expiry, generate a view or change config. Logout/restart revokes
+    own linked report grants; no upstream viewer process is killed. Mutation-cookie
+    Path separation reduces accidental disclosure but is NOT a security boundary:
+    reportOrigin is always denied at mutation API despite shared-host cookies.
+  assets: >-
+    Resolve only manifest-owned regular immutable assets, recheck containment/no
+    links/aliases, expected digest/size and ready state. Decode path once; reject
+    dot/traversal/backslash/encoded slash/NUL/escaping keys and unknown query fields.
+    Static document routes are not CaseStore/API operations: GET/HEAD only beneath
+    /reports/content/, retaining the upstream manifest's safe nested relative asset
+    paths, without URL rewriting into a custom viewer. Exact entry path and asset
+    set come from P08's validated manifest, not an invented Renderer DTO. Unknown
+    asset is 404; HEAD performs identical checks without a body. No API routes exist
+    on these listeners. Report GET with an Origin requires exact reportOrigin, or
+    mutationOrigin for initial navigation; absent Origin is allowed only with the
+    valid report cookie. No GET side effects or directory listing. Untrusted HTML/SVG attachments are
+    application/octet-stream downloads with Content-Disposition attachment, never
+    inline active pages; retain an explicit unavailable/download explanation.
+  headers: >-
+    Report pages/assets use no-store, nosniff, no-referrer, Cross-Origin-Opener-Policy
+    same-origin and CSP default-src 'self'; connect-src 'self'; object-src 'none';
+    base-uri 'none'; form-action 'none'; frame-ancestors 'none'. Do not add API origin
+    to connect-src or allow arbitrary network. P08 must verify exact upstream viewer
+    CSP needs and safely refuse incompatible output; no unsafe-inline/eval waiver is
+    assumed by P07. Mutation UI forbids report scripts/embedding, uses frame-ancestors
+    none and trusted packaged assets only. Open report/downloads with noopener.
+x-ui-assets:
+  schema-content-pin: 56753fa66dd456488f10aa51c4575068a36d554658f2dfa0b923bfb1dc3dd04f
+  manifest-schema:
+    $ref: schemas/data.schema.json#/definitions/UiAssetsManifest
+  producer: >-
+    P09 build emits dist/ui-assets.json and flat dist/ui/index.html + closed .js ESM
+    and .css files. Manifest EXACT {format_version:1,entry:"index.html",assets:[{path,
+    media_type,bytes,sha256}],bundle_sha256}. ASCII flat relative keys, unique/case-safe
+    sorted by path; reject Windows-reserved device basenames/trailing dots, case aliases
+    on EVERY platform. bundle_sha256=SHA256(P01 recursively key-sorted compact JSON+LF of
+    {format_version,entry,assets}, WITHOUT bundle_sha256). It must match the code-owned
+    packaged UI build-identity digest, not caller configuration. Build verifies complete
+    entry/import/style closure from the selected bundler graph; runtime verifies this
+    sealed closure and EVERY listed byte/digest/regular-owned-file/containment/no-alias
+    before activating UI responses. No CDN, computed external imports, inline/eval,
+    source maps, config secrets or per-project bootstrap data. No design artifacts
+    or implementation/build is created by this contract.
+  limits: >-
+    <=256 assets, canonical manifest<=256KiB, entryHTML<=128KiB, each asset<=8MiB,
+    all asset bytes<=32MiB, ASCII key1..128 chars. Entry listed exactly once. index.html
+    MIME text/html; .js text/javascript; .css text/css. ALL limits/closure/digests
+    simultaneous, no omission. Reject unlisted extra files in dist/ui, links/junctions/
+    aliases, missing/tampered/unsupported media; UI capability UNAVAILABLE (503), not
+    arbitrary FS/SPA fallback or auto-build/install. Capture only validated bounded
+    immutable asset bytes for this process; never adopt disk changes/hot reload.
+  routes: >-
+    Explicit PUBLIC security exception BEFORE pairing, still exact Host/loopback and
+    provided-Origin checks. GET/HEAD / returns generic packaged entry, NO project,
+    root, session/CSRF/bridge token or global boot object. GET/HEAD /ui-assets/{manifest-key}
+    serves ONLY a listed .js/.css key, never index.html there or a filesystem path.
+    Flat canonical ASCII raw keys only, no percent-encoded/path/query aliases/catchall.
+    Unknown key/URL/query404; known route wrong method405 Allow GET,HEAD. HEAD has
+    exactly GET validation/status/headers and ZERO body. Never create/renew auth or
+    mutate on GET. UI uses document.location.origin, minimal runtime-info compatibility
+    then existing pairing flow; IDs/URLs never grant access. No bearer URLs.
+  headers: >-
+    Exact manifest MIME, nosniff, Cache-Control no-store, Referrer-Policy no-referrer,
+    COOP same-origin. Mutation document CSP: default-src 'none'; script-src 'self';
+    style-src 'self'; img-src 'self' blob:; connect-src 'self'; font-src 'none';
+    worker-src 'none'; object-src 'none'; base-uri 'none'; frame-src 'none';
+    frame-ancestors 'none'; form-action http://127.0.0.1:*. No inline/eval/CDN/source maps.
+    Inert image blobs only verified PNG/JPEG; JSON/text rendered escaped, HTML/SVG
+    download-only. Report listener retains its DIFFERENT form-action 'none' policy.
+  report-form-destination: >-
+    The port wildcard is necessary for fresh kernel-assigned retired report origins,
+    NOT a grant/CORS bypass. Trusted packaged UI may submit ONLY the ONE exact
+    ReportAccessResult.report_origin + /reports/session received over authenticated
+    same-origin API, after strict schema + current library/artifact/session/instance
+    correlation and canonical http://127.0.0.1:1..65535 check, different from mutation
+    origin. Never derive action from case/evidence/settings/URL input or let caller
+    select a destination. POST application/x-www-form-urlencoded {ticket} body in a
+    fresh target=_blank rel=noopener form; no credential in URL, no credentialed CORS.
+    Server ticket additionally binds this owned ledger-claimed listener/parent grant,
+    exact mutation Origin, expiry and single use. Report303 is only same-origin public
+    entry_path. The main UI must NOT copy report form-action none; CSP wildcard alone
+    never substitutes for exact destination selection/Origin/Host/session checks.
+x-navigation-contract:
+  authority: Shared executeNavigation(access,request), read permission, exact library; never SQL in transports or CoreRequest union changes.
+  snapshots: >-
+    queryRuns enumerates all retained run-head metadata including checkpoint/terminal
+    summary refs, ordered run_id, pinned to retained publication. Empty exact ID/state
+    filters include all. queryObservations enumerates append ordinal ascending for
+    one run and checkpoint/summary prefix_ref; null pins current-at-first-page
+    publication/count/prefix digest. Cursors bind operation/library/publication/query/
+    limit/last ID-or-ordinal/prefix and never grant authority. Later writes disclose
+    drift, never mix or silently restart an available snapshot. Missing or corrupt
+    derived navigation requires explicit authorized repairIndex, never read/GET DDL,
+    materialization, recovery, repair or unrelated body loads. The combined new build
+    maintains derived metadata in existing write primitives/repair without changing
+    canonical bytes or frozen CaseStore14 inputs.
+  budgets: Page1..50 explicit default25; whole response24KiB, reduce whole rows but retain truthful continuation/final page, common P01 depth/count/error limits.
+x-settings-contract:
+  semantics: >-
+    Shared executeSettings(access,request), separate SettingsRequest/Response. Only
+    page_size1..50 default25 and report_title nullableShortText defaultnull, for exact
+    selected library/local operator. Read requires read; update requires read+settings.
+    Read absent row returns revision0/defaults WITHOUT mutation. Identity/readiness/
+    version displays are not editable aliases. Same owned library DB settings row+
+    identified receipt commit atomically with expected settings revision CAS, replay
+    exact ID/digest before CAS; failed update preserves valid prior row. Do not change
+    case/run/navigation revisions, roots/grants/exe/renderer/retention/globalconfig.
+    Get optional inspect ID/digest returns exact original receipt/effect after lost
+    response. Missing table is explicit upgrade/repair prerequisite, never read DDL.
+x-report-service:
+  ownership: Independent P08 ReportService; seven operations, separate union/receipt from CaseStore14, same read+reports authority and ErrorResponse registry.
+  generation: >-
+    Exact request_id/request_digest receipt lookup BEFORE current head/settings read.
+    request_digest=SHA256(P01 canonical request minus request_id). First intent atomically
+    persists effective prefs values+revision/digest (0defaults), code-owned renderer
+    profile snapshot, frozen source/selection/sealed prefix and generation_intent_digest
+    over {request:requestWithoutId,source_summary_ref,selection_ref,observation_count,
+    observation_prefix_digest,configuration_snapshot}. Recovery/replay uses RETAINED
+    snapshot; new prefs only NEWgen. ACKpendingfast, owned async worker, HTTP15s NOT
+    renderer300s; disconnectnotcancel. prior_generation_id CAS latest (nullONLYfirst),
+    staleconcurrentCONFLICT, never history drop. Source-time summary immutable, actual
+    publication→P03NEWdelivery-summary revision; currentSummary/drift separate.
+    AwesomeHTML name/codebootstrap ONLY code-owned ASCII status+run/genUUID; custom
+    report_title ONLY escaped canonicalMarkdown/UI for NEWgen, never descriptionHtml,
+    trusted inline or CSPwhitelist. No SUT success from rendererexit.
+  status-pages: >-
+    statusGeneration(run,null) first page pins latest committed generation or NOT_FOUND,
+    NEVER generate or read writes. limit1..50/cursor binds generation/source/inspection
+    epoch/write-created auxiliary revision/retained artifact set/last key. Published
+    retained artifact +all attempt/failure metadata rows expose real IDs/digests/run/
+    category/MIME/contentpolicy/roles/input/output/diagnostic links; later auxiliary
+    writes disclose metadata_drift/current epochs, never mix pages. Reduce whole rows
+    to24KiB preserving continuation/final page; no GET snapshot materialization.
+    <=1,000,000 artifact rows+32attempts, limit at writes not prune history. Prior links
+    +Case/navigation/report byte APIs make ALL original sanitized inputs/attachments/
+    attempts/failures/priorrun/gen inspectable even without renderer, not DB bytes-only.
+  evidence: >-
+    publishEvidenceArtifact <=512KiB decoded CANONICAL standardbase64, wholeJSON<=1MiB,
+    exact SHA256/length, library/run/expected revision/artifactID/provenance/redaction.
+    Reject noncanonical pad bits by decode/reencode equality. Service staging to P02
+    PRIVATE publication yields ready immutable ArtifactMetadata/evidenceSourceRef
+    BEFORE appendobs references it. No caller path/URL/token. Required large/unsafe
+    attachment is explicit limit/incomplete, never trim or pretend a jobref durable.
+    readEvidenceArtifact binds artifactID/digest/offset, <=16KiB decoded portion within
+    24KiB complete envelope and exact next offset; TOTAL published owned ready artifact<=64MiB (publishinput512KiB unchanged), verified run/category/digest/media_type+content_policy from retained metadata, no staged/raw/credentials/FSbrowse/repair/renderneeded.
+  receipts: >-
+    NEW ReportWriteReceipt, never CoreWriteReceipt extension. Shared inspect/recover
+    intent_kind generation|evidence, exact original ID/digest/intent + token. Recovery
+    NEWrequestID returns identified original effects, never new SUT/generation/artifact;
+    Durability conditionals: ordinary applied evidence MUST ready evidenceArtifact+kind=evidenceRef, generationnull; appliedgeneration/cancel MUSTgenerationnonnull and nullartifact/ref. Recovery branches on RECONCILED_EFFECT (not own write effect), originalnot_applied maynull; effectiveunknown NEVERready. Same exact retry receipt
+    before epoch/source CAS. Uncertain ownership/effects fail closed, not PID stealing.
+  manifest: >-
+    Immutable allowlist relativepath/bytes/digest/media/contentpolicy/entry/evidencepolicy/
+    provenance, no ticket/selfdigest; ArtifactMetadata pins bytes. <=50000 assets,
+    <=64MiB each/512MiBtotal/canonical16MiB ALL simultaneous, no silent drop; trusted_upstream ONLY pinned code/recognized bootstrap; inert_data verified JSON/text/PNG/JPEG never JS/HTML/SVG/CSPwhitelist; download_only unknown. Verified upstream entry/build and safe
+    paths. Untrusted active evidence downloadOnly. Ready only after validated owned
+    publication, no partial links. Generation descriptors NEVER contain browser secrets.
+x-error-status:
+  "400": [INVALID_INPUT, INVALID_CURSOR]
+  "403": [AUTHORITY_DENIED, FOREIGN_LIBRARY, UNSAFE_PATH]
+  "404": [NOT_FOUND]
+  "408": [TIMEOUT]
+  "409":
+    [CONFLICT, BUSY, STALE_CURSOR, RECOVERY_REQUIRED, CORRUPT_SOURCE, CANCELLED]
+  "413": [LIMIT_EXCEEDED, RESULT_LIMIT]
+  "422": [INVALID_RECORD, INVALID_GRAPH, DUPLICATE_CANDIDATE]
+  "426": [UNSUPPORTED_VERSION]
+  "501": [UNSUPPORTED_CAPABILITY]
+  "503": [UNAVAILABLE, IO_ERROR]
+paths:
+  /:
+    get:
+      operationId: getUiEntry
+      security: []
+      summary: Public generic packaged index, no project context or credentials.
+      responses:
+        "200":
+          description: Verified index bytes and mutation-UI CSP; no auth mutation.
+          content:
+            text/html:
+              schema: { type: string }
+        default:
+          $ref: "#/components/responses/Error"
+    head:
+      operationId: headUiEntry
+      security: []
+      summary: Identical entry checks/status/headers, never a body.
+      responses:
+        "200": { description: Verified public index headers only. }
+        default:
+          { description: Same bounded failure status as GET without body. }
+  /ui-assets/{manifest-key}:
+    parameters:
+      - name: manifest-key
+        in: path
+        required: true
+        schema:
+          $ref: schemas/data.schema.json#/definitions/UiAssetKey
+    get:
+      operationId: getUiAsset
+      security: []
+      summary: Public exact listed ESM/CSS key, not a path/catch-all.
+      responses:
+        "200":
+          description: Verified immutable packaged bytes with exact MIME and no-store/nosniff.
+          content:
+            text/javascript:
+              schema: { type: string }
+            text/css:
+              schema: { type: string }
+        default:
+          $ref: "#/components/responses/Error"
+    head:
+      operationId: headUiAsset
+      security: []
+      summary: Same manifest/ownership/digest/MIME/route checks, zero response body.
+      responses:
+        "200": { description: Verified public ESM/CSS headers only. }
+        default: { description: Same failure status as GET without body. }
+  /api/v1/runtime-info:
+    get:
+      operationId: runtimeInfo
+      security: []
+      summary: Read minimal build, version and per-capability prerequisites without effects.
+      responses:
+        "200":
+          description: Public metadata only; no roots, libraries, scenarios or dependency installation.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/RuntimeInfoResult
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/session-requests:
+    post:
+      operationId: requestBrowserSession
+      security: []
+      summary: Request pending browser approval for a preconfigured library.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/BrowserSessionRequest
+      responses:
+        "202":
+          description: Pending HttpOnly cookie and public comparison code; not library access.
+          headers:
+            Set-Cookie:
+              description: Instance-specific pending secret; HttpOnly, host-only, SameSite=Strict, Path=/api/v1.
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/BrowserSessionPending
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/session-status:
+    post:
+      operationId: inspectBrowserSession
+      security:
+        - browserSession: []
+      summary: Inspect pending approval or explicitly exchange its cookie after console approval.
+      requestBody:
+        $ref: "#/components/requestBodies/Empty"
+      responses:
+        "200":
+          description: Pending or approved state; fixed expiry is never renewed.
+          headers:
+            Set-Cookie:
+              description: On first approved exchange only, new HttpOnly session cookie and expired pending cookie.
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/BrowserSessionResult
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/logout:
+    post:
+      operationId: logoutBrowserSession
+      summary: Invalidate this session and its linked report access only.
+      requestBody:
+        $ref: "#/components/requestBodies/Empty"
+      responses:
+        "204":
+          description: Own session revoked; canonical data and unrelated sessions/processes unchanged.
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/operations:
+    post:
+      operationId: executeOperation
+      summary: Execute one exact common envelope under trusted session authority.
+      description: >-
+        The same executeOperation(access,request) core as stdio MCP; never reinterpret
+        params or invent HTTP-only CAS/retry/outcome rules. Safe reads also use POST
+        so full strict envelopes carry no silently coerced query fields.
+      x-operation-map:
+        open: { input: Operation_open, result: OpenResult, permission: read }
+        initialize:
+          {
+            input: Operation_initialize,
+            result: WriteReceipt,
+            permission: initialize,
+          }
+        queryDefinitions:
+          {
+            input: Operation_queryDefinitions,
+            result: PageResult,
+            permission: read,
+          }
+        getDefinition:
+          {
+            input: Operation_getDefinition,
+            result: PortionResult,
+            permission: read,
+          }
+        commitDefinitions:
+          {
+            input: Operation_commitDefinitions,
+            result: WriteReceipt,
+            permission: definitions,
+          }
+        inspectOperation:
+          {
+            input: Operation_inspectOperation,
+            result: OperationStatus,
+            permission: read,
+          }
+        recoverOperation:
+          {
+            input: Operation_recoverOperation,
+            result: WriteReceipt,
+            permission: recovery-and-original,
+          }
+        repairIndex:
+          {
+            input: Operation_repairIndex,
+            result: WriteReceipt,
+            permission: recovery,
+          }
+        beginRun:
+          { input: Operation_beginRun, result: WriteReceipt, permission: runs }
+        openRun:
+          { input: Operation_openRun, result: RunHeadResult, permission: read }
+        appendObservations:
+          {
+            input: Operation_appendObservations,
+            result: WriteReceipt,
+            permission: runs,
+          }
+        checkpointRun:
+          {
+            input: Operation_checkpointRun,
+            result: WriteReceipt,
+            permission: runs,
+          }
+        finalizeRun:
+          {
+            input: Operation_finalizeRun,
+            result: WriteReceipt,
+            permission: runs,
+          }
+        getRunRecord:
+          {
+            input: Operation_getRunRecord,
+            result: PortionResult,
+            permission: read,
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/Request
+      responses:
+        "200":
+          description: Correctly paired common response; save acknowledgment is not test/report success.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/Response
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/report-access:
+    post:
+      operationId: prepareReportAccess
+      summary: Prepare a one-use body-only bridge to an already ready isolated artifact.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/ReportAccessRequest
+      responses:
+        "200":
+          description: Body-only bridge ticket; not a public secret-bearing URL or renderer operation.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/ReportAccessResult
+        default:
+          $ref: "#/components/responses/Error"
+  /reports/session:
+    servers:
+      - url: http://127.0.0.1:{reportPort}
+        description: DIFFERENT actual report listener; example variable is not a startup default.
+        variables:
+          reportPort:
+            {
+              default: "49153",
+              description: Replace with actual kernel-assigned report port.,
+            }
+    post:
+      operationId: exchangeReportBridge
+      security: []
+      summary: Consume exact body ticket from mutation-origin form; no API routes on this listener.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/ReportBridgeRequest
+      responses:
+        "303":
+          description: Distinct report-only HttpOnly cookie, then public relative artifact entry path.
+          headers:
+            Set-Cookie:
+              description: Instance-specific, HttpOnly, host-only, SameSite=Strict, Path=/reports.
+              schema: { type: string }
+            Location:
+              description: Validated public entry path only, no token or authority.
+              schema: { type: string, pattern: "^/reports/" }
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/navigation:
+    post:
+      operationId: executeNavigation
+      summary: Read complete frozen run or observation-reference metadata without materialization.
+      x-operation-map:
+        queryRuns:
+          {
+            input: Navigation_queryRuns,
+            result: RunPageResult,
+            permission: read,
+          }
+        queryObservations:
+          {
+            input: Navigation_queryObservations,
+            result: ObservationPageResult,
+            permission: read,
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/NavigationRequest
+      responses:
+        "200":
+          description: Bounded metadata rows and exact frozen continuation; no implicit repair or omitted terminal refs.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/NavigationResponse
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/settings:
+    post:
+      operationId: executeSettings
+      summary: Strict settings read/update envelopes, including side-effect-free absent-row read.
+      x-operation-map:
+        getSettings:
+          {
+            input: SettingsGetRequest,
+            result: SettingsReadResult,
+            permission: read,
+          }
+        updateSettings:
+          {
+            input: SettingsUpdateRequest,
+            result: SettingsWriteReceipt,
+            permission: read-and-settings,
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/SettingsRequest
+      responses:
+        "200":
+          description: Settings-only revision and receipt, not case inventory/run/nav mutation.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/SettingsResponse
+        default:
+          $ref: "#/components/responses/Error"
+  /api/v1/report-operations:
+    post:
+      operationId: executeReportOperation
+      summary: Independent P08 report generation, durable evidence and shared intent recovery.
+      x-operation-map:
+        requestGeneration:
+          {
+            input: ReportGenerationRequest,
+            result: ReportWriteReceipt,
+            permission: read-and-reports,
+          }
+        statusGeneration:
+          {
+            input: ReportGenerationStatusRequest,
+            result: ReportGenerationStatus,
+            permission: read-and-reports,
+          }
+        cancelGeneration:
+          {
+            input: ReportGenerationCancelRequest,
+            result: ReportWriteReceipt,
+            permission: read-and-reports,
+          }
+        publishEvidenceArtifact:
+          {
+            input: PublishEvidenceArtifactRequest,
+            result: ReportWriteReceipt,
+            permission: read-and-reports,
+          }
+        readEvidenceArtifact:
+          {
+            input: ReadEvidenceArtifactRequest,
+            result: EvidencePortionResult,
+            permission: read-and-reports,
+          }
+        reportOperationInspect:
+          {
+            input: ReportOperationInspectRequest,
+            result: ReportOperationInspection,
+            permission: read-and-reports,
+          }
+        reportOperationRecover:
+          {
+            input: ReportOperationRecoverRequest,
+            result: ReportWriteReceipt,
+            permission: read-and-reports,
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/data.schema.json#/definitions/ReportServiceRequest
+      responses:
+        "200":
+          description: Report metadata/new receipt or bounded evidence portion, never browser ticket or SUT success proof.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/data.schema.json#/definitions/ReportServiceResponse
+        default:
+          $ref: "#/components/responses/Error"
+components:
+  securitySchemes:
+    browserSession:
+      type: apiKey
+      in: header
+      name: Cookie
+      description: >-
+        Browser-managed Cookie header, not a manually supplied API token. Select
+        only this instance's HttpOnly pending/session cookie. Dynamic instance
+        cookie names avoid cross-port overwrite; Cookie header itself is not a grant.
+    csrf:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+      description: Exact secret tied to approved in-memory browser session; never URL/logged.
+    reportSession:
+      type: apiKey
+      in: header
+      name: Cookie
+      description: Distinct instance-specific HttpOnly report cookie scoped to one ready immutable artifact.
+  requestBodies:
+    Empty:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: schemas/data.schema.json#/definitions/EmptyParams
+  responses:
+    Error:
+      description: >-
+        Canonical bounded redacted ErrorResponse and x-error-status mapping. Preserve
+        known/unknown effects after admission; never echo secrets/private roots or
+        claim not-applied after an uncertain commit. Wrong methods return 405 with
+        Allow; unsupported media/framing return 415/400 with INVALID_INPUT. HTTP
+        parser failures may close without JSON; a lost response is not no-effect.
+      content:
+        application/json:
+          schema:
+            $ref: schemas/data.schema.json#/definitions/ErrorResponse

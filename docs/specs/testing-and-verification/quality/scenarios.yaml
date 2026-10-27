@@ -1,0 +1,844 @@
+format_version: 1
+specification:
+  slug: testing-and-verification
+  aggregate: fb52fa5a13517a7ace6c4d6dab3985efe739394d0dc08cbba9964bb8cd86e19a
+  normalized: 68e951ca274cbe278fa8930196381ff5e54c8175a61fc00ecb4d0016ebcce760
+  review_ref: 62370a34-95e6-4d19-a80e-5cb37de687b2
+requirement_ids:
+  - MT-001
+  - MT-002
+  - MT-003
+  - MT-004
+  - MT-005
+  - MT-006
+  - MT-007
+  - MT-008
+  - MT-009
+  - MT-010
+  - MT-011
+  - MT-012
+  - MT-013
+  - MT-014
+  - MT-015
+  - MT-016
+  - MT-017
+  - MT-018
+  - MT-019
+  - MT-020
+  - MT-021
+  - MT-022
+  - MT-023
+  - MT-024
+  - MT-025
+  - MT-026
+  - MT-027
+  - MT-028
+  - MT-029
+  - MT-030
+  - MT-031
+  - MT-032
+  - MT-033
+  - MT-034
+  - MT-035
+  - MT-036
+  - MT-037
+sources:
+  - id: S-RUNTIME
+    path: docs/specs/testing-and-verification/tasks/plan.md
+    heading: Shared runtime architecture
+  - id: S-DATA
+    path: docs/specs/testing-and-verification/tasks/01_library-contract.md
+    heading: Shared data contract
+  - id: S-STORE
+    path: docs/specs/testing-and-verification/tasks/02_definition-store.md
+    heading: SQLite storage contract
+  - id: S-RUNS
+    path: docs/specs/testing-and-verification/tasks/03_run-journal.md
+    heading: Technical proposal
+producers:
+  - { id: P00, binding_state: agreed }
+  - { id: P01, binding_state: agreed }
+  - { id: P02, binding_state: agreed }
+  - { id: P03, binding_state: agreed }
+  - { id: P04, binding_state: agreed }
+  - { id: P05, binding_state: agreed }
+  - { id: P06, binding_state: agreed }
+  - { id: P07, binding_state: pending }
+  - { id: P08, binding_state: pending }
+  - { id: P09, binding_state: pending }
+  - { id: P10, binding_state: pending }
+  - { id: P11, binding_state: agreed }
+  - { id: P12, binding_state: agreed }
+environments:
+  - id: E-FIXTURE
+    kind: fixture
+    policy: Controlled fixtures and syntax/shape checks are simulation only; they are not native/client/model or real-memory evidence.
+  - id: E-CORE
+    kind: linux_native
+    policy: Real temporary SQLite/core/transport processes on Linux; record exact Node/SQLite/SDK versions at future entry, unavailable metrics null with reasons.
+  - id: E-CHROME
+    kind: linux_chrome
+    policy: Real Google Chrome on Linux in a fresh owned profile; Chromium alone is not equivalent evidence. Record actual browser version.
+  - id: E-NATIVE
+    kind: linux_native
+    policy: Actual callable Harness/Claude/Codex on Linux with isolated fresh homes/contexts and separately authorized chosen models; record actual versions/permissions/models.
+  - id: E-SUPPORT
+    kind: supported_unverified
+    policy: Implement Windows/macOS and desktop Chrome/Edge/Firefox/Safari on applicable OSes; unrun combinations remain supported/unverified, not additional native completion gates.
+gates:
+  - id: G-CLIENTS
+    owner: User
+    condition: Explicitly authorize each real client launch with fresh isolated home/context, target scope and permissions. No real profiles or implicit global registration.
+  - id: G-MODELS
+    owner: User
+    condition: Explicitly authorize actual chosen models and trial budget. Host recommendations are advisory; missing permission blocks required trials without inventing consent.
+  - id: G-RENDERER
+    owner: User
+    condition: Confirm the agreed renderer is already available or separately authorize exact acquisition/configuration. Missing Allure blocks actual rendering; never auto-install.
+  - id: G-DESIGN
+    owner: Separately invoked design-planning owner
+    condition: Qualify the four declared shared/screen design outputs and P09 implementation before dependent UI checks. No Penpot action or invented design identity here.
+checks:
+  - id: Q-001
+    state: planned
+    requirement_ids:
+      - MT-001
+      - MT-002
+      - MT-003
+      - MT-007
+      - MT-013
+      - MT-029
+    producer: P10
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME]
+    environment: E-FIXTURE
+    evidence_kind: controlled_fixture
+    dependencies: []
+    manual_gates: []
+    workload: Packet/standalone explicit entry; missing/stale specification or agreement, missing capability/shared-bundle mismatch; implemented/partial/not implemented/unknown surfaces; wrong target/build; URL-only project and missing library context.
+    procedure: Run delivered entry policy on isolated coherent fixtures with observable call/effect trace. Compare requested criteria and actual per-surface presence, selected target/build and authorized location; retain regular SUT source/test/config/lock and workflow-status before/after inventories without parsing protected workflow state. Reopen the URL-only identity in a fresh session. Exercise denied destructive-like effects and unknown oracle without granting consent.
+    observation: Stale/missing packet evidence is BLOCKED, never silent standalone fallback/raw YAML; standalone does not require planning artifacts/MCP. Confirmed missing required behavior is FAIL, access/identity uncertainty BLOCKED or inconclusive, not fabricated compliance. Missing context requests selection, never initializes cwd or another library. No SUT source/test/config/dependency/status edits or automatic workflow launch; harmless independent checks remain possible.
+    threshold:
+      {
+        metric: entry_authority,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: In an isolated delivery copy bypass entry/presence/identity policy or write an inert SUT-source marker; exact call/classification/inventory assertion must fail, then restore. Controlled answers are simulation, not consent or actual-model proof.
+  - id: Q-002
+    state: planned
+    requirement_ids: [MT-004, MT-005, MT-006, MT-007, MT-009]
+    producer: P10
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-001]
+    manual_gates: [G-DESIGN]
+    workload: API-only short path and mixed UI/API; navigation invalidates a locator; delayed result, click without persisted effect; wrong material header/payload/state despite 200; missing credential; required unavailable browser; destructive-like action, instruction-injection text and cross-origin redirect with inert markers.
+    procedure: Use actual delivered drivers against owned fixtures and Google Chrome. Observe live controls, refresh stale references after navigation, wait for a specific condition within its recorded bound and verify visible plus justified persisted read-back. Direct HTTP checks promised headers/shape/values/state with authenticated and unauthenticated controls. Count requests/effects and retain only sanitized evidence; model-facing injection/permission decisions are also replayed in Q-021 through Q-024.
+    observation: API-only work launches no browser or web-only references; mixed required gaps are INCOMPLETE. Guessed stale locators, click success, blanket sleeps/network-idle or HTTP success cannot establish behavior. Wrong credential is not automatically a product bug. No destructive-like call without authority, credential forwarding to an unverified redirect, transport-verification bypass or scope change from target instructions; independent harmless checks continue.
+    threshold:
+      {
+        metric: meaningful_observations,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Use a stale locator, omit a material header/state assertion or allow an inert forbidden-effect/credential-marker request in an isolated copy; actual signal must catch each defect. A positive control proves the absence observer can detect the harmless operation; no real production effects.
+  - id: Q-003
+    state: planned
+    requirement_ids:
+      - MT-004
+      - MT-008
+      - MT-009
+      - MT-012
+      - MT-015
+      - MT-016
+      - MT-017
+      - MT-018
+      - MT-021
+    producer: P10
+    consumers: [P11, P12]
+    source_ids:
+      - S-RUNTIME
+      - S-DATA
+      - S-STORE
+      - S-RUNS
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-001]
+    manual_gates: []
+    workload: Complete criterion-linked charter and saved definitions before script/launch; two fresh QA passes including FAIL/BLOCKED and unknown-oracle draft/stale; existing ready SUT; smoke-only budget exhaustion; one product diagnostic versus TWO correctable driver errors; deployment/auth change, uncertain POST and automation recommendation.
+    procedure: Exercise delivered P10 flow using real temporary drivers outside SUT checkouts and real canonical storage. Trace criterion/oracle, risk/priority, preconditions/data, actions/expectations, requiredness, method, dependencies and cleanup to saved case revisions BEFORE driver digest/launch. Second fresh pass searches/reuses IDs. Observe no startup for a verified existing SUT; stop admission at caller budget. Correct and rerun two driver errors, read back possibly applied POST before replay, and reobserve affected checks after target/auth/source change.
+    observation: Definitions for failed/blocked scenarios persist separately from results; missing oracle stays non-ready, never inferred from product behavior. Budget leaves remaining required cases NOT_RUN/INCOMPLETE without narrowing full scope. Default product diagnostic is at most one unless justified, not a cap on driver correction; known missing prerequisite is not relaunched. Automation recommendation cites IDs/revisions, layer, benefit/limits and verified existing entrypoint-to-covered-revisions; no accepted coverage, permanent tests or product fixes invented.
+    threshold:
+      {
+        metric: driver_sequence,
+        unit: trace,
+        operator: accounts_for,
+        expected: all-attempts-and-required-outputs,
+        provenance: requirement,
+      }
+    discrimination: Skip saved definitions, create a second QA identity, reuse changed-target evidence, issue another known-unsafe POST or stop script repair after the product-repeat allowance; actual trace/ref/effect assertion must fail. Failed definition or result persistence remains explicit. Controlled flow is not actual-native/model proof.
+  - id: Q-004
+    state: planned
+    requirement_ids: [MT-010, MT-011]
+    producer: P10
+    consumers: [P11, P12]
+    source_ids:
+      - S-RUNTIME
+      - S-DATA
+      - S-RUNS
+    environment: E-NATIVE
+    evidence_kind: actual_native_client
+    dependencies:
+      - Q-003
+      - Q-014
+      - Q-021
+      - Q-022
+      - Q-023
+    manual_gates:
+      - G-CLIENTS
+      - G-MODELS
+    workload: Actual P10 reporting on each authorized host, two distinct invocations; six outcomes, optional/required gaps and empty scope; Markdown save denied; product failure, clean run, failed library/report persistence and cleanup.
+    procedure: Inspect actual P10 Markdown outputs from authorized native runs, independently read canonical summary/attempts and follow report/run/case-revision links. Check mode/target/build uncertainty, oracle, plan/presence inventory, expected/actual reproduction, script-health/repairs, intermittent findings, gaps/budget/available metrics, library maintenance/automation, cleanup and next owner. Use owned output roots; repeat invocation and deny the next report save without deleting old evidence.
+    observation: Distinct invocation reports preserve earlier findings/user edits and sanitized linked evidence. Canonical FAILED wins for any product violation; otherwise required gaps/empty execution are INCOMPLETE, optional gaps limitations. Denied save gives available chat results and explicit incomplete persistence, never saved-report success. Clean stated scope explicitly says no bugs found and stops without source/workflow/checklist changes or automatic next packet.
+    threshold:
+      {
+        metric: canonical_verdict,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: agreed_contract,
+      }
+    discrimination: Overwrite prior Markdown, omit an expected/actual case link, claim saved after denial, hide a required gap or auto-advance after clean output in an isolated delivery copy; actual report/chat/ref/inventory assertion must fail. Q-014 retains independent real-core verdict discrimination.
+  - id: Q-005
+    state: planned
+    requirement_ids:
+      - MT-002
+      - MT-013
+      - MT-014
+      - MT-026
+      - MT-027
+      - MT-028
+    producer: P10
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME]
+    environment: E-CORE
+    evidence_kind: real_transport
+    dependencies: []
+    manual_gates: []
+    workload: Both authored templates and all three generated distributions; actually packaged runtime/complete skill resources in fresh cwd/home without checkout, planning bundle or engineering-workflow MCP; missing/incompatible CaseRuntime or shared resources; supported/observed platform matrix.
+    procedure: Run existing saved/generated-byte checks for explicit-only metadata, size bounds, declared substitutions, host leakage and shared-resource equality. Execute delivered package entry/discovery and real protocol negotiation from isolated packaged resources, not checkout imports. Verify standalone prerequisites and fail-closed manual verifier/missing-runtime paths without install/registration/fetch. Inspect compatible API/fallback choices and bounded portability fixtures; label them non-native.
+    observation: Independent packaged application and standalone skills use one compatible canonical contract without a planning dependency or direct-storage fallback. Missing capabilities/shared bundle stop dependent work with a prerequisite, not reconstructed guidance or auto-install. Required three-OS/four-browser compatibility remains implemented; unrun combinations supported/unverified, no extra native gates. Packaging/fixture checks are not three-host or actual-model proof.
+    threshold:
+      {
+        metric: packaging_and_evidence_labels,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Remove one packaged shared resource, require engineering-workflow MCP for standalone, leak host metadata or substitute a Chrome-only API without compatible fallback; owning package/reference assertion must fail. Preserve real global homes/client state.
+  - id: Q-006
+    state: planned
+    requirement_ids: [MT-018, MT-019, MT-021, MT-029, MT-030]
+    producer: P02
+    consumers: [P06, P07, P09, P10, P11, P12]
+    source_ids: [S-DATA, S-STORE]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: []
+    manual_gates: []
+    workload: Fresh libraries A/B; case AND suite CRUD/rename/retire, Unicode and all meaningful fields; duplicate IDs, dangling membership, contradictory order/invalid content, unknown oracle, duplicate behavior versus same title, old automation mappings and measured/estimated/unknown costs.
+    procedure: Use actual application operations and immutable body retrieval; compare IDs, revisions, provenance, membership/order, search and history before/after each valid or invalid mutation. Test lifecycle independently from readiness and verify denied/malformed updates leave the old coherent state.
+    observation: One canonical identity/history, rejected invalid graph/content without silent repair or coercion. Rename retains suite/result references; failed runs never retire cases. Unknown oracle remains draft/stale; costs retain provenance. No title-based merge or expectation change for green; recommended/decided/old-revision automation is not implemented current coverage. Q-003 separately verifies QA maintenance and recommendation behavior.
+    threshold:
+      {
+        metric: canonical_definition_history,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: agreed_contract,
+      }
+    discrimination: Accept a dangling/duplicate/order error, invent oracle/cost provenance, overwrite an old revision or count proposed automation; exact saved ref/body/error assertion must fail in an isolated copy, then restore.
+  - id: Q-007
+    state: planned
+    requirement_ids: [MT-020, MT-025, MT-035]
+    producer: P02
+    consumers: [P03, P06, P07, P09, P10, P11, P12]
+    source_ids: [S-DATA, S-STORE]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-006]
+    manual_gates: []
+    workload: 1000 cases/100 suites, byte-pressure pages, all filters and Unicode portions; unrelated observation publication between EVERY continuation; malformed/query/ref-mismatched cursor, unavailable/incompatible pinned snapshot and corrupt retained authority/navigation.
+    procedure: Enumerate all pages/portions and independently compare complete expected ID/revision/digest set and decode-key observer. Exercise exact query/source/ref bindings through current and retained snapshots, then negative cursor/snapshot cases without authorizing repair or silently restarting enumeration.
+    observation: Final page appears once; available historical snapshot remains exact and current drift separate. Invalid cursor, stale/unavailable snapshot and corrupt source are explicit distinct errors, not current-data fallback. Targeted lookup decodes no unrelated bodies. Missing/stale/corrupt navigation cannot hide active cases or certify full coverage; limit response preserves references/denominator/continuation.
+    threshold:
+      {
+        metric: complete_inventory_refs,
+        unit: set,
+        operator: set_equals,
+        expected: frozen-expected-id-revision-digest-set,
+        provenance: fixture,
+      }
+    discrimination: Stop one page early, repin current data, silently recover a missing snapshot or decode all bodies before filtering; exact set/portion/error/observer assertion must fail. Fixture scale establishes correctness, not performance.
+  - id: Q-008
+    state: planned
+    requirement_ids: [MT-019, MT-022, MT-031]
+    producer: P03
+    consumers: [P08, P09, P10, P11, P12]
+    source_ids: [S-DATA, S-RUNS]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-007]
+    manual_gates: []
+    workload: Overlapping suites/direct selectors, repeated variants/targets and explicit repetitions; full/subset; unsuited/manual/unautomated and active draft/stale cases plus retired exclusions; absent library and out-of-subset dependency.
+    procedure: Freeze through actual beginRun, retrieve entire selection and independently compare literal expected execution tuples and body refs; edit a definition afterward.
+    observation: Exact-key dedup only, explicit repetitions preserved; all active non-ready positions remain blocked/in denominator. Subset never broadens; old run unchanged with visible drift. Missing library is an explicit population/location prerequisite, never an empty PASS, automatic QA invocation or invented definitions.
+    threshold:
+      {
+        metric: frozen_execution_keys,
+        unit: set,
+        operator: set_equals,
+        expected: independent-frozen-tuples-with-nonready-positions,
+        provenance: agreed_contract,
+      }
+    discrimination: Filter ready/automated/suited-only or omit variant/repetition/revision from identity; exact tuple/ref-set assertion must fail, then restore.
+  - id: Q-009
+    state: planned
+    requirement_ids: [MT-025, MT-035]
+    producer: P02
+    consumers: [P03, P06, P07, P11, P12]
+    source_ids: [S-STORE, S-RUNS]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-006]
+    manual_gates: []
+    workload: Real child commits but reply is lost; same-ID exact retry after later head moves; changed same-ID intent; two processes share stale expected revision.
+    procedure: Enter actual commit/reply boundary, interrupt only reply collection, inspect original operation and replay exact request; synchronize competing real writers with finite owned barriers.
+    observation: One effect/receipt; replay checked before stale CAS; changed intent conflicts; only one stale writer publishes; unknown effects never asserted unapplied.
+    threshold:
+      {
+        metric: replay_and_CAS,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: agreed_contract,
+      }
+    discrimination: Move replay lookup after CAS or remove expected-ref check; real receipt/history assertion must fail, then restore.
+  - id: Q-010
+    state: planned
+    requirement_ids: [MT-025, MT-035, MT-037]
+    producer: P02
+    consumers: [P06, P07, P11, P12]
+    source_ids: [S-STORE]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-009]
+    manual_gates: []
+    workload: Actual hot-journal recovery need; crashed/unknown-owner guard; missing/corrupt/newer layout and derived navigation; explicit authorized same-intent recovery.
+    procedure: Read through real readOnly boundary before recovery and compare owned bytes/rows/modes/sidecars; then authorize exact recovery/repair under fresh inspected state.
+    observation: GET never opens writable, creates, repairs, steals lock by age or migrates; unknown recovery state stays explicit. Repair changes derivation only; canonical/history unchanged.
+    threshold:
+      {
+        metric: read_only_and_recovery,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: agreed_contract,
+      }
+    discrimination: Enable writable fallback on read or age-based unlink; actual file/sidecar/row assertion must fail. Fake journal filenames alone do not establish recovery proof.
+  - id: Q-011
+    state: planned
+    requirement_ids:
+      - MT-019
+      - MT-029
+      - MT-030
+      - MT-034
+      - MT-035
+      - MT-036
+    producer: P09
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME, S-DATA, S-STORE]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-006, Q-009]
+    manual_gates: [G-DESIGN]
+    workload: Actual UI fetch and SDK MCP case AND suite create/read/edit/rename/retire; invalid graphs/unknown oracle/unknown fields/version/operation; repeated create/lost reply, stale CAS, dirty/in-flight project switch and URL-only explicit library across fresh sessions.
+    procedure: Perform each applicable mutation in UI and MCP, then retrieve exact revisions/digests from both. Compare visible invalid/unsaved/conflict feedback and bounded typed errors before effects. Induce busy/unavailable, cancellation and uncertain/applied outcomes at actual transport boundaries; inspect effect before exact same-intent replay. Old clients cannot erase newer required fields. Reopen explicit URL-only library; inspect missing context without default initialization.
+    observation: Same canonical state and validation/error/effect semantics, no shadow store, coercion or unknown-operation success. Identical create/retry yields one effect; stale writer keeps proposed input and visible reconciliation path. No cross-project retarget/auto-save, hidden failure acknowledgment or loss of historical tested revisions. Field/relationship diagnostics remain bounded/redacted; cancellation never asserts rollback of unknown effects.
+    threshold:
+      {
+        metric: UI_MCP_identity,
+        unit: set,
+        operator: set_equals,
+        expected: same-project-library-case-revision-digest,
+        provenance: requirement,
+      }
+    discrimination: Route UI to shadow storage, accept unknown/newer fields by dropping them, repeat a lost-effect create, save a suite into another project or discard unsaved conflict input; independent public readback/error/effect assertion must fail.
+  - id: Q-012
+    state: planned
+    requirement_ids: [MT-029, MT-035, MT-036]
+    producer: P07
+    consumers: [P09, P11, P12]
+    source_ids: [S-RUNTIME, S-STORE]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-011]
+    manual_gates: [G-DESIGN]
+    workload: Foreign library/project; forged/stale browser session; wrong Host, unrelated Origin, missing/forged CSRF, origin/name rebinding and escaping attachment paths/links.
+    procedure: Send actual browser/fetch/MCP negative requests in owned roots with inert protected markers; inspect real bind address and production protected-open/effect observations.
+    observation: Deny before protected bytes/effects, no markers in errors/logs, no remote wildcard listener; guessed ID/context/path never grants authority.
+    threshold:
+      {
+        metric: fail_closed_access,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Disable one actual Host/Origin/CSRF/session/containment guard at a time; relevant protected-open/effect assertion must fail, then restore.
+  - id: Q-013
+    state: planned
+    requirement_ids: [MT-032, MT-033, MT-036]
+    producer: P08
+    consumers: [P09, P11, P12]
+    source_ids: [S-RUNTIME, S-STORE]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-012]
+    manual_gates: [G-DESIGN, G-RENDERER]
+    workload: Real upstream report with inert active HTML/script attachment attempting parent/tool fetch; sanitized hidden/masked fields, screenshots/logs and path-shaped markers.
+    procedure: Open actual report/evidence in Google Chrome; observe denied tool/foreign reads and actual retained/exported bytes, including renderer input and report bundle.
+    observation: Report cannot inherit tool session/authority or access another project; dangerous inline content isolated/refused with usable explanation; secrets removed before storage, not merely hidden.
+    threshold:
+      {
+        metric: untrusted_report_isolation,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Temporarily remove actual isolation/redaction guard in owned implementation; harmless marker request/retained-byte assertion must fail, then restore.
+  - id: Q-014
+    state: planned
+    requirement_ids: [MT-011, MT-031, MT-032]
+    producer: P03
+    consumers: [P08, P09, P11, P12]
+    source_ids: [S-RUNS, S-DATA]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-008]
+    manual_gates: []
+    workload: Product FAIL attempt 1 then PASS attempt 2; independent driver error with corrected retry; required blocked/missing keys and incomplete delivery.
+    procedure: Append/save/finalize through actual core, reopen in a fresh process and inspect all attempt refs, denominator and saved summary facts.
+    observation: Earlier product FAIL retained and canonical FAILED; driver errors never automatic product blame; otherwise required gaps INCOMPLETE, not zero/green.
+    threshold:
+      {
+        metric: prior_product_FAIL,
+        unit: verdict,
+        operator: equals,
+        expected: FAILED,
+        provenance: agreed_contract,
+      }
+    discrimination: Use latest-result-wins or omit required missing keys; real saved history/verdict/count assertion must fail, then restore.
+  - id: Q-015
+    state: planned
+    requirement_ids:
+      - MT-012
+      - MT-031
+      - MT-032
+      - MT-033
+      - MT-036
+      - MT-037
+    producer: P08
+    consumers: [P09, P11, P12]
+    source_ids:
+      - S-RUNTIME
+      - S-STORE
+      - S-RUNS
+    environment: E-CHROME
+    evidence_kind: real_renderer
+    dependencies: [Q-013, Q-014]
+    manual_gates: [G-DESIGN, G-RENDERER]
+    workload: Actual selected upstream renderer/notices; six outcomes, distinct variants/repetitions, FAIL then PASS, required blocked case; EACH prior attempt/earlier FAIL, original sanitized generation input, attachments and failed-generation/history chain.
+    procedure: Generate from actual saved canonical run, open usable upstream view and prominently linked canonical denominator/gaps. Through actual UI/links follow every retained attempt/violation/input/attachment, complete all bounded public pages/byte portions and compare digests to original sanitized bytes. Repeat after agent MCP close and UI restart in Q-018; DB-only refs or existence checks do not satisfy inspectability.
+    observation: Real upstream viewer, not a lookalike; full denominator remains honest despite green-looking charts/latest retry. Every earlier product FAIL and original retained input/attachment is actually inspectable through UI/links, including failed generations. Stable identity excludes temporary paths/secrets; unknown or missing historical files visibly unavailable, never silently dropped/reconstructed.
+    threshold:
+      {
+        metric: upstream_view_fidelity,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Hide an earlier attempt, break a history/input/attachment link, omit final portion or substitute latest-only/custom view; actual UI usability/ref/byte assertion must fail. No specific pending report operation name, format or limit is selected.
+  - id: Q-016
+    state: planned
+    requirement_ids: [MT-025, MT-033, MT-037]
+    producer: P08
+    consumers: [P09, P11, P12]
+    source_ids: [S-STORE, S-RUNS]
+    environment: E-CORE
+    evidence_kind: real_renderer
+    dependencies: [Q-014]
+    manual_gates: [G-RENDERER]
+    workload: Missing/incompatible renderer, timeout, nonzero exit, exit-zero missing output, interrupted stage/rename/publish, cleanup failure and exact regeneration retry.
+    procedure: Exercise actual production renderer/publication boundaries with finite owned processes; fresh-process inspect/retry and byte/ref comparison of canonical records/prior reports.
+    observation: No ready before verified usable artifacts; saved Markdown/results remain available; retry finishes identified report without rerun/duplicate observations/overwriting history; cleanup gap explicit.
+    threshold:
+      {
+        metric: report_delivery_recovery,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Publish ready on exit zero or rerun SUT on generation retry; actual output/execute-counter/history assertion must fail, then restore.
+  - id: Q-017
+    state: planned
+    requirement_ids:
+      - MT-031
+      - MT-034
+      - MT-035
+      - MT-036
+    producer: P09
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME, S-DATA]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-011]
+    manual_gates: [G-DESIGN]
+    workload: No-project/loading/empty/no-match/error/offline/denied; invalid/unsaved/saving/saved/conflict; saved run pending/running/waiting/interrupted/terminal separately from verdict/delivery; keyboard/resizing; baseline-valid then invalid settings, inert untrusted title and missing dependencies/readiness.
+    procedure: Follow actual UI journeys with keyboard, labels/roles, focus/error and accessible status text. Save valid settings, submit invalid settings and observe previous effective configuration plus retained draft input. Read old runs/paths before and after; inspect inert setting text in UI/Markdown/report provenance and observe actual readiness/capability failure feedback.
+    observation: Truthful distinct states and text verdicts, no color-only success or invented live-job completion. Invalid settings preserve previous valid behavior and safe unsaved input; no implicit history relocation, migration, authority expansion, arbitrary execution or trusted renderer-code interpolation. Untrusted title stays escaped display data, never authorization/code; missing prerequisites remain visible. Primary desktop actions stay usable.
+    threshold:
+      {
+        metric: accessible_journey_states,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Apply invalid settings, drop failed-save draft, change historical location/authority, interpolate inert title into trusted code or hide required readiness/error status; actual UI/configuration/effect assertion must fail in isolated copies.
+  - id: Q-018
+    state: planned
+    requirement_ids:
+      - MT-002
+      - MT-012
+      - MT-013
+      - MT-027
+      - MT-028
+      - MT-029
+      - MT-031
+      - MT-032
+      - MT-033
+      - MT-035
+      - MT-036
+      - MT-037
+    producer: P07
+    consumers: [P09, P11, P12]
+    source_ids: [S-RUNTIME, S-STORE, S-RUNS]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-015, Q-016, Q-017]
+    manual_gates: [G-DESIGN, G-RENDERER]
+    workload: Delivered package/complete skills in fresh cwd/home without checkout/planning bundle/engineering-workflow MCP; save case/run/report/history, close agent MCP entirely, explicitly use/restart standalone UI; clients A/B plus healthy owned batch, occupied port and unrelated sentinel.
+    procedure: Use actual packaged startup/discovery/shutdown on Linux and real Google Chrome. After no agent and UI restart follow every prior attempt/FAIL, failed-generation chain, original input/attachment link and full portions; compare refs/digests. Close A while B continues a real request and healthy owned batch remains live. Observe actual render/execute/migration/write counters and owned bytes on ready-view opening/reopen; test finite port collision/cancel without adopting another endpoint.
+    observation: Standalone identity/history works independently of planning/MCP/chat with no rerun, implicit rerender, migration or read-side writes. Missing historical bytes are explicitly unavailable, not removed from history or recreated as success. B, healthy batch and unrelated sentinel remain untouched after A closes; stale session invalidated. No auto-install, global config change or wrong-endpoint success. Other OS/browser support stays supported/unverified.
+    threshold:
+      {
+        metric: standalone_owned_lifecycle,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Require live agent/planning MCP, rerender on GET, hide old FAIL/input/attachment, kill B/batch/collision owner or serve foreign endpoint; actual public requests/counters/bytes/history/sentinel assertions must fail. Forced harness cleanup is not graceful-close proof.
+  - id: Q-019
+    state: planned
+    requirement_ids: [MT-023, MT-024]
+    producer: P05
+    consumers: [P08, P10, P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-FIXTURE
+    evidence_kind: controlled_fixture
+    dependencies: []
+    manual_gates: []
+    workload: Available 3 GiB, reserved headroom 1 GiB, additional peak 2.5 GiB; dependency cycle/exclusive data, one/multiple stands, stale/unknown metrics and shared physical host IDs.
+    procedure: Call the implemented pure admission/order rules on bounded synthetic observations/claims with source/freshness provenance and inspect accept/block reasons.
+    observation: Reject 2.5 GiB allocation because 2 GiB budget is insufficient; no double counting/unknown-capacity admission or dependency/exclusive-resource violation.
+    threshold:
+      {
+        metric: allocation_admitted,
+        unit: boolean,
+        operator: equals,
+        expected: false,
+        provenance: fixture,
+      }
+    discrimination: Ignore headroom or treat serial as automatically safe; intended admission assertion fails. This is not live memory, process ownership or native-host evidence.
+  - id: Q-020
+    state: planned
+    requirement_ids: [MT-023, MT-024]
+    producer: P05
+    consumers: [P08, P10, P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies: [Q-019]
+    manual_gates: []
+    workload: "Actual concurrent dispatch across two isolated runs: one physical-host authority and two stand aliases, local browser/remote product, shared account spanning DIFFERENT hosts, failed setup plus independent group, qualified metrics/process limits becoming stale/missing and controlled pressure/stand loss."
+    procedure: Observe real measurement/claim source, ownership identity and actual dispatch/effect boundary. Hold a cross-run claim, attempt competing host-alias allocation and cross-host shared-account work; fail setup before dependent launch while independent safe work proceeds. Expire/withdraw telemetry before new admission, change pressure, checkpoint and collect/cancel only owned work.
+    observation: One physical authority prevents double memory budget across aliases and counts local demand. Shared account/resource exclusivity spans runs/hosts, not only one worker. Failed prerequisite is BLOCKED before dependent execution, independent group continues safely. Stale/missing metrics or pressure stop new launch; only verified owned claims/resources released. No universal OOM guarantee or invented remote telemetry.
+    threshold:
+      {
+        metric: resource_authority,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Split claims by run/alias, launch a dependent after setup failure, allow cross-host shared-account collision or launch on expired metric; actual dispatch/allocation/ownership signal must catch defect. Controlled pressure injection remains distinct from real OOM/capacity qualification.
+  - id: Q-021
+    state: planned
+    requirement_ids:
+      - MT-001
+      - MT-002
+      - MT-007
+      - MT-013
+      - MT-014
+      - MT-017
+      - MT-022
+    producer: P04
+    consumers: [P10, P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-NATIVE
+    evidence_kind: actual_native_client
+    dependencies: [Q-003, Q-005, Q-020]
+    manual_gates: [G-CLIENTS, G-MODELS]
+    workload: Actual Harness native workflow from delivered complete skill/package resources in fresh cwd/home/context without planning bundle/engineering-workflow MCP; standalone QA/full regression, packet missing/stale BLOCKED, permission/injection fixtures; real out-of-order jobs/cancel/resume.
+    procedure: Record actual schemas/versions/permissions/model and execute Q-001 through Q-004 relevant charters with actual chosen model, not fixture answers. Native Prepare then root-native launches/wait and all-terminal Collect validate every result; preserve actual protocol/effect evidence and independent resource ownership.
+    observation: Real native orchestration and launch/wait/cancel/drain with no model polling/per-case agent; no report before all jobs accounted; resume original owned job, not duplicate work.
+    threshold:
+      {
+        metric: harness_native_trace,
+        unit: trace,
+        operator: accounts_for,
+        expected: Prepare-root-jobs-all-terminal-Collect,
+        provenance: requirement,
+      }
+    discrimination: Missing required callable/wait/collection is BLOCKED, never synthetic success. A controlled VM/engine trace cannot satisfy this check.
+  - id: Q-022
+    state: planned
+    requirement_ids:
+      - MT-001
+      - MT-002
+      - MT-007
+      - MT-013
+      - MT-014
+      - MT-017
+      - MT-022
+    producer: P04
+    consumers: [P10, P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-NATIVE
+    evidence_kind: actual_native_client
+    dependencies: [Q-003, Q-005, Q-020]
+    manual_gates: [G-CLIENTS, G-MODELS]
+    workload: Actual Claude Code callable equivalent workflow from delivered complete skill/package in fresh cwd/home/context without planning dependencies; standalone QA/full regression, packet prerequisite failures and inert permission/injection targets; real launch/wait/cancel/drain.
+    procedure: Record actual exposed capabilities/versions/permissions/model. Execute Q-001 through Q-004 relevant charters with actual chosen model and native Prepare-root-jobs-all-terminal-Collect, including failed/out-of-order/corrected batches; simulation answers cannot satisfy this native record.
+    observation: Verified real equivalent orchestration, not plain test command/background-only script/ad hoc model loop; no real profile or implicit registration.
+    threshold:
+      {
+        metric: claude_native_trace,
+        unit: trace,
+        operator: accounts_for,
+        expected: Prepare-root-jobs-all-terminal-Collect,
+        provenance: requirement,
+      }
+    discrimination: PATH presence, rc2 simulation or Harness evidence is insufficient; unavailable Claude mechanism remains required BLOCKED with exact prerequisite.
+  - id: Q-023
+    state: planned
+    requirement_ids:
+      - MT-001
+      - MT-002
+      - MT-007
+      - MT-013
+      - MT-014
+      - MT-017
+      - MT-022
+    producer: P04
+    consumers: [P10, P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-NATIVE
+    evidence_kind: actual_native_client
+    dependencies: [Q-003, Q-005, Q-020]
+    manual_gates: [G-CLIENTS, G-MODELS]
+    workload: Actual Codex callable equivalent workflow from delivered complete skill/package in fresh cwd/home/context without planning dependencies; standalone QA/full regression, stale/missing packet BLOCKED and inert permission/injection targets; real launch/wait/cancel/drain.
+    procedure: Record actual exposed capabilities/versions/permissions/model. Execute Q-001 through Q-004 relevant charters with actual chosen model and native Prepare-root-jobs-all-terminal-Collect, including failed/out-of-order/corrected batches; no background-only fallback or simulated success.
+    observation: Real equivalent workflow required independently of Claude/Harness; actual root jobs accounted, no hidden fallback, no busy model turns and no real profile mutation.
+    threshold:
+      {
+        metric: codex_native_trace,
+        unit: trace,
+        operator: accounts_for,
+        expected: Prepare-root-jobs-all-terminal-Collect,
+        provenance: requirement,
+      }
+    discrimination: Binary availability or controlled fixture/engine is not Codex proof; missing native orchestration/wait stays required BLOCKED, not skipped PASS.
+  - id: Q-024
+    state: planned
+    requirement_ids:
+      - MT-007
+      - MT-009
+      - MT-014
+    producer: P11
+    consumers: [P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-NATIVE
+    evidence_kind: actual_model
+    dependencies: [Q-021, Q-022, Q-023]
+    manual_gates: [G-CLIENTS, G-MODELS]
+    workload: Chosen actual models in fresh contexts per host; identical frozen representative scope before/after including API-only/mixed surfaces, permission/instruction-injection rejection, budget exhaustion, source/auth change, failure and resume.
+    procedure: Use isolated reset/idempotent fixtures and exact build/scope/model/client identities; validate full required observations first, then compare sourced tokens/time/tool calls/waits/peak RAM.
+    observation: Noncomparable or unavailable metrics explained as null, never zero/pass; actual behavior/full coverage precede economy; model recommendations advisory and no universal performance threshold.
+    threshold:
+      {
+        metric: empirical_comparison,
+        unit: comparison,
+        operator: report_only,
+        expected: null,
+        provenance: measured_trial,
+      }
+    discrimination: Reject fabricated counters/versions or fixture answers labeled model evidence. Historical 14 scenarios/31 runs/83 disposals at rc2 is simulation, not rc3/current regression or model proof.
+  - id: Q-025
+    state: planned
+    requirement_ids: [MT-008, MT-012, MT-016, MT-017, MT-023, MT-024]
+    producer: P10
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME, S-RUNS]
+    environment: E-NATIVE
+    evidence_kind: actual_native_client
+    dependencies: [Q-021, Q-022, Q-023]
+    manual_gates: [G-CLIENTS, G-MODELS]
+    workload: Native correction batch, cancellation/unknown remote ownership, pressure increase, healthy pending job, long wait, missing output after exit zero and failed cleanup.
+    procedure: On each actual host checkpoint, yield/native-block, collect every terminal result, revalidate authority/capacity, drain only verified owned work and preserve prior attempts.
+    observation: No duplicate non-idempotent execution, no unrelated kill, no final pass with unknown/uncollected job/output/cleanup, no automatic product fix or next packet.
+    threshold:
+      {
+        metric: native_resume_and_drain,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Stored handle/PID is not live permission. Native evidence must show actual owner validation/terminal collection; injected/simulated facts are labeled separately.
+  - id: Q-026
+    state: planned
+    requirement_ids: [MT-026, MT-034]
+    producer: P09
+    consumers: [P11, P12]
+    source_ids: [S-RUNTIME]
+    environment: E-CHROME
+    evidence_kind: real_browser
+    dependencies: [Q-005]
+    manual_gates: [G-DESIGN]
+    workload: Four declared shared/screen design outputs, qualified shared components/variants and actual implemented UI journeys.
+    procedure: Consume owning design evidence/identities via approved sources after separate explicit design planning; compare actual UI states/interaction to qualified design.
+    observation: No fabricated Penpot IDs/snapshots/local-only approval; actual UI exists before dependent qualification. This check does not author design or impose extra all-browser gates.
+    threshold:
+      {
+        metric: design_dependency,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Missing design or implementation leaves dependent checks pending; a schema/hash alone is not external visual/restoration/accessibility proof.
+  - id: Q-027
+    state: planned
+    requirement_ids:
+      - MT-010
+      - MT-012
+      - MT-025
+      - MT-031
+      - MT-032
+      - MT-033
+      - MT-036
+      - MT-037
+    producer: P11
+    consumers: [P12]
+    source_ids: [S-DATA, S-STORE, S-RUNS]
+    environment: E-CORE
+    evidence_kind: real_core
+    dependencies:
+      - Q-010
+      - Q-013
+      - Q-015
+      - Q-016
+      - Q-018
+    manual_gates: []
+    workload: Collected native/browser/Markdown/upstream evidence, prior attempts/FAIL, original sanitized inputs, attachments/failed-generation chain; missing historical file, inert secret/path markers and unrelated sentinel files.
+    procedure: Read actual retained/exported public artifact/history pages and EVERY byte portion through actual UI/links after no-agent restart (Q-018); verify original digests and earlier attempts, not just DB rows. Remove only a test-owned historical file as a negative fixture, verify explicit unavailable state and unchanged canonical history. Observe production render/execute/migration/write counters and compare owned bytes/modes/sidecars on view-only access.
+    observation: No credentials/personal paths, unknown-resource deletion or silent retention change. Missing evidence remains visible unavailable, never hidden or reconstructed as PASS. All available old FAIL/input/attachment bytes remain inspectable; ready opening/readback causes no regeneration, SUT execution, migration or canonical/sidecar write.
+    threshold:
+      {
+        metric: retained_evidence_integrity,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Omit an old attempt/final portion, retain an inert marker, silently regenerate missing history or trigger write/render from read; actual public-byte/counter/history assertion must fail. A DB-only retention assertion is insufficient.
+  - id: Q-028
+    state: planned
+    requirement_ids:
+      [
+        MT-013,
+        MT-014,
+        MT-017,
+        MT-018,
+        MT-019,
+        MT-020,
+        MT-022,
+        MT-023,
+        MT-024,
+        MT-025,
+        MT-026,
+        MT-027,
+        MT-028,
+        MT-029,
+        MT-030,
+        MT-031,
+        MT-032,
+        MT-033,
+        MT-034,
+        MT-035,
+        MT-036,
+        MT-037,
+      ]
+    producer: P12
+    consumers: [P12]
+    source_ids: [S-RUNTIME, S-DATA, S-STORE, S-RUNS]
+    environment: E-CORE
+    evidence_kind: reader_check
+    dependencies: [Q-018, Q-024, Q-025, Q-026, Q-027]
+    manual_gates: []
+    workload: Future authoritative developer document and index/needed README links after actual implemented end-to-end flow; independent reader with isolated authorized examples.
+    procedure: Reader locates unit/authority flow, normal startup and existing test/docs commands, compatible interfaces/retry/recovery, origin retirement/finite ports, native root ownership and support/evidence matrix.
+    observation: Commands/examples derive from actual delivered interfaces, canonical versus derived semantics and limits understandable without plans; global registration/install remains separately explicit.
+    threshold:
+      {
+        metric: durable_documentation,
+        unit: boolean,
+        operator: equals,
+        expected: true,
+        provenance: requirement,
+      }
+    discrimination: Wrong saved command/link, invented current PASS/version or unsafe recovery instruction must be detected. Reader check is required documentation evidence, not optional code/security review or commit gate.

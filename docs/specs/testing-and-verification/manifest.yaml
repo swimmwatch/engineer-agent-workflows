@@ -1,0 +1,67 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - Retain the user's existing single testing-and-verification specification for two explicitly invoked QA/regression skills and their shared per-tested-project case/suite library. The added workspace runtime, UI and MCP expose that same coherent case-to-run-to-report outcome; do not split UI/API/storage into sibling specifications or create a separate Git repository.
+  - "The user chose a separately delivered workspace package in the current repository and the minimal first version: case/suite management and revisions, defined run scope, results/attachments, simple web UI and basic settings. Separate Shared steps, Defects, TestOps-style CI Jobs and custom Dashboards are deferred; native background execution and mandatory host workflow orchestration are preserved."
+  - Reuse the ready-made open-source Allure Report viewer rather than reimplementing it. Evaluate applicable open-source components before implementing uncovered needs; a case-management product, storage engine, UI framework and exact Allure version have not been selected.
+  - The user selected a local single-user tool with locally accessible UI and cooperating agent sessions under that user's authority, implemented runtime support on Linux/Windows/macOS and implemented stable desktop Chrome/Edge/Firefox/Safari support. Tested applications/stands remain task-dependent local or remote; Codex, Claude Code and DeepSeek Harness support remains required.
+  - "Development verification is explicitly limited by the user to Linux and real Google Chrome. Implement compatibility for every supported runtime OS/browser above, but distinguish required support from measured evidence: the other platforms/browsers remain supported and unverified in this development cycle, not unsupported and not passed. Do not add mandatory all-platform native verification gates to finish this cycle, or silently substitute Chromium-only evidence for Google Chrome. Later discovered incompatibility on a supported platform is still a defect, not permission to drop that platform."
+  - Deep remains warranted by durable revisions and frozen run inventories, concurrent agents and recovery, native cross-host execution/resource coordination, compatibility evolution and a browser/MCP/third-party-report trust boundary. Local-only and the limited development test matrix do not remove origin, path, attachment, secret-redaction or owned-process safety requirements.
+  - Declare separately reviewable HTTP and MCP contracts plus one authoritative data-schema family because UI and agent clients share machine-validated state and operations. Reconcile the existing unaccepted planning schema later rather than adding a competing canonical schema. Quality scenarios cover concurrency, failure/recovery, resource limits and local-viewer security; native verification evidence is labeled with its actual platform/browser.
+  - The new case/run/settings UI warrants a shared design system and specification screen design for a later separately invoked design-planning stage. No token export or separate architecture DSL is presently warranted; cross-surface state/outcome traces stay in the behavioral specification and planning contracts.
+  - This invocation remains specification-only. Do not execute or promote old planning drafts, create the package/profile/design artifacts, start servers, install dependencies, change global client/MCP configuration, author permanent product autotests, commit or publish.
+profiles:
+  - id: core
+    reason: Preserve two explicit-only portable skills and define the separately delivered workspace tool's observable case/run capabilities and integration without implementation-local structure.
+    state: active
+  - id: ui
+    reason: A new human web interface must support case/suite navigation and management, run/results/attachment viewing and basic settings with explicit empty/loading/error and accessibility behavior. Implement four desktop-browser families; development verification is Google Chrome on Linux only.
+    state: active
+  - id: backend
+    reason: The workspace runtime adds agent-facing MCP operations and the HTTP boundary needed by the local UI/report view; define validation, authority, compatibility, errors and lifecycle.
+    state: active
+  - id: data
+    reason: One canonical per-project case/suite library, revisions, frozen run scope, immutable observations, artifact references, pagination/search and safe concurrent updates/recovery require shared schemas.
+    state: active
+  - id: operations
+    reason: Preserve native workflow/background execution, task-dependent local/remote stands and physical-host resource admission; also cover owned local tool/report processes, persistence and interruption. Separate implemented platform support from the limited development verification matrix.
+    state: active
+  - id: security
+    reason: A browser and MCP can reach project data and report attachments; local origin/authentication, filesystem isolation, untrusted active content, secret redaction and fail-closed access need dedicated coverage.
+    state: active
+  - id: cross-surface
+    reason: Human UI and agent MCP must observe the same versioned case/run state, and Allure must remain a faithful derived view without replacing authoritative completeness/failure semantics.
+    state: active
+  - id: events
+    reason: No new event bus, streaming or cross-service notification protocol is requested. Reuse native execution notifications and define any ordinary UI refresh within the established operations/API boundaries.
+    state: not_applicable
+planning_artifacts:
+  [
+    contracts/openapi.yaml,
+    contracts/mcp.md,
+    contracts/schemas/data.schema.json,
+    quality/scenarios.yaml,
+  ]
+extensions:
+  workflow_mcp_receipts:
+    - id: 3ecee080e8421f3b3fa38a24aaec0bbb8151cad31b98e7bc760c5b792457cbad
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.
+    - id: 6d57119e85bdd3b478d31983d16865f21226b4792e9b58bc3b4999a88a480f93
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.
+    - id: 89e86b026640c3ef7829b2361235d2bac647d0fefd6d7cac5f033f6df8cb884d
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.
+project_artifacts:
+  - design/system/catalog.yaml
+  - design/system/library.penpot
+  - design/specs/testing-and-verification/experience.yaml
+  - design/specs/testing-and-verification/screens.penpot
