@@ -12,7 +12,7 @@ already in context. Existing CodeGraph and context-delegation rules apply.
 ## About The Project
 
 `engineer-agent-workflows` is the source of truth for reusable engineering
-skills that can be installed globally for Codex and Claude Code. The project
+skills for Codex, Claude Code and DeepSeek Harness. The project
 keeps one portable, template-based Agent Skills core and generates isolated
 host-specific packaging, metadata, and skill artifacts.
 
@@ -25,12 +25,13 @@ configuration changes.
 1. Repository code, documentation, identifiers, skill content, and commit
    messages are written in English.
 2. Preserve one authoritative template source for each workflow. Do not
-   maintain separate hand-edited Codex and Claude versions.
-3. Generate separate Codex and Claude Code artifacts. An installed artifact
+   maintain separate hand-edited host versions.
+3. Generate separate Codex, Claude Code and DeepSeek Harness artifacts. An installed artifact
    must contain only the target host's project-guidance names, question tools,
    manifests, and host-only metadata.
 4. Verify Codex behavior against current OpenAI documentation and Claude Code
-   behavior against current Anthropic documentation.
+   behavior against current Anthropic documentation. Verify Harness against its
+   pinned official source and filesystem provider.
 5. Never store credentials, tokens, private keys, personal machine paths, or
    other secrets in skills, fixtures, manifests, logs, or release artifacts.
 6. Do not create a project-specific lifecycle CLI or installer. Use the pinned
@@ -45,7 +46,8 @@ configuration changes.
    explicit user authorization.
 10. Keep every collection workflow explicit-only. Generated Codex metadata
     must disable implicit invocation, and generated Claude metadata must
-    disable model invocation while preserving user invocation.
+    disable model invocation while preserving user invocation. Harness uses
+    `disable-model-invocation: true` and `user-invocable: true` frontmatter.
 
 ## Specifications And Decisions
 
@@ -62,7 +64,8 @@ configuration changes.
   each active profile to its one dedicated reference and load exactly that set;
   grouped references must not import inactive profile guidance into context.
 - Ask material decisions through the active host's callable standard tool:
-  `request_user_input` in Codex or `AskUserQuestion` in Claude Code. Follow
+  `request_user_input` in Codex, `AskUserQuestion` in Claude Code or
+  `ask_user_question` in DeepSeek Harness. Follow
   the exposed schema, checkpoint each explicit answer, and do not enter plan
   mode solely to ask. No collection workflow requires Prompt MCP.
 - After material decisions are resolved and the gap review passes, write
@@ -109,6 +112,9 @@ configuration changes.
 - Codex output lives under
   `plugins/codex/engineer-agent-workflows/`; Claude Code output lives under
   `plugins/claude-code/engineer-agent-workflows/`.
+- Harness filesystem output lives under `exports/deepseek-harness/skills/`.
+  Generate it with the same commands; preserve sibling exports. It has no
+  native plugin or marketplace metadata and no automatic installation.
 - Codex-only `agents/openai.yaml` sidecars must not appear in the Claude Code
   bundle. Each plugin manifest and marketplace must point only to its matching
   host artifact.
@@ -129,7 +135,7 @@ configuration changes.
   separately installed external capabilities.
 - Skills use repository guidance already supplied by the host without
   rereading its source solely to recover context. They discover only additional
-  task-scoped `AGENTS.md` for Codex or `CLAUDE.md` for Claude Code when absent
+  task-scoped `AGENTS.md` for Codex/Harness or `CLAUDE.md` for Claude Code when absent
   from active context or when the instruction file itself is in scope, plus
   current code, tests, and stable project documentation.
 - Do not hard-code generated MCP tool namespaces. Follow callable tool names
@@ -178,6 +184,59 @@ configuration changes.
 - In planning mode, expose existing and proposed architectural units, their
   purposes, ownership boundaries, contracts, dependency direction, and
   verification before changing production artifacts.
+
+## JavaScript And TypeScript Readability
+
+Apply these rules to new and modified JavaScript/TypeScript code, including
+`.mjs`, `.js` and `.ts` files, tests, generators, validators, utility scripts
+and MCP packages. A broad
+refactoring of existing code requires a separate task. These rules govern
+repository development, not distributed skill content; they do not authorize
+copying them into skill templates or generated instructions.
+
+- Extract an expression into a meaningfully named variable when its result is
+  reused, the name explains its purpose, it combines processing stages, or the
+  binding clarifies evaluation order, side effects or resource ownership. Use
+  `const` unless reassignment is required.
+- Keep short, clear expressions inline in function arguments: property access,
+  indexing, optional chaining, simple calculations and conversions, and small
+  object or array literals. Do not add intermediate variables without meaning.
+- Split multistage processing into named steps for fetching, parsing, validating,
+  normalizing, rendering and persisting. A line break alone does not clarify a
+  nested expression. Short `map`, `filter` and other collection-method chains
+  are acceptable when their purpose and intermediate transformations are clear.
+- An inexpensive value object for a one-time transformation may be created and
+  used inline. Give configuration instances, clients, validators, servers and
+  objects with substantial initialization, state or resources an explicit
+  creation and ownership point. Reuse one logical instance within its lifecycle;
+  preserve independent instances when needed. Do not introduce a global
+  instance, cache or longer lifecycle merely to reuse an object.
+- Keep conventional project and library declarations clear: validation schemas,
+  MCP tool definitions, handler tables, configuration and declarative generation
+  descriptions are allowed inline. Complex computations inside them follow the
+  same expression rules; do not fragment clear declarations into variables that
+  add no meaning.
+- Allow Builder API chains. Give the completed result a meaningful name before
+  passing it to another function, while preserving the allowance for declarative
+  definitions above.
+- Simple arrow functions may remain inline arguments. Give multistage callback
+  logic a separate function with a meaningful name. Preserve deferred execution,
+  closure captures and `this`; do not replace an arrow with a regular function
+  without checking these differences.
+- When extracting variables, preserve evaluation order, conditional and lazy
+  execution, side effects and object lifecycles. Account for short-circuiting
+  in `&&`, `||`, `??` and optional chaining. Keep computations in the appropriate
+  branch, loop, handler or callback; do not move file reads, parsing, validation
+  or writes earlier than the original code executes them.
+- In asynchronous code, preserve operation start times, `await` order,
+  parallelism, cancellation and error handling. Do not serialize parallel work
+  or start deferred work early merely to extract a variable. Preserve resource
+  release order and cleanup guarantees.
+- Respect execution and state-isolation boundaries: process, MCP server
+  instance, request, generation operation or test. Do not move mutable objects
+  or resources to module/process scope merely for reuse, or share state that
+  must remain independent across requests, target hosts or tests. Do not add
+  memoization, caching or a dependency container merely to satisfy these rules.
 
 ## Commit Hygiene
 
