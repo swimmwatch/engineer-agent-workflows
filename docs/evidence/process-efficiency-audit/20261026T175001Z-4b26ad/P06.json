@@ -1,0 +1,301 @@
+{
+  "task_id": "P06",
+  "status": "complete",
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P06.json",
+  "audit_mode": "recommendation-only; source and test inspection; no execution of audited scenarios",
+  "route": {
+    "assigned_alias": "sol",
+    "observed_model": "gpt-6.1-sol",
+    "model_observation": "The active developer runtime identifies this agent as a coding agent powered by gpt-6.1-sol.",
+    "configured_provider": "openai-codex",
+    "configured_route_evidence": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json:4-6,51",
+    "independently_observed_provider": null,
+    "limitation": "Run metadata establishes the configured provider, not independently observable per-request provider routing or reasoning effort. No provider identity is inferred from model availability."
+  },
+  "assigned_aspects": ["B", "C", "D", "E"],
+  "assigned_coverage": ["component:specification-review"],
+  "coverage": ["component:specification-review"],
+  "actual_coverage": ["component:specification-review"],
+  "coverage_details": [
+    "Full legacy and enhanced review creation, same-mode resume, explicit full replacement, inventory and source materialization",
+    "Correction eligibility, structured and legacy changed-input reads, inherited result provenance, mandatory dependency closure and scope expansion",
+    "Physical context versus behavioral source freshness, complete-read receipts, consistency receipts and failure recovery",
+    "Atomic bounded verdict writes, current adaptive review-get response budgeting and absence of a specification multi-item get scenario",
+    "Mechanical completeness versus independent substantive consistency judgment, observed approval checkpoints and compatibility",
+    "Focused source inspection of corresponding review, completeness, concurrency, structured-change and read-efficiency tests"
+  ],
+  "repository_head_observed": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+  "instructions": {
+    "protocol_read_first": true,
+    "project_index_read": true,
+    "personal_tool_search_guide_read": true,
+    "additional_scoped_instructions": "Glob inspection found no AGENTS.md under the package or specification skill; evidence fixture instruction files elsewhere in docs do not apply to this report.",
+    "preservation": "Initial Git status exposed substantial existing tracked and untracked work, including review-read-efficiency changes. No existing file was modified by this audit. Only this unique report was written.",
+    "prohibited_actions_performed": [],
+    "live_managed_yaml_access": "None. Source code and tests referring to YAML were inspected as text; no live workflow YAML or review archives were parsed or read. No scenario state was mutated.",
+    "descendants_or_workflows_created": false
+  },
+  "summary": {
+    "finding_count": 2,
+    "measured_findings": 0,
+    "source_confirmed_findings": 2,
+    "hypothesis_findings": 0,
+    "conclusion": "Most previously obvious review overhead already has a current solution: adaptive larger review-get pages, a bounded body/progress cache, atomic verdict batches, no-write resume/status, provisional inheritance and a single separate final semantic consistency assessment. The remaining narrow opportunities are extending existing byte-budgeted pagination to long correction evidence, and preventing a stale observer context from selecting a cached enhanced-final body with outdated detailed results. Neither finding establishes end-to-end model savings or an approval bypass.",
+    "priority_order": ["P06-F02", "P06-F01"]
+  },
+  "findings": [
+    {
+      "id": "P06-F01",
+      "component": "component:specification-review",
+      "title": "Apply the existing adaptive page budget to long correction evidence, not only review items",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; smaller default pages and repeated handler work are present in current source. Runtime impact is unmeasured.",
+      "priority": "low; bounded compatible follow-up after the current review-get work",
+      "needs_clarification": false,
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts", "lines": "269-300", "role": "Both exact structured field reads and the legacy report stream call portion without a larger page size; impact is rebuilt per call."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts", "lines": "39-91,155-165", "role": "Each change-read invocation reconstructs snapshots, inventories, dependency closure and exact field lists."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/requirements.ts", "lines": "16,80-119", "role": "Default is 1024 Unicode code points; the existing implementation supports up to 4096 with size-independent continuation identity."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/reviews.ts", "lines": "249-267", "role": "Current adaptive 4096-point request and byte-budget fallback already solve this for specification_review_get."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts", "lines": "3-8", "role": "Existing exact success-envelope budget helper covers structured and duplicated/escaped wire payloads."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/review-structured-changes.test.mjs", "lines": "45-58,157-192,195-231", "role": "Existing synthetic long Unicode finding and equivalent legacy/structured reconstruction plus cursor/read-receipt guards."},
+        {"path": "skills/spec-driven-development/references/followup-review.md", "lines": "10-20", "role": "The normal corrections path requires all structured evidence continuations, not summary-only navigation."},
+        {"path": "docs/evidence/specification-review-read-throughput.md", "lines": "20-26,126-137", "role": "The existing local optimization deliberately applies only to review-get; it does not establish runtime deployment or correction-read performance."}
+      ],
+      "current_execution_path": "The author reads changes_summary navigation and then every changes_read fragment. Each fragment calls readConsistent -> impact -> current snapshot and historical input reconstruction -> change/required-item computation -> evidenceFields -> one exact field portion. A large string field remains a chain of default 1024-point pages. Legacy specification_review_changes likewise rebuilds impact and streams a 1024-point portion of the exact report.",
+      "existing_optimizations": [
+        "Structured navigation separates exact evidence from bounded finding/change/required-item/candidate metadata; summaries do not issue a complete-evidence receipt.",
+        "The shared portion implementation already keeps bounded progress/hash state and supports old cursors, arbitrary supported page sizes and Unicode-safe offsets.",
+        "Review-get now uses adaptive larger pages and the actual shared response-envelope calculation; recommending that optimization again for review-get would be obsolete.",
+        "Changes reads use guarded consistency, report/source-bound cursors and terminal-only changes receipts."
+      ],
+      "unnecessary_work_or_restriction": "Long correction fields still incur repeated request/envelope/context and full impact-reconstruction work at the smaller default even when the current response budget could deliver more exact text safely. This finding is limited to long fields/legacy text; short fields still require individual fragments under the current public structured schema.",
+      "reproducible_scenario": [
+        "Use an isolated synthetic enhanced or legacy completed-gaps review with a long exact Unicode explanation or a substantial changed requirement; the existing structured-change fixture already constructs a long explanation.",
+        "Repair the finding without changing scope or original source meaning; obtain the structured report version.",
+        "Traverse changes_read for a field exceeding 1024 code points and collect calls, exact reconstructed field text and serialized envelope bytes. Inspect the same correction through the legacy report stream.",
+        "Compare against an isolated candidate using the existing adaptive 4096-point maximum and exact envelope fallback. Do not infer results for small fields or model comprehension."
+      ],
+      "minimal_recommendation": "Reuse boundedSuccessResult and the review-get adaptive page-size approach at the two exact change-text portion sites, evaluating the full context-bearing response envelope before returning it. Preserve the current field/fragment schema, field ordering, report identity, cursor shape and receipt calculation. Do not change the global portion default, introduce a public size option, batch fields, add a report cache or skip any exact evidence for this optimization.",
+      "expected_qualitative_effect": "Fewer MCP continuations, repeated metadata envelopes and repeated impact reconstructions for long correction evidence. Little or no change for numerous short fields; no claim that source text or semantic review effort decreases.",
+      "confidence": {"source_behavior": "high", "qualitative_opportunity": "high for long fields", "end_to_end_magnitude": "unmeasured; workload dependent"},
+      "guarantees": {
+        "correctness": "Reconstruct byte-for-byte identical field/report text and retain all findings, source history and before/after evidence. Never replace evidence with summary navigation.",
+        "compatibility": "Keep page size out of identities; retain 1024-point cursors and validate bidirectional old/new continuation use and exact terminal receipt equality. No public schema or archive contract change is needed.",
+        "state": "Remain read-only and use current readConsistent dependencies; do not alter verdict or approval state.",
+        "recovery": "Keep stale/foreign/tampered cursor rejection and terminal-only changes_receipt; budget failure must not look like a complete read.",
+        "security": "Count UTF-8 and both escaped envelope copies, including context/cursor/receipt metadata. Keep existing source limits and path protections; no global cache is proposed."
+      },
+      "measurement_plan": {
+        "executed": false,
+        "metrics": ["MCP calls per exact correction report", "serialized CallToolResult bytes", "handler elapsed time separately from transport/model time", "exact reconstructed field/report bytes", "peak returned payload size"],
+        "comparison": "Matched frozen synthetic correction inputs before/after; include long and short fields, Unicode and escaping. Report per-scenario results rather than general savings percentages.",
+        "end_to_end": "A later explicitly authorized model trial must separately measure model turns/tokens and total wall time; direct scenario timings do not establish those values."
+      },
+      "validation_plan": [
+        "Extend review-structured-changes reconstruction and stale/tamper tests to change page size mid-field and resume retained pre-change cursors in both directions.",
+        "Add a discriminating assertion that a long field can exceed 1024 points while every actual structured and wire envelope remains within limits.",
+        "Check incomplete/foreign changes receipts, terminal receipt equality, report-version invalidation and byte-identical legacy/structured semantic evidence.",
+        "Use a focused authorized test run only after implementation is separately approved; no tests or scenarios were executed in P06."
+      ],
+      "complexity": "Small, localized pagination/envelope adaptation plus focused regression tests. The structured handler currently returns a value to readConsistent, so the budget check must include its real outer envelope rather than just the fragment.",
+      "dependencies": ["Existing boundedSuccessResult helper", "Existing portion cursor contract", "readConsistent context envelope", "Separate implementation authorization"],
+      "overlap_notes": "P14 owns general response budgets and P10 owns broader requirements readers. This recommendation concerns only the two specification correction-evidence callers, not a global page-size change."
+    },
+    {
+      "id": "P06-F02",
+      "component": "component:specification-review",
+      "title": "Bind the enhanced-final body cache to observed result state instead of the caller's old context version",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed cache-key mismatch and a source-traced supported-API edge case; not a runtime reproduction or an observed production incident.",
+      "priority": "medium; freshness prerequisite for further read-efficiency work",
+      "needs_clarification": false,
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/review-model.ts", "lines": "11-18", "role": "Loads current decisions but stores decisions_version from context.versions.decisions. The behavioral source hash deliberately excludes review results."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts", "lines": "179-222", "role": "Bounded process body cache key uses that caller version; enhanced final body includes mutable run.results."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts", "lines": "230-236,339-350", "role": "Consistency receipt also binds current results; record recomputes it using its current write context."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/reviews.ts", "lines": "249-267", "role": "Get builds a current snapshot before refreshing the returned context, and does not reject an old physical context on read."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "124-129,162-181,388-404", "role": "load returns actual bytes/version without updating the caller's context versions; result refreshes only the returned context; writes reject stale context before applying changes."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs", "lines": "170-195", "role": "Existing cache freshness test covers an early final read followed by a write using the same actor's updated context, not rereading through the retained observer context."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs", "lines": "159-175", "role": "Current observer contract expects useful read-only observations without disturbing a writer."}
+      ],
+      "current_execution_path": "snapshot reads the current ledger but exposes the input context's physical decisions version. reviewBody keys its process-wide bounded cache by behavioral source version, that input decisions version, run ID, item key and recorded-result item key. For enhanced full review context, the cached body contains detailed_results. Read-only clients can retain an older context while another client appends detailed verdicts; those verdicts do not alter behavioral source_version. The subsequent get can therefore select an earlier enhanced-final body under the retained key even though its freshly loaded run.results changed.",
+      "existing_optimizations": [
+        "The existing body cache is already bounded to four entries and 64 MiB; the recommendation is not to add or enlarge a global cache.",
+        "Normal single-writer/coordinator calls that always adopt their latest successful write context change the key and avoid this edge case.",
+        "Fresh write-context checks and current consistency receipt recomputation ordinarily reject an assessment derived from the mismatched cached body; no approval or accepted-consistency bypass is claimed.",
+        "An existing enhanced-final freshness test verifies the common updated-context path, and final receipts bind detailed results and followup state."
+      ],
+      "unnecessary_work_or_restriction": "A stale read context can cause a valid observation request to return outdated detailed_results. For a short final body, the returned consistency receipt is paired with that old body and current results, then fails INCOMPLETE_READ when submitted with the refreshed write context. For a paginated body, following the newly refreshed context can instead change the body identity and fail the next cursor. Both force an otherwise avoidable complete final reread. This is an observer/resume edge case, not measured overhead on the prescribed latest-context coordinator happy path.",
+      "reproducible_scenario": [
+        "In one MCP server process and an isolated synthetic enhanced full review, let an observer with context C0 read the final context before the last detailed verdict, priming the body cache. Keep C0 and keep the final body small enough for one page for the simplest check.",
+        "Let the sole writer record the remaining detailed verdict(s), producing C1 without changing specification text or behavioral source_version. Keep intervening body-cache churn below the four-entry eviction bound.",
+        "Have the observer reread the final context with retained C0. snapshot sees the new run.results, but reviewBody looks up its existing C0 cache entry and can return the earlier detailed_results. The response refreshes the observer to C1.",
+        "Submit the returned consistency_read_receipt using C1. The record path selects/reconstructs the fresh C1 body and current results, so the old-body receipt mismatches and requires a reread. A long-body variant should check whether the first returned cursor becomes stale when subsequent calls adopt C1.",
+        "Control case: repeat with C1 on the first final read and with a cold cache; both must expose the complete current detailed result set."
+      ],
+      "minimal_recommendation": "Make the existing cache identity reflect the actual body dependencies observed in the snapshot, not merely context.versions.decisions. Carry the version of the decisions bytes actually loaded for read snapshots, and make the enhanced-context key explicitly sensitive to the current detailed-result state if necessary for supplied-ledger mutation callers. Preserve source-content/status fidelity and recorded-result/followup dependencies. Keep the existing bounded cache and receipt algorithm; do not weaken write freshness or accept the stale receipt as a workaround.",
+      "expected_qualitative_effect": "Avoid stale enhanced-final observations and unnecessary cursor/receipt recovery rereads when read-only clients resume with retained contexts. Preserve the cache benefit and normal coordinator behavior. No claimed reduction in the mandatory final semantic read.",
+      "confidence": {"cache_key_dependency_mismatch": "high", "source_traced_scenario": "high under warm-cache retained-context conditions", "runtime_frequency_and_cost": "unmeasured"},
+      "guarantees": {
+        "correctness": "The exact final body must expose the results belonging to the snapshot used for its receipt. A stale body must never be accepted merely to avoid a reread; consistent remains a substantive agent verdict, not a cache/hash proof.",
+        "compatibility": "Change cache selection/invalidation only; do not change materialized JSON formatting, public fields, source_version normalization, archive contract, cursor format or receipt formula. Correct unchanged-source old cursors/receipts remain usable; cursors for genuinely changed bodies may properly become stale.",
+        "state": "Keep reads non-mutating, provisional inheritance attributed, and the single-writer optimistic-version/lock behavior intact. Do not alter the input context's write precondition to disguise staleness.",
+        "recovery": "Keep current stale-source and stale-context distinctions and final receipt invalidation after detailed writes/scope expansion. Verify warm and cold cache behavior as equivalent, including after server restart.",
+        "security": "Retain four-entry/64 MiB bounds, project/specification separation through existing source/run identities, exact original evidence and safe filesystem reads. Do not introduce a longer-lived cache or disable validation."
+      },
+      "measurement_plan": {
+        "executed": false,
+        "metrics": ["stale final-body observations", "unexpected INCOMPLETE_READ or STALE_CURSOR recovery calls", "exact final detailed_results count/content", "complete final rereads", "cache-hit and cold-cache handler time"],
+        "comparison": "Use the warm-cache two-client scenario above with fixed current results and a frozen source. Compare updated-context happy path, retained-context read, cold cache and restarted process separately.",
+        "end_to_end": "Measure actual review/coordinator turns only in a separately authorized trial. Do not extrapolate this edge case to routine reviews."
+      },
+      "validation_plan": [
+        "Add a regression next to review-full-consistency's early-read test using a retained observer context and a shared process cache; compare returned detailed_results to the actual acknowledged result set without parsing live YAML.",
+        "Assert that a complete fresh final read can be recorded using its returned context and receipt; the earlier pre-write receipt must still be rejected.",
+        "Repeat with a paginated body, cache eviction, cross-project reads, restart and followup scope expansion to ensure cache selection never weakens freshness.",
+        "Retain existing old/new cursor, exact body, stale-write and response-budget checks. No test execution was authorized for P06."
+      ],
+      "complexity": "Small-to-moderate snapshot/cache dependency correction plus a focused two-client regression. Supplied-ledger paths must be checked so the observed version and in-memory result state cannot diverge.",
+      "dependencies": ["Existing snapshot/load version information", "Existing bounded reviewBody cache", "Enhanced final consistency receipt contract", "Separate implementation authorization"],
+      "overlap_notes": "P08 owns general request-local state reuse and storage, and P14 owns generic read/result boundaries. This finding is specifically the specification enhanced-final cache key; it does not propose a shared state/cache redesign."
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P06-N01",
+      "area": "Current review-get throughput optimization",
+      "result": "Already implemented; do not repeat the older fixed-1024-page recommendation for review-get.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/reviews.ts:249-267", "packages/engineer-agent-workflow-mcp/src/response-budget.ts:3-8", "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs:100-129,132-197,199-254"],
+      "detail": "Exact bodies and receipts are preserved while pages request up to 4096 code points and shrink against actual structured/wire envelopes. Existing tests cover Unicode, escaping, retained cursors, independent readers, stale/conflicting writes and an optional pre-upgrade runtime scenario. Tests were inspected, not executed; the pre-upgrade case requires a supplied baseline runtime."
+    },
+    {
+      "id": "P06-N02",
+      "area": "Atomic verdict batching and bounded backlog",
+      "result": "Already implemented and used by canonical reviewer instructions.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/reviews.ts:15-51,151-184,283-305", "packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs:309-389,434-504,567-667,669-725", "skills/spec-driven-development/references/completeness-review.md:18-25,44-60,153-158"],
+      "detail": "The batch has 1-20 distinct items and a compact UTF-8 argument bound; all member validation precedes one append. Partial invalid batches leave no append; final consistency is separate. Tests exercise exact replay/restart, overlap and stale writers. The reference bounds outstanding items and centralizes writes, so a new batching API or unbounded read-all backlog is not justified."
+    },
+    {
+      "id": "P06-N03",
+      "area": "No-write progress observation and review resume",
+      "result": "Existing no-op/status mechanisms already avoid gratuitous physical-version churn.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/reviews.ts:187-247", "packages/engineer-agent-workflow-mcp/src/review-followup.ts:309-313,325-337", "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs:106-198", "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs:256-270"],
+      "detail": "Same-mode unchanged unfinished work returns unchanged output; status is read-only; duplicate scope expansion is a no-op. Explicit full replacement deliberately starts without inheritance, while mode mismatch preserves prior work. This does not eliminate the specific cache-key edge described by P06-F02."
+    },
+    {
+      "id": "P06-N04",
+      "area": "Followup inheritance, semantic impact and mandatory expansion",
+      "result": "Conservative reuse with explicit provenance already exists; no recommendation to weaken it.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/review-followup.ts:33-91,302-337", "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs:96-150,228-254,286-318,321-331", "skills/spec-driven-development/references/followup-review.md:32-47,49-77"],
+      "detail": "Only a latest completed gaps parent can qualify; Approved inputs, manifest/profile changes, source meaning changes, removals and unaccounted context edits reject reuse. Before/after explicit links and old verdict evidence expand mandatory candidates, active profiles and context are always fresh, and inherited covered/excluded results retain carried_from provenance. Human/agent semantic impact may expand scope further or demand full review. Hash equality is not advertised as semantic independence."
+    },
+    {
+      "id": "P06-N05",
+      "area": "Historical inputs, archive integrity and recovery",
+      "result": "Existing immutable snapshots prevent unsafe reuse and deduplicate exact inputs.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/review-snapshots.ts:10-16,22-79", "packages/engineer-agent-workflow-mcp/src/review-followup.ts:238-251", "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs:200-225,273-283,309-318,457-469", "skills/spec-driven-development/shared/references/yaml-contracts.md:56-65"],
+      "detail": "Content-addressed snapshots publish before journal references, deduplicate exact inputs, retain only decision fingerprints/references rather than machine paths, check full bytes and historical revisions on load, reject incompatible/corrupt/missing archives and validate provenance chains before followup completion. A failed later mutation can leave a reusable orphan, not a dangling journal reference. Retention has no automatic cleanup, but no measured storage pressure justifies a new cleanup mechanism in this task."
+    },
+    {
+      "id": "P06-N06",
+      "area": "Final mechanical completeness versus substantive consistency",
+      "result": "The current enhanced path correctly separates structural checks from semantic judgment; neither is a redundant substitute for the other.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/reviews.ts:306-315", "packages/engineer-agent-workflow-mcp/src/review-followup.ts:205-236,339-351", "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs:110-167,170-225", "skills/spec-driven-development/references/completeness-review.md:62-72,140-184"],
+      "detail": "Enhanced full context contains the exact whole specification and detailed outcomes. Ordinary/batch context recording is rejected; all detailed checks precede a separate consistency verdict. Completion checks inventory coverage, source freshness, archive provenance and verdict outcomes, and explicitly disclaims proof of correctness/independence or tool approval. Legacy full mode intentionally retains its old contract; missing enhanced behavior in a legacy run is not automatically a regression."
+    },
+    {
+      "id": "P06-N07",
+      "area": "Source freshness, original obligations and status transitions",
+      "result": "Existing safeguards cover ordinary amendments, source edits, same-ID requirement changes, scope changes and observed approval regression.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/review-model.ts:11-18,32-76,85-87", "packages/engineer-agent-workflow-mcp/src/reviews.ts:67-106,151-174", "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs:102-123,137-150,192-225,228-264", "packages/engineer-agent-workflow-mcp/test/completeness.test.mjs:172-205,222-240", "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs:305-387"],
+      "detail": "Source materialization traverses original related/predecessor records. Behavioral identity covers requirement version, confirmed manifest and all decision revisions; receipts also bind project/specification/run/item/body. Draft-to-Approved normalization permits the author transition but observed reversal invalidates review evidence. A receipt is explicitly not proof of consumption or comprehension. No recommendation to reauthenticate consent/independence through hashes."
+    },
+    {
+      "id": "P06-N08",
+      "area": "Conflict classification and replay recovery",
+      "result": "Existing recovery distinguishes stale physical context from actual behavioral drift instead of forcing unnecessary new full reviews after every writer conflict.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/state.ts:331-350,377-444", "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs:119-205", "packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs:567-667", "skills/spec-driven-development/references/completeness-review.md:74-89", "skills/spec-driven-development/references/followup-review.md:79-87"],
+      "detail": "Read races produce guarded recovery diagnostics; writes are locked/version checked; exact bounded receipt replay can survive restart, while edited/reordered requests are new operations. Instructions prohibit blind retries and tell clients to inspect persisted status. General storage architecture is P08's assignment, not claimed as comprehensively audited here."
+    },
+    {
+      "id": "P06-N09",
+      "area": "Read batching, source deduplication and native orchestration",
+      "result": "No new API recommendation without a discriminating workload measurement.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/reviews.ts:186-317", "packages/engineer-agent-workflow-mcp/src/review-followup.ts:260-353", "skills/spec-driven-development/references/completeness-review.md:34-72", "docs/evidence/specification-review-read-throughput.md:34-51,77-82,126-137"],
+      "detail": "Specification review exposes single-item get and bounded record batch, not multi-item get. The current reference already offers bounded programmatic cursor chaining and two/three readers with a single writer when useful. It explicitly says composition reduces model round trips, not MCP calls, and exact text must reach the judging actor. Deduplicating materialized sources or compacting JSON would change delivery/receipt or retained-body compatibility; the present audit has no new measurement establishing that contract expansion is warranted. An approved native-workflow plan is not an implemented pagination API."
+    }
+  ],
+  "inspected_paths": [
+    {"path": "AGENTS.md", "scope": "Full applicable repository instructions; also supplied in active context."},
+    {"path": "docs/index.md", "scope": "Full project map."},
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md", "scope": "Full protocol, read first."},
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json", "scope": "Run routing and component ownership metadata, not evidence of executing a scenario."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/reviews.ts", "scope": "Full current source, lines 1-317."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/review-model.ts", "scope": "Full current source, lines 1-87, through CodeGraph."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts", "scope": "Full substantive implementation, lines 1-353, through targeted reads and CodeGraph."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/review-snapshots.ts", "scope": "Full current source, lines 1-79."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/requirements.ts", "scope": "Requirement parsing, source identity, portions/progress cache, exact requirement reads and mechanicalCoverage; lines 16-170 plus declarations shown by CodeGraph."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts", "scope": "Full helper, lines 1-9, through CodeGraph."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/server.ts", "scope": "Full current registration and envelope/error boundary, lines 1-156, through CodeGraph; not a general MCP audit."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "scope": "Targeted decode/page, source dependency/load/refresh, consistent reads and mutation lock/replay/freshness contracts; especially lines 55-72,104-193,331-353,377-444. Not full storage coverage."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/scope.ts", "scope": "Targeted currentRecords/ref/confirmedScope and pendingScope, lines 10-43; not all scope scenarios."},
+    {"path": "packages/engineer-agent-workflow-mcp/package.json", "scope": "Full package metadata and pinned runtime/test dependencies; build/test scripts inspected but not run."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/completeness.test.mjs", "scope": "Full source, 257 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs", "scope": "Full source, 264 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs", "scope": "Full source, 838 lines; not executed, including its benchmark-style assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs", "scope": "Full source, 469 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs", "scope": "Full source, 240 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-structured-changes.test.mjs", "scope": "Full source, 232 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs", "scope": "Full source, 238 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs", "scope": "Full source, 254 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs", "scope": "Full current untracked test source, 254 lines; not executed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs", "scope": "Targeted approval/checkpoint tests, lines 298-388; not executed."},
+    {"path": "skills/spec-driven-development/references/completeness-review.md", "scope": "Full canonical reference, 184 lines; inspected without invoking the skill."},
+    {"path": "skills/spec-driven-development/references/followup-review.md", "scope": "Full canonical reference, 97 lines; inspected without invoking the skill."},
+    {"path": "skills/spec-driven-development/shared/references/yaml-contracts.md", "scope": "Full routed contract reference, 65 lines; no managed YAML parsing."},
+    {"path": "docs/evidence/specification-review-read-throughput.md", "scope": "Full existing evidence note; historical/local claims distinguished from fresh audit measurements."}
+  ],
+  "source_hashes": {
+    "packages/engineer-agent-workflow-mcp/src/reviews.ts": "c0bf9b49ee686d8f86993d7dd41bca7adbb3982fbd77c1dd8aa76b60b6a8e5b3",
+    "packages/engineer-agent-workflow-mcp/src/review-model.ts": "c80acc6f9043d5f0ab36f3a6a3765c66b884ee0ae49eb8852cc9b9ee6616c412",
+    "packages/engineer-agent-workflow-mcp/src/review-followup.ts": "4aebb7b0ffc0f44fc2e8ae72e4cfe18e3f82a95cde9e6ac29c87889d90951840",
+    "packages/engineer-agent-workflow-mcp/src/review-snapshots.ts": "f782874782707241fdd599ea6967f43f8fe4c7d9f19a87f7d3229171492ccb96",
+    "packages/engineer-agent-workflow-mcp/src/requirements.ts": "4214c9393d09e299eafc6ff4a15ca6d159ba283dee9b52ca2c8135264654fae2",
+    "packages/engineer-agent-workflow-mcp/src/response-budget.ts": "3b07eccfb6ca755b34a896a9503373a5e269dc587dbf21aa24e48fbbb5f45424",
+    "packages/engineer-agent-workflow-mcp/src/server.ts": "8d9098db1318c440692b91e227518dc1596156f6db25f4793037dbffb591d0ad",
+    "packages/engineer-agent-workflow-mcp/src/state.ts": "9da7f5e9834824d5a6d843fa7b0e6abf2069827dfe748752e176c92fa290eedd",
+    "packages/engineer-agent-workflow-mcp/src/scope.ts": "800d155ede819821a7e119e2939d3caf1c5c9c8721f7bc165a9aaaf074e9467a",
+    "skills/spec-driven-development/references/completeness-review.md": "271a3050f5d8c1e5e6fc5369605269bf37749fa428a4ea684668d0739d14dbca",
+    "skills/spec-driven-development/references/followup-review.md": "7f4fbf99842d1e13711116100a9660185f9af392097246d03cf1a42cac24151f",
+    "skills/spec-driven-development/shared/references/yaml-contracts.md": "84ad0c79835120dcf77c23aa6b707a5398ac8c129c4c8be7125772050d48d69c",
+    "packages/engineer-agent-workflow-mcp/test/completeness.test.mjs": "4a3c0dd82c0e48c8dcd8edac2b1178bfebe4a5efd5a4082f8bb9bd4d708565d8",
+    "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs": "c28bc67f08a082d5f1418fe80a052dfaf38a1f0049856ddb86e78401c2de2f44",
+    "packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs": "24c1c559aa0564e9e53bf476725b3f027ffd9aa3b6eac4df44674c94e2a7a048",
+    "packages/engineer-agent-workflow-mcp/test/review-followup.test.mjs": "472fb21dcb58253ae6d1b43905ef5981d65007280efc82791073c18df5aeacfd",
+    "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs": "681f5f6efcfe288d8aab03f0c4f52f3a5029b035181eb13d6a79f683dc226e4e",
+    "packages/engineer-agent-workflow-mcp/test/review-structured-changes.test.mjs": "053eac33e7c3063ee4feca335dc386bfca222c706ea062c4533bbf039bc90df6",
+    "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs": "8b8b243fd39bd120676d55ce4434404b72944ca3564a8dc47907500e39a77156",
+    "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs": "38cd14bbc6fff0bd3ee885686323763b2e853a07bfa0961bafbc74d04c581ed8",
+    "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs": "af1c66c4502ff7934ebb884d67b42cb9a5dbd313469f1f187801751f3148969f",
+    "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs": "8b99f160d980696a12e5154c1564c9e190ee40d80b5c204204b4c0dd0500037e",
+    "docs/evidence/specification-review-read-throughput.md": "d079fc60d66649122e9800bf9d4a7f301e4da121c08471392f75bfe3d46b5cce",
+    "packages/engineer-agent-workflow-mcp/package.json": "b797d4a92b4b679bffe48a128b7395bc3651ed0da3d3a47026316f86ef0acd93"
+  },
+  "verification": {
+    "method": "Current on-disk CodeGraph source and targeted read/glob/grep; repository HEAD/status and SHA-256 byte hashing only. No audited code, skill, scenario, benchmark, build, generator, installer or test was executed.",
+    "historical_measurements": "The existing throughput note reports a matched frozen-item experiment and test results. They explain current optimizations but are not P06 measurements, deployment proof or a model performance trial. No historical timing/token saving is reclassified as measured here.",
+    "report_checks": {"status": "pass", "command_exit_code": 0, "checks": ["Valid JSON and exact task/report/coverage identity", "All required recommendation and guarantee fields present for both findings", "15 finding source citations use existing relative paths and valid exact line ranges", "24 current source hashes match the recorded fingerprints", "9 no-finding checks and inspected_paths are present", "No personal absolute path detected"], "audited_code_executed": false, "note": "This validates the audit artifact only; it is not a repository test or a behavioral reproduction."},
+    "source_drift": "Hashes record the current inspected checkout, including local review-get changes. Final artifact validation compares these hashes without interpreting managed state; synthesis must still compare its baseline and final source state."
+  },
+  "limitations": [
+    "No behavioral reproduction or benchmark was executed, as required for P06. Findings are source-confirmed opportunities with proposed discriminating validation, not measured savings or production incidents.",
+    "The serving installed MCP build was not queried or refreshed. Conclusions apply to the inspected checkout, including local uncommitted response-budget/read-efficiency work, not an asserted deployment.",
+    "The cache-key scenario requires a retained old read context, a warm shared-process cache and limited eviction; the prescribed latest-write-context coordinator happy path is not claimed to suffer it.",
+    "Generated host fidelity, the full specification skill, product review, broad workflow storage and native-workflow implementation are not claimed as coverage. Their assigned owners should use the cited interfaces rather than treating this component review as those audits.",
+    "No live managed YAML, real review archives or real customer decisions were read. No claims about the semantic correctness of a particular specification or actual reviewer independence are made.",
+    "Exact provider route/effort for this individual child was not independently exposed; the observed model and configured run provider are reported separately."
+  ],
+  "coverage_gaps": [],
+  "transient_evidence": ""
+}

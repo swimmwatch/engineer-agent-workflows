@@ -1,0 +1,316 @@
+{
+  "task_id": "P01",
+  "status": "complete",
+  "audit_kind": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "actual_model": "gpt-6.1-sol",
+    "actual_model_evidence": "Active developer instructions identify the coding-agent model as gpt-6.1-sol. No independent provider dispatch trace is exposed in this task.",
+    "provider": null,
+    "provider_observability": "not observable",
+    "descendants_created": 0,
+    "workflows_created": 0
+  },
+  "assigned_aspects": ["A", "B", "E"],
+  "assigned_coverage": [
+    "skill:spec-driven-development",
+    "skill:planning-and-task-breakdown",
+    "skill:incremental-implementation",
+    "skill:design-planning"
+  ],
+  "actual_coverage": [
+    "skill:spec-driven-development",
+    "skill:planning-and-task-breakdown",
+    "skill:incremental-implementation",
+    "skill:design-planning"
+  ],
+  "coverage_detail": [
+    {
+      "component": "skill:spec-driven-development",
+      "scope": "Canonical entry, every local Markdown reference including all eight profile references, shared guidance, interview/confirmation/recovery, independent completeness review and corrections-only review. Profile references were read as audit data, not invoked as a workflow.",
+      "result": "Reviewed end-to-end source path. Product-linked source-read guidance has P01-001; no additional finding on standalone approval or independent-review guarantees."
+    },
+    {
+      "component": "skill:planning-and-task-breakdown",
+      "scope": "Canonical entry, every local Markdown reference including all eight profile references, exact technical agreements, task packets, conditional documentation, shared guidance and relevant test assertions.",
+      "result": "Reviewed source path. Product-linked source-read guidance has P01-001; current grouping, source pinning, agreement reuse and scope ownership already address several candidate inefficiencies."
+    },
+    {
+      "component": "skill:incremental-implementation",
+      "scope": "Canonical entry, packet recovery, shared implementation/state/test guidance, exact-source reuse, entry/completion gates, scoped handoff and sampled generated wrappers for all three hosts.",
+      "result": "No new recommendation: explicit no-reread, early capability checks, packet-scoped reads, conditional recovery, optional independent reviews and single final checks already exist."
+    },
+    {
+      "component": "skill:design-planning",
+      "scope": "Canonical entry and full collection-owned integration contract; eligibility, stage ownership, single external routing owner, bounded reads, evidence checks and affected handoffs. No Penpot skill or service was invoked.",
+      "result": "Reviewed source path. P01-002 narrows unconditional startup disclosure for a manifest-ineligible no-op. No recommendation to weaken design evidence or stage boundaries."
+    }
+  ],
+  "method": {
+    "guidance": "Read the audit protocol first, then the personal tool-search guide and project index; read repository AGENTS.md. No narrower live instruction file was discovered in the assigned source trees.",
+    "source_freshness": "Canonical content was read from the current worktree rather than HEAD or historical distributions. Existing modifications were preserved. Relevant finding sources have end-of-inspection SHA-256 values below; synthesis must compare them with its run baseline.",
+    "codegraph": "The repository has a CodeGraph index. Used CodeGraph first for implementation exploration, accepting only returned current source excerpts. One broad lookup for a nonexistent sources.ts path selected irrelevant historical helpers; current grep located product/context.ts and its exact current function was then explored. No finding relies on stale inventory or historical helper output.",
+    "managed_state": "No live managed YAML, workflow archive JSON, or live scenario state was read, parsed or mutated. The existing source-batch MCP capability was discovered through its published schema only; no product scenario was executed.",
+    "semantic_vs_fidelity": "Canonical skills/shared references received semantic review once. Generated copies received limited wrapper inspection and byte-only fidelity comparisons, not repeated substantive audits.",
+    "execution": "No audited skill, verifier, generator, installation, build, test suite, individual test, publishing, commit, push, descendant or workflow was run. Shell actions were RTK-prefixed workspace/status/hash/JSON-validation diagnostics only.",
+    "measurement_policy": "Source-confirmed recommendations do not establish actual time, token or cost savings. Source tests were inspected, not executed."
+  },
+  "findings": [
+    {
+      "id": "P01-001",
+      "component": "shared product-linked specification/planning source consumption",
+      "title": "Use the already available exact-source batch reader in specification and planning roles",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; impact remains unmeasured.",
+      "priority": "low",
+      "source_locations": [
+        {"path": "shared/references/product-workflow.md", "start_line": 28, "end_line": 39, "role": "Specification role directs one element_get/decision_get per required record."},
+        {"path": "shared/references/product-workflow.md", "start_line": 43, "end_line": 51, "role": "Planning role repeats the individual-read sequence."},
+        {"path": "shared/references/implementation-context.md", "start_line": 85, "end_line": 91, "role": "Implementation already prefers the batch reader and defines both cursor layers and exact single-record fallback."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/context.ts", "start_line": 958, "end_line": 1006, "role": "Existing reader validates requests, shares one loaded state, checks ordered-query/source identity and budgets the response."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts", "start_line": 693, "end_line": 702, "role": "Read-only public tool registration."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs", "start_line": 263, "end_line": 315, "role": "Existing source test compares paginated public batches to exact individual portions and checks envelope budgets."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs", "start_line": 382, "end_line": 413, "role": "Existing source test checks read-only metadata, exact equivalence and the 20-request bound; its timing diagnostic excludes model time."}
+      ],
+      "current_execution_path": "For an explicitly bound product task, specification and planning prepare context, exhaust selection continuations, and are directed to read each required element/decision individually. Implementation of that same task already prefers product_sources_get_batch. The batch reader has no purpose-specific restriction in the inspected function and delegates to the same exact element/decision readers.",
+      "existing_optimizations": [
+        "Context preparation already selects required sources instead of unrelated product content.",
+        "Implementation already documents batch consumption; no new batching API is needed.",
+        "The batch implementation loads state once per request and retains request-local integrity verification, bounded responses and source-specific continuation identity.",
+        "Shared state guidance permits same-actor exact text reuse only with retained text and correct owner/version/portion identity; this recommendation does not add a cache."
+      ],
+      "unnecessary_work_or_restriction": "The specification/planning instructions steer agents toward separate exact-source calls even when a bounded group can use the existing read-only batch operation. This misses existing request-local reuse and can introduce avoidable tool round trips. The source confirms the instruction asymmetry, not the number of calls a real agent will choose.",
+      "reproducible_scenario": "In an isolated product-linked task fixture, prepare specification-purpose and planning-purpose context containing several short required elements and decisions. Keep the selected pins unchanged. Compare following the current role text with the implementation role's existing 1-20-request batch sequence. Fully reconstruct both output sets before comparing text and pins. No live task is needed.",
+      "minimal_recommendation": "Update only the Specification and Planning role paragraphs in the authoritative shared protocol to prefer product_sources_get_batch for bounded groups when advertised, with exact single-record fallbacks. Reuse the existing implementation cursor rules: outer continuations use the identical ordered request list; incomplete portions use each item's cursor; an outer complete page does not mean every source is complete. Generate matching host copies only in a separately authorized implementation task.",
+      "expected_qualitative_effect": "Fewer separate tool dispatches and less repeated request-local loading for short multi-record product context; unchanged source text volume and unchanged semantic obligations. Large records can still require several portions, so no blanket savings claim is made.",
+      "confidence": "High that the API and guidance asymmetry exist; moderate that this improves end-to-end authoring latency because model/tool scheduling and actual record sizes are unmeasured.",
+      "guarantees": {
+        "correctness": "Read every selected original and every continuation. Do not replace exact sources with selection summaries or hashes.",
+        "compatibility": "Keep existing single-record tools as fallback for older serving runtimes and targeted rereads; resolve callable tools dynamically.",
+        "state": "Read-only change; no scope, consent, decision or generation mutation and no broadened source selection.",
+        "recovery": "Retain query/context/source identities across outer and item continuations. On stale context or changed sources, use existing reopen/reconcile behavior rather than combining snapshots.",
+        "security": "Keep response limits, pin validation and untrusted-source handling. Do not persist a cross-operation or global cache."
+      },
+      "measurement_plan": "Use the existing isolated product-context fixture and public tool connection with both specification and planning selections. Capture exact records/bytes, call count, response size, integrity-read diagnostics and total tool wall time separately from model time. Include mixed elements/decisions, a large partial item, Unicode, stale/reordered outer cursor and changed pins. Then run a bounded fresh-context authoring trial with equal scope and compare semantic coverage, not just dispatch count. Report only observed differences.",
+      "validation_plan": "Preserve exact per-record text and pins against individual reads; exhaust both cursor layers; reject 21 requests, foreign/mismatched pins and stale/reordered continuations. Extend instruction checks to ensure both authoring roles route to the existing batch capability without changing mandatory source coverage. Reuse existing product-context tests rather than add a parallel batching subsystem.",
+      "rough_complexity": "Small instruction change and focused tests; no runtime API or schema change expected.",
+      "dependencies": ["Existing product_sources_get_batch capability on the serving connection", "Shared-protocol owner", "Separately authorized generation/focused validation"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P01-002",
+      "component": "skill:design-planning startup eligibility",
+      "title": "Check manifest eligibility before loading design-stage quality manuals on the no-op path",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed instruction-ordering opportunity; no runtime saving was measured.",
+      "priority": "low",
+      "source_locations": [
+        {"path": "skills/design-planning/SKILL.md", "start_line": 13, "end_line": 31, "role": "Verifier and unconditional quality-reference reads precede the manifest no-design-output stop."},
+        {"path": "skills/design-planning/SKILL.md", "start_line": 32, "end_line": 50, "role": "The actual design operation, evidence and handoff remain conditional on eligibility."},
+        {"path": "skills/planning-and-task-breakdown/references/ui-planning.md", "start_line": 15, "end_line": 19, "role": "Main planning already skips Penpot/design schemas when no outputs are declared."},
+        {"path": "skills/design-planning/references/penpot-workflow.md", "start_line": 3, "end_line": 5, "role": "Integration reference explicitly limits itself to confirmed UI design outputs."},
+        {"path": "shared/references/workflow-state-access.md", "start_line": 9, "end_line": 31, "role": "Scenario-only reads and schema-conflict-only inspection must remain in force."},
+        {"path": "shared/scripts/verify-engineering-manual.mjs", "start_line": 267, "end_line": 345, "role": "Bundle integrity validation already verifies quality resources independently of model disclosure."},
+        {"path": "tests/design-planning-skill.test.mjs", "start_line": 8, "end_line": 20, "role": "Inspected design skill test covers explicit routing/dependency and size, not this early-stop ordering."}
+      ],
+      "current_execution_path": "An explicit post-plan design invocation verifies the matching bundle, reads engineering-principles, test-discipline and YAML-routing references, requires the specification and plan bundle, then checks whether the confirmed manifest actually declares any root design output. Only then can it report not applicable. External Penpot guidance and schemas are already correctly deferred.",
+      "existing_optimizations": [
+        "No design stage is required without manifest-declared design outputs.",
+        "Penpot guidance, design schemas and external skills are already gated; the finding does not claim those are eagerly loaded.",
+        "The integration contract has one routing owner and reads only affected shared entries/screens.",
+        "The mandatory bundle verifier checks resource bytes/digests and dependencies before operation."
+      ],
+      "unnecessary_work_or_restriction": "On a valid post-plan invocation whose confirmed manifest has no design outputs, the agent is told to load the engineering and test manuals even though it will only return not applicable. Those substantive design-stage quality instructions do not determine eligibility; mandatory state-access guidance does.",
+      "reproducible_scenario": "Use a read-only fixture with an Approved specification, confirmed manifest, an existing plan/todo/handoff and no project_artifacts design outputs. Invoke the design entry in a fresh context. The current instruction order requests the two quality manuals before the no-op. Compare a reordered entry that obtains the same confirmed eligibility result first. Also exercise UI active with no outputs, UI inactive, and contradictory declarations.",
+      "minimal_recommendation": "Keep the mandatory bundle verifier and workflow-state/YAML access rules first. Obtain confirmed manifest eligibility before disclosing engineering-principles and test-discipline. Return not applicable for no declared design outputs; load both quality manuals unchanged for eligible work. Preserve reconciliation rather than migration for contradictory/legacy declarations. Do not create a new eligibility API or weaken approved-spec/plan preconditions for actual design work.",
+      "expected_qualitative_effect": "Smaller context disclosure and fewer required source deliveries for a no-op invocation. Eligible design execution is unchanged. Benefit is limited because correct main-planning routing normally avoids this invocation entirely.",
+      "confidence": "High on current instruction order; low-to-moderate on practical frequency and total benefit. This is a low-priority refinement, not a design-path performance regression.",
+      "guarantees": {
+        "correctness": "Use confirmed current manifest state, not filesystem screen presence or user-provided assumed eligibility. Fully load both quality manuals before any eligible design work.",
+        "compatibility": "No artifact, schema, Penpot route or evidence contract change. Preserve the current not-applicable outcome and legacy reconciliation behavior.",
+        "state": "Read-only eligibility; no manifest migration, output creation, handoff mutation or remote write on the no-op path.",
+        "recovery": "Missing MCP, unconfirmed scope or contradictory declarations remain unresolved blockers; no direct YAML fallback. Resume must re-obtain current eligibility.",
+        "security": "Keep bundle verification, state-access rules, exact scope boundaries and scenario-only managed-state reads before the early stop. No external skill or Penpot call on the ineligible path."
+      },
+      "measurement_plan": "In isolated fresh contexts, record disclosed source paths/bytes, tool calls and wall time for no-output, eligible and contradictory manifests. Separate existing-context reuse from cold reads. Verify that eligible-path disclosure and final quality outcomes are unchanged. Do not infer token or timing savings from line counts.",
+      "validation_plan": "Add a focused instruction-order/trace case: no-output fixture obtains scenario-confirmed eligibility and returns without quality-manual disclosure, Penpot/schema loads or writes; eligible fixture loads both manuals before any design operation. Contradictory declarations still return to specification. Existing verifier failure must still stop immediately.",
+      "rough_complexity": "Small canonical-entry reorder and one focused contract/trace check; no runtime implementation needed.",
+      "dependencies": ["Design-planning instruction owner", "Scenario-only confirmed manifest read", "Separate authorization for generated distributions and tests"],
+      "needs_clarification": false
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P01-N01",
+      "area": "Progressive disclosure and repeated source reads",
+      "result": "Existing guidance already prohibits rereading supplied project instructions solely for context, gates each profile on confirmed scope, maps one reference per active profile, and limits execution to packet-linked definitions. No recommendation to bulk-load all profiles or introduce a global cache.",
+      "evidence": ["skills/spec-driven-development/SKILL.md:20-44", "skills/spec-driven-development/references/adaptive-scope.md:44-48", "skills/planning-and-task-breakdown/SKILL.md:26-34", "skills/incremental-implementation/SKILL.md:11-39", "shared/references/workflow-state-access.md:116-129", "shared/references/implementation-context.md:18-31", "tests/specification-skill.test.mjs:119-185", "tests/planning-skill.test.mjs:229-280"]
+    },
+    {
+      "id": "P01-N02",
+      "area": "Approval cadence, stage ownership and reuse",
+      "result": "Scope confirmation, behavioral completeness and task-specific technical agreement have distinct ownership/purpose, not interchangeable duplicate approvals. Specification has no separate final approval question. Technical proposals can group a small explicit set, discuss shared decisions once and reuse adequate historical agreement. Plan acceptance does not execute packets. No recommendation to collapse these boundaries.",
+      "evidence": ["skills/spec-driven-development/references/specification-interview.md:178-228", "skills/planning-and-task-breakdown/references/technical-agreement.md:72-79", "skills/planning-and-task-breakdown/references/technical-agreement.md:83-125", "skills/planning-and-task-breakdown/references/technical-agreement.md:149-158", "shared/references/yaml-contracts.md:16-49", "packages/engineer-agent-workflow-mcp/test/planning-packet-check.test.mjs:14-38"]
+    },
+    {
+      "id": "P01-N03",
+      "area": "Optional implementation reviews and commit gates",
+      "result": "Implementation independently preserves required local validation, but code/security review and commit are not completion/next-packet gates. It executes one explicitly authorized packet, preserves dirty worktrees and stops. Mandatory specification completeness review is a different semantic stage and was not mislabeled optional.",
+      "evidence": ["skills/incremental-implementation/SKILL.md:40-63", "skills/incremental-implementation/references/packet-recovery.md:90-107", "skills/planning-and-task-breakdown/references/task-packets.md:85-92", "tests/incremental-skill.test.mjs:89-133"]
+    },
+    {
+      "id": "P01-N04",
+      "area": "Independent completeness review, batching and inherited results",
+      "result": "Current review guidance already uses bounded groups up to 20, a single coordinator write owner, pending-item resume and separate final whole-specification semantic judgment. Corrections-only followups preserve provisional historical attribution, permit scope expansion and never treat hashes as semantic independence. No recommendation to remove complete original consumption, final consistency or freshness checks.",
+      "evidence": ["skills/spec-driven-development/references/completeness-review.md:18-72", "skills/spec-driven-development/references/completeness-review.md:74-89", "skills/spec-driven-development/references/completeness-review.md:131-184", "skills/spec-driven-development/references/followup-review.md:49-87", "packages/engineer-agent-workflow-mcp/src/reviews.ts:151-172"]
+    },
+    {
+      "id": "P01-N05",
+      "area": "Mechanical versus substantive final checking",
+      "result": "MCP structural/receipt checks do not replace the independent reviewer's cross-section judgment or implementation's scoped-diff comparison. Existing execution guidance waits for local tests and restored mutations, then performs each required completion check once for current inputs. No executed redundant validation loop was established. The interview's 'After MCP writes' format-check wording alone does not establish that a project-wide command actually runs after every mutation; no measured or source-certain per-write duplication is claimed.",
+      "evidence": ["skills/spec-driven-development/references/specification-interview.md:230-234", "skills/spec-driven-development/references/completeness-review.md:167-184", "shared/references/implementation-context.md:43-52", "shared/references/test-discipline.md:136-147", "skills/incremental-implementation/SKILL.md:54-60", "shared/references/workflow-state-access.md:55-66"]
+    },
+    {
+      "id": "P01-N06",
+      "area": "Compact handoffs and proportional artifacts",
+      "result": "One behavior specification, sole completion checklist and current-only handoff already avoid transcript duplication. Lite packets stay compact; extra profile artifacts and durable documentation are conditional. Recovery reuses valid evidence only for unchanged inputs, and returns changed behavior/architecture to its owner rather than replanning silently.",
+      "evidence": ["skills/planning-and-task-breakdown/references/task-packets.md:24-39", "skills/planning-and-task-breakdown/references/task-packets.md:63-74", "skills/planning-and-task-breakdown/references/task-packets.md:138-146", "skills/planning-and-task-breakdown/references/developer-documentation.md:3-24", "skills/incremental-implementation/references/packet-recovery.md:65-107"]
+    },
+    {
+      "id": "P01-N07",
+      "area": "Design stage external routing and evidence ownership",
+      "result": "Design is separately invoked only for manifest outputs; main planning does not invoke Penpot. The integration contract has one external routing owner, bounded brief/outputs, no auto-install, scoped reads and no silent propagation to other specifications. Local structural pass is distinguished from independently observed exports, restoration, render/accessibility evidence. These guarantees should remain.",
+      "evidence": ["skills/planning-and-task-breakdown/references/ui-planning.md:3-36", "skills/design-planning/SKILL.md:26-50", "skills/design-planning/references/penpot-workflow.md:9-28", "skills/design-planning/references/penpot-workflow.md:54-91", "skills/design-planning/references/penpot-workflow.md:122-129"]
+    },
+    {
+      "id": "P01-N08",
+      "area": "Generated-copy fidelity sample",
+      "result": "145 raw SHA-256 comparisons of already-reviewed non-templated references matched. Three generated incremental entry files use the expected host-specific question tool, project-guidance name and advisory model, with Codex-only frontmatter differences explained by the inspected renderer. This is a bounded fidelity check, not full distribution validation or installed-runtime evidence.",
+      "evidence": ["scripts/lib/distribution.mjs:43-101", "scripts/lib/distribution.mjs:232-284", "plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md:1-61", "plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/SKILL.md:1-63", "exports/deepseek-harness/skills/incremental-implementation/SKILL.md:1-63", "RTK-prefixed read-only SHA-256 comparison returned comparisons=145, equal=145, mismatches=[]"]
+    }
+  ],
+  "inspected_paths": [
+    {"path":"AGENTS.md","lines":"1-247","kind":"guidance"},
+    {"path":"docs/index.md","lines":"1-19","kind":"guidance"},
+    {"path":"docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md","lines":"1-43","kind":"guidance"},
+    {"path":"catalog/skills.json","lines":"1-22","kind":"inventory"},
+    {"path":"skills/spec-driven-development/SKILL.md","lines":"1-65","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/adaptive-scope.md","lines":"1-173","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/specification-interview.md","lines":"1-238","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/completeness-review.md","lines":"1-184","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/followup-review.md","lines":"1-97","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/scope-boundaries.md","lines":"1-92","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/core-requirements.md","lines":"1-41","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/ui-requirements.md","lines":"1-76","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/backend-requirements.md","lines":"1-34","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/events-requirements.md","lines":"1-22","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/data-requirements.md","lines":"1-23","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/operations-requirements.md","lines":"1-23","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/security-requirements.md","lines":"1-23","kind":"canonical"},
+    {"path":"skills/spec-driven-development/references/cross-surface-requirements.md","lines":"1-24","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/SKILL.md","lines":"1-61","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/adaptive-planning.md","lines":"1-107","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/technical-agreement.md","lines":"1-158","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/task-packets.md","lines":"1-179","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/developer-documentation.md","lines":"1-46","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/core-planning.md","lines":"1-36","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/ui-planning.md","lines":"1-42","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/backend-planning.md","lines":"1-24","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/events-planning.md","lines":"1-17","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/data-planning.md","lines":"1-17","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/operations-planning.md","lines":"1-17","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/security-planning.md","lines":"1-17","kind":"canonical"},
+    {"path":"skills/planning-and-task-breakdown/references/cross-surface-planning.md","lines":"1-18","kind":"canonical"},
+    {"path":"skills/incremental-implementation/SKILL.md","lines":"1-63","kind":"canonical"},
+    {"path":"skills/incremental-implementation/references/packet-recovery.md","lines":"1-117","kind":"canonical"},
+    {"path":"skills/design-planning/SKILL.md","lines":"1-50","kind":"canonical"},
+    {"path":"skills/design-planning/references/penpot-workflow.md","lines":"1-129","kind":"canonical"},
+    {"path":"shared/references/engineering-principles.md","lines":"1-82","kind":"canonical-shared"},
+    {"path":"shared/references/test-discipline.md","lines":"1-147","kind":"canonical-shared"},
+    {"path":"shared/references/workflow-state-access.md","lines":"1-129","kind":"canonical-shared"},
+    {"path":"shared/references/yaml-contracts.md","lines":"1-65","kind":"canonical-shared"},
+    {"path":"shared/references/implementation-context.md","lines":"1-115","kind":"canonical-shared"},
+    {"path":"shared/references/product-workflow.md","lines":"1-240","kind":"canonical-shared"},
+    {"path":"shared/scripts/verify-engineering-manual.mjs","lines":"1-428","kind":"source-only-not-executed"},
+    {"path":"tests/specification-skill.test.mjs","lines":"1-398","kind":"test-source-not-run"},
+    {"path":"tests/planning-skill.test.mjs","lines":"1-526","kind":"test-source-not-run"},
+    {"path":"tests/incremental-skill.test.mjs","lines":"1-172","kind":"test-source-not-run"},
+    {"path":"tests/design-planning-skill.test.mjs","lines":"1-21","kind":"test-source-not-run"},
+    {"path":"tests/workflow-yaml-contracts.test.mjs","lines":"1-95","kind":"test-source-not-run"},
+    {"path":"tests/workflow-efficiency.test.mjs","lines":"CodeGraph excerpts: 8-15,89-127,168-176,255-262; grep lines 14,121","kind":"partial-test-source-not-run"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/planning.ts","lines":"11-110","kind":"current-CodeGraph-excerpt"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/reviews.ts","lines":"CodeGraph excerpts: 19-28,56-61,67-92,109-172,186-191","kind":"current-CodeGraph-excerpt"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/context.ts","lines":"CodeGraph excerpts: 25-37,50-85,139-191,237-265,285-365,876-907,917-1006","kind":"current-CodeGraph-excerpt"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/tools.ts","lines":"670-718","kind":"source-excerpt"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-context.test.mjs","lines":"260-424","kind":"test-source-not-run"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/planning-packet-check.test.mjs","lines":"1-180","kind":"test-source-not-run"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/review-batch.test.mjs","lines":"1-155; test-name grep only at 309,328,391,434,506,567,606,669,689,727,798","kind":"partial-test-source-not-run"},
+    {"path":"scripts/lib/distribution.mjs","lines":"CodeGraph excerpts: 34-104,159-172,188-218,232-284,446-535,623-630","kind":"fidelity-source-excerpts-not-executed"},
+    {"path":"package.json","lines":"1-34","kind":"command-side-effect-context"},
+    {"path":"plugins/codex/engineer-agent-workflows/skills/incremental-implementation/SKILL.md","lines":"1-61","kind":"generated-fidelity-sample"},
+    {"path":"plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/SKILL.md","lines":"1-63","kind":"generated-fidelity-sample"},
+    {"path":"exports/deepseek-harness/skills/incremental-implementation/SKILL.md","lines":"1-63","kind":"generated-fidelity-sample"}
+  ],
+  "incidental_excerpts_without_coverage_claim": [
+    "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/storage.ts",
+    "packages/engineer-agent-workflow-mcp/test-support/planning-fixture.mjs",
+    "packages/engineer-agent-workflow-mcp/test-support/stdio-harness.mjs",
+    "docs/evidence/technical-implementation-planning-precision-v3/sources/controller-respondent-check.mjs",
+    "docs/evidence/technical-implementation-planning-precision-v3/sources/initial-controllers/controller-respondent-check.mjs"
+  ],
+  "fidelity_hash_check": {
+    "classification": "measured",
+    "measurement": "Raw SHA-256 equality comparisons only, not runtime process performance",
+    "comparisons": 145,
+    "equal": 145,
+    "mismatches": [],
+    "target_host_skill_roots": ["plugins/codex/engineer-agent-workflows/skills", "plugins/claude-code/engineer-agent-workflows/skills", "exports/deepseek-harness/skills"],
+    "skill_local_reference_matrix": {
+      "spec-driven-development": ["references/core-requirements.md", "references/ui-requirements.md", "references/backend-requirements.md", "references/events-requirements.md", "references/data-requirements.md", "references/operations-requirements.md", "references/security-requirements.md", "references/cross-surface-requirements.md", "references/followup-review.md", "references/scope-boundaries.md"],
+      "planning-and-task-breakdown": ["references/core-planning.md", "references/ui-planning.md", "references/backend-planning.md", "references/events-planning.md", "references/data-planning.md", "references/operations-planning.md", "references/security-planning.md", "references/cross-surface-planning.md", "references/adaptive-planning.md", "references/task-packets.md", "references/developer-documentation.md"],
+      "incremental-implementation": ["references/packet-recovery.md"],
+      "design-planning": ["references/penpot-workflow.md"]
+    },
+    "skill_local_reference_rule": "Each canonical skills/<skill>/<reference> compared with <each target_host_skill_root>/<skill>/<reference>: 23 sources times 3 targets = 69 comparisons.",
+    "shared_reference_matrix": ["references/engineering-principles.md", "references/test-discipline.md", "references/implementation-context.md", "references/yaml-contracts.md"],
+    "shared_reference_rule": "Each shared/<reference> compared with skills/<each assigned skill>/shared/<reference> and all three host-root equivalents. Also compare references/product-workflow.md for spec-driven-development, planning-and-task-breakdown and incremental-implementation only. Nineteen shared source/skill pairs times four target roots = 76 comparisons.",
+    "exclusions": "Templated references, other generated entry files, sidecars, schema files, marker validity and installed global artifacts were not fully fidelity-validated. The three entry samples were read directly instead of rerendering."
+  },
+  "source_sha256": {
+    "skills/spec-driven-development/SKILL.md": "632627911f7c639cac4460055d28e283def0ee0e9c7e8e1379d82ec809ea9671",
+    "skills/spec-driven-development/references/specification-interview.md": "b05511ea0524d83599622d9589b70d03712b76db245765ba72a1ba0821b61a09",
+    "skills/planning-and-task-breakdown/SKILL.md": "3925d9fde520cab4a1fa14c3034298b3df3d1f7269ef8c6988f669561669bba9",
+    "skills/incremental-implementation/SKILL.md": "894a212a85928b607ecdbb33f5ae0af4263101915e18b7adf0d50d0c9418ff74",
+    "skills/design-planning/SKILL.md": "bf99aa1d66b4270590d32de4d4e3760eeb5d19447872a942928ff265a82c815b",
+    "shared/references/product-workflow.md": "a102261e50c06eb5b7efa50d623d7b57fc974940f4b60e5f6b1c02cc7f87598a",
+    "shared/references/implementation-context.md": "b2cbbd3e3d26a4355375b6bea82e11f37d97c3364a3692817b2ae20b63872668",
+    "shared/references/test-discipline.md": "732a42dbcae122795c89cb7fec58c467b9d43e5d72ab9e54d87e78ee36dcc94b",
+    "shared/references/workflow-state-access.md": "7b4ea74696052213be6e7b5a24e9e5e278071b6561541e489a6820c61e1e1c4e",
+    "skills/design-planning/references/penpot-workflow.md": "90ffeaa4fc4d2acb977f3d3e39f75efca6d1d6cead3dee18653d1c5d8ac01727",
+    "packages/engineer-agent-workflow-mcp/src/product/context.ts": "c18a767b193b9ab4aaeb854a538aa775ceaa86dca5518a0542a1ea8783e2a589",
+    "packages/engineer-agent-workflow-mcp/src/product/tools.ts": "99c9c29e7407fe0f0bd34f9e39649d956e339f6f8a366ace9134e2a25da0649a",
+    "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs": "f3961e62fd4d6ef93d3ec8c9314d44c162763503de3297aa48deebce87e7b649",
+    "tests/design-planning-skill.test.mjs": "f0f64812d003bd0ad7fde80350782e346b1b673657573ce6baaebfe3e1e25cfb"
+  },
+  "repository_state": {
+    "observed_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+    "initial_status": "Existing tracked modifications and untracked work were present across guidance, canonical/shared/generated skills, MCP code/tests, exports, specifications and evidence. Only filename/status diagnostics were obtained; no managed-YAML diff or content inspection.",
+    "preservation": "No existing source, generated artifact or user state was edited. The only write authorized/performed by this task is this new P01.json report.",
+    "report_preexistence": "Exact-path glob returned no existing P01.json before creation."
+  },
+  "limitations": [
+    "No audited workflow was executed, so process-time, token, cost and runtime call-count effects are unmeasured.",
+    "Test files provide source-confirmed contract evidence only; no tests, builds, generators or verifier scripts were run under this assignment.",
+    "No live managed YAML/scenario state or Penpot service/skill was inspected. Design assessment is limited to collection-owned routing and evidence instructions, not actual canvas/export quality.",
+    "Generated fidelity is bounded to 145 non-templated-reference byte comparisons and three incremental entry samples; it is not a full distribution, marker, metadata or installed-runtime audit.",
+    "The actual model is instruction-declared gpt-6.1-sol; the provider route and independent dispatch trace are not observable.",
+    "Concurrent sessions may change sources after inspection. Findings are tied to cited current source and the recorded hashes; synthesis owns baseline reconciliation.",
+    "Collection inventory lists 17 skills; this report claims only the four assigned canonical skills. Other components observed incidentally are not new audited coverage."
+  ],
+  "transient_evidence": "",
+  "report_validation": {
+    "scope": "JSON syntax, required report/finding fields, unique IDs, exact coverage, repository-relative existing source locations with valid line ranges, report-only path and privacy-string screening; no project tests",
+    "expected_result": "pass; the external tool result is the authoritative execution acknowledgement"
+  }
+}

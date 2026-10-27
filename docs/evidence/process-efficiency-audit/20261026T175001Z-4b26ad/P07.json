@@ -1,0 +1,338 @@
+{
+  "task_id": "P07",
+  "status": "complete",
+  "audit_type": "recommendation-only source-and-test inspection",
+  "route": {
+    "assigned_alias": "sol",
+    "observed_model": "gpt-6.1-sol",
+    "model_evidence": "The active developer message identifies this coding agent as gpt-6.1-sol.",
+    "configured_provider": "openai-codex",
+    "configured_route": "openai-codex/gpt-6.1-sol",
+    "configuration_evidence": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json:4-6,52",
+    "provider_request_route_independently_observed": false,
+    "reasoning_effort": "not independently observable"
+  },
+  "assigned_coverage": ["component:product-review"],
+  "coverage": ["component:product-review"],
+  "assigned_aspects": ["B", "C", "D", "E"],
+  "actual_aspects": {
+    "B": "Review orchestration, pending-only batching, resumable reads, final consistency and mechanical versus substantive judgment.",
+    "C": "Existing get/record batches, request-local immutable source reuse and repeated derived work.",
+    "D": "Frozen inventory, used-source verification, bounded responses, stale/partial reads, replay and interrupted-write recovery interfaces.",
+    "E": "Inherited recheck eligibility, shared-evidence impact, reviewer scope expansion and fresh consistency gates."
+  },
+  "completion_basis": "The assigned product review implementation and relevant tests/benchmarks were inspected. Complete denotes a completed recommendation-only review, not executed runtime qualification or passing tests.",
+  "instructions_followed": [
+    "Read the audit protocol first, then the personal tool-search guide, repository AGENTS.md and docs/index.md.",
+    "Used CodeGraph before code exploration and current read/glob/grep tools for the remaining source.",
+    "Created no descendants, workflows, goals, product fixtures or live scenario mutations.",
+    "Did not invoke audited skills, tests, benchmarks, builds, generators, installers, publishing, commits or push.",
+    "Did not semantically read or parse live workflow-managed YAML; source strings and fixture implementation were inspected as code only.",
+    "The sole audit file written is this report; existing tracked, staged and untracked changes were not edited."
+  ],
+  "inspected_paths": [
+    "AGENTS.md",
+    "docs/index.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json",
+    "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/review-blocks.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/storage.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+    "packages/engineer-agent-workflow-mcp/src/server.ts",
+    "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs",
+    "scripts/benchmark-product-review.mjs",
+    "scripts/benchmark-roadmap-retirement.mjs"
+  ],
+  "inspection_boundaries": {
+    "full_semantic_inspection": [
+      "packages/engineer-agent-workflow-mcp/src/product/review.ts:1-3220",
+      "packages/engineer-agent-workflow-mcp/src/product/review-blocks.ts:1-71",
+      "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs:1-288",
+      "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs:1-61",
+      "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs:1-494",
+      "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs:1-143",
+      "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:1-336",
+      "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs:1-269",
+      "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs:1-162",
+      "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:1-199",
+      "scripts/benchmark-product-review.mjs:1-67",
+      "scripts/benchmark-roadmap-retirement.mjs:1-220"
+    ],
+    "supporting_interface_inspection_only": [
+      "packages/engineer-agent-workflow-mcp/src/product/storage.ts:18-53,425-439,608-642,783-808",
+      "packages/engineer-agent-workflow-mcp/src/product/tools.ts:838-982",
+      "packages/engineer-agent-workflow-mcp/src/server.ts:1-156",
+      "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs:272-303"
+    ],
+    "excluded_ownership": "Product storage/transaction internals belong to P08, product sessions and amendment orchestration to P09, and general MCP response handling to P14. These interfaces were inspected only to bound product-review claims. No independent coverage is claimed for them.",
+    "incidental_search_results_not_claimed_as_coverage": "CodeGraph also returned unrelated generated verifier and historical trial snippets; broad path discovery listed historical artifact instruction files. None was treated as a substantive inspected audit area."
+  },
+  "execution_path": [
+    "product/tools.ts maps public review tools to review.ts. The server dispatches workflow.run and applies bounded response projection; there is no outer product object-read scope in the inspected dispatch.",
+    "startProductReview loads the selected candidate and retained generation, freezes source atoms, groups semantic blocks for full/recheck, derives safe inherited coverage when applicable, and journals the indexed review mutation.",
+    "get/status loadReviewState performs a full cold audit or a warm indexed load. Requested items verify used retained sources; batches share an object-read scope and enforce item/byte limits. Partial blocks continue with product_review_get.",
+    "record and record_batch validate complete-read receipts and fresh provenance, then mutate atomically with candidate/used-source verification callbacks. Exact request replay is supported.",
+    "consistency_get loads exact verdict bodies and emits the chosen bounded representation. consistency_record, complete and candidate check request full review audits. Completion distinguishes gaps from reviewed; deterministic checks explicitly do not prove semantics or authenticate user consent."
+  ],
+  "current_optimizations": [
+    {
+      "mechanism": "Semantic blocks replace independent judgments for every relation/decision atom while preserving exactly one primary owner and all related participant evidence.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review-blocks.ts:20-70", "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs:19-60", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:121-137"]
+    },
+    {
+      "mechanism": "Lazy semantic block getters and a WeakMap avoid eagerly expanding all shared context; request-local reuse covers immutable bytes, parsed records, inventory, basis, evidence and predecessor audits.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:345-365,419-420,656-658,918-920,1292-1295,1476-1479", "packages/engineer-agent-workflow-mcp/src/product/storage.ts:18-53", "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs:15-27,70-104,144-161"]
+    },
+    {
+      "mechanism": "Warm schema-v2 reads use bounded verdict indexes and load bodies only as needed; process-local audit markers are bounded to 128 entries and never survive restart. Full audits remain at semantic completion/activation boundaries.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:345-349,820-859,928-950,975-1024,2772-2779,2844-2855,2973-2979", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:215-239,293-335"]
+    },
+    {
+      "mechanism": "Existing get_batch and record_batch handle up to 20 blocks, enforce a 24 KiB structured read budget and 131072-byte verdict request bound, support pending-only scans, and avoid mandatory status round trips between batches.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:2497-2603", "packages/engineer-agent-workflow-mcp/src/product/tools.ts:906-923", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:174-198"]
+    },
+    {
+      "mechanism": "Recheck derives changed/shared/transitive/external-evidence impact on the server, inherits exact successful parent attribution, and requires fresh consistency. Unknown influence falls back to a full independent review rather than inventing eligibility.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1288-1318,1340-1624,1653-1663,2225-2253", "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs:45-131,185-305,309-494"]
+    },
+    {
+      "mechanism": "Compact consistency is already available; it avoids re-disclosing complete source text in its ledger. Explicit representation separates source-content/object hashes from canonical verdict hashes. Do not recommend either as a new feature.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1714-1764,2657-2706", "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs:39-139", "scripts/benchmark-roadmap-retirement.mjs:122-132"]
+    }
+  ],
+  "finding_ids": ["P07-F01", "P07-F02", "P07-F03"],
+  "findings": [
+    {
+      "id": "P07-F01",
+      "component": "component:product-review",
+      "title": "Keep pending-only batch advancement linear across an acknowledged suffix",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; asymptotic repeated work is visible in code. No runtime cost or savings measured.",
+      "priority": "medium",
+      "aspects": ["B", "C"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 2515, "end_line": 2546},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs", "start_line": 44, "end_line": 85}
+      ],
+      "current_execution_path": "readProductReviewBatchSources iterates inventory entries. nextIndex always calls inventory.findIndex from the beginning, rejecting indices below from. For every skipped acknowledged entry, the loop separately calls nextIndex(index + 1).",
+      "existing_optimizations": "pendingOnly already suppresses acknowledged deliveries, batches are bounded, immutable reads are reused, and an empty terminating page is intentionally supported. The proposal retains all of these features.",
+      "unnecessary_work": "An all-acknowledged suffix of K entries causes K separate whole-inventory findIndex traversals, even though the loop is itself already traversing that suffix. For an all-acknowledged inventory of N entries starting at zero, each search returns -1 after N predicates, producing quadratic predicate work without delivering any items.",
+      "reproducible_scenario": "Extend the existing pending Unicode scan scenario to a large inventory. Acknowledge every item except a long multi-portion item near the front, read that partial item via get_batch, finish it via get, and record it. Follow the retained next_item_index to consume the required terminating pending-only page. The inventory is now fully acknowledged; the current skip branch rescans it for every skipped entry. A direct pending-only get_batch at index zero over an acknowledged review exhibits the same read-only work.",
+      "minimal_recommendation": "Use the existing forward iteration to consume acknowledged runs and compute exhaustion/next pending position once, rather than calling nextIndex for every skipped item. For required lookahead after a returned item, start from the supplied position, or compute successor positions once within this request. Preserve the empty items/next_item_index=null termination contract and retain a partial block's own index until its continuation is completed.",
+      "qualitative_impact": "Less CPU and iterator overhead for resume/termination pages with large acknowledged suffixes; no reduction in required substantive review, delivered evidence or validation is claimed.",
+      "confidence": {"source_behavior": "high", "material_wall_clock_benefit": "unmeasured and workload-dependent"},
+      "guarantees": {
+        "correctness": "Keep source verification for every delivered item and the same item order, partial continuation and empty terminal-page semantics.",
+        "compatibility": "No public tool/schema/cursor/receipt changes are needed.",
+        "state": "Operate only on the current loaded inventory and verdict membership; do not persist pending indexes or share them across calls.",
+        "recovery": "Retain acknowledgement-based resumption and exact batch replay; never skip a pending item because a prior response may have been lost.",
+        "security": "Do not bypass byte limits or verifyUsedSources; this only removes redundant membership scans."
+      },
+      "measurement_plan": "In a separately authorized isolated fixture, count inventory membership predicates for fully acknowledged inventories and long acknowledged suffixes at increasing sizes. Confirm linear rather than quadratic scan growth, then collect per-call elapsed time without asserting a target speedup. Include the partial-last-pending-item flow from the current regression test.",
+      "validation_plan": "Retain existing Unicode continuation, final-gap, empty termination and no-acknowledged-redelivery assertions. Add cases for zero pending items, sparse pending items, nonzero start, a page ending on a partial block, byte-budget truncation, and a lost batch acknowledgement. Verify exact returned keys and next_item_index before comparing timings.",
+      "complexity": {"implementation": "small local control-flow change", "current_work": "quadratic predicate work in an all-acknowledged suffix case", "target_work": "one forward scan of skipped entries, with bounded per-page lookahead", "extra_space": "constant for a linear scan; avoid a persistent index"},
+      "dependencies": ["Existing pending-only batch and continuation tests", "No new dependency, tool or storage format"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P07-F02",
+      "component": "component:product-review",
+      "title": "Derive recheck status membership once instead of rebuilding it per verdict and batch item",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed repeated deterministic computation; wall-clock and allocation impact have not been measured.",
+      "priority": "medium",
+      "aspects": ["B", "C", "E"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 1053, "end_line": 1077},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 1653, "end_line": 1656},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 2525, "end_line": 2536},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs", "start_line": 45, "end_line": 90}
+      ],
+      "current_execution_path": "statusFor counts items and constructs the recheck summary. Its inherited_items filter calls requiredRecheckKeys(state) for each non-consistency verdict. That helper allocates a new Set from pending keys and every scope expansion. get_batch calls statusFor(state).next_item_index for each candidate portion and again for each size-halving attempt.",
+      "existing_optimizations": "The inventory view is already reused via WeakMap; recheck impact and scope expansions are retained; batching and exact inherited attribution already exist. The issue is repeated derivation inside the loaded state, not missing inheritance or a need for a new cache.",
+      "unnecessary_work": "A single recheck status reconstructs the same required-key Set once per recorded verdict. A get_batch repeatedly computes the entire status, including that inherited count, only to use next_item_index. This multiplies allocations and membership preparation by recorded verdicts and by delivered/size-retried portions.",
+      "reproducible_scenario": "Create a recheck with many inherited results and a nontrivial pending set or reviewer scope expansion. Request a full pending batch, including an item that triggers response-size halving. The pending keys and verdict membership do not change while that read batch is built, but each status calculation reconstructs all derived counts and each inherited-count iteration rebuilds the same Set. The existing 119-block recheck and expansion tests provide smaller correctness fixtures; larger pending sets are a benchmark assumption, not observed production load.",
+      "minimal_recommendation": "In statusFor, compute requiredRecheckKeys once for the recheck branch and reuse that local Set in inherited_items. In readProductReviewBatchSources, compute the status next_item_index once after loading state and reuse that scalar for all portions and halving retries. Keep these values request/state-local; no module-level memoization or persisted derived state is necessary.",
+      "qualitative_impact": "Less repeated CPU work and temporary Set allocation for large rechecks and batched reads. This does not reduce required fresh verdicts, reviewer expansion or whole-artifact consistency.",
+      "confidence": {"source_behavior": "high", "material_wall_clock_benefit": "unmeasured; likely larger with more recorded verdicts and pending/expanded keys"},
+      "guarantees": {
+        "correctness": "Preserve status values exactly. loadUsedVerdict replaces a saved body but does not add/remove verdict membership during batch reads, so request-local reuse of next_item_index is sufficient. Recompute after any actual mutation or scope expansion.",
+        "compatibility": "Status fields, counts, next_item_index and response shapes remain unchanged.",
+        "state": "Do not extend lifetime beyond one loaded read state or share across reviewer mutations.",
+        "recovery": "Pending/inherited counts must still reflect removed inherited coverage after expansion and after restart.",
+        "security": "No validation, source, receipt or inheritance-eligibility check is removed."
+      },
+      "measurement_plan": "Under later authorization, instrument requiredRecheckKeys construction counts and statusFor invocations separately from filesystem metrics. Exercise inherited-only, mixed pending/inherited, and expanded rechecks at increasing sizes; compare allocations and per-call elapsed distributions while requiring identical result JSON.",
+      "validation_plan": "Use the current 119-block attribution, shared-relation expansion and expansion-invalidates-consistency tests as semantic controls. Add a deterministic assertion that a batch derives status once and inherited counting builds one required-key Set per status computation, including the single-item byte-halving branch. Verify zero, some and all inherited results, plus consistency-key exclusion.",
+      "complexity": {"implementation": "small local binding/hoisting changes", "current_work": "required-key construction repeats for every recorded verdict and every batch status calculation", "target_work": "one required-key construction per status and one status derivation per unchanged read batch", "extra_space": "one local Set and one scalar; no new persistent cache"},
+      "dependencies": ["Existing recheck/scope expansion status contract", "Independent of P07-F01; both may be benchmarked together after separate correctness checks"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P07-F03",
+      "component": "component:product-review",
+      "title": "Give the single-item read the same bounded object-read scope as the batch reader",
+      "classification": "source-confirmed",
+      "classification_detail": "The missing outer scope and duplicate cold-read path are source-confirmed. Actual I/O counts and elapsed impact require a controlled later measurement.",
+      "priority": "low",
+      "aspects": ["C", "D"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 888, "end_line": 920},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 939, "end_line": 975},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 2431, "end_line": 2471},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "start_line": 2497, "end_line": 2499},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "start_line": 25, "end_line": 53},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "start_line": 425, "end_line": 438},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts", "start_line": 878, "end_line": 891},
+        {"path": "packages/engineer-agent-workflow-mcp/src/server.ts", "start_line": 137, "end_line": 153}
+      ],
+      "current_execution_path": "The public single-item handler calls readProductReviewItem directly. That function awaits loadReviewState, whose own withProductObjectReads scope ends when state loading returns, then calls verifyUsedSources and loadUsedVerdict outside that scope. The inspected server/product tool dispatch does not provide an encompassing scope. readProductReviewBatch and readProductReviewConsistency already wrap their whole owning read operation.",
+      "existing_optimizations": "There is already an AsyncLocalStorage object-read scope and exact-input reuse implementation. The batch reader, consistency reader, record paths and nested loadReviewState use it. Transaction entry explicitly discards preflight reuse. No new caching mechanism is needed.",
+      "unnecessary_work": "On a cold single-item read, the full state audit loads/verifies retained generation documents and verdict bodies. After the inner scope ends, the requested source and any recorded verdict can be opened/hashed/parsed again by verifyUsedSources/loadUsedVerdict within the same logical read. A warm read does not have all the same duplicated work, so a universal savings claim would be unjustified.",
+      "reproducible_scenario": "Start/resume a retained schema-v2 review in a fresh server process, then read a source-backed already-recorded item through product_review_get rather than get_batch. The cold audit hydrates its retained sources and verdict, and the single-item post-load checks lack access to that audit's object cache. Repeat in a warm process as a control. Large-item continuations still use this single-item path, though not every warm continuation incurs the cold duplicate reads.",
+      "minimal_recommendation": "Wrap the entire readProductReviewItem operation in the existing withProductObjectReads pattern, as get_batch already does. Reuse only within this one logical read-only audit. Do not broaden the scope over multiple MCP calls, writes, lock acquisition, recovery or server lifetime.",
+      "qualitative_impact": "Avoid repeat verification/parsing of identical immutable inputs within cold single-item requests; improve consistency with the existing batch implementation without changing delivered evidence.",
+      "confidence": {"source_behavior": "high", "material_wall_clock_benefit": "unmeasured and primarily cold-read dependent"},
+      "guarantees": {
+        "correctness": "Keep every logical source/receipt/verdict check and mutable candidate/review before-and-after comparison. Match the existing batch reader's audit-local immutable-read semantics rather than weakening verification strengths.",
+        "compatibility": "No public API, cursor, representation, receipt or storage-format changes.",
+        "state": "A new request starts a fresh scope; equal objects in different stores must not share validation. Do not turn the bounded auditedReviews marker into a content cache.",
+        "recovery": "Maintain withoutProductObjectReads invalidation and fresh under-lock validation. A later request or restarted process must detect corrupted sources/verdicts.",
+        "security": "Retain safe-path, exact-hash and retained-provenance checks. Never reuse verification across a mutation boundary."
+      },
+      "measurement_plan": "Later, use the existing product.source-audit and product.source-validation channels to compare cold single-item, warm single-item and one-item batch reads over the same isolated fixture. Count object reads/misses and parse reuse by audit ID, then collect elapsed time. Assert that reduction is within one request only, and establish prebuilt/runtime identity before execution.",
+      "validation_plan": "Add a cold single-item regression using an already-recorded source-backed block. Check exact payload/receipt equivalence and same-audit source reuse, then corrupt the retained source or verdict between requests and require SOURCE_CHANGED. Retain existing different-store, metadata-versus-full-audit, transaction-invalidation and restart-corruption tests. Do not merge audits across lock boundaries to make the counters pass.",
+      "complexity": {"implementation": "small wrapper/internal-reader extraction, following the existing batch pattern", "storage_change": "none", "cache_lifetime": "one owning read-only operation", "extra_space": "bounded by already-read inputs in the existing per-audit map"},
+      "dependencies": ["Existing withProductObjectReads/withoutProductObjectReads contract owned by P08", "Static overlap check against P08 recommendations; no need to redesign storage"],
+      "needs_clarification": false
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "area": "Existing batching and atomicity",
+      "conclusion": "Do not add a new batching API. Existing get/record batches already meet the principal round-trip reduction need. Validation precedes mutation; invalid members and overlap reject the batch; exact replay checks retained bodies.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:2497-2603", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:194-213,279-335"],
+      "verification": "Source and test assertions inspected, not executed."
+    },
+    {
+      "area": "Pagination, byte limits and partial evidence",
+      "conclusion": "Unicode code-point slicing, prefix-bound cursors, null receipts for incomplete items, size-halving for a first oversized batch item, and item-index retention are implemented. Partial reads are not accepted as coverage.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1670-1711,1774-1812,2521-2545", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:18-113,172-191", "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs:167-194", "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs:90-135"],
+      "verification": "Static assertions include 24 KiB structured and 64 KiB full-wire budgets; no runtime budget measurement was performed."
+    },
+    {
+      "area": "Source verification and warm-index limits",
+      "conclusion": "Warm status intentionally may report recorded counts without reading untouched verdict bodies. Requested blocks verify used retained documents and verdicts; full completion/readiness audits reject corruption. Do not replace the current tiered audit with a global content cache or require all-source hydration on every warm status.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:820-866,939-1024,2431-2471,2844-2855,2973-2979", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:139-169,215-239,293-335"],
+      "verification": "Source-confirmed intended tradeoff; persisted freshness is not inferred from status alone."
+    },
+    {
+      "area": "Review inheritance and current eligibility",
+      "conclusion": "Recheck already avoids re-judging eligible unchanged blocks. It checks historical basis, exact attribution, metadata/moves, decision and relation participants, transitive declared dependencies, source-only refs/pins, and changed global evidence. Original instructions/answers or uncertain history require full independent review.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1292-1318,1340-1624,1658-1663,2225-2253", "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs:45-131,185-305,309-494"],
+      "verification": "The 119-block and external dependency cases are inspected test fixtures, not audit measurements."
+    },
+    {
+      "area": "Independent reviewer scope expansion",
+      "conclusion": "Current pending rechecks can expand exact current block keys with a reason, drop affected inherited attribution and old consistency, and replay identical expansion safely. The eligibility audit rejects inherited results in required recheck keys.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1004-1013,1653-1656,2382-2417", "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs:76-90,252-269"],
+      "verification": "No recommendation to weaken or eliminate independent expansion."
+    },
+    {
+      "area": "Final consistency and semantic ownership",
+      "conclusion": "Fresh consistency is mandatory for semantic full/recheck and followup completion. Compact and explicit ledgers already separate mechanical coverage evidence from substantive whole-artifact judgment. Candidate check explicitly returns semantic_correctness_proven=false and user_consent_authenticated=false; deterministic coverage is not a semantic pass.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:2657-2706,2713-2733,2761-2871,2958-3012", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:194-213", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:131-172"],
+      "verification": "Do not merge away consistency, completion or activation transaction boundaries merely to reduce calls."
+    },
+    {
+      "area": "Stale and historical outcomes",
+      "conclusion": "Stale source versions are explicit, reject fresh writes, and do not erase historical readable evidence. Explicit legacy provenance is marked unavailable rather than fabricated from current hydration. Gap/conflict outcomes remain gaps, not successful coverage.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1053-1077,1714-1744,2564-2565,2844-2857", "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs:137-177", "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs:69-92,218-269"],
+      "verification": "Historical reads and stale current-state claims were distinguished during inspection."
+    },
+    {
+      "area": "Lost acknowledgements, interruption and unknown outcome handling at the review interface",
+      "conclusion": "Exact review batches replay without duplicate writes. The recovery tests cover all listed interruption phases and require wholly old or wholly new indexed review state. Activation inspection distinguishes saved published generation from current generation and tells incomplete/blocked callers to preserve original evidence and ownership rather than assume success or remove locks.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:1214-1272,2566-2582,3193-3219", "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs:26-143", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:293-335", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:78-97,174-185"],
+      "verification": "The session state machine's unknown state and generic operation-lock internals were not independently audited here; P09/P08 own those. No claim that an unacknowledged call was not applied."
+    },
+    {
+      "area": "Legacy compatibility and read purity",
+      "conclusion": "Legacy atomic inventory remains readable. Index migration is deferred until an actual write and preserves identity/evidence. Retained reads check byte/metadata stability in test assertions.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/review.ts:820-885,968-975", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:241-277", "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs:94-114,142-165"],
+      "verification": "No automatic migration or format replacement is recommended."
+    },
+    {
+      "area": "Existing benchmarks and measurement scope",
+      "conclusion": "Do not introduce a new benchmark framework. The simple review benchmark already compares per-item and batch paths at 100/500/1000 synthetic elements. The retirement benchmark already captures direct/stdio phase timings, response sizes, source audit/validation channels, pending-only review, compact consistency, findings/correction and activation replay. Synthetic judgments explicitly do not measure semantic comprehension.",
+      "evidence": ["scripts/benchmark-product-review.mjs:7-66", "scripts/benchmark-roadmap-retirement.mjs:14-29,53-132,134-211", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:174-198"],
+      "verification": "Benchmarks were read only, never executed. Their dist imports do not establish current artifact identity; no historical or current elapsed/token savings are claimed."
+    }
+  ],
+  "recommendation_order": [
+    "P07-F01: independently validate pending-only successor/exhaustion semantics, then remove redundant suffix searches.",
+    "P07-F02: hoist local required-key/status derivation without altering outputs; this is independent of P07-F01.",
+    "P07-F03: align the single-item read scope after confirming P08's cache boundary guarantees; validate cold and next-request corruption controls.",
+    "Only after authorized implementation and correctness checks, extend the existing benchmark fixtures and compare results."
+  ],
+  "contract_changes_recommended": [],
+  "hypotheses_not_promoted": [
+    "Long explicit/followup consistency pagination reconstructs projections and exact verdict bodies on each owning read. Whether this is a material remaining bottleneck versus intentionally fresh verification is unmeasured. Existing compact-v1 and batch paths must be the baseline before proposing another API or cross-request cache."
+  ],
+  "measurements": {
+    "performance_experiments_run": false,
+    "tests_run": false,
+    "benchmarks_run": false,
+    "build_generation_install_publish_run": false,
+    "time_token_percentage_savings": "not measured",
+    "observed_counts": "Three source-confirmed recommendations; no measured performance findings.",
+    "safe_actions": ["Read-only workspace location/status inspection", "Source/test reads and searches", "Byte hashing of inspected source paths", "Own report creation and JSON validation"]
+  },
+  "source_sha256_at_inspection": {
+    "AGENTS.md": "82103ec263fa4ff21c754ca7d4f205d921f91d5b19a898941f2e9d71a8079000",
+    "docs/index.md": "d0165bfe76b5975cfd5565aaf95374f408691d64782f79d527ab9dbf03221cfa",
+    "packages/engineer-agent-workflow-mcp/src/product/review.ts": "41eb617dd53010b891a7ca8440075cfa2e0e429da96675a70e785fb2d0d7f0c2",
+    "packages/engineer-agent-workflow-mcp/src/product/review-blocks.ts": "1079950574beb798040612ba1210e78d421451f8f96cca6aeb822f724adf4781",
+    "packages/engineer-agent-workflow-mcp/src/product/storage.ts": "f6d8086390eecd346c8ed04c829e03ff46dc99ac2aa4506c621d5e70869d5143",
+    "packages/engineer-agent-workflow-mcp/src/product/tools.ts": "99c9c29e7407fe0f0bd34f9e39649d956e339f6f8a366ace9134e2a25da0649a",
+    "packages/engineer-agent-workflow-mcp/src/server.ts": "8d9098db1318c440692b91e227518dc1596156f6db25f4793037dbffb591d0ad",
+    "packages/engineer-agent-workflow-mcp/test/product-review.test.mjs": "f0655ce5b3f2175122cee330753275900b9d5328afb42536bee682d01147e63f",
+    "packages/engineer-agent-workflow-mcp/test/product-review-blocks.test.mjs": "6900affbd68b79078be55307170745a281986acd56778e72128a8aae0c7a16c1",
+    "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs": "ad44dc4cd53ace3319900369e174ac16999214d96433c9562d4626fa55ccb17b",
+    "packages/engineer-agent-workflow-mcp/test/product-review-recovery.test.mjs": "6c752f4ae6799a3946717730c07d9e71be00eab4e732f0ea8595e125ffaf9264",
+    "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs": "2d24a7962c8ceb4a054a8e9101aa68f06f4ac34cd547dc3ee448ff234b127019",
+    "packages/engineer-agent-workflow-mcp/test/product-review-hashes.test.mjs": "fbc0dfc1fa31de17647d0e20e453c95d5b2eccdb649f15ef62aea82c6828f56c",
+    "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs": "d708ad0898da74ed937e6f7d11ad15d0936af43c2d1d2629853a9545ec27be4d",
+    "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs": "11c08dd59dee87c138787a5a271e2b5c29d3b9a96193bb3c7659c3c7862ee9bc",
+    "scripts/benchmark-product-review.mjs": "4c2617ca824983a5af5fe2d2888b740513c0b1acdf62337053246be07aad2f8b",
+    "scripts/benchmark-roadmap-retirement.mjs": "27076bef3c37449c23e0e77aef63c91e1ad7653d7b6b0015fbe650007fa7f2e7"
+  },
+  "limitations": [
+    "No runtime performance, token usage, model comprehension or production-load measurements were performed; source complexity is not elapsed savings.",
+    "Tests and benchmarks were inspected but not executed, as required. No build/dist identity or installed runtime behavior was independently qualified in this task.",
+    "The active model is observable from the developer instruction; provider request events and reasoning effort were not independently observable. inputs.json supplies configured route, not an additional runtime attestation.",
+    "Storage, generic transaction internals, product-session unknown outcomes and general server budgets received supporting interface inspection only; their assigned owners retain deep coverage.",
+    "The initial worktree contained substantial pre-existing tracked/untracked changes. Only this unique report was written; concurrent changes by other audit agents are outside this agent's ownership. Source hashes are supplied for synthesis drift checks."
+  ],
+  "report_validation": {
+    "result": "pass",
+    "method": "Read-only Python validation of this audit JSON, required recommendation fields, referenced path existence, privacy path check and source-byte hashes.",
+    "finding_count": 3,
+    "no_finding_check_count": 10,
+    "source_hashes_checked": 17,
+    "source_drift": [],
+    "personal_absolute_paths": "absent",
+    "not_a_product_test_run": true
+  },
+  "transient_evidence": "",
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P07.json"
+}

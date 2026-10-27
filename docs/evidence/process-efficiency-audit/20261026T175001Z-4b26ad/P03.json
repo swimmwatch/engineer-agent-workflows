@@ -1,0 +1,305 @@
+{
+  "task_id": "P03",
+  "status": "complete",
+  "audit_mode": "recommendation-only, source-and-test inspection",
+  "aspects": ["A", "B", "E"],
+  "route": {
+    "assigned_alias": "sol",
+    "assigned_provider": "openai-codex",
+    "assigned_model": "gpt-6.1-sol",
+    "actual_model_observable": "gpt-6.1-sol",
+    "model_evidence": "The active developer instruction identifies this coding agent as powered by gpt-6.1-sol.",
+    "actual_provider_independently_observable": false,
+    "provider_evidence": "inputs.json:4-6 records the configured provider and model mapping, not a per-worker transport receipt. DSH_PROVIDER, DSH_MODEL and DSH_REASONING_EFFORT were absent in the diagnostic shell. No provider identity is inferred from the Harness name."
+  },
+  "assigned_coverage": ["skill:code-review-and-quality", "skill:security-and-hardening", "skill:doubt-driven-development"],
+  "coverage": ["skill:code-review-and-quality", "skill:security-and-hardening", "skill:doubt-driven-development"],
+  "summary": {
+    "result": "All three assigned canonical skills were read in full. Two small instruction-level opportunities concern source-bound follow-up evidence and the freshness of asynchronous adversarial review. No mandatory duplicate review gate, automatic workflow chaining, model-switch requirement, unnecessary approval loop, or generated-host leakage was found in the inspected scope.",
+    "finding_ids": ["P03-F01", "P03-F02"],
+    "measured_process_savings": false,
+    "scope_of_completion": "The recommendation-only source audit is complete; proposed process changes and behavioral experiments are not implemented or executed."
+  },
+  "guidance": {
+    "read_first": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md:1-43",
+    "project_index": "docs/index.md:1-19",
+    "active_project_instructions": "AGENTS.md was supplied in the active host context and applied without rereading solely to recover context.",
+    "personal_guidance": "The active personal instructions were applied, and the imported Native Tool Search guide was read in full. Personal absolute paths are intentionally not persisted.",
+    "scoped_instruction_discovery": "The AGENTS.md glob found no additional instruction file governing skills/, shared/, scripts/, tests/ or the audit directory. Other matches were isolated historical fixtures or artifact checkouts, not ancestors of the inspected current sources."
+  },
+  "inspected_paths": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/baseline.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/distribution-baseline.json",
+    "docs/index.md",
+    "catalog/skills.json",
+    "skills/code-review-and-quality/SKILL.md",
+    "skills/security-and-hardening/SKILL.md",
+    "skills/doubt-driven-development/SKILL.md",
+    "skills/code-review-and-quality/agents/openai.yaml",
+    "skills/security-and-hardening/agents/openai.yaml",
+    "skills/doubt-driven-development/agents/openai.yaml",
+    "tests/code-quality-skills.test.mjs",
+    "tests/fixtures/code-quality/code-review-and-quality/scenarios.json",
+    "tests/fixtures/code-quality/security-and-hardening/scenarios.json",
+    "tests/fixtures/code-quality/doubt-driven-development/scenarios.json",
+    "skills/incremental-implementation/SKILL.md",
+    "skills/incremental-implementation/references/packet-recovery.md",
+    "shared/references/test-discipline.md",
+    "shared/references/product-workflow.md",
+    "tests/workflow-efficiency.test.mjs",
+    "scripts/lib/distribution.mjs",
+    "plugins/codex/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/security-and-hardening/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/code-review-and-quality/agents/openai.yaml",
+    "plugins/codex/engineer-agent-workflows/skills/security-and-hardening/agents/openai.yaml",
+    "plugins/codex/engineer-agent-workflows/skills/doubt-driven-development/agents/openai.yaml",
+    "plugins/claude-code/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/security-and-hardening/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md",
+    "exports/deepseek-harness/skills/code-review-and-quality/SKILL.md",
+    "exports/deepseek-harness/skills/security-and-hardening/SKILL.md",
+    "exports/deepseek-harness/skills/doubt-driven-development/SKILL.md"
+  ],
+  "inspection_depth": {
+    "canonical_skills": "Full semantic read, once per skill. Scoped glob found only SKILL.md and agents/openai.yaml in each canonical directory: there are no skill-local reference documents to omit.",
+    "fixtures_and_primary_tests": "Full read of tests/code-quality-skills.test.mjs and all three assigned JSON scenario fixtures. These are modeled expectations and static assertions, not observed agent executions.",
+    "implementation_boundary": "Full read of skills/incremental-implementation/SKILL.md; packet-recovery.md:88-117 only, to check optional-review gates and existing evidence reuse. No claim of auditing the implementation skill end to end.",
+    "shared_boundary": "shared/references/test-discipline.md:120-147 and product-workflow.md:90-124 only. Used to check existing reuse safeguards and avoid proposing a duplicate MCP mechanism. These references are not dependencies of the three standalone skills.",
+    "test_boundary": "tests/workflow-efficiency.test.mjs:90-154 only. Existing synthetic negative cases protect actor-specific source consumption and unchanged-input reuse.",
+    "renderer_boundary": "scripts/lib/distribution.mjs:1-100 only, for declared host substitutions. No generator or renderer was invoked.",
+    "generated_files": "All nine host SKILL.md copies read in full for fidelity, not independently audited semantically. Three Codex metadata sidecars compared byte-for-byte with their fully read canonical source. Scoped glob confirmed no such sidecars in the Claude or Harness skill directories.",
+    "audit_inputs": "inputs.json read in full. Baseline JSON headers read with the read tool; hash maps accessed only for byte-drift comparison. No managed YAML was parsed.",
+    "codegraph": "CodeGraph CLI exploration ran before grep-based code/test location. It did not uniquely resolve two Markdown skill paths and returned broad current code and incidental historical snippets. Those incidental snippets are not used as findings or claimed coverage. Direct current reads and scoped searches supplied the relevant evidence."
+  },
+  "current_execution_paths": [
+    {
+      "component": "code-review-and-quality",
+      "path": "Explicit read-only request -> establish comparison and affected context -> trace material behavior and tests/security -> evidence-ranked findings -> bounded report and stop.",
+      "evidence": ["skills/code-review-and-quality/SKILL.md:12-39"],
+      "existing_optimizations": ["Reuse project guidance already supplied by the host.", "Inspect only the requested diff, affected surfaces and one relevant precedent.", "Make each check material to the change rather than apply an unconditional exhaustive checklist.", "Keep output bounded; do not launch fixes or another workflow.", "Model recommendation is advisory, never a switching gate."]
+    },
+    {
+      "component": "security-and-hardening",
+      "path": "Explicit concrete-boundary request -> establish read-only versus mutation authority -> inspect scoped assets, actors and controls -> evidence and smallest mitigation, or separately authorized narrow hardening -> bounded output and stop.",
+      "evidence": ["skills/security-and-hardening/SKILL.md:10-40"],
+      "existing_optimizations": ["Reuse supplied project guidance and restrict inspection to task-scoped sources.", "Choose audit versus hardening from actual authorization instead of implying fixes.", "Trace only relevant security boundaries and controls.", "Report positive controls and residual risk, not just negative findings.", "No harmful proof-of-concept execution and no automatic downstream workflow."]
+    },
+    {
+      "component": "doubt-driven-development",
+      "path": "Explicit named high-risk decision -> bounded authoritative evidence -> smallest artifact and contract -> fresh-context native adversarial reviewer without the claim or preferred verdict -> reconcile reviewer output -> propose a safe experiment and decision conditions -> stop.",
+      "evidence": ["skills/doubt-driven-development/SKILL.md:10-44"],
+      "existing_optimizations": ["Exclude routine uncertainty from the workflow.", "Minimize reviewer input to the reviewable artifact and contract.", "Exclude prior reasoning and desired verdict to protect independence.", "Stop with an explicit limitation if fresh review is unavailable, including nested contexts.", "External CLI review is neither required nor authorized implicitly.", "Experiments remain proposals, and reviewer output is evidence rather than a verdict."]
+    }
+  ],
+  "findings": [
+    {
+      "id": "P03-F01",
+      "component": "code-review-and-quality; security-and-hardening",
+      "title": "Make narrow follow-up reviews source-bound without repeating the full original inspection",
+      "priority": "medium, instruction-level opportunity",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity: the standalone report contracts omit input identity and an explicit follow-up reuse rule. Actual redundant execution, its frequency and net savings are unmeasured; this is not a claim that the current instructions force a full rerun.",
+      "sources": [
+        {"path": "skills/code-review-and-quality/SKILL.md", "start_line": 16, "end_line": 38, "role": "Comparison scope, broad material checks and report fields; no explicit reviewed-input identity or follow-up contract."},
+        {"path": "skills/security-and-hardening/SKILL.md", "start_line": 17, "end_line": 40, "role": "Boundary-scoped audit and bounded diagnostics; no explicit identity-bound evidence reuse or recheck report."},
+        {"path": "tests/code-quality-skills.test.mjs", "start_line": 24, "end_line": 31, "role": "Six modeled case categories do not contain a follow-up or source-drift case."},
+        {"path": "tests/code-quality-skills.test.mjs", "start_line": 119, "end_line": 129, "role": "Review assertions cover ranked evidence, mutation authority and report ordering, not follow-up identity."},
+        {"path": "tests/code-quality-skills.test.mjs", "start_line": 233, "end_line": 268, "role": "Security assertions cover boundaries, controls and modeled before/after preservation, not reuse across audit invocations."},
+        {"path": "skills/incremental-implementation/references/packet-recovery.md", "start_line": 90, "end_line": 102, "role": "Existing project precedent already says to reuse unchanged-input checks and keep one compact current handoff."},
+        {"path": "shared/references/test-discipline.md", "start_line": 136, "end_line": 147, "role": "Existing owner, purpose, input and state conditions for validation reuse; important safeguards to preserve, not a missing project-wide mechanism."}
+      ],
+      "current_execution_path": "A first explicit review inspects the scoped change or boundary and emits findings. A later explicit request to verify corrections enters the same standalone instructions. Those instructions allow a narrow task scope but do not ask the first report to preserve a review identity, a check/input mapping or remaining follow-up scope.",
+      "current_optimizations": ["Both skills already restrict inspection to task scope and reuse supplied instructions.", "Code review already establishes a comparison range and reports checks as run, failed, unavailable or not run.", "Both require bounded evidence-led reports and prohibit implied workflow chaining.", "The implementation recovery and shared test guidance already support safe check reuse, but the standalone skills neither depend on nor load those resources."],
+      "unnecessary_work_or_restriction": "A later reviewer may have to reconstruct the comparison, affected boundary, previous checks and which inputs stayed unchanged from a prose findings report. Ambiguous follow-up requests can cause duplicate broad inspection or inappropriate reliance on an old pass. Existing task-scoping can avoid this if the user supplies the missing information; the opportunity is a compact handoff convention, not a new review service.",
+      "reproducible_scenario": {"setup": "Review a bounded multi-file request handler and its storage boundary, finding one missing guard and one diagnostic redaction defect. Keep the initial report limited to the currently required location, impact, evidence and smallest correction fields.", "action": "After separately authorized fixes, request only verification of those two findings in a new context. Preserve the old report but do not supply a versioned input/check ledger.", "observable_work": "Record which prior scope and checks the second reviewer must rediscover. Compare with a report that identifies the original base/head or relevant dirty-file identity, the two findings, commands/results with input identity, and explicitly unreviewed areas.", "safety_variant": "Also change the shared authorization helper, a dependency/configuration input, or the protected-asset assumptions while making the fixes. A safe follow-up must expand its relevant inspection rather than inherit the previous boundary judgment."},
+      "minimal_sufficient_recommendation": "Add a short output/re-entry rule to the two canonical standalone skills: record the reviewed comparison or scoped source identity, relevant boundary, checks and input identities, unresolved findings and exclusions in the existing bounded report. On an explicitly requested follow-up, inspect corrections plus materially affected dependencies and interactions, and reuse only passing deterministic evidence whose owner, purpose, relevant inputs and state are demonstrably unchanged. If identity, retained evidence or semantic impact is uncertain, reread or expand the affected scope. Do not require a separate artifact, full repository hash, MCP registration, new schema, cache or approval.",
+      "expected_qualitative_effect": "Less reconstruction and repeated unaffected deterministic work across fix/review rounds, with clearer stale-evidence detection. The extra identity bookkeeping may not pay off for one-off tiny reviews; keep the fields compact and use existing comparison identifiers when sufficient.",
+      "confidence": {"source_gap": "high", "net_process_improvement": "medium; depends on actual multi-round review frequency"},
+      "guarantees": {
+        "correctness": "A prior pass is not inherited across changed relevant inputs or unclear dependency influence. Fresh substantive judgment of the corrections and their interactions remains necessary.",
+        "compatibility": "Keep the workflows standalone and preserve the existing report order and host-independent language. A review must work even when no previous report exists.",
+        "state": "The report is evidence, not a lock, authorization, workflow state or new durable cache. Dirty and untracked relevant sources need appropriate identity; a commit ID alone is insufficient for a dirty tree.",
+        "recovery": "Missing/corrupt prior evidence or resumed/lost context triggers reread of affected inputs, not a fabricated inherited pass. Preserve findings that remain unverified.",
+        "security": "Changes to privileges, policy, dependency provenance, configuration or threat assumptions invalidate applicable old evidence even if the immediate fix diff is small. Redact sensitive values and avoid storing personal paths.",
+        "independence_and_authority": "Never treat implementation self-checks as an independent semantic review. Do not suppress the reviewer's own source consumption. Invocation remains optional and explicit; do not add an implementation-completion gate."
+      },
+      "measurement_plan": ["In a separately authorized trial, compare the current and proposed instructions on the same initial review plus narrow-fix, broad-impact and stale-input follow-ups in isolated contexts.", "Record source deliveries/bytes, deterministic commands repeated with unchanged inputs, scope reconstruction steps, wall time and available token usage without estimating percentage savings in advance.", "Require identical discovery of seeded defects and unchanged rejection of stale/security-sensitive evidence. Count the added bookkeeping cost on a small one-shot review as well as the multi-round case.", "Do not call modeled fixture expectations a measured skill outcome."],
+      "validation_plan": ["Add modeled cases for unchanged-input reuse, changed dependency/configuration inputs, missing prior report and newly introduced interacting defects.", "Retain all current explicit-invocation, no-mutation, redaction, positive-control and missing-evidence assertions.", "After implementation is separately authorized, check host fidelity and document-size limits using the established project validation path; do not hand-edit generated copies."],
+      "complexity": "Small instruction and fixture change; medium effort for a meaningful isolated behavioral comparison. No runtime/API change is necessary.",
+      "dependencies": ["Separate authorization to modify canonical skills and tests.", "Coordinate with P01/P05 on the existing evidence-reuse precedent rather than introducing another shared manual or cache.", "Normal generated-host updates belong to the existing generator owner after authorization."],
+      "needs_clarification": false
+    },
+    {
+      "id": "P03-F02",
+      "component": "doubt-driven-development",
+      "title": "Bind the fresh reviewer and reconciliation to the same artifact and contract identity",
+      "priority": "medium, freshness safeguard",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity: fresh-context review and reconciliation are explicit, but the skill and modeled reviewer fixture do not explicitly bind both phases to one source version or specify drift handling. No stale-review incident was executed or observed.",
+      "sources": [
+        {"path": "skills/doubt-driven-development/SKILL.md", "start_line": 26, "end_line": 36, "role": "Smallest artifact/contract, fresh native reviewer and parent reconciliation; the source identity at those phases is implicit."},
+        {"path": "skills/doubt-driven-development/SKILL.md", "start_line": 37, "end_line": 44, "role": "Decision conditions and bounded evidence output; no explicit stale-review disposition."},
+        {"path": "tests/fixtures/code-quality/doubt-driven-development/scenarios.json", "start_line": 75, "end_line": 97, "role": "Positive reviewer fixture has hostNative, freshContext, artifact/contract input and no claim, but no version binding."},
+        {"path": "tests/code-quality-skills.test.mjs", "start_line": 147, "end_line": 172, "role": "Static assertions protect independence and unavailable-reviewer behavior, not source drift during review."},
+        {"path": "tests/workflow-efficiency.test.mjs", "start_line": 137, "end_line": 153, "role": "Existing synthetic precedent requires another actor to consume its own source and changed source identity to get new delivery."},
+        {"path": "shared/references/product-workflow.md", "start_line": 98, "end_line": 116, "role": "Product-specific review already has exact parent references, scoped rechecks and fresh consistency. Do not duplicate or bypass that mechanism in the standalone decision skill."}
+      ],
+      "current_execution_path": "The parent inspects a decision, extracts its smallest reviewable artifact and contract, dispatches a fresh-context native reviewer without prior reasoning, and reconciles every finding against the artifact. Freshness of the context is guaranteed by instruction; the identity of the source read before dispatch, by the reviewer and during reconciliation is not made explicit.",
+      "current_optimizations": ["The artifact and contract are already minimized.", "The claim, prior reasoning and desired verdict are excluded from reviewer input.", "The reviewer must be host-native and fresh-context; nested-context unavailability is a stop condition.", "Parent reconciliation already classifies misreads, defects, accepted trade-offs and noise.", "The skill does not require an external CLI or authorize execution of its proposed experiments."],
+      "unnecessary_work_or_restriction": "When the artifact or an applicable contract changes during asynchronous review, an unversioned handoff can produce source-mismatch findings, repeated clarification or a decision recommendation based on a different version. Reconciliation may catch the mismatch, but the current instruction does not provide a cheap explicit detection and recovery rule. This is not evidence that existing reviewers necessarily miss drift.",
+      "reproducible_scenario": {"setup": "The parent prepares a compatibility-policy decision against artifact A1 and contract C1, then dispatches an independent reviewer using mutable repository paths.", "action": "An authorized concurrent session changes the compatibility contract or artifact to A2/C2 before the reviewer finishes or before the parent reconciles its output.", "observable_work_or_failure": "The reviewer and parent may refer to different line meanings or reconcile A1 findings against A2, requiring another read/review round. In a discriminating trial, the review must either identify exactly A1/C1 as its scope or detect the mismatch before applying its verdict to A2/C2.", "stable_control": "When identities remain unchanged, no second full source delivery or second reviewer should be required solely for bookkeeping."},
+      "minimal_sufficient_recommendation": "Add a compact dispatch/reconciliation rule: bind the artifact and contract to an existing immutable reference or a scoped content identity, include that identity in the neutral reviewer packet, ask the reviewer to identify what it actually consumed, and verify the same relevant identity before issuing the parent recommendation. On drift, mark the old result as applying only to the prior identity and re-review the materially affected scope with a fresh independent reviewer; if impact is uncertain, broaden review or report the blocker. Do not transmit the parent's claim or preferred outcome, copy whole session history, create a global cache, require a clean worktree, or introduce a mandatory snapshot file.",
+      "expected_qualitative_effect": "Fewer avoidable source-mismatch reconciliation rounds and a more defensible freshness claim at very small stable-input overhead. Benefit is conditional on mutable/concurrent sources; an already immutable artifact/contract needs only its existing reference, not another hashing or storage mechanism.",
+      "confidence": {"source_gap": "high", "runtime_incidence_and_savings": "unmeasured; medium confidence in usefulness for concurrent mutable inputs"},
+      "guarantees": {
+        "correctness": "Fresh context alone is not proof of current source identity. The parent still substantively reconciles every finding; matching digests alone are not a semantic pass.",
+        "compatibility": "Use whatever immutable identifiers or scoped byte identities the current host supports. Keep the standalone workflow independent of product MCP and external CLIs.",
+        "state": "No locks, writes to reviewed sources or global caches are introduced. Include applicable contract/configuration identity, not merely the changed artifact filename.",
+        "recovery": "Changed or unavailable evidence remains unverified for the current version. Do not silently reinterpret an old verdict, remove findings, or claim a current independent review when the required reviewer is unavailable.",
+        "security": "The neutral packet continues to exclude secrets, personal paths, prior reasoning and the desired verdict. A content identity is not authorization and does not permit exposing sensitive source material.",
+        "independence_and_authority": "A new reviewer must consume its own supplied artifact/contract. Do not replace it with self-review, inherited transcript context, implementation validation or an unauthorized external process. Experiments remain proposals."
+      },
+      "measurement_plan": ["In a separately authorized isolated simulation, pause between dispatch and reconciliation and introduce artifact drift, contract-only drift and unchanged-source controls.", "Record source-identity mismatches detected before a recommendation, redundant source deliveries, clarification/review rounds and false stale flags.", "Use an independent seeded-defect oracle to check that narrowing after drift does not miss cross-contract effects; uncertain influence must expand review.", "Measure stable-case identity bookkeeping cost and mutable-case avoided reconciliation work before claiming an efficiency improvement."],
+      "validation_plan": ["Extend the existing positive reviewer fixture with a source identity and a matching returned identity.", "Add mismatched artifact, mismatched contract and unavailable fresh-reviewer-after-drift cases. Assert that a current-version recommendation is withheld until supported.", "Retain assertions for fresh context, host-native reviewer, input restricted to artifact and contract, no claim, no self-review substitution, no mutation and no implicit external CLI.", "If the reviewed decision belongs to a product scenario, use that scenario's existing source pins and review rules rather than treating this standalone rule as a replacement."],
+      "complexity": "Small canonical instruction/fixture change; medium effort for a controlled asynchronous drift simulation. No new server, API, storage format or dependency is warranted.",
+      "dependencies": ["Separate authorization for skill and test modifications.", "May reuse the compact input-identity convention from P03-F01, but does not depend on implementing a shared format.", "Coordinate with P06/P07 to avoid presenting existing scenario-specific follow-up machinery as missing.", "Native fresh-context review availability remains a real prerequisite; this recommendation does not remove it."],
+      "needs_clarification": false
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P03-N01",
+      "area": "Overlapping implementation, quality and security checks are not duplicate mandatory gates",
+      "classification": "source-confirmed",
+      "result": "No finding. Some subject matter overlaps, but implementation self-verification, optional independent code review and an explicit concrete-boundary audit have different purposes. Removing a substantive security or reviewer check merely because implementation tested the code would weaken guarantees.",
+      "evidence": ["skills/incremental-implementation/SKILL.md:46-62 requires focused/proportional implementation checks and explicitly makes review optional.", "skills/code-review-and-quality/SKILL.md:12-14,24-31 restricts review to an explicit request and material evidence.", "skills/security-and-hardening/SKILL.md:12-15,24-36 defines a separate trust-boundary assessment and positive/abuse controls.", "skills/incremental-implementation/references/packet-recovery.md:96-107 prohibits an independent-review completion or next-packet gate."]
+    },
+    {
+      "id": "P03-N02",
+      "area": "Instruction reuse and progressive scope",
+      "classification": "source-confirmed",
+      "result": "No finding for unconditional guidance rereads or unnecessary optional-reference loading. All three skills reuse host-supplied guidance, read only absent/in-scope additional instructions, and scope repository inspection. Canonical directory inventory shows no local references, shared bundles or extra mandatory loading chain for these standalone skills.",
+      "evidence": ["skills/code-review-and-quality/SKILL.md:16-23", "skills/security-and-hardening/SKILL.md:17-23", "skills/doubt-driven-development/SKILL.md:14-21", "catalog/skills.json:4,10,18 declares each standalone with no dependencies.", "tests/code-quality-skills.test.mjs:49-83 asserts standalone packaging and only SKILL.md plus agents directory."]
+    },
+    {
+      "id": "P03-N03",
+      "area": "Independent-review ownership and limited delegation",
+      "classification": "source-confirmed",
+      "result": "No finding for weak independence or forced nested delegation fallback. Doubt requires fresh native review, excludes the claim and prior reasoning, reconciles rather than obeys the result, and stops if no fresh reviewer is available. Ordinary code review and security audit do not promise an independent subagent and should not acquire a new mandatory one.",
+      "evidence": ["skills/doubt-driven-development/SKILL.md:26-36", "tests/code-quality-skills.test.mjs:147-172", "tests/fixtures/code-quality/doubt-driven-development/scenarios.json:24-47,83-97", "skills/code-review-and-quality/SKILL.md:12-39", "skills/security-and-hardening/SKILL.md:12-40"]
+    },
+    {
+      "id": "P03-N04",
+      "area": "Authority, confirmation and model selection",
+      "classification": "source-confirmed",
+      "result": "No finding for redundant confirmation or model gates. Entry is explicit; fixes, hardening, experiments, commits and downstream work are not inferred. None of the three introduces a confirmation loop for already authorized read-only scope. Code/security model suggestions are expressly advisory, and the adversarial skill does not require a particular model.",
+      "evidence": ["skills/code-review-and-quality/SKILL.md:10-14,38-39", "skills/security-and-hardening/SKILL.md:10-15,32-40", "skills/doubt-driven-development/SKILL.md:10-12,29-32,37-44", "catalog/skills.json:4,10,18"]
+    },
+    {
+      "id": "P03-N05",
+      "area": "Concise handoff, unknowns and security preservation",
+      "classification": "source-confirmed",
+      "result": "No finding for unbounded transcripts or invented passes. Code review prioritizes severity, concrete correction and residual risks; security includes positive controls and rejects weakening; doubt separates evidence and inference and proposes rather than runs experiments. All three bound output and redact sensitive or unrelated content. The two recommendations add only missing identity/re-entry precision, not another full report layer.",
+      "evidence": ["skills/code-review-and-quality/SKILL.md:29-39", "skills/security-and-hardening/SKILL.md:24-40", "skills/doubt-driven-development/SKILL.md:22-25,33-44", "tests/code-quality-skills.test.mjs:271-300"]
+    },
+    {
+      "id": "P03-N06",
+      "area": "Generated host fidelity and cross-host leakage",
+      "classification": "measured",
+      "result": "Read-only deterministic comparisons found all nine generated SKILL.md files exactly equal to their canonical content after the declared host substitutions and Codex frontmatter removal. All three generated Codex sidecars equal their canonical metadata bytes. Scoped inventories show no Codex sidecars in Claude/Harness copies and no extra skill-local resource chain. No sampled host leakage or fidelity finding.",
+      "evidence": ["scripts/lib/distribution.mjs:43-77 declares the exact relevant substitutions.", "All nine generated SKILL.md files were read; the copy comparison command returned true for each expected byte match and each of the three sidecar comparisons.", "All 12 scoped generated files matched distribution-baseline.json hashes.", "Canonical metadata skills/code-review-and-quality/agents/openai.yaml:1-5, skills/security-and-hardening/agents/openai.yaml:1-5 and skills/doubt-driven-development/agents/openai.yaml:1-5 disables implicit invocation."]
+    },
+    {
+      "id": "P03-N07",
+      "area": "Existing scenario review optimization is not missing standalone functionality",
+      "classification": "source-confirmed",
+      "result": "No recommendation to add product review batches, inherited semantic verdicts or receipt machinery to these standalone skills. Product review already documents exact-parent rechecks, pending-only delivery, scope expansion and fresh consistency. The standalone opportunities are small neutral evidence conventions and must not replace that separate scenario protocol.",
+      "evidence": ["shared/references/product-workflow.md:98-116", "catalog/skills.json:4,10,18", "tests/workflow-efficiency.test.mjs:103-115,137-153"]
+    }
+  ],
+  "executed_evidence": [
+    {
+      "check": "Workspace and preservation baseline",
+      "kind": "read-only shell diagnostics",
+      "result": "pwd confirmed the expected workspace; git status --short showed extensive pre-existing tracked and untracked changes, including the current audit directory. No reset, checkout, stash, cleanup, installation or source mutation was performed. The indexed .codegraph directory exists. Personal absolute paths from diagnostic output are not persisted here."
+    },
+    {
+      "check": "CodeGraph discovery and permitted fallback",
+      "kind": "tool discovery plus read-only source exploration",
+      "result": "The one tool_search attempt returned 'Error: Tool search failed safely.' No MCP retry was made and no transient cause is established. The allowed installed codegraph CLI existed, and its explore command completed. Because the result did not uniquely locate the relevant Markdown paths, targeted read/glob/grep supplied the current evidence."
+    },
+    {
+      "check": "Route environment diagnostic",
+      "kind": "optional shell diagnostic",
+      "result": "The command locating codegraph succeeded, but its final printenv for DSH_PROVIDER, DSH_MODEL and DSH_REASONING_EFFORT returned exit code 1 because none was exported. This is an understood diagnostic limitation, not an audited skill/check failure. No wider environment dump or secret inspection was used."
+    },
+    {
+      "check": "Expected-byte host comparison",
+      "kind": "read-only custom static comparison, not generation or a test-suite invocation",
+      "result": {"host_skill_documents_compared": 9, "exact_matches": 9, "codex_sidecars_compared": 3, "sidecar_matches": 3, "assertions_failed": 0},
+      "method": "A one-shot Python command compared already-inspected canonical text with the actual copy bytes using only the two relevant known substitutions and removal of the two invocation frontmatter lines for Codex. It imported no project generation modules and wrote no files."
+    },
+    {
+      "check": "Source and distribution drift",
+      "kind": "read-only SHA-256 byte comparison",
+      "result": {"baseline_source_mismatches": [], "distribution_files_compared": 12, "distribution_mismatches_or_missing_entries": []},
+      "method": "Compared current scoped canonical/test/shared/renderer bytes with baseline.json and all nine host documents plus three Codex metadata files with distribution-baseline.json. These comparisons establish byte identity at the comparison point, not runtime behavior or future absence of drift."
+    }
+  ],
+  "source_hashes": {
+    "skills/code-review-and-quality/SKILL.md": "62ba09c4f78f22da1e2789fd7c4d4ec4d6d0d4e6cc652fff54eac2bb7396570f",
+    "skills/security-and-hardening/SKILL.md": "f5506a7b3cde707a2fc9c2c5c30285479feb23937396bd7e0a1bccfb5a64cab1",
+    "skills/doubt-driven-development/SKILL.md": "27fb6bed6e085be4209039d81ea54d6ce3eb7c4f615f2525e7f6724e41ce476c",
+    "catalog/skills.json": "fcd4d5e7708b8c0831d915a4da9a1eecbc5cb78a10da1ed126ba45ecf6b7acff",
+    "scripts/lib/distribution.mjs": "6515215e0cde29467445c54b26075c0158a76fc30129603a64f6713ac7853ac8",
+    "tests/code-quality-skills.test.mjs": "d578e2e4a4dc376335cd2e2989e4069c4f859a861de56494a402fcaffd32d12f",
+    "tests/workflow-efficiency.test.mjs": "9a543b7f5961f21bd59ab9dfa614448638588d5d37c677d71da2c7dc67c668d8",
+    "shared/references/product-workflow.md": "a102261e50c06eb5b7efa50d623d7b57fc974940f4b60e5f6b1c02cc7f87598a",
+    "shared/references/test-discipline.md": "732a42dbcae122795c89cb7fec58c467b9d43e5d72ab9e54d87e78ee36dcc94b",
+    "skills/incremental-implementation/SKILL.md": "894a212a85928b607ecdbb33f5ae0af4263101915e18b7adf0d50d0c9418ff74",
+    "skills/incremental-implementation/references/packet-recovery.md": "b3dd48b6a3cae73346e3a92b4e2bb28c8c5b98080657a3c0201a8b8677ff86b0",
+    "tests/fixtures/code-quality/code-review-and-quality/scenarios.json": "fd2313be79b871c2dabcc5da932517b5ee96b5b41092a38c56e3618254d2360c",
+    "tests/fixtures/code-quality/security-and-hardening/scenarios.json": "43dc40a70d0743dac6698194d5cc7b818ad5898c18ef805a7cd0589306724b9f",
+    "tests/fixtures/code-quality/doubt-driven-development/scenarios.json": "c713fdfaff6ea517c8db7111adba3906ce28bf2498dbd719480795d78019fa51",
+    "plugins/codex/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md": "010e9174ec23aba976b475e58a0a0c61f06ab8147d03558fdaae67ca3da60a7e",
+    "plugins/claude-code/engineer-agent-workflows/skills/code-review-and-quality/SKILL.md": "9db66eb099bf27bbea546136b204506d2756ef234900dd8b326a0d2c7d08eaee",
+    "exports/deepseek-harness/skills/code-review-and-quality/SKILL.md": "096d1def4063a6aa371dd8b9521864929c000c13a9f0b62e7e83035bda28389d",
+    "plugins/codex/engineer-agent-workflows/skills/security-and-hardening/SKILL.md": "3d46f679b24f8de247b728dfe354d8e937ba9f6c8ea38e0e389572948e97ea05",
+    "plugins/claude-code/engineer-agent-workflows/skills/security-and-hardening/SKILL.md": "d8d1675f5d55521b615956a78180a92abf9f586090f11c375192062bdc9d23c0",
+    "exports/deepseek-harness/skills/security-and-hardening/SKILL.md": "88fbc474298388a9d22d41fbf09a84907f4cf05668f798d5d7c415a6cd646130",
+    "plugins/codex/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md": "704fb591216149fc81504ec0be4c3634caa67a355dcbfe53004fc99a0f32e7bc",
+    "plugins/claude-code/engineer-agent-workflows/skills/doubt-driven-development/SKILL.md": "59b7a38694bb40ff93da327d90dd2733ef99e127127b996b85db56e24bef8283",
+    "exports/deepseek-harness/skills/doubt-driven-development/SKILL.md": "65780b76fe49b95fa3f46a0e1d5eb39aaf8b48edfc57ae0a8915cc6a5e7aa47f"
+  },
+  "limitations": [
+    "No audited skill, subagent, workflow, generation, installation, publishing, commit, push, build or test suite was run. Static comparison commands are not empirical agent-performance measurements.",
+    "No behavioral trials were authorized for P03. Scenario fixtures assert modeled expectations, not observed independent-review or security outcomes; both proposed efficiency effects remain unmeasured.",
+    "The CodeGraph MCP discovery attempt failed safely without an identified transient cause. The allowed installed CLI and direct current file tools were sufficient for the assigned source audit.",
+    "The actual model is observable from the active developer instruction; the worker's actual transport provider is not independently observable. The configured provider is recorded separately, not promoted to a receipt.",
+    "Generated copies were checked for scoped fidelity and leakage only. Installed global artifacts, per-host runtime enforcement, MCP implementation internals and the full neighboring implementation/product workflows are not claimed coverage.",
+    "No live managed YAML or scenario state was read or mutated. Scenario discovery was unnecessary because the assigned standalone contracts and JSON metadata supplied the relevant evidence.",
+    "No newly discovered unassigned current skill or significant component emerged from the bounded inventory; cross-component observations are cited only to preserve existing guarantees, not to claim additional coverage."
+  ],
+  "report_validation": {
+    "method": "Read-only custom JSON/field/citation/hash validation; not a project test-suite invocation.",
+    "json_and_required_fields": "pass",
+    "coverage_count": 3,
+    "finding_count": 2,
+    "no_finding_check_count": 7,
+    "source_ranges_checked": 13,
+    "source_hashes_rechecked": 23,
+    "source_drift_at_validation": [],
+    "inspected_paths_exist": true,
+    "personal_absolute_path_scan": "clear"
+  },
+  "preservation": {
+    "writes_authorized": ["docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P03.json"],
+    "supporting_artifacts_created": [],
+    "existing_changes_preserved": "All operations outside this new unique report were read-only. No shared report, current source, generated copy, installed artifact or live workflow state was modified."
+  },
+  "transient_evidence": "",
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P03.json"
+}

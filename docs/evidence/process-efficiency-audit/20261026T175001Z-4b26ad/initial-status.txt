@@ -1,0 +1,97 @@
+ M AGENTS.md
+ M README.md
+ M catalog/skills.json
+ M docs/index.md
+ M docs/specs/product-roadmap-task-graph/decisions.yaml
+ M docs/specs/product-roadmap-task-graph/quality/scenarios.yaml
+ M docs/specs/product-roadmap-task-graph/tasks/09_linux-acceptance.md
+ M docs/specs/product-roadmap-task-graph/tasks/10_developer-documentation.md
+ M docs/specs/product-roadmap-task-graph/tasks/handoff.md
+ M docs/specs/product-roadmap-task-graph/tasks/plan.md
+ M docs/specs/product-roadmap-task-graph/tasks/todo.md
+ M packages/engineer-agent-workflow-mcp/src/requirements.ts
+ M packages/engineer-agent-workflow-mcp/src/reviews.ts
+ M packages/engineer-agent-workflow-mcp/src/server.ts
+ M packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs
+ M plugins/claude-code/engineer-agent-workflows/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/shared/workflow-context.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/context-scouting/SKILL.md
+ M plugins/claude-code/engineer-agent-workflows/skills/context-scouting/references/delegation.md
+ M plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/design-planning/shared/workflow-context.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/idea-refine/shared/product-workflow.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/idea-refine/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/incremental-implementation/shared/workflow-context.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md
+ M plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/workflow-context.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/product-definition/shared/product-workflow.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/product-definition/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/shared/product-workflow.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/product-roadmap/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md
+ M plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/references/workflow-state-access.md
+ M plugins/claude-code/engineer-agent-workflows/skills/spec-driven-development/shared/workflow-context.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/technical-design/shared/product-workflow.sha256
+ M plugins/claude-code/engineer-agent-workflows/skills/technical-design/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/shared/workflow-context.sha256
+ M plugins/codex/engineer-agent-workflows/skills/context-scouting/SKILL.md
+ M plugins/codex/engineer-agent-workflows/skills/context-scouting/references/delegation.md
+ M plugins/codex/engineer-agent-workflows/skills/design-planning/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/design-planning/shared/workflow-context.sha256
+ M plugins/codex/engineer-agent-workflows/skills/idea-refine/shared/product-workflow.sha256
+ M plugins/codex/engineer-agent-workflows/skills/idea-refine/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/incremental-implementation/shared/workflow-context.sha256
+ M plugins/codex/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md
+ M plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/planning-and-task-breakdown/shared/workflow-context.sha256
+ M plugins/codex/engineer-agent-workflows/skills/product-definition/shared/product-workflow.sha256
+ M plugins/codex/engineer-agent-workflows/skills/product-definition/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/product-roadmap/shared/product-workflow.sha256
+ M plugins/codex/engineer-agent-workflows/skills/product-roadmap/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md
+ M plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/references/workflow-state-access.md
+ M plugins/codex/engineer-agent-workflows/skills/spec-driven-development/shared/workflow-context.sha256
+ M plugins/codex/engineer-agent-workflows/skills/technical-design/shared/product-workflow.sha256
+ M plugins/codex/engineer-agent-workflows/skills/technical-design/shared/references/workflow-state-access.md
+ M scripts/lib/catalog.mjs
+ M scripts/lib/distribution.mjs
+ M shared/references/workflow-state-access.md
+ M skills/context-scouting/SKILL.md
+ M skills/context-scouting/references/delegation.md
+ M skills/design-planning/shared/references/workflow-state-access.md
+ M skills/design-planning/shared/workflow-context.sha256
+ M skills/idea-refine/shared/product-workflow.sha256
+ M skills/idea-refine/shared/references/workflow-state-access.md
+ M skills/incremental-implementation/shared/references/workflow-state-access.md
+ M skills/incremental-implementation/shared/workflow-context.sha256
+ M skills/interview-me/references/host-native-questions.md
+ M skills/planning-and-task-breakdown/shared/references/workflow-state-access.md
+ M skills/planning-and-task-breakdown/shared/workflow-context.sha256
+ M skills/product-definition/shared/product-workflow.sha256
+ M skills/product-definition/shared/references/workflow-state-access.md
+ M skills/product-roadmap/shared/product-workflow.sha256
+ M skills/product-roadmap/shared/references/workflow-state-access.md
+ M skills/spec-driven-development/references/completeness-review.md
+ M skills/spec-driven-development/shared/references/workflow-state-access.md
+ M skills/spec-driven-development/shared/workflow-context.sha256
+ M skills/technical-design/shared/product-workflow.sha256
+ M skills/technical-design/shared/references/workflow-state-access.md
+ M tests/context-scouting.test.mjs
+ M tests/fixtures/foundation/cyclic-skills.json
+ M tests/workflow-efficiency.test.mjs
+?? docs/deepseek-harness.md
+?? docs/evidence/deepseek-harness-export.md
+?? docs/evidence/process-efficiency-audit/
+?? docs/evidence/specification-review-read-throughput.md
+?? docs/specs/deepseek-harness-export/
+?? docs/specs/specification-review-native-workflow/
+?? docs/specs/testing-and-verification/
+?? exports/
+?? packages/engineer-agent-workflow-mcp/src/response-budget.ts
+?? packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs
+?? scripts/verify-deepseek-export.mjs
+?? tests/deepseek-export.test.mjs

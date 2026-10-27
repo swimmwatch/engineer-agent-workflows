@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "task_id": "P12",
+  "status": "complete",
+  "audit_kind": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "observable_model": "gpt-6.1-sol",
+    "observation_basis": "Active developer runtime instruction identifies the coding model as gpt-6.1-sol.",
+    "provider": null,
+    "reasoning_effort": null,
+    "limitation": "No independent provider response metadata is exposed; no private configuration was inspected to infer it."
+  },
+  "aspects": ["G", "H"],
+  "assigned_coverage": ["component:test-runner-ci", "component:build-development-cycle", "component:lifecycle-qualification"],
+  "actual_coverage": ["component:test-runner-ci", "component:build-development-cycle", "component:lifecycle-qualification"],
+  "coverage_detail": {
+    "component:test-runner-ci": "Root and MCP workspace scripts, runner argument management and canonical discovery, runner regression tests, both current CI workflows, qualification snapshot verifier and lifecycle workflow policy assertions.",
+    "component:build-development-cycle": "Development snapshot source inventory, validation/build/pack command path, immutable publication and reuse, snapshot tests, local development instructions, generate/check and validate overlap.",
+    "component:lifecycle-qualification": "Global lifecycle flow and isolation helpers; public and packed qualification entrypoints; actor ownership, cancellation and reverse cleanup; native qualification reporter; product-review and retirement benchmark entrypoints, retirement benchmark assertions and optional profiling loader. This is source inspection, not executed lifecycle or platform qualification."
+  },
+  "repository_identity": {
+    "head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+    "worktree": "Pre-existing tracked and untracked changes were present and preserved.",
+    "notable_inspected_preexisting_changes": ["scripts/lib/distribution.mjs", "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs"],
+    "source_authority": "Current on-disk source, including pre-existing modifications; not HEAD-only source or archived proof checkouts.",
+    "codegraph": "Repository index exists. CodeGraph was used before code exploration; current source snippets were treated as reads, not its symbol inventory as proof of completeness."
+  },
+  "instructions_read": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/index.md"
+  ],
+  "instructions_applied": "Active root AGENTS.md and imported personal AGENTS.md instructions were supplied in context; the referenced personal tool-search guide was read once. No additional scoped instruction file was discovered for the audited source directories. Personal paths are deliberately omitted from saved evidence.",
+  "inspected_paths": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/index.md",
+    "package.json",
+    "packages/engineer-agent-workflow-mcp/package.json",
+    "scripts/run-tests.mjs",
+    "scripts/build-dev.mjs",
+    "scripts/generate.mjs",
+    "scripts/validate.mjs",
+    "scripts/lib/distribution.mjs",
+    "docs/local-development.md",
+    ".github/workflows/lifecycle.yml",
+    ".github/workflows/workflow-reliability-qualification.yml",
+    ".github/qualification/verify-workflow-reliability-inputs.mjs",
+    "tests/test-runner.test.mjs",
+    "tests/dev-build.test.mjs",
+    "tests/lifecycle/global-lifecycle.test.mjs",
+    "tests/lifecycle/isolated-profile.mjs",
+    "tests/lifecycle/skills-command.mjs",
+    "tests/lifecycle/source-fixture.mjs",
+    "tests/lifecycle/workflow-policy.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+    "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs",
+    "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs",
+    "packages/engineer-agent-workflow-mcp/test-support/product-profile-loader.mjs",
+    "scripts/qualify-product-workflows.mjs",
+    "scripts/qualify-product-review.mjs",
+    "scripts/benchmark-product-review.mjs",
+    "scripts/benchmark-roadmap-retirement.mjs"
+  ],
+  "inspection_boundaries": [
+    "scripts/run-tests.mjs:1-58,140-212 inspected; the detached Node option-name inventory at 59-138 was not exhaustively audited.",
+    "scripts/build-dev.mjs:19-27,61-149,160-205,208-320 and source inventory excerpts inspected; cryptographic framing helpers were not substantively reviewed.",
+    "scripts/lib/distribution.mjs:103-118,224-229,286-443 inspected for the source-collection path; other implementation areas and generated host copies were outside this assignment.",
+    "tests/lifecycle/source-fixture.mjs:1-220 inspected, including isolated Git environment and loopback serving; the update helper tail was not reviewed.",
+    "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs:1-210,764-818,1140-1182 inspected plus a focused symbol/line search. Product semantics inside the remaining long scenario were not re-audited.",
+    "packages/engineer-agent-workflow-mcp/test-support/product-review-fixture.mjs:1-110 inspected for isolation and synthetic identity setup, not every fixture record.",
+    "scripts/qualify-product-workflows.mjs:7-48,71-76,116-150,160-180,199-323 inspected through source snippets and reads; model-client CLI configuration was sampled through its assertions, not executed.",
+    "scripts/benchmark-roadmap-retirement.mjs:1-112 and155-220 inspected through snippets and reads; review-loop details at113-154 were not exhaustively reviewed.",
+    "CodeGraph returned incidental product implementation snippets while resolving the first query. They are not claimed as substantive audit coverage or used for findings."
+  ],
+  "executed_evidence": [
+    {
+      "id": "P12-E1",
+      "classification": "measured",
+      "command": "rtk proxy node --test --test-name-pattern='^(parallel test runner|serial mode|the positional delimiter)' tests/test-runner.test.mjs",
+      "runtime": "Node v24.20.0",
+      "selection": "Four existing synchronous parser-only tests at tests/test-runner.test.mjs:12-49.",
+      "side_effect_review": "The selected callbacks only call parseTestRunnerArguments and assert results. Imports are Node builtins and scripts/run-tests.mjs; its CLI invocation guard prevents spawning on import. The filesystem-writing discovery tests at51-202 are not selected. No prebuilt dist is imported, so prebuilt identity is not applicable.",
+      "result": {"tests": 4, "pass": 4, "fail": 0, "cancelled": 0, "reported_duration_ms": 39.188832},
+      "interpretation": "Confirms the existing default ceiling, lower-limit validation, serial behavior and delimiter preservation on this local runtime only. The duration is an incidental test-run duration, not a performance baseline or savings measurement.",
+      "exit_status_note": "The tool rendered the passing test summary without a separate exit-code marker. No failure was reported. The check was not repeated solely to obtain a marker."
+    },
+    {
+      "id": "P12-E2",
+      "classification": "measured",
+      "command": "Read-only working-directory, git status, HEAD, scoped git diff and node --version inspection through rtk.",
+      "result": "HEAD recorded above; Node v24.20.0. Explicit final node and scoped git-diff exit statuses were both0. Working tree already contained modifications before this audit.",
+      "interpretation": "No claim that this local Node version equals either pinned CI runtime. Repository file modifications were not undone."
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P12-N1",
+      "component": "component:test-runner-ci",
+      "classification": "source-confirmed",
+      "check": "Do CI steps rebuild implicitly through npm pretest or npm prepack?",
+      "result": "No duplicate implicit CI build was established. Both workflows explicitly build once, then invoke node/scripts directly; packed testing uses --ignore-scripts. Root pretest hooks are deliberate freshness guards for ordinary developer npm test invocations, not an extra CI build here.",
+      "evidence": ["package.json:15-23", "packages/engineer-agent-workflow-mcp/package.json:18-23", ".github/workflows/lifecycle.yml:64-75", ".github/workflows/workflow-reliability-qualification.yml:40-51", "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs:246-250", "scripts/build-dev.mjs:243-246"]
+    },
+    {
+      "id": "P12-N2",
+      "component": "component:test-runner-ci",
+      "classification": "source-confirmed",
+      "check": "Does default discovery recursively execute retained proof checkouts, or is concurrency/isolation unbounded?",
+      "result": "Canonical discovery visits only tests/ and packages/*/test/, sorts files, and excludes artifacts by construction. Explicit selectors remain allowed. Process isolation is enforced where supported; override attempts are rejected and concurrency is bounded by available capacity and eight. Existing sentinel tests verify real separate processes and archive exclusion. Four pure parser checks passed locally; filesystem discovery tests were not run.",
+      "evidence": ["scripts/run-tests.mjs:7-54", "scripts/run-tests.mjs:140-204", "tests/test-runner.test.mjs:12-80", "tests/test-runner.test.mjs:82-154"]
+    },
+    {
+      "id": "P12-N3",
+      "component": "component:lifecycle-qualification",
+      "classification": "source-confirmed",
+      "check": "Can lifecycle installation tests mutate the real user profile or consumer project?",
+      "result": "The reviewed harness allocates a unique temporary profile, allowlists inherited environment keys, redirects home/XDG/npm/Git/temp paths, disables telemetry, and requires explicit global agents/copy installation. It snapshots the consumer around invocations, checks installed bytes and containment, and uses isolated fixture remotes. These are meaningful guarantees; do not weaken them to accelerate tests. Actual external CLI execution was not authorized or performed.",
+      "evidence": ["tests/lifecycle/isolated-profile.mjs:33-86", "tests/lifecycle/isolated-profile.mjs:89-163", "tests/lifecycle/skills-command.mjs:20-77", "tests/lifecycle/skills-command.mjs:143-255", "tests/lifecycle/global-lifecycle.test.mjs:97-179", "tests/lifecycle/global-lifecycle.test.mjs:259-320", "tests/lifecycle/global-lifecycle.test.mjs:377-405", "tests/lifecycle/source-fixture.mjs:12-44", "tests/lifecycle/source-fixture.mjs:94-167"]
+    },
+    {
+      "id": "P12-N4",
+      "component": "component:lifecycle-qualification",
+      "classification": "source-confirmed",
+      "check": "Would removing separate packed/public runs or skipping teardown be a safe deduplication?",
+      "result": "No. Packed qualification verifies exact runtime inventory, a missing-main negative control, runtime build and contract identity, and actually launches the extracted entrypoint. Public qualification and temporary-parent alias runs exercise distinct boundaries. Actor ownership retains pending transports, closes clients and transports, observes owned PID exit, and aggregates cleanup failures. The shared scope attempts all reverse-order disposers. Preserve these boundaries; P12-F2 concerns only identical baseline calls without a distinct entrypoint/fault variation.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs:239-286", "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs:319-333", "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs:35-72", "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs:91-175", "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs:1144-1182", "packages/engineer-agent-workflow-mcp/test/support/temporary-directory.mjs:5-14"]
+    },
+    {
+      "id": "P12-N5",
+      "component": "component:build-development-cycle",
+      "classification": "source-confirmed",
+      "check": "Does build:dev already reuse work and publish atomically?",
+      "result": "Yes. A digest-derived ID returns an existing complete snapshot, unique staging prevents direct partial publication, final fingerprint detects source drift, rename handles a concurrent winner, and errors remove staging. Tests cover reuse, uncommitted additions, tracked deletion, failure cleanup and concurrent publication. No persistent global cache is recommended. All-source provenance is explicitly documented and should not be casually narrowed to skip documentation changes.",
+      "evidence": ["scripts/build-dev.mjs:80-149", "scripts/build-dev.mjs:187-205", "scripts/build-dev.mjs:212-230", "scripts/build-dev.mjs:259-303", "tests/dev-build.test.mjs:48-135", "docs/local-development.md:26-36"]
+    },
+    {
+      "id": "P12-N6",
+      "component": "component:test-runner-ci",
+      "classification": "source-confirmed",
+      "check": "Are the two workflows simply redundant automatic CI runs?",
+      "result": "No. Lifecycle is manual-only and includes Linux plus lifecycle installation isolation. Snapshot qualification is push-triggered only on its dedicated branch, covers macOS/Windows, validates an exact approved tracked-input inventory and HEAD, and adds generation/lint checks. Cross-workflow deduplication is not justified without proving identical input and purpose. Actions and runtime versions are pinned, credentials are not persisted, contents permissions are read-only, and fail-fast:false retains platform evidence.",
+      "evidence": [".github/workflows/lifecycle.yml:1-75", ".github/workflows/workflow-reliability-qualification.yml:1-51", ".github/qualification/verify-workflow-reliability-inputs.mjs:10-39", "tests/lifecycle/workflow-policy.test.mjs:16-60"]
+    },
+    {
+      "id": "P12-N7",
+      "component": "component:lifecycle-qualification",
+      "classification": "source-confirmed",
+      "check": "Is there already useful performance instrumentation and bounded review work?",
+      "result": "Yes. Product review benchmarks count reads/bytes and compare individual versus batched calls across fixture sizes. Retirement benchmarking supports direct/stdio modes, pending-only batch reads, source-audit diagnostics, response/result byte budgets, measurement-serialization overhead, replay checks and optional server profiling. Regression tests assert inherited coverage, fresh pending blocks, fresh consistency, one-source-audit reuse with corruption detection on the next audit, and full/recheck public retirement. These are synthetic protocol measurements, not model understanding or current speedup evidence.",
+      "evidence": ["scripts/benchmark-product-review.mjs:15-66", "scripts/benchmark-roadmap-retirement.mjs:14-26", "scripts/benchmark-roadmap-retirement.mjs:54-112", "scripts/benchmark-roadmap-retirement.mjs:164-211", "packages/engineer-agent-workflow-mcp/test-support/product-profile-loader.mjs:1-28", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:36-59", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:117-129", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:131-199"]
+    }
+  ],
+  "findings": [
+    {
+      "id": "P12-F1",
+      "component": "component:build-development-cycle",
+      "aspects": ["G"],
+      "title": "Development snapshots perform the same strict distribution validation twice",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; no wall-time saving measured.",
+      "priority": "medium",
+      "source_locations": [
+        {"path": "scripts/build-dev.mjs", "lines": "212-237"},
+        {"path": "scripts/generate.mjs", "lines": "39-79"},
+        {"path": "scripts/validate.mjs", "lines": "134-198"},
+        {"path": "scripts/lib/distribution.mjs", "lines": "286-443"},
+        {"path": "package.json", "lines": "24-28"}
+      ],
+      "current_execution_path": "On a new source digest, buildDevSnapshot runs build, generate:check, then validate in separate npm processes. generate:check validates complete sources, collects release sources, renders expected files and compares generated outputs. Default validate performs the same source checks and collection/render/comparison, rejecting incomplete source as well. The builder then collects/renders again to write its isolated Codex plugin.",
+      "existing_optimizations": "Identical completed snapshots already short-circuit before commands. Packaging explicitly ignores npm lifecycle scripts, so no prepack rebuild occurs. Publication uses unique staging, source-drift detection and atomic rename.",
+      "unnecessary_work": "The consecutive generate:check and strict validate commands repeat the complete-source and generated-output comparison on the same intended source state. This is not a recommendation to omit validation of generated files or to remove the required snapshot rendering.",
+      "reproducible_scenario": "In an authorized isolated checkout, change one source file so that no matching snapshot exists and run build:dev with an instrumented runCommand. Observe consecutive generate:check and validate invocations; trace both to collectReleaseSource/buildGeneratedFiles/compareGeneratedOutputs. No such build was run during this audit.",
+      "minimal_recommendation": "Retain strict validate as the single distribution-validation command in buildDevSnapshot and remove its immediately preceding generate:check invocation after equivalence regression coverage. Keep generate:check as a public standalone command and keep the later rendering that supplies snapshot plugin bytes. Do not introduce a cross-run cache or combine unrelated CI gates.",
+      "expected_qualitative_effect": "Eliminates one npm/process startup and one repeated source-validation/render/generated-tree comparison on cache-miss development snapshots. Reused snapshots are unaffected.",
+      "confidence": "high for duplicate call paths; impact magnitude unmeasured",
+      "guarantees": {
+        "correctness": "Strict validation must still reject missing skills, unexpected paths, tampered generated bytes, unknown template variables, cross-host leakage and unsafe filesystem entries. Establish equivalence for both successful and failing inputs before deleting the duplicate call.",
+        "compatibility": "Preserve standalone CLI behavior, snapshot layout and build ID semantics; do not change user npm test freshness hooks.",
+        "state": "Keep exact source fingerprint before/after build and immutable staging/publication; no persistent validation result or global mutable cache.",
+        "recovery": "Preserve failed-build staging cleanup and concurrent-winner handling.",
+        "security": "No relaxation of safe paths, generated-file integrity, telemetry policy or package lifecycle suppression."
+      },
+      "measurement_plan": "After separate implementation authorization, compare command counts, total build:dev elapsed time and source/render/comparison IO in isolated equal-input cache-miss trials. Keep cache-hit measurements separate. Use pinned Node/npm and unchanged dependencies, alternate old/new order, and retain actual source/artifact digests; do not report a saving until observed.",
+      "validation_plan": "Extend injected-runCommand snapshot tests to assert one strict validation gate. Exercise isolated tamper, missing source, unexpected file, unsafe symlink, source-drift, build failure and concurrent publication fixtures; retain existing packaging equivalence checks. No tests/builds from this plan were run.",
+      "rough_complexity": "Small command-path change plus focused equivalence tests; no new API required.",
+      "dependencies": ["Explicit implementation authorization", "Existing snapshot injected-command test seam", "Strict validation equivalence across failure fixtures"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P12-F2",
+      "component": "component:lifecycle-qualification",
+      "aspects": ["G"],
+      "title": "Two public tests repeat the identical restart-enabled baseline qualification",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; no benchmark or failing CI run observed.",
+      "priority": "medium",
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs", "lines": "148-195"},
+        {"path": "scripts/qualify-product-workflows.mjs", "lines": "211-223"},
+        {"path": "scripts/qualify-product-workflows.mjs", "lines": "273-307"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs", "lines": "764-778"},
+        {"path": ".github/workflows/lifecycle.yml", "lines": "72-75"},
+        {"path": ".github/workflows/workflow-reliability-qualification.yml", "lines": "48-51"}
+      ],
+      "current_execution_path": "Q36 calls qualifyProductWorkflows({modelTrials:false}), whose implementation invokes runProductWorkflowQualification with restartReviewer:true. Q38 immediately runs that same harness with restartReviewer:true again and checks exact pages/recovery. The wrapper already returns sourceReads and recovery. Both workflows run this test file and then invoke the same no-model qualification wrapper through its CLI.",
+      "existing_optimizations": "One shared harness already owns scenario construction; model trials are skipped in CI. Packed, reliability, retirement, remediation and temporary-alias variants intentionally vary entrypoint, state or environment and are not treated as duplicates.",
+      "unnecessary_work": "Q36 and Q38 reconstruct fresh repositories, product state and actor processes for the same baseline options simply to assert different fields of one already available result. The separate CLI adds another baseline execution but also supplies a distinct CLI/report boundary, so deleting it unconditionally would overstate equivalence.",
+      "reproducible_scenario": "Run only Q36 and the exact-source Q38 test in an authorized isolated qualification environment and count runProductWorkflowQualification calls and actor launches. Both choose the same default entrypoint and restartReviewer:true, while wrapper localSmoke already contains all Q38 assertion data.",
+      "minimal_recommendation": "Move Q38 exact source-page and recovery assertions into Q36 against qualification.localSmoke.sourceReads and qualification.localSmoke.recovery; remove only the now-identical second baseline invocation. Keep independent tests for distinct faults, entrypoints and environment aliases. Retain the explicit CLI CI qualification initially; consider consuming its JSON for assertions only if a later change preserves CLI exit/report validation and run identity.",
+      "expected_qualitative_effect": "Avoids one full baseline qualification fixture lifecycle per test-file execution while preserving all existing baseline assertions. Does not claim that packed/public or cross-platform coverage can be collapsed.",
+      "confidence": "high for identical options and available fields; runtime effect unmeasured",
+      "guarantees": {
+        "correctness": "Retain all Q36 and Q38 assertions, especially complete exact source hashes, recovery.replayed and duplicateVerdicts===0. Do not replace exact reads with metadata-only checks.",
+        "compatibility": "Preserve explicit-only qualification CLI behavior, report shape, independent actor identities and platform matrix.",
+        "state": "Share only the returned result within one test callback, not mutable scenario state across tests or CI jobs.",
+        "recovery": "Keep actual reviewer restart, response replay and duplicate-verdict checks; do not inherit a prior run's recovery result.",
+        "security": "Preserve isolated product roots, temporary repositories and teardown; no shared global fixtures or user configuration access."
+      },
+      "measurement_plan": "Count baseline harness invocations, launched actor PIDs and temporary fixture creations before/after in the same OS/Node matrix cell. Compare selected-file wall time and peak child count with fixed concurrency. Report measured distributions, not an assumed percentage reduction.",
+      "validation_plan": "Use discriminating fault injections to show merged assertions fail for incomplete source pages, wrong expected hashes, missing replay and duplicate verdicts. Retain alias/reliability/retirement/remediation and packed tests unchanged. Validate standalone CLI JSON/exit behavior separately.",
+      "rough_complexity": "Small test consolidation; no production behavior or contract change.",
+      "dependencies": ["Explicit implementation authorization", "Keep wrapper localSmoke sourceReads/recovery fields stable", "If changing snapshot qualification inputs later, update its approved inventory deliberately"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P12-F3",
+      "component": "component:test-runner-ci",
+      "aspects": ["G", "H"],
+      "title": "The eight-file concurrency ceiling is not a total subprocess resource budget",
+      "classification": "hypothesis",
+      "classification_detail": "Source confirms nested actor/process topology; contention, timeout causality and an optimal limit have not been measured.",
+      "priority": "benchmark-first",
+      "source_locations": [
+        {"path": "scripts/run-tests.mjs", "lines": "47-54"},
+        {"path": "scripts/run-tests.mjs", "lines": "188-197"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs", "lines": "101-124"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs", "lines": "764-773"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs", "lines": "239-250"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs", "lines": "277-328"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs", "lines": "35-57"},
+        {"path": ".github/workflows/workflow-reliability-qualification.yml", "lines": "48-49"}
+      ],
+      "current_execution_path": "The runner limits simultaneously active test-file processes to min(requested, availableParallelism,8). Heavy files then launch their own stdio actors, npm pack or nested Node test processes. The public and packed acceptance files are selected together in CI. This source topology is not a measured live peak and is not evidence that eight simultaneous heavy files actually occur.",
+      "existing_optimizations": "There is already a CPU-capacity-aware ceiling, explicit lower concurrency, serial diagnostic mode, process isolation, distinct temporary fixtures and owned teardown. Separate matrix jobs use separate hosted runners and must not be described as competing for one process-local CPU pool.",
+      "unnecessary_work_or_restriction": "On a constrained runner, simultaneous public/packed/recovery workloads may increase memory pressure and IO contention, adding tail latency or reducing diagnostic repeatability even though the file ceiling is obeyed. This remains a workload hypothesis, not an established defect.",
+      "reproducible_scenario": "After authorization, select exactly the existing public/packed/transport/session-recovery CI file set, run with explicit --test-concurrency=1,2,4,8 on each pinned runner/runtime and record actual process-tree peak, RSS, IO, wall time, failures and teardown duration. Do not infer process peak by multiplying configured ceilings.",
+      "minimal_recommendation": "Benchmark using the runner's existing concurrency option before adding any scheduler. If contention is demonstrated, lower only the acceptance-step limit or separate heavy acceptance files from lighter tests in the existing command path. Keep a concurrent correctness lane and existing isolation; do not introduce a global semaphore/cache based on this hypothesis alone.",
+      "expected_qualitative_effect": "Potentially steadier acceptance latency and fewer resource-induced failures on constrained machines; a lower limit can also make tests slower, so no benefit is asserted before measurement.",
+      "confidence": "high that nested processes exist; low-to-medium that contention is materially harmful on the current runner matrix",
+      "guarantees": {
+        "correctness": "Preserve all assertions and deliberate concurrent replay/locking tests. Performance tuning must not serialize the concurrency behavior that tests are meant to verify.",
+        "compatibility": "Keep direct Node argument forwarding, canonical discovery and explicit selector behavior unchanged.",
+        "state": "Retain process isolation and independent temporary roots; never reuse one product root to reduce startup cost.",
+        "recovery": "Record cancellations and cleanup failures separately, retain all owned actor disposal checks and bounded timeouts.",
+        "security": "Do not inherit real user homes or replace pinned isolated lifecycle commands with warm global state."
+      },
+      "measurement_plan": "Use repeated alternating-limit trials with fixed input/build identity and pinned toolchain, distinguish warm and cold runs, and collect observed process-tree counts rather than scheduled capacity. Include standalone heavy-file controls to distinguish intrinsic cost from competition. No full suite is necessary to test this hypothesis.",
+      "validation_plan": "Re-run only the selected acceptance files at the chosen limit and retain an independent concurrent recovery test lane; compare pass/fail and cleanup invariants across pinned platforms. Adopt no default change if data shows no material contention.",
+      "rough_complexity": "Small benchmark and command-option change if warranted; a new resource scheduler is explicitly deferred.",
+      "dependencies": ["Authorized isolated acceptance execution", "Representative runner resource measurements", "Established executable build identity", "Evaluate P12-F2 first to avoid tuning duplicate work"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P12-F4",
+      "component": "component:lifecycle-qualification",
+      "aspects": ["H"],
+      "title": "Benchmark JSON cannot independently identify the executable that produced it",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed evidence-attribution gap, not an observed stale-runtime incident or performance saving.",
+      "priority": "medium",
+      "source_locations": [
+        {"path": "scripts/benchmark-product-review.mjs", "lines": "7-14"},
+        {"path": "scripts/benchmark-product-review.mjs", "lines": "29-66"},
+        {"path": "scripts/benchmark-roadmap-retirement.mjs", "lines": "7-15"},
+        {"path": "scripts/benchmark-roadmap-retirement.mjs", "lines": "54-94"},
+        {"path": "scripts/benchmark-roadmap-retirement.mjs", "lines": "193-219"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs", "lines": "279-286"},
+        {"path": "docs/local-development.md", "lines": "73-84"}
+      ],
+      "current_execution_path": "Both benchmark scripts import prebuilt dist modules. Retirement can alternatively spawn dist/main.js and profile that server. Product review writes element/item/IO/timing/status fields; retirement returns transport/mode/source metrics/call timings. Neither saved result includes an observed build ID, contract digest, runtime identity status, Node/platform identity or source revision. External experiment notes could add context, but the script output alone cannot establish it.",
+      "existing_optimizations": "The project already exposes workflow_runtime_info and verifies it in packed acceptance, and local development guidance explicitly distinguishes package version from executable identity. Existing benchmarks expose operation counts, protocol bytes, batching and direct/stdio profiling; do not replace this instrumentation with a new benchmark framework.",
+      "unnecessary_work_or_restriction": "A developer may compare two saved benchmark files after switching source branches without rebuilding dist, or after changing the executable while retaining the same development package version. The timing JSON cannot distinguish the two cases, so an attribution dispute can force reruns or invalidate a claimed improvement. This is a reproducible ambiguity, not proof any historical result is wrong.",
+      "reproducible_scenario": "In a separately authorized fixture, retain build A, alter source without changing prebuilt output, and observe that benchmark output has no field proving A rather than current source ran. For stdio, compare the serving workflow_runtime_info result with intended identity; never merely stamp the requested source revision as the loaded executable.",
+      "minimal_recommendation": "Add a compact provenance envelope to both benchmark outputs using the existing runtime-identity mechanism. For stdio obtain identity from the actual serving process outside the timed workload and recheck after deliberate reconnect; for direct imports capture the matching loaded runtime identity once. Record identity_status, build_id, contract_digest, Node version, platform, fixture parameters and measurement boundaries. Record source revision/dirty-input digest separately from executable identity and omit personal paths and source contents. Reject or visibly mark unavailable/mismatched identity rather than reporting a verified comparison.",
+      "expected_qualitative_effect": "Makes benchmark comparisons attributable and reduces invalid or needlessly repeated experiments. It does not itself make the product workflow faster.",
+      "confidence": "high for missing fields in inspected outputs and existence of a reusable runtime identity capability",
+      "guarantees": {
+        "correctness": "Identity must describe the loaded executable rather than the current filesystem's intended build. Keep synthetic protocol judgments labeled synthetic; no model-comprehension claims.",
+        "compatibility": "Version the benchmark result envelope or add fields compatibly; preserve benchmarkRetirement consumers and existing metric field semantics.",
+        "state": "Read identity without mutating workflow state. Never auto-build, install or refresh a runtime to satisfy provenance checks.",
+        "recovery": "Record reconnect identity consistently and keep exact activation replay assertions; unknown identity is explicit unavailable evidence, not success.",
+        "security": "Persist digests and non-sensitive versions only, not machine paths, full environment, context tokens or fixture transcripts."
+      },
+      "measurement_plan": "Validate provenance with two same-package-version builds, source/dist mismatch and an unavailable/tampered identity control. Collect identity outside timed sections so additional MCP calls do not contaminate call/response/source-profile totals. For performance claims, add an explicit repetition count, cold/warm labels and alternating baseline/candidate order in an external bounded trial plan.",
+      "validation_plan": "Extend benchmark output assertions to require verified expected identity where available, preserve all byte-budget and replay checks, and prove mismatched/stale identity is rejected or visibly unverified. Confirm metadata collection cannot be counted as a workload response by the optional profiling loader.",
+      "rough_complexity": "Small-to-medium evidence-format and identity integration; reuse the existing runtime capability and keep metric boundary compatibility tests.",
+      "dependencies": ["Explicit implementation authorization", "Existing runtime identity mechanism", "Compatibility with benchmarkRetirement test consumers", "Clear exclusion of provenance calls from timed/profiled workload"],
+      "needs_clarification": false
+    }
+  ],
+  "limitations": [
+    "No build, generation, pack, installation, audited skill, publication, commit, push or full test suite was run. Only four existing pure parser tests were selected; no prebuilt output was executed.",
+    "No live managed YAML was parsed or mutated. CI configuration YAML and source containing synthetic fixture YAML were inspected as code, not as live workflow state. Scenario MCP access was unnecessary for this assignment.",
+    "No current CI timing, hosted-runner telemetry or benchmark run was collected. Optimization impact and resource contention are unmeasured. The local Node runtime differs from both pinned CI versions.",
+    "The final synthesis owns global baseline/hash reconciliation. Current on-disk modified source was used here; a later change to a cited path requires targeted re-evaluation.",
+    "The complete platform-paths test file, qualification diagnostics implementation, snapshot input manifest contents, every acceptance test body and every benchmark scenario internal were not exhaustively inspected. Their behavior is not independently certified by this report.",
+    "An initial shell directory probe suppressed hidden-directory output, so the code index was explicitly confirmed in the next read-only check. One over-range file read returned an offset error; the preceding read had already reached EOF. Neither was retried as a test or treated as successful coverage.",
+    "No provider response metadata was available beyond the runtime model identification. No descendants, workflows or parent messages were created."
+  ],
+  "coverage_gaps_for_synthesis": [],
+  "write_scope": "Only this unique P12.json audit report was created by this assignment. No existing repository source or configuration was edited.",
+  "transient_evidence": "No confirmed transient execution failure. The optional selected test passed; inspection probe/offset issues are disclosed above and do not block the completed source audit."
+}

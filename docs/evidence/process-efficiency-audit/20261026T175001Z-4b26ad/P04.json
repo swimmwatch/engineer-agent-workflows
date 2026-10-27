@@ -1,0 +1,96 @@
+{
+  "task_id": "P04",
+  "route": {
+    "provider": "openai-codex",
+    "model": "gpt-6-luna",
+    "basis": "Assigned route is recorded in the audit run inputs; runtime context identifies the active coding model as gpt-6-luna."
+  },
+  "status": "complete",
+  "assigned_coverage": [
+    "skill:context-engineering",
+    "skill:context-scouting",
+    "skill:interview-me"
+  ],
+  "actual_coverage": [
+    "skill:context-engineering",
+    "skill:context-scouting",
+    "skill:interview-me",
+    "skill:host-counterpart-fidelity"
+  ],
+  "aspects": ["A", "B"],
+  "inspected_paths": [
+    "AGENTS.md",
+    "docs/index.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json",
+    "skills/context-engineering/SKILL.md",
+    "skills/context-scouting/SKILL.md",
+    "skills/context-scouting/references/delegation.md",
+    "skills/interview-me/SKILL.md",
+    "skills/interview-me/references/host-native-questions.md",
+    "exports/deepseek-harness/skills/context-engineering/SKILL.md",
+    "exports/deepseek-harness/skills/context-scouting/SKILL.md",
+    "exports/deepseek-harness/skills/context-scouting/references/delegation.md",
+    "exports/deepseek-harness/skills/interview-me/SKILL.md",
+    "exports/deepseek-harness/skills/interview-me/references/host-native-questions.md",
+    "plugins/codex/engineer-agent-workflows/skills/context-engineering/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+    "plugins/codex/engineer-agent-workflows/skills/interview-me/SKILL.md",
+    "plugins/codex/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/context-engineering/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/context-scouting/references/delegation.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/interview-me/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md"
+  ],
+  "findings": [],
+  "no_finding_evidence": [
+    {
+      "area": "Repeated context reads and progressive disclosure",
+      "evidence": [
+        {"path":"skills/context-engineering/SKILL.md","lines":"15-31","observation":"Reuses host-supplied instructions, limits reads to task-relevant material, maps context layers, and explicitly rejects preloading unrelated documentation and skill bodies."},
+        {"path":"skills/context-scouting/SKILL.md","lines":"15-25,36-45","observation":"Direct lookup is preferred for known files and short checks; delegation is conditional on expected context reduction exceeding overhead; one scout is the default, and the delegation reference is deferred until delegation is chosen. Bounded direct fallback is explicit when delegation is unavailable."},
+        {"path":"skills/context-scouting/references/delegation.md","lines":"9-18,26-32,45-49","observation":"Provides bounded inputs, depth guidance, inspection-only scope, stopping criteria, and targeted reuse/follow-up rather than repeating whole searches."},
+        {"path":"skills/interview-me/SKILL.md","lines":"15-22,27-34","observation":"Limits context to relevant sources and loads the question reference only in the interview flow; explicit answers are checkpointed before continuation."}
+      ],
+      "assessment": "No source-confirmed avoidable repeated read was established. Similar reminders to reuse supplied project instructions are necessary because these are independently invocable workflows; removing one would make other entry points less self-contained."
+    },
+    {
+      "area": "Route selection, consent, and host-native questions",
+      "evidence": [
+        {"path":"skills/context-scouting/SKILL.md","lines":"23-30","observation":"Harness canonical skill directs route discovery and user choice before delegation, distinguishes requested from effective model, and avoids silently inheriting a larger parent model."},
+        {"path":"skills/context-scouting/references/delegation.md","lines":"9-18,30-32","observation":"Requires scoped assignments, freshness, and inspection-only work; no extra delegation authority is implied."},
+        {"path":"skills/interview-me/SKILL.md","lines":"23-34","observation":"Requires one material question at a time, current guess, native tool, and immediate checkpoint of explicit answers."},
+        {"path":"skills/interview-me/references/host-native-questions.md","lines":"7-23,25-45","observation":"Uses callable host-native schema, treats pending/non-answer states as unanswered, and preserves explicit confirmation and recovery semantics."},
+        {"path":"plugins/codex/engineer-agent-workflows/skills/context-scouting/SKILL.md","lines":"24-30","observation":"Codex counterpart uses its host-specific model guidance and retains user-supported override and unknown-effective-route caveats."},
+        {"path":"plugins/claude-code/engineer-agent-workflows/skills/context-scouting/SKILL.md","lines":"26-32","observation":"Claude counterpart uses its host-specific model guidance and retains user-supported override and unknown-effective-route caveats."},
+        {"path":"plugins/codex/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md","lines":"7-23","observation":"Codex uses request_user_input; tool-schema inspection, one-at-a-time interaction, and conversational fallback are preserved."},
+        {"path":"plugins/claude-code/engineer-agent-workflows/skills/interview-me/references/host-native-questions.md","lines":"7-23","observation":"Claude uses AskUserQuestion with the same interaction safeguards and fallback."},
+        {"path":"exports/deepseek-harness/skills/interview-me/references/host-native-questions.md","lines":"7-23","observation":"Harness export uses ask_user_question and preserves the canonical question and fallback behavior."}
+      ],
+      "assessment": "Host-native variation is intentional and preserved. No evidence supports consolidating route choice or question consent without weakening the distinct host contracts."
+    },
+    {
+      "area": "Host-copy fidelity and changed guidance",
+      "evidence": [
+        {"path":"skills/context-engineering/SKILL.md","lines":"15-19","observation":"Canonical template uses the declared project-instructions placeholder."},
+        {"path":"exports/deepseek-harness/skills/context-engineering/SKILL.md","lines":"15-19","observation":"Harness substitution is AGENTS.md."},
+        {"path":"plugins/codex/engineer-agent-workflows/skills/context-engineering/SKILL.md","lines":"13-17","observation":"Codex counterpart is AGENTS.md."},
+        {"path":"plugins/claude-code/engineer-agent-workflows/skills/context-engineering/SKILL.md","lines":"15-19","observation":"Claude counterpart is CLAUDE.md."},
+        {"path":"skills/context-scouting/SKILL.md","lines":"26-29","observation":"Canonical route guidance is represented by a host substitution."},
+        {"path":"exports/deepseek-harness/skills/context-scouting/SKILL.md","lines":"26-31","observation":"Harness-specific route selection is present."},
+        {"path":"skills/interview-me/SKILL.md","lines":"27-31","observation":"Canonical interview tool is represented by host placeholders."},
+        {"path":"exports/deepseek-harness/skills/interview-me/SKILL.md","lines":"27-31","observation":"Harness uses ask_user_question."},
+        {"path":"plugins/codex/engineer-agent-workflows/skills/interview-me/SKILL.md","lines":"25-29","observation":"Codex uses request_user_input."},
+        {"path":"plugins/claude-code/engineer-agent-workflows/skills/interview-me/SKILL.md","lines":"27-31","observation":"Claude uses AskUserQuestion."}
+      ],
+      "assessment": "Compared only task-relevant canonical and generated skill/reference passages. Host-specific substitutions are aligned with their host; no relevant leakage or missing user-consent safeguard was identified. This was a semantic spot comparison, not a generator validation."
+    }
+  ],
+  "limitations": [
+    "The skill invocation tool reported context-engineering unavailable for model invocation; no audited skill was run, consistent with the audit protocol. Direct source inspection supplied the evidence.",
+    "No skill behavior was executed and no usage telemetry or comparative context/token measurements were available; process savings are unmeasured.",
+    "No MCP contract was independently investigated; no ambiguous cross-component contract conclusion was needed."
+  ]
+}

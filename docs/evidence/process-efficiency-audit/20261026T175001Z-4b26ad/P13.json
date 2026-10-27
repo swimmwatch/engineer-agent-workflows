@@ -1,0 +1,53 @@
+{
+  "task_id": "P13",
+  "route": "gpt-6-luna (assigned model; no separate runtime route telemetry exposed)",
+  "status": "complete",
+  "assigned_coverage": [
+    "component:documentation-existing-workflows",
+    "component:measurement-evidence"
+  ],
+  "actual_coverage": [
+    "component:documentation-existing-workflows",
+    "component:measurement-evidence"
+  ],
+  "aspects": ["B", "F", "H"],
+  "inspected_paths": [
+    "protocol.md",
+    "AGENTS.md",
+    "docs/index.md",
+    "README.md",
+    "docs/local-development.md",
+    "docs/product-workflows.md",
+    "docs/context-scouting.md",
+    "docs/deepseek-harness.md",
+    "docs/evidence/workflow-efficiency-followup.md"
+  ],
+  "no_finding_evidence": [
+    {
+      "area": "Current workflow documentation",
+      "evidence": [
+        {"path": "README.md", "lines": "42-57, 67-107, 109-127", "observation": "Explicit context-scouting limitations, stage separation, product-workflow guide, and MCP boundaries are summarized and linked to detailed sources."},
+        {"path": "docs/context-scouting.md", "lines": "56-69, 87-107, 118-132", "observation": "Direct lookup is preferred for known/small tasks; delegation overhead is acknowledged; outputs are verified by the main agent; unsupported/cancelled cases and savings limits are documented."},
+        {"path": "docs/product-workflows.md", "lines": "81-108, 183-208, 223-230, 462-511, 660-744", "observation": "Existing batching, bounded exact reads, reuse constraints, recheck inheritance and serial pending-only progression are documented alongside integrity, independent review and recovery requirements. Status polling is removed only from the uninterrupted acknowledged serial advancement path; status remains on recovery/concurrency paths."},
+        {"path": "docs/local-development.md", "lines": "26-46, 73-84, 86-158", "observation": "Snapshot identity and runtime verification are separated from build success; installation/update/rollback instructions retain explicit backups and verification steps."},
+        {"path": "docs/deepseek-harness.md", "lines": "8-22, 24-42, 98-127", "observation": "Export/check and installed runtime are distinguished; pinned-provider verification scope and untested native UI/model integration are disclosed."}
+      ]
+    },
+    {
+      "area": "Measurements and historical evidence",
+      "evidence": [
+        {"path": "docs/evidence/workflow-efficiency-followup.md", "lines": "3-11, 13-39", "observation": "Prior qualification is explicitly scoped as P03, P04 not started; descriptive fixture counts and sample sizes are reported, with scripted semantic-review and general live-speedup limits."},
+        {"path": "docs/evidence/workflow-efficiency-followup.md", "lines": "41-78, 80-121", "observation": "Native captures identify model/settings and distinguish elapsed wall time from tool intervals, unavailable reasoning/model-stage measures and simulations; failed evidence and platform exclusions remain visible."},
+        {"path": "docs/context-scouting.md", "lines": "109-132", "observation": "Historical Codex qualification is distinguished from cancelled Claude live qualification; simulations are not runtime passes and savings are explicitly unmeasured."},
+        {"path": "docs/deepseek-harness.md", "lines": "100-127", "observation": "The dated provider source check establishes provider loading behavior only, not UI or end-to-end model execution."}
+      ]
+    }
+  ],
+  "limitations": [
+    "Read-only documentation and selected evidence review only; no audited skills, scenarios, generators, installs, builds, or tests were executed, per protocol.",
+    "No live managed YAML was parsed and no scenario MCP capability was needed for the assigned documentation/evidence scope.",
+    "The reviewed benchmark documents are retained historical artifacts; this audit did not rerun or independently revalidate their measurements.",
+    "Coverage is limited to the explicitly assigned existing-workflow documentation and measurement-evidence components; it is not a whole-repository audit."
+  ],
+  "findings": []
+}

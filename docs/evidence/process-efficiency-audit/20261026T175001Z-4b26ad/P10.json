@@ -1,0 +1,321 @@
+{
+  "task_id": "P10",
+  "status": "complete",
+  "audit_mode": "recommendation-only; current source and test inspection; no execution of audited behavior",
+  "route": {
+    "assigned_alias": "sol",
+    "model": "gpt-6.1-sol",
+    "model_observation": "The developer runtime declaration identifies the current coding agent as gpt-6.1-sol.",
+    "configured_provider": "openai-codex",
+    "provider_basis": "Run inputs.json:4-6 configures openai-codex and sol=gpt-6.1-sol; this agent did not independently inspect provider transport telemetry.",
+    "actual_provider_independently_observable": false
+  },
+  "aspects": ["B", "C", "D"],
+  "assigned_coverage": ["component:scenario-decisions-requirements", "component:scope-planning-design", "component:catalog-experience"],
+  "actual_coverage": ["component:scenario-decisions-requirements", "component:scope-planning-design", "component:catalog-experience"],
+  "coverage_detail": [
+    {"component": "component:scenario-decisions-requirements", "inspected": "Decision instruction/question/fact/assumption lifecycle, additive single and batch linking, no-op handling, bounded find/get service, requirement parsing/list/get/linked-reference continuations, Unicode portion handling and corresponding test cases."},
+    {"component": "component:scope-planning-design", "inspected": "Scope proposal/answer/confirmation and manifest consistency, design eligibility, technical proposal snapshots and per-file parse reuse, agreement preservation/revocation/freshness, packet checks and local-versus-external design checks."},
+    {"component": "component:catalog-experience", "inspected": "Component/variant/token CRUD, bounded component reads, dependent experience validation and removal guards, screen/state/transition/instance CRUD and reads, operation references, snapshot invalidation, bounded native export inspection and instruction-to-scenario integration."}
+  ],
+  "instructions_followed": [
+    "Read the audit protocol first, then the personal tool-search guide and project index; applied the supplied personal and repository instructions.",
+    "Confirmed the working directory with pwd and observed a pre-existing dirty worktree without changing it.",
+    "Used CodeGraph first for indexed integration-code exploration, then read only missing source sections and focused test/reference ranges.",
+    "Did not invoke any audited skill, Penpot tool, descendant, workflow, build, generation, installation, publishing, commit, push or test.",
+    "Did not read or parse live managed YAML. Scenario discovery was unnecessary because the assigned checks could be completed from implementation and test source.",
+    "Wrote only this unique report; no supporting artifact was required."
+  ],
+  "inspected_paths": [
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md", "lines": [[1,43]], "purpose": "Audit contract"},
+    {"path": "docs/index.md", "lines": [[1,19]], "purpose": "Required project map"},
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json", "lines": [[1,66]], "purpose": "Assigned scope, configured route, neighboring ownership"},
+    {"path": "catalog/skills.json", "lines": [[1,22]], "purpose": "Current collection inventory; not managed YAML"},
+    {"path": "packages/engineer-agent-workflow-mcp/package.json", "lines": [[1,43]], "purpose": "Dependency versions and prohibited build-on-test script"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/decisions.ts", "lines": [[7,173]], "purpose": "Decision lifecycle, exact reads, additive batch validation"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/requirements.ts", "lines": [[10,170]], "purpose": "Markdown definitions and bounded Unicode/reference retrieval"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/scope.ts", "lines": [[8,130]], "purpose": "Scope and design prerequisites"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/planning.ts", "lines": [[11,232]], "purpose": "Proposal reuse, agreement lifecycle, bounded reads and freshness"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/checks.ts", "lines": [[10,109]], "purpose": "Specification/design mechanical checks and evidence boundaries"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/design.ts", "lines": [[4,92]], "purpose": "Catalog/experience validation, dependencies and token source"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/penpot.ts", "lines": [[5,52]], "purpose": "Local native export inspection only; no Penpot invocation"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/catalog.ts", "lines": [[5,98]], "purpose": "Catalog tools, token binding and component pagination"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/experience.ts", "lines": [[1,161]], "purpose": "Experience tools and reference validation"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/service.ts", "lines": [[7,25],[32,49],[53,64],[70,105],[152,255],[259,344]], "purpose": "Selected CodeGraph symbols plus contiguous reads at 162-255; not every omitted input-schema/cursor-helper line was expanded"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": [[15,30],[40,47],[53,56],[122,217],[331,354],[377,444]], "purpose": "Selected shared lifecycle symbols and focused parsing/guard ranges; no independent storage audit"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs", "lines": [[95,176]], "purpose": "Additivity, no-op behavior, batch rejection atomicity and stale recovery"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs", "lines": [[115,170]], "purpose": "Unicode reconstruction and cursor isolation"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs", "lines": [[154,309]], "purpose": "Instruction-to-link integration, catalog/screens, guards and snapshots"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/design-token-scope.test.mjs", "lines": [[1,111]], "purpose": "Explicit token artifact scope and atomic rejection"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/planning-decisions.test.mjs", "lines": [[12,81],[102,140]], "purpose": "Actual answers, retained agreements, replay, revocation and non-writing readiness"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/planning-packet-check.test.mjs", "lines": [[1,156]], "purpose": "Selective staleness, source safety, budgets, concurrent edit and stale-history checks"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs", "lines": [[153,191]], "purpose": "Requirement retrieval with 600 linked source references"},
+    {"path": "shared/references/workflow-state-access.md", "lines": [[1,129]], "purpose": "Authoritative common access, retry and exact-source reuse instructions"},
+    {"path": "shared/references/implementation-context.md", "lines": [[1,115]], "purpose": "Requirement and planning-check consumers"},
+    {"path": "skills/design-planning/references/penpot-workflow.md", "lines": [[70,129]], "purpose": "Instruction-to-design-scenario sequence only"},
+    {"path": "skills/spec-driven-development/references/specification-interview.md", "lines": [[147,196]], "purpose": "Instruction-to-batch-link and exact source usage only"}
+  ],
+  "inspection_precision": "Ranges identify inspected symbols/sections. CodeGraph output contained gaps in service.ts and state.ts; no claim is made that those files were read fully. Import-only prefixes were not needed for behavior conclusions. Applicable AGENTS guidance was supplied in the conversation; no narrower instruction file was discovered for the inspected production directories.",
+  "source_identity": {
+    "head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+    "hash_method": "Read-only sha256sum after source inspection; hashes describe bytes at sampling, not runtime identity or a guarantee against later drift.",
+    "sha256": {
+      "packages/engineer-agent-workflow-mcp/src/decisions.ts": "a7b4c401b682d13c1204aae02868878c8380c93096e9cc0c0a9dae6a9bc73c01",
+      "packages/engineer-agent-workflow-mcp/src/requirements.ts": "4214c9393d09e299eafc6ff4a15ca6d159ba283dee9b52ca2c8135264654fae2",
+      "packages/engineer-agent-workflow-mcp/src/scope.ts": "800d155ede819821a7e119e2939d3caf1c5c9c8721f7bc165a9aaaf074e9467a",
+      "packages/engineer-agent-workflow-mcp/src/planning.ts": "27bd3bafc547c5cc0d66db6a392a485789ed9029afba2fb3fa40a133ed77c956",
+      "packages/engineer-agent-workflow-mcp/src/checks.ts": "f3c1f75c47fb6fba8baf65915bfdbcab1205f39ddbd309e4bcd59f30e811e485",
+      "packages/engineer-agent-workflow-mcp/src/design.ts": "7662475a22b8a029eaf25b167713e145f066386a5f4a9b876e26f6b37ef2880a",
+      "packages/engineer-agent-workflow-mcp/src/penpot.ts": "7f082f63eb2a0b47c206fe47ab9e799e709ffabee84bfae00a6cc093b7158ba0",
+      "packages/engineer-agent-workflow-mcp/src/catalog.ts": "95e12da1ec206d7498b4596be5eb7e34fa14f9db06af9f57d5582e4a017c1ffa",
+      "packages/engineer-agent-workflow-mcp/src/experience.ts": "f497f37a1ebcb8abeea697fa928cb19ad81dff6e3e205eb5483056ea031f25cf",
+      "packages/engineer-agent-workflow-mcp/src/service.ts": "8376b0076fde3f94ee82b5536d763280baa38207f00edae1143124fe79984caa",
+      "packages/engineer-agent-workflow-mcp/src/state.ts": "9da7f5e9834824d5a6d843fa7b0e6abf2069827dfe748752e176c92fa290eedd"
+    }
+  },
+  "findings": [
+    {
+      "id": "P10-F01",
+      "component": "component:scenario-decisions-requirements",
+      "related_components": ["component:catalog-experience"],
+      "title": "Reuse the parsed requirement source within guarded multi-reference operations",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; no runtime cost or savings measurement.",
+      "priority": "medium",
+      "aspects": ["B", "C", "D"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/decisions.ts", "lines": [10,23], "evidence": "verifyRequirements reads and parses the requirement source on every invocation, then checks requested identifiers."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/decisions.ts", "lines": [79,161], "evidence": "The existing 1-20-item batch prepares all decision items, then invokes verifyRequirements separately at 136-151 before its one append/write phase."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/requirements.ts", "lines": [46,77], "evidence": "requirementSource reads and decodes spec.md; parseRequirementContent invokes fromMarkdown and constructs all requirement blocks."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/experience.ts", "lines": [17,28], "evidence": "changed revalidates each screen and action with a separate verifyRequirements invocation even for a content/state-only mutation."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": [124,129], "evidence": "readDependency rereads and hashes bytes; readGuards tracks versions, not parsed sources."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": [377,438], "evidence": "mutate owns the per-operation Context, dependency checks, cloned working value and final read-guard verification."}
+      ],
+      "current_execution_path": "decision_link_requirements_batch -> prepare exact current decision members -> verifyRequirements once per member -> requirementSource -> readDependency + UTF-8 decode + Markdown parse -> append changed revisions -> one guarded atomic mutation. Experience mutations independently call changed -> verifyRequirements for each screen/action.",
+      "existing_optimizations": [
+        "A real additive atomic batch already exists; no new public batch API is needed.",
+        "Batch validates all items before appending, deduplicates links, reports member diagnostics and skips no-op revisions.",
+        "Mutation guards and receipts preserve freshness and replay; the recommendation does not remove them.",
+        "Planning already demonstrates bounded per-operation source reuse in readProposalSources (planning.ts:28-47)."
+      ],
+      "unnecessary_work": "The same unchanged specification is fully parsed once for every batch member and once per screen/action during a guarded design mutation. Batching saves tool calls and writes but not repeated Markdown parsing.",
+      "reproducible_scenario": "Use a confirmed specification with several valid requirement definitions and 20 distinct resolved decisions. Submit one existing decision_link_requirements_batch whose members link valid requirements from that specification. Inspection of the loop predicts 20 requirementSource/fromMarkdown passes before one write. A second scenario changes a screen content rule in an experience containing several screens/actions; changed repeats the same parse for every reference-bearing item. These counts are static control-flow predictions, not observed timings.",
+      "minimal_change": "Split identifier checking from source acquisition so the existing guarded batch lazily obtains one RequirementSource at the first validation point and reuses it for all members. Preserve first-failing-member diagnostics and strict/legacy behavior. Apply the same local pattern inside changed after its current scope/catalog/structural checks, while retaining full validation of all screens/actions. Do not introduce a process/global or cross-operation source cache. Treat read-only screen_design_check reuse separately unless its consistency boundary is explicitly retained using existing mechanisms.",
+      "expected_qualitative_effect": "Less repeated file decoding and Markdown AST construction inside the same logical operation, especially at the existing batch limit or with many screen transitions. Tool count and atomic-write count remain unchanged.",
+      "confidence": "High for repeated work; medium for material end-to-end benefit because actual specification sizes and usage frequency were not measured.",
+      "guarantees": {
+        "correctness": "Continue validating every requested identifier and all experience references. Preserve strict requirement parsing, legacy fallback semantics, duplicate/stale member checks and diagnostic order.",
+        "compatibility": "No public MCP schema, returned reference, journal revision or error contract change is required.",
+        "state_and_concurrency": "Reuse only within one mutate-owned Context. Keep initial dependency registration and final byte/hash freshness recheck; a source change must still reject installation.",
+        "recovery": "Keep one transaction, all-or-nothing batch rejection, no-op handling, receipts and exact-retry behavior.",
+        "security": "Keep safe dependency reads, source limits, fatal UTF-8 decoding and all Markdown/identifier validation. Never substitute caller-supplied definitions or unguarded cached state."
+      },
+      "measurement_plan": "In a separately authorized isolated fixture, count requirement-source reads, Markdown parses, allocation and elapsed time for batch sizes 1, 2 and 20 and for experience mutations with increasing screen/action counts. Compare byte-identical outputs and error envelopes. No measured performance claim is made here.",
+      "validation_plan": "Retain decision-linking.test.mjs:95-153 additivity/no-op/atomicity cases; add first/middle/last unknown-member tests, strict/legacy parser cases and a source edit between snapshot acquisition and final guard. Retain workflow.test.mjs:235-263 dependency/override checks. Verify source changes reject rather than reusing a stale result.",
+      "complexity": {"implementation": "Small to medium: an internal validation helper and call-site-local source ownership; no public API or dependency changes.", "runtime": "Requirement parsing moves from per member to once per guarded operation; identifier validation still covers all inputs.", "dependencies": ["Internal decisions/requirements helper ownership", "Existing mutate/readDependency/read-guard guarantees; coordinate with P08 rather than redesign storage"]},
+      "needs_clarification": false
+    },
+    {
+      "id": "P10-F02",
+      "component": "component:catalog-experience",
+      "title": "Validate ordered token references against one token-source load per scenario",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed repeated reads/hashes/JSON parsing; workload impact remains unmeasured.",
+      "priority": "medium",
+      "aspects": ["C", "D"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/checks.ts", "lines": [20,30], "evidence": "checkLibrary invokes verifyTokens for each component and variant before inspecting the snapshot."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/design.ts", "lines": [77,91], "evidence": "Each nonempty verifyTokens invocation rereads and hashes the same registered token source, then JSON.parse constructs the full mapping."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/catalog.ts", "lines": [46,57], "evidence": "design_system_register_tokens already reads/parses token bytes, then loops through component/variant verifyTokens calls that read/parse them again; component_set_tokens already validates its entire supplied reference list in one call."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs", "lines": [276,288], "evidence": "Existing tests cover missing token references, registration, binding and the local/external design-check boundary, not repeated token-source parsing."}
+      ],
+      "current_execution_path": "design_system_check or screen_design_check -> checkLibrary -> verifyTokens per component/variant -> tokenSource -> dependency read + digest check + JSON.parse. Token registration additionally reads and parses the same file before this loop.",
+      "existing_optimizations": [
+        "verifyTokens already skips source access when its reference list is empty.",
+        "One verifyTokens call supports multiple references and keeps their order; a public batch tool is unnecessary.",
+        "Token descriptors use byte digests, and reference validation requires an addressable DTCG $value rather than accepting any matching path.",
+        "Native export validation and external evidence remain separate from token validity."
+      ],
+      "unnecessary_work": "Several token-bearing components/variants cause repeated full reads, hashing and JSON parsing of an identical registered token file in one check/registration operation.",
+      "reproducible_scenario": "Create an isolated catalog with several components and variants referring to the same registered token JSON. Run the existing design_system_check, or register the token source after references exist. Each nonempty component/variant reference list currently takes its own tokenSource path. This is a proposed reproduction, not an executed design operation.",
+      "minimal_change": "In checkLibrary, pass the concatenated component/variant token-reference lists in their existing order to one verifyTokens call, or supply one lazily resolved token mapping to the existing ordered loop. In registration, reuse the already read and validated bytes/mapping for reference validation rather than reopening them. Keep all path/digest checks and final guarded dependency verification for mutations. Do not cache token objects across scenario calls or bypass component/variant validation.",
+      "expected_qualitative_effect": "Fewer token-source reads, digest computations and JSON object constructions per design check/registration. No reduction in required token-reference coverage or external design evidence.",
+      "confidence": "High for redundant source construction; medium for useful latency/allocation savings because catalog/token-file scale was not measured.",
+      "guarantees": {
+        "correctness": "Validate every component and variant reference in the same order, preserve empty-reference behavior and the first broken-reference error, and still require a DTCG value node.",
+        "compatibility": "Preserve tool inputs, token descriptors, snapshot invalidation and local/external statuses.",
+        "state_and_concurrency": "One scenario-local mapping only. Mutation reads remain registered with existing guards and must fail if bytes change before commit. A check must never imply cross-call freshness; retain its current evidence boundary.",
+        "recovery": "Failed token validation still installs no catalog update. Do not alter receipts, lock ownership or replay semantics.",
+        "security": "Preserve safe source paths, byte limits and digest matching. Do not replace token JSON with copied caller data or a global cache."
+      },
+      "measurement_plan": "In an authorized temporary fixture, instrument tokenSource/readDependency and JSON.parse counts with 1 and multiple token-bearing component/variant lists, then compare allocations and scenario latency. Separate token parsing from native ZIP inspection; do not attribute archive cost to this change.",
+      "validation_plan": "Extend the existing token-binding cases with mixed empty/nonempty lists, duplicate refs, missing token source, changed digest, malformed JSON and a broken reference in the last variant. Assert no write on failure and unchanged snapshot/external-evidence semantics. For registration, inject a byte change before final guard and require rejection.",
+      "complexity": {"implementation": "Small: combine ordered references or pass an already resolved mapping through an internal helper.", "runtime": "One token-source read/parse per logical validation instead of one per nonempty reference list; still validate every reference.", "dependencies": ["Existing verifyTokens/tokenSource helpers", "No new library, schema, public API or Penpot capability"]},
+      "needs_clarification": false
+    },
+    {
+      "id": "P10-F03",
+      "component": "component:catalog-experience",
+      "title": "Do not return variant continuations for a description-only component read",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed unnecessary continuation path; no tool-call experiment was executed.",
+      "priority": "low",
+      "aspects": ["B", "C"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/catalog.ts", "lines": [64,70], "evidence": "description falls through to rows(component.variants), pages it and returns its total/next_cursor, while the returned description object omits the variants field."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs", "lines": [215,225], "evidence": "The inspected component_get test covers default summary with two variants, not description-only reads with a variant continuation."},
+        {"path": "skills/design-planning/references/penpot-workflow.md", "lines": [98,106], "evidence": "Consumers are explicitly directed to read existing entries with component_find/component_get."}
+      ],
+      "current_execution_path": "component_get(section=description) -> scope/catalog validation -> select variants as collection -> page variants -> omit variants from component payload -> return variant-derived next_cursor and total beside unchanged description fields.",
+      "existing_optimizations": [
+        "component_get already offers distinct summary, description, variants, tokens and content sections.",
+        "Collection sections have bounded page sizes and source/selection-bound cursor identities.",
+        "component_find returns bounded summaries so callers need not load the whole catalog into context."
+      ],
+      "unnecessary_work": "Description-only consumers can be told to follow several continuations that deliver no new selected information: each page repeats purpose, accessibility and allowed_overrides while paging invisible variants.",
+      "reproducible_scenario": "A component has more variants than the requested limit. Call component_get with section=description and limit=1. The code returns a non-null cursor based on variants even though none are included. Following that cursor repeats the description until the unrelated variants are exhausted. This follows directly from the selection and output conditions, not from a runtime measurement.",
+      "minimal_change": "Handle description as a non-collection section: return its description once with no continuation and an explicitly defined non-collection total, rather than selecting/paging variants. Preserve summary/variants/tokens/content pagination. Define the description total convention in a focused contract test before implementation.",
+      "expected_qualitative_effect": "Avoid unnecessary follow-up tool calls and repeated description/context output for components with many variants.",
+      "confidence": "High for the conditional mismatch and redundant continuation; usage frequency is unknown.",
+      "guarantees": {
+        "correctness": "Do not omit requested purpose/accessibility/override data or any variants from summary/variants requests. Description must be complete by its documented section semantics.",
+        "compatibility": "Changing description total/continuation behavior is a small observable contract correction. Preserve all existing collection cursor identities and do not reinterpret old variant cursors as different data.",
+        "state_and_concurrency": "Keep existing scope checks, catalog validation and source-bound cursor protection for collection reads; no mutable shared state is introduced.",
+        "recovery": "Read-only correction; does not affect write receipts, locks, snapshot invalidation or catalog migration.",
+        "security": "Keep response budgets and eligibility checks. Do not solve the issue by returning the full catalog or unbounded variants."
+      },
+      "measurement_plan": "On an isolated component with several variants and limit=1, compare description completion and response count before/after. Separately confirm default summary still requires and preserves all variant pages. No savings value is asserted.",
+      "validation_plan": "Add a description-only component_get test with more variants than the limit; require exactly the selected description and no phantom continuation. Retain collection pagination tests and add stale/cross-section cursor rejection cases.",
+      "complexity": {"implementation": "Small section-selection branch and focused regression test.", "runtime": "Avoids variant page computation and irrelevant description continuations; catalog integrity reads remain.", "dependencies": ["Clarify the existing description total convention in the test contract", "No new tools or dependencies"]},
+      "needs_clarification": false
+    },
+    {
+      "id": "P10-F04",
+      "component": "component:scenario-decisions-requirements",
+      "title": "Avoid full Unicode character arrays when emitting bounded decision text and previews",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed avoidable allocations; material performance impact is unmeasured.",
+      "priority": "low",
+      "aspects": ["C", "D"],
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/service.ts", "lines": [162,208], "evidence": "portion uses Array.from(value) before slicing a bounded portion; answer and metadata previews both route through it."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/service.ts", "lines": [300,325], "evidence": "get serializes the selected decision, calls portion, then builds another Array.from(text) solely to report total_characters."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/requirements.ts", "lines": [28,37], "evidence": "The repository already has code-point counting and UTF-16 boundary traversal without a full character array."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs", "lines": [115,155], "evidence": "An existing fixture reconstructs a 12,500-emoji answer through exact 4096-code-point decision portions, including cursor binding/staleness checks."}
+      ],
+      "current_execution_path": "decision_get -> executeTool(decisions_get) -> fresh source read and ledger parse -> serialize exact selected revision -> portion allocates every code point -> get allocates every code point again for total. decisions_search preview construction also allocates the full input despite emitting only 256 code points.",
+      "existing_optimizations": [
+        "Decision text is already bounded to 4096 code points and previews to 256; source/query/project-bound cursors reject stale or foreign selections.",
+        "Service structured results have an explicit byte cap.",
+        "requirements.ts already demonstrates non-array Unicode traversal and bounded portion progress. Its stateful cursor/cache mechanism should not be transplanted into this distinct protocol merely for reuse.",
+        "Fresh source reads and parseLedger checks remain necessary; this finding does not propose caching entire journals between calls."
+      ],
+      "unnecessary_work": "Bounded output still materializes all code points, and exact get does so twice per page. Large legitimate decisions therefore allocate full-size temporary arrays on every continuation.",
+      "reproducible_scenario": "Use the existing 12,500-emoji decision fixture from source-service.test.mjs and exhaust decisions_get. Inspect allocation profiles per page: portion and total_characters each expand the whole serialized decision. Search the same decision to examine full-answer expansion for a 256-code-point preview. The fixture was inspected, not executed.",
+      "minimal_change": "Use a code-point iterator or the existing local traversal pattern to compute requested UTF-16 boundaries and total without materializing a character array; return the count from the portion helper so get does not traverse again solely for total_characters. For previews, stop after the preview bound plus one code point because only truncated status is needed. Preserve the existing service cursor format and fresh read/ledger validation; do not add a cross-request cache.",
+      "expected_qualitative_effect": "Lower temporary allocation for large decisions and bounded previews, with no larger response or weaker freshness check. Full journal parsing and serialization still occur, so end-to-end speedup is not established.",
+      "confidence": "High for duplicate/full-size allocation; medium to low for end-to-end importance relative to YAML/ledger parsing.",
+      "guarantees": {
+        "correctness": "Count Unicode code points, not UTF-16 units; preserve exact JSON reconstruction, total_characters, offset bounds, complete/next_cursor and preview truncation semantics.",
+        "compatibility": "Keep protocol version, cursor shape, 4096/256 limits and error/result envelopes. Do not switch to the requirement cursor protocol.",
+        "state_and_concurrency": "Pure request-local traversal; keep readSource, parseLedger and version-bound cursor verification on every request.",
+        "recovery": "Existing cursors must remain usable after restart; no new hidden continuation state is required.",
+        "security": "Keep source limits, result byte cap, unsafe-source rejection and foreign/stale cursor protections."
+      },
+      "measurement_plan": "After separate authorization, profile allocations/peak memory and elapsed time for existing Unicode fixture plus small ASCII, supplementary Unicode and heavily escaped JSON. Measure get and search separately; report unchanged source-parsing cost and actual response bytes.",
+      "validation_plan": "Retain source-service.test.mjs:115-155 exact reconstruction and stale/cross-operation/project cursor cases. Add boundaries around surrogate pairs, final/empty pages, offsets beyond end and preview lengths exactly at/over the limit. Compare complete output and envelope budgets before/after.",
+      "complexity": {"implementation": "Small internal helper change and Unicode regression cases; no public API change.", "runtime": "Avoid full character arrays and the duplicate count traversal, while still scanning as needed for exact counts and preserving source validation.", "dependencies": ["Existing Unicode traversal pattern only; no new library", "Coordinate any shared helper extraction with P14 response-budget ownership; extraction is optional"]},
+      "needs_clarification": false
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P10-N01",
+      "area": "Existing batch and instruction use",
+      "conclusion": "Do not recommend introducing a requirement-link batch tool or asking again to establish already captured instruction provenance: the batch exists and canonical instructions already select it.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/decisions.ts:26-32,67-162", "skills/spec-driven-development/references/specification-interview.md:154-168,183-186", "shared/references/workflow-state-access.md:45-54", "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs:180-210", "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs:95-153"]
+    },
+    {
+      "id": "P10-N02",
+      "area": "Scope consent and design authority",
+      "conclusion": "Scope is proposed separately, answers bind the saved question, and confirmation checks exact proposal provenance. Rejected/pending scope blocks design; active UI alone does not grant arbitrary design writes. No recommendation to merge away these consent or authority gates.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/scope.ts:31-54,87-129", "packages/engineer-agent-workflow-mcp/test/design-token-scope.test.mjs:33-105", "shared/references/workflow-state-access.md:68-85"]
+    },
+    {
+      "id": "P10-N03",
+      "area": "Planning source ownership and parser reuse",
+      "conclusion": "Planning already reuses a Markdown parse per unique source path within readProposalSources and bounds cumulative raw input before parsing. Technical decisions are separate from behavior approval; no generic source cache or extra approval gate is recommended.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/planning.ts:28-63,101-110,160-183", "packages/engineer-agent-workflow-mcp/test/planning-packet-check.test.mjs:131-153", "packages/engineer-agent-workflow-mcp/test/planning-decisions.test.mjs:102-123", "shared/references/implementation-context.md:33-47"]
+    },
+    {
+      "id": "P10-N04",
+      "area": "Agreement recovery and selective invalidation",
+      "conclusion": "Unchanged packet agreements survive partial answers and proposal revisions, while source drift, withdrawal and superseding questions invalidate affected readiness. Existing checks preserve exact evidence instead of requiring all packets to be reapproved.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/planning.ts:126-152,174-181,188-220", "packages/engineer-agent-workflow-mcp/test/planning-decisions.test.mjs:27-54,125-137", "packages/engineer-agent-workflow-mcp/test/planning-packet-check.test.mjs:14-38,71-107,117-128"]
+    },
+    {
+      "id": "P10-N05",
+      "area": "Exact retrieval and continuation completeness",
+      "conclusion": "Requirement reads separately continue text and bounded decision-reference pages, binding both to exact source identity. Existing bounded progress avoids requiring full journal disclosure. Do not mistake a completed text portion for complete reference delivery.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/requirements.ts:17-44,80-119,143-168", "packages/engineer-agent-workflow-mcp/test/completeness-protocol.test.mjs:153-189", "shared/references/implementation-context.md:18-23", "shared/references/workflow-state-access.md:116-129"]
+    },
+    {
+      "id": "P10-N06",
+      "area": "Catalog/experience integrity and safe removal",
+      "conclusion": "Mutations invalidate snapshots and validate dependent screen references; removals do not cascade and preserve mandatory variants/states/screens. Repeated dependent validation is not itself a defect: the full integrity guarantee must remain even when parsed dependencies are reused.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/design.ts:18-48,55-75", "packages/engineer-agent-workflow-mcp/src/catalog.ts:72-97", "packages/engineer-agent-workflow-mcp/src/experience.ts:126-149", "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs:235-263"]
+    },
+    {
+      "id": "P10-N07",
+      "area": "Local native export and external evidence boundary",
+      "conclusion": "Local inspection bounds and validates native archives, file/page/board/component identities and shared-library relationships. It explicitly does not prove rendering, restoration or accessibility. Keep both registration and completion freshness checks; no recommendation to skip export validation based only on a previously stored digest.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/penpot.ts:5-51", "packages/engineer-agent-workflow-mcp/src/checks.ts:20-30,84-107", "packages/engineer-agent-workflow-mcp/src/experience.ts:150-159", "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs:269-305", "skills/design-planning/references/penpot-workflow.md:74-91,122-129"]
+    },
+    {
+      "id": "P10-N08",
+      "area": "Mutation lifecycle and errors at integration boundary",
+      "conclusion": "Existing compiled schema validators, operation-local read guards, replay receipts, response preflight and atomic rename already address important cost and recovery issues. No new global validator container, cache, transaction wrapper or blind write retry is recommended. Full storage review belongs to P08.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/state.ts:122-168,185-193,377-444", "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs:155-173", "shared/references/workflow-state-access.md:45-66"]
+    },
+    {
+      "id": "P10-N09",
+      "area": "Operation-reference checking",
+      "conclusion": "Operation references require an exact anchor in an explicitly declared supported OpenAPI/AsyncAPI contract. The current path rereads/parses per reference and reloads the manifest on each verifyOperations call, including an empty refs call from screen_design_check; no separate recommendation is promoted because real reference multiplicity and its relative cost were not established. Any later measurement should reuse only scenario-local parsed contracts while preserving exact-anchor and guard checks.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/experience.ts:23-25,30-52", "packages/engineer-agent-workflow-mcp/src/checks.ts:99-102"]
+    },
+    {
+      "id": "P10-N10",
+      "area": "Required verification versus duplicate approvals",
+      "conclusion": "Readiness checks are mechanical/freshness gates and deliberately do not authenticate user answers or perform semantic review. Shared implementation instructions prohibit asking again or repeating semantic review solely to reconfirm valid saved inputs. No evidence supports deleting these freshness gates to reduce calls.",
+      "classification": "source-confirmed",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/checks.ts:32-74", "packages/engineer-agent-workflow-mcp/src/planning.ts:101-105,126-152", "shared/references/implementation-context.md:11-26,35-52"]
+    }
+  ],
+  "verification_performed": [
+    {"kind": "source-and-test inspection", "result": "complete for assigned integration areas", "details": "Current production control flow, existing optimizations, canonical consumer instructions and focused regression-test source inspected. Tests were not executed and are not claimed as passing."},
+    {"kind": "read-only shell observation", "result": "completed", "details": "Confirmed cwd, root index availability, existing dirty git status, selected source SHA-256 and HEAD. No source mutation or command failure was observed."},
+    {"kind": "report validation", "result": "pass", "details": "Read-only Python validation parsed this report, checked task/status/path and exact coverage, all required finding/guarantee fields, unique IDs, existing cited paths and absence of personal absolute paths. Four findings and three coverage components were confirmed. This is artifact validation, not execution of repository tests."}
+  ],
+  "limitations": [
+    "No runtime scenario calls, tests, benchmarks, builds or generators were executed by this agent; all findings are source-confirmed opportunities, not measured savings or observed runtime regressions.",
+    "No live workflow YAML, external Penpot state or design was accessed. Saved test fixtures were inspected as source only.",
+    "The installed MCP runtime was not independently compared with checkout bytes; configured runtime identity in run inputs is contextual evidence only.",
+    "Provider transport route was not independently observable. Model identity is runtime-declared, and provider is recorded as configured rather than independently measured.",
+    "Generated/installed skill copies were not audited here; host-distribution fidelity belongs to P11. Canonical references were inspected only for integration use, not as duplicate full skill audits.",
+    "Shared storage, review internals, product components and response-budget internals are neighboring assignments; only the selected interfaces needed for these findings were inspected.",
+    "Existing worktree modifications were preserved. Source hashes are a sampling aid for synthesis drift checks, not a claim that concurrent later changes are impossible."
+  ],
+  "coverage_gaps": [],
+  "transient_evidence": "",
+  "finding_ids": ["P10-F01", "P10-F02", "P10-F03", "P10-F04"],
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P10.json"
+}

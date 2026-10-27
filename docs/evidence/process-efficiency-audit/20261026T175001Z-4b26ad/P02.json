@@ -1,0 +1,386 @@
+{
+  "task_id": "P02",
+  "status": "complete",
+  "audit_type": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "actual_model": "gpt-6.1-sol",
+    "provider": "openai-codex",
+    "route": "openai-codex/gpt-6.1-sol",
+    "evidence": [
+      "The active developer instructions identify this worker as powered by gpt-6.1-sol.",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json:4-6 declares the orchestration provider and sol mapping."
+    ],
+    "limitations": "The model is observable in active runtime instructions. The provider is corroborated by run metadata, not independently queried from a per-worker provider telemetry API. No model substitution was performed by this worker."
+  },
+  "assigned_aspects": ["A", "B", "C", "E"],
+  "assigned_coverage": ["skill:idea-refine", "skill:product-definition", "skill:technical-design", "skill:product-roadmap"],
+  "actual_coverage": ["skill:idea-refine", "skill:product-definition", "skill:technical-design", "skill:product-roadmap"],
+  "coverage": ["skill:idea-refine", "skill:product-definition", "skill:technical-design", "skill:product-roadmap"],
+  "scope_statement": "All four canonical skill entries, all eight canonical product-profile references, the Technical Design decision reference, and the shared product protocol were read. Shared access and implementation references were read once. Product implementation and tests were inspected only far enough to confirm instruction-to-contract behavior, not to replace P07 or P09 deep audits. Generated resources were checked for fidelity, not counted as additional semantic workflow coverage.",
+  "instructions": {
+    "read_first": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md:1-43",
+    "other_reads": ["docs/index.md:1-19", "Personal tool-search guide, read once through the file tool"],
+    "active_context_guidance": "Repository AGENTS.md and personal AGENTS.md were supplied in active context and applied without rereading solely to recover context.",
+    "compliance": [
+      "No descendants, workflows, audited skill invocations, builds, generators, installations, publications, commits, pushes or tests were run.",
+      "No live managed YAML was read or parsed. Source code and test code containing YAML-access implementation were inspected as code only.",
+      "No product scenario was invoked and no live scenario state was changed. Scenario-tool discovery was unnecessary because all checks used source and test inspection.",
+      "CodeGraph was used before code exploration. Its current on-disk snippets, rather than stale inventory claims, supplied source evidence. Tool Search was used to discover CodeGraph after reading the personal guide.",
+      "Only this unique report was written. Existing tracked, staged and untracked changes were left untouched by this task."
+    ]
+  },
+  "summary": {
+    "finding_ids": ["P02-F01", "P02-F02", "P02-F03"],
+    "measured_findings": 0,
+    "source_confirmed_findings": 3,
+    "hypothesis_findings": 0,
+    "conclusion": "The current workflow already has substantial efficiency safeguards: explicit-only stages, confirmed-profile disclosure, exact source reuse with freshness constraints, semantic review blocks, bounded read/record batches, pending-only traversal without advancement polling, inherited rechecks and distinct recovery boundaries. Recommend an explicit unchanged-scope resume branch, conditional disclosure of consumer/retirement instructions, and reuse of the existing ready-source batch reader in product-stage interviews. None is a claim of measured end-to-end savings."
+  },
+  "aspect_evidence": {
+    "A": "Full canonical entry/profile disclosure audit; supplied guidance reuse and proportional depth checked; P02-F02 identifies unrelated mandatory protocol roles.",
+    "B": "Interview resume, actual native answers, explicit stage ownership, unchanged scope ambiguity, selected context and independent actor boundaries inspected; P02-F01 addresses conditional repeated approval work.",
+    "C": "Current direct review batches, source batch reader, serial index ownership and logical session scenario support inspected; P02-F03 reuses an existing API rather than introducing orchestration.",
+    "E": "Semantic block review, inherited rechecks, complete receipts, fresh consistency, authoritative completion and recovery-status exceptions inspected; no recommendation removes these gates."
+  },
+  "execution_paths": [
+    {
+      "component": "idea-refine",
+      "path": "Explicit request -> standalone evidence/recommendation and stop, OR durable product open/explicit initialize -> shared protocol -> interview resume -> scope proposal/native answer/confirmation -> active profiles -> semantic Idea authoring -> candidate check -> independent review -> report and stop before PRD.",
+      "evidence": ["skills/idea-refine/SKILL.md:10-56"],
+      "existing_optimizations": "Standalone mode avoids all durable machinery; supplied project instructions are reused; only confirmed profiles load; saved applicable answers are reused."
+    },
+    {
+      "component": "product-definition",
+      "path": "Bundle verifier -> shared protocol -> open -> exact ready Idea prerequisite -> create/exactly resume PRD candidate -> interview resume -> scope/native answer/confirmation -> active dependency profiles -> warranted PRD semantic tools -> check and independent review -> report exact pins and stop before Technical Design.",
+      "evidence": ["skills/product-definition/SKILL.md:14-56"],
+      "existing_optimizations": "Fail-fast matching-bundle and upstream gates; no automatic Idea producer; only warranted actor/goal/capability/use-case/rule/constraint/term records; unknown metrics remain unknown."
+    },
+    {
+      "component": "technical-design",
+      "path": "Upfront architecture/readiness ordering rule -> matching bundle -> shared protocol -> exact current PRD context selection and continuations -> candidate/resume -> interview/scope/active profiles -> technology decision reference -> boundaries/choices/policies -> visible architecture and actual material answers -> check/review -> report and stop.",
+      "evidence": ["skills/technical-design/SKILL.md:10-22", "skills/technical-design/references/technology-decisions.md:3-47"],
+      "existing_optimizations": "Early upstream gate, proportionate Lite content and justified N/A, bounded decision research rather than a stack catalogue, no extra technology-specific review, no readiness checks as diagnostic shortcuts even through sessions."
+    },
+    {
+      "component": "product-roadmap",
+      "path": "Matching bundle -> shared protocol -> open -> exact current PRD/Technical Design context -> candidate/resume -> scope/profile interview -> stage/epic/story/task/dependency authoring -> independent review -> report and stop. Authorized ready-roadmap retirement instead takes the bounded amendment branch and skips ordinary authoring interview steps.",
+      "evidence": ["skills/product-roadmap/SKILL.md:10-21", "shared/references/product-workflow.md:89-124", "shared/references/product-workflow.md:153-173"],
+      "existing_optimizations": "Distant stages stay coarse, technical tasks need not become fake stories, existing task identities/recipients are reused, unchanged edges are not relinked, retirement instruction supplies bounded consent rather than a fresh interview."
+    }
+  ],
+  "findings": [
+    {
+      "id": "P02-F01",
+      "component": "product-stage interview/resume instructions",
+      "title": "Make unchanged confirmed-scope resume explicit before proposing scope again",
+      "priority": "medium",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity. Calling the proposal tool at a new current candidate version clears confirmation. The instructions' resume/reuse rule and unconditional proposal step are ambiguous; repeated unnecessary human prompts by actual current models were not measured.",
+      "needs_clarification": false,
+      "source_locations": [
+        {"path": "skills/product-definition/SKILL.md", "lines": "28-35", "observation": "The same path creates or exactly resumes the candidate, reuses applicable answers, then directs scope proposal without an explicit already-confirmed branch."},
+        {"path": "skills/technical-design/SKILL.md", "lines": "17-19", "observation": "Exact resume and answer reuse are followed by an unconditional scope proposal step."},
+        {"path": "skills/product-roadmap/SKILL.md", "lines": "15-17", "observation": "Ordinary resumed candidates follow the same proposal step; bounded retirement already has its separate skip branch."},
+        {"path": "skills/idea-refine/SKILL.md", "lines": "31-39", "observation": "Resume and answer reuse coexist with proposing depth and obtaining scope confirmation."},
+        {"path": "shared/references/product-workflow.md", "lines": "128-149", "observation": "The shared interview path says create or resume, then save a scope proposal, while separately requiring answer reuse."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts", "lines": "865-873", "observation": "Exact artifact-draft replay returns the current retained candidate context, not a new empty candidate."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts", "lines": "997-1031", "observation": "proposeProductScope replays only the exact version-bound operation; otherwise it creates a needs_user scope question and sets confirmed_answer to null."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts", "lines": "782-835", "observation": "Interview resume returns the first unresolved question or complete, not a confirmed-scope summary."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-interview.test.mjs", "lines": "240-323", "observation": "Existing test covers exact original proposal replay, affirmative confirmation, and no-answer rejection, not re-proposing unchanged confirmed scope with the latest context."}
+      ],
+      "current_execution_path": "Resume the exact candidate and its current context; resume unresolved interview state; follow the next numbered proposal step. If the author literally calls product_scope_propose against the current post-confirmation context, its operation identity is different from the original proposal and scope confirmation is cleared.",
+      "existing_optimizations": [
+        "All four entries already instruct reuse of applicable explicit answers; a careful actor can interpret that as avoiding reproposal.",
+        "Exact original proposal requests are replayable rather than duplicated.",
+        "Scope confirmation requires the exact actual affirmative answer, not an agent flag.",
+        "Bounded roadmap retirement already explicitly avoids interviewing again merely to reproduce an accepted instruction."
+      ],
+      "unnecessary_work_or_restriction": "The absent branch can reopen an unchanged depth/profile choice, add durable proposal/answer/confirmation records, and block profile use until a user repeats an already valid answer. This is a conditional instruction-following failure mode, not proof that every resumed session takes it.",
+      "reproducible_scenario": [
+        "In an isolated future fixture, create one product-stage candidate, propose and confirm Standard/core with an actual simulated native answer explicitly marked simulation-only.",
+        "Persist a warranted semantic record so the current candidate source version has advanced; retain the same stage, upstream pins, depth and profiles.",
+        "Resume the exact candidate using current context and request only continuation of its existing work, not scope revision.",
+        "Follow the unconditional proposal step with unchanged scope. Inspect through scenario tools: the new proposal opens a needs_user scope question and resets confirmed_answer despite no requested scope change."
+      ],
+      "minimal_recommendation": "Add an explicit resume branch to the canonical shared interview path and the four entries: reuse an exact current confirmed scope when the request and applicable evidence do not change it; propose and confirm only a new or materially changed scope. Keep actual-answer provenance mandatory. If the published reader cannot expose the required confirmed scope in a cold context, extend the existing interview-resume result with a bounded confirmed-scope/provenance summary rather than adding another workflow or reading candidate YAML. Confirm the smallest existing read route with P09 before choosing any contract extension.",
+      "qualitative_impact": "Avoids avoidable human interruptions and repeated scope-state writes in unchanged resumes; makes the existing answer-reuse guarantee executable rather than dependent on interpretation.",
+      "confidence": {"source_behavior": "high", "instruction_risk": "medium", "frequency_and_performance_effect": "unmeasured"},
+      "guarantees": {
+        "correctness": "Reuse only exact saved scope for the same candidate and applicable inputs; an unresolved or materially changed choice still requires a new proposal and actual answer.",
+        "compatibility": "Do not reinterpret legacy evidence or make a default scope count as confirmed. Any resume-result addition should be additive and preserve existing question/no-answer fields.",
+        "state": "No reset, rebase, new candidate or profile expansion is implicit. Keep source-version conflict checks and append-only answer history.",
+        "recovery": "Lost acknowledgements still use exact owning replay/status rules. A cold actor must retrieve authoritative scope evidence rather than trust memory or decode opaque context.",
+        "security": "No fabricated consent, cross-candidate answer reuse, YAML fallback, extra installation or automatic downstream invocation."
+      },
+      "measurement_plan": "Compare fresh and retained-context resumes of each stage with unchanged confirmed scope, unresolved scope, changed profiles, changed upstream inputs and dismissed answers. Record native question count, proposal/answer/confirmation calls, retained confirmation reference, complete response bytes and readiness outcome. Use separate fresh actors and actual observed tool traces; do not infer reading or consent from receipts alone. No experiment was run in this audit.",
+      "validation_plan": "Add a focused regression demonstrating the current reset when a fresh proposal is made with latest context, and instruction/agent checks proving the unchanged-resume branch avoids it. Preserve changed-scope and no-answer negative cases and the Technical Design architecture-before-check gate. Run only under separately authorized implementation/testing work.",
+      "rough_complexity": "Small documentation/routing change if the exact saved scope is already retrievable; medium if an additive bounded resume summary and its public contract tests are needed.",
+      "dependencies": ["P09 confirmation of the existing cold-context candidate/scope reader and smallest contract ownership point", "Product authoring skill tests and host generation/fidelity ownership", "No dependency on a new cache, orchestrator or global state"],
+      "deduplication_note": "P02 owns the instruction-to-contract ambiguity; a P09 finding about missing candidate evidence discovery or resume summary should be linked rather than counted as an unrelated second reset defect."
+    },
+    {
+      "id": "P02-F02",
+      "component": "canonical product protocol disclosure",
+      "title": "Route task-consumer and retirement detail only to the roles that use it",
+      "priority": "low",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed mandatory instruction exposure. Current entries explicitly require the full shared protocol, including unrelated roles; effect on model latency or token billing has not been measured.",
+      "needs_clarification": false,
+      "source_locations": [
+        {"path": "skills/idea-refine/SKILL.md", "lines": "25-30", "observation": "Durable Idea mode requires the full product protocol; standalone mode already avoids it."},
+        {"path": "skills/product-definition/SKILL.md", "lines": "14-23", "observation": "PRD startup requires the full protocol."},
+        {"path": "skills/technical-design/SKILL.md", "lines": "14-16", "observation": "Technical Design startup requires the full protocol."},
+        {"path": "skills/product-roadmap/SKILL.md", "lines": "12-19", "observation": "All roadmap starts load the full protocol although retirement is a conditional branch."},
+        {"path": "shared/references/product-workflow.md", "lines": "20-87", "observation": "Task specification/planning/implementation roles, packet roots, reconciliation, and task-input detail rules are delivered to product-stage authors."},
+        {"path": "shared/references/product-workflow.md", "lines": "89-124", "observation": "Bounded retirement amendment, inherited review and lost activation answer detail is loaded even for new Idea/PRD/Technical Design authoring."},
+        {"path": "shared/references/product-workflow.md", "lines": "153-173", "observation": "Further task retirement and interrupted-operation detail is part of every full protocol read."},
+        {"path": "shared/references/product-workflow.md", "lines": "83-87", "observation": "The protocol already routes ordinary implementation away from authoring/review roles, demonstrating an established role-disclosure pattern."},
+        {"path": "shared/scripts/verify-product-workflow.mjs", "lines": "15-35", "observation": "Reference ownership and profile paths are explicitly enumerated for bundle integrity."},
+        {"path": "shared/scripts/verify-product-workflow.mjs", "lines": "171-190", "observation": "Protocol, profile, skill and reference bytes participate in the matching-bundle digest."}
+      ],
+      "current_execution_path": "Every durable stage author reads the same complete protocol before stage-specific work. That source includes task consumer roles and retirement-only instructions even when the invocation explicitly stops before those workflows.",
+      "existing_optimizations": [
+        "One authoritative root shared protocol is copied into matching self-contained bundles; there are no separately hand-maintained host narratives.",
+        "Standalone Idea avoids the durable manual entirely.",
+        "All profiles are already gated on confirmed active scope.",
+        "Supplied project instructions are reused without rereading, and implementation startup already has a smaller role-specific reference.",
+        "Source reuse is bounded to the same actor/context and exact identity; a new cross-operation cache is neither needed nor appropriate."
+      ],
+      "unnecessary_work_or_restriction": "An Idea, PRD or Technical Design author is instructed to consume task-packet/planning/reconciliation rules and roadmap-retirement procedures for operations it is not authorized to perform. Unrelated detail competes with the current stage's interview and readiness instructions.",
+      "reproducible_scenario": "Start a fresh durable Idea or PRD invocation with one confirmed profile and no product-linked task or retirement request. Follow the full-read requirement; the task-consumer sections and retirement procedures enter mandatory startup context despite having no applicable action in that invocation.",
+      "minimal_recommendation": "Keep one compact shared base containing access/untrusted-source rules, exact pins, consent, stage stop boundaries, and the author-to-independent-review handoff. Route the existing task-consumer sections only from task-role workflows, retirement sections only from an authorized retirement branch, and detailed reviewer traversal only to its reviewing actor while retaining a short author handoff rule. Prefer explicit section selection if the host can deliver exact sections; split into a small number of canonical role references only when necessary for reliable delivery. Do not create host-specific copies by hand.",
+      "qualitative_impact": "Less irrelevant mandatory instruction context and clearer current-role ownership, especially in fresh product-stage contexts. No time, percentage or token-savings estimate is asserted.",
+      "confidence": {"unconditional_exposure": "high", "qualitative_context_reduction": "high", "behavioral_or_latency_improvement": "unmeasured"},
+      "guarantees": {
+        "correctness": "Move obligations without deleting them. All stage authors retain exact-prerequisite checks, native question provenance, review independence and readiness rules.",
+        "compatibility": "Keep canonical ownership and update declared resources, digest inputs, bundle tests and generated artifacts together in a separately authorized change.",
+        "state": "Disclosure changes no server mutation, pin, journal, task binding or review identity.",
+        "recovery": "Every role must load its recovery contract before its first affected operation; generic stop-on-uncertainty rules remain in the unconditional base.",
+        "security": "Keep untrusted-source handling, secret exclusion, consent, no YAML fallback and explicit-only transitions unconditional. Do not hide prerequisite safety obligations behind a profile or optional route."
+      },
+      "measurement_plan": "Build an obligation-to-role map first. In separately authorized fresh-context trials compare exact instruction deliveries for new Idea, PRD, Technical Design, ordinary Roadmap, retirement, independent review and product-linked task roles. Record delivered bytes and portions, actual actor reads, correctness of stage stops and recovery outcomes. Compare matched routes/models; reduced instruction size must not be equated to measured reasoning time or universal wall-time savings.",
+      "validation_plan": "Use exact obligation hashes or equivalent deterministic checks to prove moved clauses remain reachable in every owning role. Add negative cases for omitted access/recovery rules and independent reviewers missing their own source delivery. Preserve bundle mismatch/host-isolation tests and architecture ordering checks. No generator or tests were run here.",
+      "rough_complexity": "Small-to-medium documentation and reference-routing change; medium verification work because all matching bundle digests and host copies must remain complete.",
+      "dependencies": ["P01 for task-consumer entry points so moved rules remain reachable", "P07 for preservation of independent-review protocol obligations", "P11 for canonical resource enumeration, digests and generated packaging", "No new runtime service, caching layer or orchestration API"],
+      "deduplication_note": "This concerns product-stage mandatory disclosure, not the already implemented smaller incremental-implementation startup described in historical efficiency evidence."
+    },
+    {
+      "id": "P02-F03",
+      "component": "product-stage selected ready-source consumption",
+      "title": "Expose the existing exact-source batch reader in the product interview path",
+      "priority": "low",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed instruction-to-existing-capability opportunity. Actual current product authors' single-versus-batch choice and end-to-end improvement were not measured; agents may already discover the batch tool independently.",
+      "needs_clarification": false,
+      "source_locations": [
+        {"path": "shared/references/product-workflow.md", "lines": "128-149", "observation": "The product interview path routes selected context and answer reuse but does not advertise the available exact-source batch reader."},
+        {"path": "skills/technical-design/SKILL.md", "lines": "16-20", "observation": "Technical Design selects upstream PRD context and must ground material choices in relevant saved evidence."},
+        {"path": "skills/product-roadmap/SKILL.md", "lines": "14-18", "observation": "Roadmap selects PRD and Technical Design inputs but does not direct grouped source delivery."},
+        {"path": "shared/references/implementation-context.md", "lines": "85-91", "observation": "The same collection already explicitly prefers the 1-20 source batch reader for implementation, with complete-page versus complete-item warnings."},
+        {"path": "docs/product-workflows.md", "lines": "101-108", "observation": "Current guide documents ordered requests, separate item continuations, bounded responses, operation-local reuse and compatible single readers."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/context.ts", "lines": "958-1006", "observation": "The existing reader accepts 1-20 exact element/decision requests, loads one selected state, checks ordered query/version identity and bounds both structured and full MCP response bytes."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs", "lines": "200-260", "observation": "Existing tests exercise exact source portions, Unicode continuation, reordered-request rejection, foreign-pin rejection and retained-source corruption."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs", "lines": "263-340", "observation": "Public stdio tests cover envelope-driven pagination and a genuinely oversized portion diagnostic."}
+      ],
+      "current_execution_path": "A product author inventories selected upstream sources and retrieves the evidence needed for current decisions through discovered exact readers. Batch preference is explicit only in the implementation role; a product author can reasonably choose a separate get for each selected ready element or decision.",
+      "existing_optimizations": [
+        "The batch API already exists; no new API or generalized executor is needed.",
+        "It preserves the same exact single-reader portions and source identities, with operation-local state reuse and strict response limits.",
+        "Context selection already avoids unrelated history.",
+        "The product review path already uses its separate bounded get/record batches and must not be replaced by ready-source reads."
+      ],
+      "unnecessary_work_or_restriction": "When a stage decision genuinely needs several short selected ready-source records, discovering and invoking only single-record readers adds client round trips and repeated state-loading operations that the existing native batch can group. This is conditional on multiple required records; no claim is made that every interview currently does it.",
+      "reproducible_scenario": "Use a Technical Design or Roadmap fixture whose selected upstream inventory contains multiple short PRD elements and provenance decisions needed for one current tradeoff. Compare delivery using individual exact gets with one or more existing ordered product_sources_get_batch pages, consuming every incomplete item continuation in both variants. Do not add unrelated reads just to fill a batch.",
+      "minimal_recommendation": "Add a short canonical product-interview rule to prefer product_sources_get_batch for multiple already-required exact ready elements/decisions. Reuse the established wording from the implementation reference: 1-20 ordered requests, follow every batch cursor with identical requests, separately finish partial item portions, and retain exact single-reader fallbacks. State explicitly that saved candidate records use their candidate reader, not this ready-source batch, and that review uses its own receipt-bearing review tools.",
+      "qualitative_impact": "Fewer orchestration round trips for multi-record upstream evidence and clearer reuse of an already implemented optimization. Benefit is workload-dependent and no measured call/time/token savings are claimed.",
+      "confidence": {"capability_and_instruction_gap": "high", "applicability_to_multi_source_stage_work": "medium", "prevalence_and_end_to_end_effect": "unmeasured"},
+      "guarantees": {
+        "correctness": "Batch only records already required by the current decision. Preserve order, pin identity, complete portions and source freshness; batch completion never implies complete item text.",
+        "compatibility": "Single-record fallbacks remain valid; no source representation or public tool schema changes are required.",
+        "state": "The reader remains read-only with bounded operation-local reuse, not a cross-call cache or state-refresh mechanism.",
+        "recovery": "On stale cursors/source changes discard incompatible progress and follow the owning exact retrieval/conflict rules; do not combine snapshots or cycle encodings after an unavailable exact read.",
+        "security": "Returned content remains untrusted evidence. Never use the batch as authority for commands, consent, profile activation or review verdicts; do not expose unrelated history."
+      },
+      "measurement_plan": "In separately authorized trials use matched current-source fixtures with small records, byte-heavy records, Unicode partial items and mixed element/decision requests. Capture actual actor delivery, number of source calls and continuations, complete-response bytes, state-load/read diagnostics if already available, tool intervals and total wall time. Include a single-record control where batching offers no advantage; report unmeasured model/human time separately.",
+      "validation_plan": "Add a focused instruction-routing check for product-stage batch preference and native single fallback. Reuse existing source-batch tests for query-bound pagination, complete-envelope limits, changed source and foreign pins; add a stage-selection fixture only if existing tests do not cover the chosen context. No production tool, test or benchmark was executed in this audit.",
+      "rough_complexity": "Small canonical instruction change plus focused validation; no runtime implementation expected unless P09 identifies an applicability limitation.",
+      "dependencies": ["P09 confirms stage-selected ready pins are passed unchanged to the already published source batch reader", "P11 regenerates and verifies matching host distributions under separate implementation authority", "Do not route batch operations through logical sessions unless supported_scenarios explicitly permits them"],
+      "deduplication_note": "This is an adoption/routing recommendation for existing ready-source batching, not a new batch implementation or the already optimized product review batch loop owned by P07."
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id": "P02-N01",
+      "area": "Explicit stage boundaries and actual consent",
+      "result": "No recommendation to merge stage invocations or remove confirmation. All four entries are explicit-only and stop before their consumer; exact upstream pins are prerequisites rather than authorization. Non-answers remain unresolved and native question outcomes are persisted distinctly.",
+      "evidence": ["skills/idea-refine/SKILL.md:10-12,21-37,55-56", "skills/product-definition/SKILL.md:10-12,24-35,54-56", "skills/technical-design/SKILL.md:10-22", "skills/product-roadmap/SKILL.md:10-21", "shared/references/product-workflow.md:10-15,133-139,237-240", "shared/references/workflow-state-access.md:74-94"],
+      "qualification": "Instruction/source evidence, not an executed current-model consent trial. P02-F01 narrows only redundant unchanged-scope reproposal, not fresh scope consent."
+    },
+    {
+      "id": "P02-N02",
+      "area": "Confirmed profile disclosure and proportional depth",
+      "result": "All eight canonical product profiles are short, separately routed and concern product meaning rather than prescribing technical implementation. Product Definition uses the Idea dependency instead of independent profile copies. Lite and far-roadmap work are explicitly compact; no exhaustive stack/backlog/design expansion is required.",
+      "evidence": ["skills/idea-refine/SKILL.md:38-47", "skills/product-definition/SKILL.md:35-49", "skills/technical-design/SKILL.md:19-21", "skills/product-roadmap/SKILL.md:16-19", "skills/idea-refine/references/product-profiles/core.md:1-7", "skills/idea-refine/references/product-profiles/backend.md:1-7", "skills/idea-refine/references/product-profiles/data.md:1-6", "skills/idea-refine/references/product-profiles/security.md:1-7", "skills/idea-refine/references/product-profiles/ui.md:1-7", "skills/idea-refine/references/product-profiles/events.md:1-6", "skills/idea-refine/references/product-profiles/operations.md:1-6", "skills/idea-refine/references/product-profiles/cross-surface.md:1-6", "tests/product-authoring-skills.test.mjs:118-141"],
+      "qualification": "The profiles were read as audit subjects, not loaded to run a product workflow."
+    },
+    {
+      "id": "P02-N03",
+      "area": "Product review read/record loop and final checks",
+      "result": "The canonical protocol already directs semantic-v2 blocks, pending-only read batches, complete partial-item consumption, bounded atomic verdict batches and checkpointing per page. It explicitly removes status polling used solely for serial advancement. Final consistency is a cross-block semantic judgment; authoritative completion and integrity checks are not redundant progress polls.",
+      "evidence": ["shared/references/product-workflow.md:180-235", "packages/engineer-agent-workflow-mcp/src/product/review.ts:2497-2547", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:18-93,172-228"],
+      "qualification": "Existing regression tests were inspected, not run. No new recommendation to batch reviews, skip all status, remove completion, or let authors submit independent verdicts. Deep review implementation remains P07 coverage."
+    },
+    {
+      "id": "P02-N04",
+      "area": "Inherited rechecks, corrections and readiness freshness",
+      "result": "Bounded retirement already computes participants, reuses exact parent review evidence, skips inherited blocks and requires fresh aggregate summaries. Corrections map exact changed blocks including consistency findings and still need whole-artifact consistency. Uncertain influence expands to full review; current corruption blocks readiness/activation.",
+      "evidence": ["shared/references/product-workflow.md:89-116,165-173,228-235", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:36-76,131-171", "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:158-169,215-228"],
+      "qualification": "No measurement or fresh inherited-review execution. Existing semantic reuse should be preserved, not rediscovered as an absent optimization."
+    },
+    {
+      "id": "P02-N05",
+      "area": "Actual logical-session use versus blanket session adoption",
+      "result": "The four canonical stage entries do not instruct product_session_open/call/next use. Technical Design mentions sessions only to ensure they cannot bypass architecture readiness. Current documentation and executable fixture code do use sessions for dependent writes, bounded complete delivery, status and explicit resume. Session support is not equivalent to batching: the inspected scenario lists omit product_review_get_batch, product_review_record_batch and product_sources_get_batch. Recommending sessions for all canonical review/source operations would undermine existing batch routing or fail capability checks. No evidence establishes sessions as a universal faster default.",
+      "evidence": ["skills/idea-refine/SKILL.md:25-56", "skills/product-definition/SKILL.md:14-56", "skills/technical-design/SKILL.md:12-22", "skills/product-roadmap/SKILL.md:12-21", "packages/engineer-agent-workflow-mcp/src/product/sessions.ts:47-63,164-187,441-485", "docs/product-workflows.md:414-511", "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs:100-160,206-245", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:115-185"],
+      "qualification": "Actual inspected uses are scripted source/test uses, not newly executed sessions or observed current autonomous agent adoption. Session checkpoints add work and their outer delivery can add calls; comparative benefit needs a separate bounded benchmark before any default-route recommendation."
+    },
+    {
+      "id": "P02-N06",
+      "area": "Source pins, exact reuse and actor boundaries",
+      "result": "Technical Design and Roadmap require ready upstream inputs from the current selected revision. Exact-source reuse requires complete text retained by the same actor/context and exact owner/version/revision/portion identity; a fresh reviewer consumes its own sources. Schema validity or opaque context is not treated as source text. No global cache recommendation is warranted.",
+      "evidence": ["skills/technical-design/SKILL.md:16-17", "skills/product-roadmap/SKILL.md:14-15", "shared/references/product-workflow.md:10-15", "shared/references/workflow-state-access.md:116-129", "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs:316-382", "packages/engineer-agent-workflow-mcp/test/product-roadmap.test.mjs:611-618", "packages/engineer-agent-workflow-mcp/test/product-interview.test.mjs:520-539", "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs:200-260"],
+      "qualification": "Focused interface/regression inspection only. No live product source pins were queried and no deeper storage/cache guarantees are claimed beyond these interfaces."
+    },
+    {
+      "id": "P02-N07",
+      "area": "Interrupted operations and recovery",
+      "result": "The protocol distinguishes exact saved input replay, source conflict, unknown outcome and owner recovery. Roadmap task retirement/unlink and activation have specific bounded recovery/status contracts. General operation repair is explicitly unavailable; logical-session recovery is also limited and cannot authorize a new intent or clear uncertainty. Stop/status work after interruption is necessary, not removable advancement overhead.",
+      "evidence": ["shared/references/product-workflow.md:118-124,165-173,207-226", "shared/references/workflow-state-access.md:101-114", "docs/product-workflows.md:489-541,730-744,763-768", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:120-185", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:78-97", "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs:292-329"],
+      "qualification": "No locks were removed, no fault injection or recovery was run, and no live operator state was accessed. Deep transaction/recovery audits remain P08/P09."
+    },
+    {
+      "id": "P02-N08",
+      "area": "Technical Design visibility and substantive readiness",
+      "result": "The entry and dedicated reference deliberately prohibit diagnostic readiness/review shortcuts before a visible architecture and actual material answers, for new and resumed candidates and session-wrapped calls. They require ownership/flows, justified N/A and evidence-grounded choices but explicitly avoid a separate technology review loop. This protects substantive review rather than representing redundant approval.",
+      "evidence": ["skills/technical-design/SKILL.md:12-22", "skills/technical-design/references/technology-decisions.md:16-47", "tests/product-authoring-skills.test.mjs:409-467"],
+      "qualification": "The test file itself states these are mandatory-instruction checks, not actual model execution. No claim is made that regex presence proves model compliance."
+    },
+    {
+      "id": "P02-N09",
+      "area": "Generated fidelity sample and bundle checks",
+      "result": "A read-only byte-hash comparison found all 48 selected resource copies identical to their canonical source: product protocol, implementation-context reference and product verifier across four skills in canonical skill-local, Codex, Claude Code and Harness roots. Full Technical Design entries were read in all three generated hosts; the inspected bodies preserve gate/stop semantics and use the correct host question and guidance names with no unresolved HOST placeholders in those samples.",
+      "evidence": ["shared/scripts/verify-product-workflow.mjs:8-35,75-115,140-190,193-260", "plugins/codex/engineer-agent-workflows/skills/technical-design/SKILL.md:1-20", "plugins/claude-code/engineer-agent-workflows/skills/technical-design/SKILL.md:1-22", "exports/deepseek-harness/skills/technical-design/SKILL.md:1-22", "Read-only hash-comparison command in this task: checks=48, equal=48, mismatches=[]"],
+      "qualification": "Hash comparison is a fresh measured fidelity check only, not execution of the verifier/generator, semantic review of every generated skill, live installed-bundle certification, or complete host packaging coverage. P11 owns the latter. Host-rendered workflow-state-access was not part of the identical-byte comparison because host substitution legitimately changes it."
+    },
+    {
+      "id": "P02-N10",
+      "area": "Existing empirical evidence and what it cannot prove now",
+      "result": "Current documentation already describes historical matched stdio fixtures and actual isolated Codex captures, with corrected startup-order failures, overlap-aware tool timing and explicit limits. Those historical observations explain the current no-advancement-polling and exact-reuse instructions; they are not current P02 measurements and do not establish current product-stage session adoption or universal speedups.",
+      "evidence": ["docs/product-workflows.md:775-803", "docs/evidence/workflow-efficiency-followup.md:3-15,35-50,76-111"],
+      "qualification": "Only the summary report was read; private raw captures and its linked reassessment artifacts were not independently requalified. No historical savings are credited to P02 findings."
+    }
+  ],
+  "checks_performed": [
+    {"kind": "instruction-and-source-inspection", "result": "complete for assigned canonical skills and references", "executed_tests": false},
+    {"kind": "repository-observation", "result": "Working directory confirmed by pwd; initial Git short status showed substantial existing changes, including shared access references, generated copies and untracked Harness export. No patch, reset, checkout, stash or cleanup was performed."},
+    {"kind": "generated-resource-byte-comparison", "classification": "measured", "result": {"copies_checked": 48, "matching": 48, "mismatches": []}, "method": "Read bytes and compare SHA-256 only; no renderer/verifier import, generation, parsing of managed YAML or repository write."},
+    {"kind": "source-search", "result": "Canonical shared references and canonical skill Markdown were searched for logical-session and batch routing. Session calls are absent from these canonical entries/references; source batching preference exists in implementation-context, while review batching is already explicit in product-workflow."},
+    {"kind": "audit-report-structure-check", "result": "A read-only Python JSON check passed task/status/path consistency, full recommendation fields for all three findings, all five guarantee categories, 27 cited source path/range bounds, coverage consistency, no-finding presence and exclusion of personal absolute paths. This validates only the audit artifact, not workflow behavior; no repository test was run."}
+  ],
+  "inspected_paths": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json",
+    "docs/index.md",
+    "catalog/skills.json",
+    "skills/idea-refine/SKILL.md",
+    "skills/product-definition/SKILL.md",
+    "skills/technical-design/SKILL.md",
+    "skills/product-roadmap/SKILL.md",
+    "skills/idea-refine/references/product-profiles/core.md",
+    "skills/idea-refine/references/product-profiles/backend.md",
+    "skills/idea-refine/references/product-profiles/data.md",
+    "skills/idea-refine/references/product-profiles/security.md",
+    "skills/idea-refine/references/product-profiles/ui.md",
+    "skills/idea-refine/references/product-profiles/events.md",
+    "skills/idea-refine/references/product-profiles/operations.md",
+    "skills/idea-refine/references/product-profiles/cross-surface.md",
+    "skills/technical-design/references/technology-decisions.md",
+    "shared/references/product-workflow.md",
+    "shared/references/workflow-state-access.md",
+    "shared/references/implementation-context.md",
+    "shared/scripts/verify-product-workflow.mjs",
+    "packages/engineer-agent-workflow-mcp/src/product/interview.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/sessions.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+    "packages/engineer-agent-workflow-mcp/src/product/operations.ts",
+    "packages/engineer-agent-workflow-mcp/src/api.ts",
+    "packages/engineer-agent-workflow-mcp/test/product-interview.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-roadmap.test.mjs",
+    "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs",
+    "tests/product-authoring-skills.test.mjs",
+    "tests/workflow-efficiency.test.mjs",
+    "docs/product-workflows.md",
+    "docs/evidence/workflow-efficiency-followup.md",
+    "plugins/codex/engineer-agent-workflows/skills/technical-design/SKILL.md",
+    "plugins/claude-code/engineer-agent-workflows/skills/technical-design/SKILL.md",
+    "exports/deepseek-harness/skills/technical-design/SKILL.md"
+  ],
+  "inspection_depth": {
+    "full_semantic_reads": ["Four canonical SKILL.md entries", "Eight Idea product-profile references", "Technical Design technology-decisions reference", "Three root shared references", "Root product verifier", "Product sessions test file", "Historical workflow-efficiency summary", "Three generated Technical Design entry samples"],
+    "focused_current_source": [
+      "interview.ts: candidate identity/history loading, exact record delivery, mutation result, draft/resume, scope proposal, interview resume and scope confirmation functions through CodeGraph",
+      "context.ts: selected-context wrapper and exact-source single/batch reader excerpts through CodeGraph",
+      "sessions.ts: supported scenario lists, checkpoint/exclusive helpers, source verification/delivery and dispatch/recovery excerpts through CodeGraph",
+      "review.ts: outcome/context types and selected review read/batch/record wrappers through CodeGraph; deep review implementation excluded",
+      "operations.ts: scenario inventory through CodeGraph only",
+      "api.ts: tool interface and input-validation wrapper through CodeGraph only",
+      "tools.ts: source search of current public scenario registration and descriptions, not a full file audit"
+    ],
+    "focused_test_reads": [
+      "product-interview.test.mjs:1-210,240-326,468-541",
+      "product-context.test.mjs:1-362",
+      "product-session-recovery.test.mjs:115-188; test-name inventory searched for scope only",
+      "product-review-efficiency.test.mjs:1-260",
+      "product-retirement-efficiency.test.mjs:1-190",
+      "product-technical.test.mjs:316-384; test-name inventory searched",
+      "product-roadmap.test.mjs:611-668; test-name inventory searched",
+      "product-source-audit.test.mjs: test-name inventory only; no substantive audit claim",
+      "product-authoring-skills.test.mjs:60-214,405-467",
+      "workflow-efficiency.test.mjs:1-225 as corroboration of the existing obligation-preservation pattern, not a separate skill audit"
+    ],
+    "documentation_ranges": "docs/product-workflows.md:80-181,414-543,680-803; catalog/skills.json and docs/index.md read in full",
+    "byte_only_copy_inventory": {
+      "roots": ["skills", "plugins/codex/engineer-agent-workflows/skills", "plugins/claude-code/engineer-agent-workflows/skills", "exports/deepseek-harness/skills"],
+      "skills": ["idea-refine", "product-definition", "technical-design", "product-roadmap"],
+      "relative_resources": ["shared/references/product-workflow.md", "shared/references/implementation-context.md", "shared/scripts/verify-product-workflow.mjs"],
+      "canonical_comparison": "Each copy compared with the corresponding root shared resource; 4 roots x 4 skills x 3 resources = 48 copies. These were not separately semantically audited."
+    }
+  },
+  "limitations": [
+    "No tests, benchmarks, audited skills, product scenarios, builds, generators, installations or remote operations were executed, as required. Source-confirmed findings are not measured latency, token-cost, adoption-frequency or user-friction results.",
+    "The current canonical instructions and focused implementation snippets are checkout evidence. They do not independently establish the installed MCP runtime or installed personal skill identity. Run metadata describes runtime identity, but this worker did not re-query it.",
+    "The P02-F01 reset behavior is confirmed by source; an unnecessary user reprompt is a reproducible conditional path, not a measured universal result. An exact cold-context confirmed-scope reader must be checked with P09 before selecting a public contract addition.",
+    "The source-batch API is implemented and tested, but its actual adoption by current product-stage model sessions was not observed. No claim is made that agents cannot discover it without a canonical preference.",
+    "Logical sessions were inspected through code, docs and test scenarios only. No comparative current model/session benchmark establishes their net efficiency, and their supported scenario set is narrower than direct batch APIs.",
+    "Generated fidelity is limited to three shared resource families across the four skills plus the three Technical Design host entries. P11 owns complete distribution/frontmatter/sidecar/packaging coverage; no installed copies were read or mutated.",
+    "Historical evidence was read for context and limitations, not remeasured or requalified. Private captures, linked corrections and external compressor behavior were not independently reproduced.",
+    "P07/P08/P09 own deep review, state/transaction and product implementation coverage; inspected source excerpts here establish interfaces only. No managed schemas were loaded because no explicit schema contract conflict required them.",
+    "Other sessions may change relevant source during the audit. The synthesis must compare inspected paths with its baseline and re-evaluate affected citations; this worker performed no implementation or source repair."
+  ],
+  "coverage_gaps": [
+    {"area": "Cold-context inventory of already answered candidate decisions and confirmed scope", "disposition": "Interface issue identified in P02-F01; deep discovery/reader contract verification belongs to P09, not an assertion that every possible existing reader was exhausted."},
+    {"area": "Complete generated and installed host packaging", "disposition": "P11 assignment; P02 only reports its measured byte-equality and entry samples."},
+    {"area": "Current end-to-end product-stage model consumption, cancellation and session-versus-direct performance", "disposition": "Not executed under recommendation-only authorization; explicit future measurement plans are provided. Existing source/test coverage is not promoted to current empirical model evidence."}
+  ],
+  "transient_evidence": "",
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P02.json"
+}

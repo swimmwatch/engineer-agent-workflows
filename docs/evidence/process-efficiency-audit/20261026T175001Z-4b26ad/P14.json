@@ -1,0 +1,330 @@
+{
+  "task_id": "P14",
+  "status": "complete",
+  "audit_mode": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "actual_model_observable": "gpt-6.1-sol",
+    "provider": null,
+    "reasoning_effort": null,
+    "evidence": "The active developer runtime declaration identifies gpt-6.1-sol. No independent provider-route or reasoning-effort identifier was exposed by the inspected session trace; these values are not inferred from the assigned alias."
+  },
+  "assigned_aspects": ["C", "D", "H"],
+  "assigned_coverage": ["component:mcp-contract-runtime", "component:response-budgets-sources"],
+  "actual_coverage": ["component:mcp-contract-runtime", "component:response-budgets-sources"],
+  "coverage_detail": {
+    "component:mcp-contract-runtime": [
+      "Startup argument handling, bounded stdio input, tool initialization and discovery, published envelopes and annotations",
+      "Zod scenario wrapper, product schema publication/validation and batch registration",
+      "Runtime identity capture, artifact and contract digests, schema/build-runtime scripts, serving-versus-local-build observation",
+      "Diagnostic bounding/redaction, metadata provenance descriptions, product configuration/path isolation",
+      "Packaged-schema loading lifetime and request-local immutable-source reuse"
+    ],
+    "component:response-budgets-sources": [
+      "Exact structured/text success envelope and final response limits",
+      "Direct journal source reads, catalog scanning and source-bound decision continuations",
+      "Product exact-source batching, complete-envelope budgeting and request-local state",
+      "Product review batching versus full-wire budgeting and existing specification-review adaptive sizing",
+      "Relevant source-level regression assertions; no tests were executed"
+    ]
+  },
+  "method": {
+    "guidance": [
+      "Read the run protocol first, then the personal tool-search guide and project index.",
+      "Applied repository and personal AGENTS instructions supplied in the active context. Scoped AGENTS discovery found no additional instructions for the inspected package, shared resources or scripts, and none in the report's ancestor directories.",
+      "Used CodeGraph first for indexed code exploration; treated current source snippets as reads and used file tools only for missing sections.",
+      "Inspected implementation and selected test source. Called only the read-only workflow_runtime_info MCP diagnostic; did not open or mutate a live workflow scenario.",
+      "Inspected product schema fragments only after identifying the explicit product_review_get_batch structured-budget versus full-wire-budget conflict. No workflow-managed YAML was parsed."
+    ],
+    "repository_head_observed": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+    "existing_changes": "Initial git status showed extensive tracked and untracked changes, including server.ts, reviews.ts, requirements.ts and the new response-budget.ts. All were left untouched. The report evaluates current on-disk source, not pristine HEAD.",
+    "prohibited_actions_performed": [],
+    "files_written": ["docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P14.json"],
+    "tests_builds_generators_installations_executed": false,
+    "descendants_or_workflows_created": false
+  },
+  "runtime_observations": [
+    {
+      "classification": "measured",
+      "operation": "Read-only workflow_runtime_info call through the discovered native tool",
+      "result": {
+        "package_version": "0.0.0-development",
+        "build_id": "772847cc4ca53d707cb9350cc2f18cb7ce6a0a60f20fa80dbc50076c2780cafb",
+        "contract_id": "workflow-2/product-1",
+        "contract_digest": "5dfcedcc872f0029cf27b27881edf43be45d530490554bbcce9a67abeaf8fa9e",
+        "identity_status": "verified",
+        "reason": null,
+        "refresh_requirement": null
+      },
+      "relevant_advertised_capabilities": [
+        "workflow_runtime_info", "product_capabilities", "product_sources_get_batch",
+        "product_review_get_batch", "product_review_record_batch", "specification_review_record_batch"
+      ],
+      "interpretation": "The serving process reports a coherent startup identity and advertises the relevant batch scenarios. This is not evidence that it serves the current TypeScript checkout or that every advertised scenario was exercised."
+    },
+    {
+      "classification": "measured",
+      "operation": "Read the local dist runtime-stamp header, without executing the local build",
+      "source": "packages/engineer-agent-workflow-mcp/dist/runtime-stamp.json:1-5",
+      "result": {
+        "build_id": "47663d76641ab1e84c87c5a3211d859a6869d408564a55b695a767de68b8b0c6",
+        "contract_digest": "5dfcedcc872f0029cf27b27881edf43be45d530490554bbcce9a67abeaf8fa9e"
+      },
+      "interpretation": "The declared local dist build ID differs from the live diagnostic, while the declared contract digest matches. The local stamp was not independently recomputed or verified. No rebuild/restart was authorized or attempted; the difference is recorded as identity evidence, not itself a defect."
+    }
+  ],
+  "finding_ids": ["P14-01", "P14-02"],
+  "findings": [
+    {
+      "id": "P14-01",
+      "component": "component:response-budgets-sources",
+      "title": "Use the existing exact-envelope budget predicate when packing product review batches",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity: the batch packer checks only the structured envelope, whereas the final server checks the doubled, escaped wire result as well. A complete public escaping-heavy fixture was not executed, so its exact failure threshold and frequency remain unmeasured.",
+      "priority": "medium",
+      "source_references": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "lines": "2497-2546", "evidence": "The batch owns one scoped read audit and halves the first portion or stops a nonempty batch, but fits at 2521-2524 checks only JSON bytes of the structured envelope against 24 KiB."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts", "lines": "3-8", "evidence": "The existing shared predicate checks both the structured payload at 24 KiB and the exact text-plus-structured MCP result at 64 KiB."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/server.ts", "lines": "77-79,137-152", "evidence": "The handler runs the scenario before final successResult; a final budget miss converts the entire successful read payload to RESULT_LIMIT."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts", "lines": "907-915", "evidence": "The public tool promises up to 20 exact frozen blocks within the response budget and exposes the batch implementation."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "lines": "1759-1764,1774-1812", "evidence": "Legacy review text is returned unchanged in portions; complete portions receive their receipt, and incomplete portions retain exact-prefix continuations."},
+        {"path": "shared/schemas/product.schema.json", "lines": "48-85,114-198,9262-9340", "evidence": "The published batch allows up to 20 items and legacy portions permit arbitrary string text up to 4096 characters. It does not exclude quotation/backslash-heavy text."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs", "lines": "119-129", "evidence": "An existing unexecuted regression assertion explicitly distinguishes a payload fitting 24 KiB from its escaped full result exceeding 64 KiB."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs", "lines": "18-38,172-191", "evidence": "Existing public Unicode coverage checks both budgets, but the direct batch Unicode test asserts the structured envelope only. Unicode byte expansion does not cover nested JSON escaping."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/reviews.ts", "lines": "249-267", "evidence": "The specification review reader already adapts portion size with boundedSuccessResult and preserves old cursor identities."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/context.ts", "lines": "987-1005", "evidence": "The exact product-source batch already budgets both envelope copies before accepting a candidate item. This recommendation is not to add another batching API."}
+      ],
+      "current_execution_path": [
+        "tools/call -> productTool input validation -> readProductReviewBatch -> request-local source verification -> structured-only fits -> output schema validation -> server.successResult -> boundedSuccessResult.",
+        "If the packer accepts a structured envelope whose escaped wire result is too large, the final server discards the whole batch response and returns a bounded RESULT_LIMIT. The read audit and packing work have already occurred."
+      ],
+      "existing_optimizations": [
+        "Existing bounded 1-20 item API, request-local immutable integrity reuse, pending-only filtering, adaptive first-item portion size, partial-item continuation and final whole-result rejection.",
+        "A shared exact-wire predicate already exists; specification review reads use it, and product source batches independently implement both limits.",
+        "No oversized successful result is silently truncated or sent. This is avoidable read/retry work, not an unbounded-response vulnerability."
+      ],
+      "unnecessary_work_or_restriction": "An escaping-heavy but otherwise valid review batch can pass the local packer and then lose every useful item at the server boundary, requiring the actor to infer a smaller limit and repeat source verification and reading. The packer has the full envelope needed to avoid that retry.",
+      "reproducible_scenario": {
+        "status": "proposed discriminating fixture; not executed",
+        "setup": "Use the existing isolated PRD review fixture with several complete short semantic blocks containing dense quotation marks or safe non-path escape characters. Keep each block below the 4096-character portion limit. Leave verdicts pending and use the legacy representation first.",
+        "steps": [
+          "Vary several block lengths in the approximately 1800-3500 character range until readProductReviewBatch accepts an envelope below 24 KiB whose exact content-plus-structured serialization exceeds 64 KiB; calculate both byte counts, not character estimates.",
+          "Call the public product_review_get_batch with the same context, start_index and limit. The final server predicate should reject that whole candidate today even though the direct batch packer accepted it.",
+          "Compare with a smaller limit and with the revised predicate; collect all continuations, reconstruct every exact block and compare final receipts."
+        ],
+        "assumptions": "The exact boundary depends on context and metadata sizes; the numerical source-length range is fixture guidance, not a measured result. No live customer data or managed YAML parsing is needed."
+      },
+      "minimal_sufficient_recommendation": "Replace the structured-only fits predicate in readProductReviewBatchSources with a Boolean check of the existing boundedSuccessResult on the exact candidate envelope. Retain the current halve-first-portion and stop-after-fitted-items behavior. Do not increase limits, truncate source material, introduce a new API or globally cache source reads.",
+      "expected_qualitative_effect": "Escaping-heavy batches should return the largest currently packable useful prefix instead of failing after reading it. This removes avoidable full-batch retries and aligns local packing with the final boundary. Ordinary batches should preserve their present behavior.",
+      "confidence": {"source_conflict": "high", "end_to_end_fixture_failure": "medium until the proposed fixture runs", "performance_magnitude": "unmeasured"},
+      "guarantees": {
+        "correctness": "Preserve exact frozen text, item order, pending filtering, source verification and complete-read receipts. Do not issue a receipt for an incomplete portion.",
+        "compatibility": "No input/output schema or budget change. Page boundaries may shrink, but public callers already must follow per-item and next-item continuations; retain cursor and receipt identities independent of page size.",
+        "state_isolation": "The tool stays read-only and request-scoped. No mutable source cache moves to module scope.",
+        "recovery": "Retain the current explicit RESULT_LIMIT when even one minimal portion cannot fit; otherwise preserve a resumable fitted prefix.",
+        "security": "Keep both exact response caps, non-reflecting errors and immutable source integrity checks. Never solve the issue by disabling the final guard."
+      },
+      "measurement_plan": [
+        "Use synthetic ASCII, multibyte Unicode, quotation-heavy and escape-heavy block sets with identical exact source content before and after the change.",
+        "Record structured bytes, exact full-result bytes, returned item/portion counts, RESULT_LIMIT responses, retries, source-validation events and end-to-end read-call count. Report server time separately from actor/model time.",
+        "Compare reconstruction and final receipt equality for every item and verify each response advances or returns the established explicit single-item limit error. No savings percentage is claimed by this audit."
+      ],
+      "validation_plan": [
+        "Add a public stdio regression for a candidate that fits the structured limit but not the doubled escaped wire limit.",
+        "Reuse product review efficiency/recovery tests for pending scans, partial continuations, stale context, final consistency and unchanged receipts; inspect side effects and authorize execution separately.",
+        "Keep the existing exact-envelope unit tests and product source batch envelope tests as boundary references."
+      ],
+      "rough_complexity": "Small implementation change at one local predicate; small-to-medium regression-fixture work to hit both boundaries deterministically.",
+      "dependencies": ["Existing response-budget helper", "Existing product-review fixture and stdio harness", "Separate implementation and test-execution authorization"],
+      "needs_clarification": false
+    },
+    {
+      "id": "P14-02",
+      "component": "component:mcp-contract-runtime",
+      "title": "Bind lazy packaged-schema compilation to the runtime's captured startup contract",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed lifecycle mismatch: runtime identity is frozen at startup, while some packaged schemas are first read lazily from mutable disk later. The disk-replacement scenario is inferred from these paths and existing replacement-test semantics; it was not executed during this audit.",
+      "priority": "medium",
+      "source_references": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/runtime-info.ts", "lines": "25-50,64-92", "evidence": "The runtime digests executable/JSON artifacts, verifies the stamp once and deliberately captures identity before serving so later disk replacements cannot relabel loaded code."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/server.ts", "lines": "21-30", "evidence": "workflow_runtime_info returns that captured identity and implemented registry capabilities."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "122-139", "evidence": "The per-kind validator map is empty initially; the first validation awaits a filesystem schema read and compiles it, then retains the validator."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/schemas.ts", "lines": "27-32,71-107,110-129", "evidence": "The product record schema is also read only when compileSchema first runs. A promise deduplicates this work thereafter, but does not tie the first read to startup bytes."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts", "lines": "101-106,141-172", "evidence": "Tool input validators and published schemas are constructed eagerly from the package schema, while output validation calls the independently lazy validateProductRecord after running the scenario."},
+        {"path": "packages/engineer-agent-workflow-mcp/scripts/build-runtime-info.mjs", "lines": "1-10", "evidence": "The stamp records runtime artifact digests; it does not provide the later lazy loader with the original schema bytes."},
+        {"path": "packages/engineer-agent-workflow-mcp/scripts/build-schemas.mjs", "lines": "3-19", "evidence": "Package generation replaces schema files and exports tool contracts from the built registry. This is source inspection only; the script was not run."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs", "lines": "62-98,101-120,123-159", "evidence": "Tests explicitly require process A to keep A's identity when files are replaced by same-version B. They also test missing/mixed startup metadata and changed-schema identity after a newly started process. The inspected tests do not exercise A's first lazy schema read after replacement."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/definition.ts", "lines": "163-173,478-487", "evidence": "Another eager schema/Ajv instance validates semantic input; domain checks must remain separate from any shared immutable-schema ownership."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/technical.ts", "lines": "157-167,466-478", "evidence": "Technical Design has another eager schema validator with additional sensitivity/title/applicability checks."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/roadmap.ts", "lines": "177-187,502-517", "evidence": "Roadmap has another eager validator and domain-specific checks. Existing schema parsing is duplicated; no startup-cost measurement was performed."}
+      ],
+      "current_execution_path": [
+        "Process A imports its tool registry and identity module. Tool inputs/public schemas are captured eagerly; runtimeIdentity records startup artifact digests and is frozen.",
+        "Without a prior call requiring a particular state/product record validator, its compiled-schema slot remains empty.",
+        "If packaged schema files are replaced before that first call, state.validate or product.compileSchema reads the replacement bytes. A can then validate using B's contract while still publishing/returning A's captured identity and eager input definitions."
+      ],
+      "existing_optimizations": [
+        "Identity is intentionally captured once, has an embedded-stamp consistency check, rejects mixed/missing startup artifacts, avoids exposing local paths and has explicit refresh/restart guidance.",
+        "Product record compilation already shares one promise and validates the packaged schema before use; state schemas already retain compiled validators by artifact kind.",
+        "Eager product input validators are reused across requests and consume errors synchronously. This is not a recommendation to share request contexts, stores or source-verification results.",
+        "The observed live/local stamp difference alone does not demonstrate this scenario; immutable installation paths and prompt restarts can prevent it operationally."
+      ],
+      "unnecessary_work_or_restriction": "A same-path package replacement can create an internally mixed validation contract after a verified startup. Valid calls may fail against a schema different from the advertised one, causing unnecessary diagnostics, reopen/retry cycles and potentially post-scenario output rejection. Existing identity evidence cannot explain that behavior accurately because it remains the earlier identity.",
+      "reproducible_scenario": {
+        "status": "proposed isolated regression; not executed",
+        "setup": "Extend the existing copied-package runtime-identity fixture, never the installed package or live store. Start A and request only workflow_runtime_info so product/state lazy validators remain cold.",
+        "steps": [
+          "Replace only the fixture's packaged product schema with a valid B variant that changes validation of a selected success definition, or replace an unused state-kind schema with an incompatible valid B variant. Keep A running.",
+          "Issue the first read-only product scenario that triggers product output validation, or exercise a selected state validator in the isolated fixture, using an input still matching A's eagerly advertised contract.",
+          "Observe A's response and runtime identity, then start a new coherent B process. Today A's lazy validation path reads B from disk even though its identity remains A; the proposed lifecycle should make A use the captured A contract or report a precise unavailable/mismatched contract before scenario work."
+        ],
+        "assumptions": "The scenario requires in-place package-file replacement while A remains alive and at least one cold lazy validator. It is not asserted for immutable-version installation directories, already-warmed validators, or the currently serving process."
+      },
+      "minimal_sufficient_recommendation": "Capture immutable packaged schema bytes once at serving initialization and verify that snapshot against the artifacts used for the captured runtime identity. Keep lazy compilation, but compile from that snapshot rather than rereading disk. Reuse the existing product schema owner where practical, without merging domain-specific checks. A changed/missing snapshot must yield an explicit identity/contract-unavailable path before a scenario is executed. Do not rehash all files on every request or introduce a global cache of workflow data.",
+      "expected_qualitative_effect": "Keep identity, advertised schemas and actual validation coherent throughout one serving lifetime. Avoid mixed-contract failures and repeated investigative reads after package replacement. Central immutable ownership can also remove duplicate package-schema reads/parses, but startup and memory benefits are unmeasured and secondary to contract coherence.",
+      "confidence": {"lifetime_mismatch": "high", "operational_frequency": "unknown", "performance_magnitude": "unmeasured"},
+      "guarantees": {
+        "correctness": "Preserve schema self-validation, supported-definition checks, Unicode checks, sensitivity checks and all domain-level rules. A new package takes effect only in a new coherent serving lifecycle.",
+        "compatibility": "Preserve existing tool names, envelope versions and digest semantics. Do not silently change an already serving process's identity to match replacement files.",
+        "state_isolation": "The retained data is immutable package contract data only, bounded by the fixed packaged schema set and serving/process lifetime. Request contexts, validator diagnostics, mutable workflow state and integrity audits remain request-local; consume mutable Ajv error arrays synchronously.",
+        "recovery": "Continue explicit refresh/restart guidance. Add a deterministic mismatched-snapshot diagnostic instead of allowing cold validation to adopt replacement files silently.",
+        "security": "Snapshot validation must use the already verified artifact digest domain, reject mixed/nonregular artifacts and keep paths/source values out of public errors. Do not weaken filesystem or ledger validation."
+      },
+      "measurement_plan": [
+        "Compare cold initialization and first-call latency separately for runtime_info, one state-kind validation and one product read in isolated same-version fixtures.",
+        "Count packaged-schema reads/parses/compilations and record initialization memory as well as post-first-call memory, before considering any further consolidation.",
+        "Measure the A/B replacement case by identity, published contract and actual validator behavior, not timing alone. Repeat with warm validators and immutable installation paths as controls."
+      ],
+      "validation_plan": [
+        "Add a cold-validator A/B replacement regression beside runtime-identity.test.mjs, covering product output and at least one lazy state schema.",
+        "Assert A retains A semantics and identity after replacement, a coherent restarted B uses B, and inconsistent startup/snapshot evidence stays unavailable.",
+        "Verify unchanged contract publication, domain validation, concurrent error isolation, and no writes to real homes/stores. Existing identity, metadata and diagnostics tests are source evidence only until separately authorized execution."
+      ],
+      "rough_complexity": "Medium: align ownership across runtime identity and two schema loaders, preserve lazy compilation, and add isolated replacement regressions. Sharing additional eager domain validators is optional and should not expand the minimal fix.",
+      "dependencies": ["Runtime artifact digest/snapshot ownership", "Existing packaged-schema loaders", "Existing copied-package runtime identity fixture", "Separate implementation and test-execution authorization"],
+      "needs_clarification": false
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "area": "Exact product source batches already share one request-local loaded state and budget the full result",
+      "result": "No new batching API or global source cache recommended.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/product/context.ts:237-265 creates maps per loaded state, including parsed documents and verified-pin tracking.",
+        "packages/engineer-agent-workflow-mcp/src/product/context.ts:879-938 reuses that state while checking exact product/pin/generation/decision identities.",
+        "packages/engineer-agent-workflow-mcp/src/product/context.ts:958-1006 validates the ordered request set, binds cursor identity/source version, packs both structured and text-plus-structured budgets and returns an explicit error if no item fits.",
+        "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs:263-340 contains public-envelope, ordered-continuation and genuinely oversized-single-portion assertions; these were inspected, not executed."
+      ]
+    },
+    {
+      "area": "Integrity reuse has an explicit audit lifetime and transaction reset",
+      "result": "No evidence justifying broader cache lifetime or removed freshness checks.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/product/storage.ts:18-52 scopes immutable reuse through AsyncLocalStorage, keys it by validation kind plus identity and clears/exits it at transaction entry.",
+        "packages/engineer-agent-workflow-mcp/src/product/storage.ts:797-807 retains full-generation checks as a distinct reuse strength.",
+        "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs:15-122 asserts fresh separate audits, bounded read concurrency, drained failed reads, no metadata-to-full-audit substitution, exact-byte parse keys, transaction revalidation and different-store isolation. No test execution is claimed."
+      ]
+    },
+    {
+      "area": "Direct source access and continuation identity",
+      "result": "Existing bounds and isolation are material safeguards, not redundant process to remove.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/source.ts:8-10,41-80,87-125 caps source size, validates the selected regular path, opens without following the leaf symlink, checks opened/read metadata and closes handles.",
+        "packages/engineer-agent-workflow-mcp/src/source.ts:128-181 scans only direct catalog entries with a bound and does not parse inactive journals.",
+        "packages/engineer-agent-workflow-mcp/src/service.ts:92-149,259-326 binds cursor project/query/source identity, returns bounded previews and exact code-point text portions.",
+        "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs:31-113,115-169 and test/transport.test.mjs:54-133 assert project isolation, unsafe-source rejection, stale/foreign continuations and non-reflecting bounded transport results; not executed."
+      ]
+    },
+    {
+      "area": "Metadata, bounded diagnostics and error redaction",
+      "result": "Existing provenance hints and actionable bounded errors already reduce guess/retry cost; no additional diagnostics API recommended.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/api.ts:11-25 validates before scenario execution and emits diagnostics from the published schema.",
+        "packages/engineer-agent-workflow-mcp/src/diagnostics.ts:3-4,44-62,79-214 bounds issues/details and preserves only published paths/types/limits rather than caller values.",
+        "packages/engineer-agent-workflow-mcp/src/diagnostics.ts:217-231,283-329 provides redacted subject discovery and fixed conflict-cause/next-action guidance.",
+        "packages/engineer-agent-workflow-mcp/src/server.ts:47-74 bounds workflow error details/messages and substitutes safe fixed messages for unexpected errors.",
+        "packages/engineer-agent-workflow-mcp/src/metadata.ts:3-75,81-116 describes context/ref/cursor provenance and bounded page limits without changing executable constraints.",
+        "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs:101-142 and test/product-diagnostics.test.mjs:328-387 assert bounded/redacted public diagnostics. test/tool-metadata.test.mjs:66-163 asserts schema metadata preservation and live/generated input-description fidelity; all inspected only."
+      ]
+    },
+    {
+      "area": "Initialization/discovery and runtime identity already have explicit guards",
+      "result": "No replacement discovery protocol or per-request full artifact scan recommended; P14-02 is limited to cold schema-loading lifetime.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/main.ts:5-18 rejects startup path arguments, caps stdio input at 2 MiB, uses fixed transport errors and handles shutdown.",
+        "packages/engineer-agent-workflow-mcp/src/server.ts:103-135 builds the advertised registry from implementation definitions and publishes read-only/destructive/idempotent annotations.",
+        "packages/engineer-agent-workflow-mcp/src/product/tools.ts:108-144 builds self-contained reachable schema definitions and validates product inputs/outputs at the scenario boundary.",
+        "packages/engineer-agent-workflow-mcp/src/runtime-info.ts:11-21,25-92 excludes only canonical embedded identity data, hashes executable/JSON artifacts and reports unavailable identity when startup metadata is inconsistent.",
+        "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs:188-243 includes executable-initializer rejection and deterministic-stamp safeguards; inspected only.",
+        "The native runtime diagnostic succeeded with verified identity; the local stamp differs and was not treated as serving proof."
+      ]
+    },
+    {
+      "area": "Product root configuration and mutation preflight retain safety boundaries",
+      "result": "No performance recommendation to bypass path checks or transaction preflight.",
+      "evidence": [
+        "packages/engineer-agent-workflow-mcp/src/product/config.ts:62-118 rejects filesystem root, home and workspace overlap and resolves explicit/platform defaults; 121-257 validates portable names, canonical ancestors, symlinks, case/Unicode collisions and single-link regular files.",
+        "packages/engineer-agent-workflow-mcp/src/product/operations.ts:598-639 validates intent/targets, bounds result bytes and checks product/result identity before mutation processing. This targeted inspection is not a full storage/recovery audit.",
+        "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs:194-212 contains atomic batch rejection/replay and mandatory final semantic-consistency assertions; not executed."
+      ]
+    }
+  ],
+  "inspected_paths": [
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md", "scope": "1-43"},
+    {"path": "docs/index.md", "scope": "1-19"},
+    {"path": "packages/engineer-agent-workflow-mcp/package.json", "scope": "1-43"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/main.ts", "scope": "1-19"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/server.ts", "scope": "1-156"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/api.ts", "scope": "1-26"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/runtime-info.ts", "scope": "1-92"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/diagnostics.ts", "scope": "1-329"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/metadata.ts", "scope": "1-117"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/source.ts", "scope": "1-182"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts", "scope": "1-9"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/service.ts", "scope": "1-344"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "scope": "116-140; schema-loader and request guard inspection only"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/reviews.ts", "scope": "230-272; batch names/limits additionally searched, not a full review audit"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts", "scope": "1-260,674-719,879-929; remaining scenario registrations not substantively audited"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/config.ts", "scope": "1-257"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/schemas.ts", "scope": "1-130"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/context.ts", "scope": "88-103,237-265,838-854 excerpt,869-946,958-1007"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "scope": "18-56,139-172 excerpt,396-401 excerpt,456-461 excerpt,784-808; integrity-reuse boundary only"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "scope": "590-664; preflight only"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/review.ts", "scope": "1700-1824,2382-2412,2428-2454,2497-2550,2710-2737; exact batch and portion paths"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/definition.ts", "scope": "160-217,470-493; schema owner and semantic validator only"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/technical.ts", "scope": "157-211,458-481; schema owner and semantic validator only"},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/roadmap.ts", "scope": "177-231,494-518; schema owner and semantic validator only"},
+    {"path": "packages/engineer-agent-workflow-mcp/scripts/build-schemas.mjs", "scope": "1-20"},
+    {"path": "packages/engineer-agent-workflow-mcp/scripts/build-runtime-info.mjs", "scope": "1-10"},
+    {"path": "shared/schemas/product.schema.json", "scope": "48-205,6769-6922,9262-9343; explicit review-batch budget contract conflict only"},
+    {"path": "packages/engineer-agent-workflow-mcp/dist/runtime-stamp.json", "scope": "1-8; declared identity header only"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/result.test.mjs", "scope": "1-40"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs", "scope": "1-243"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/tool-metadata.test.mjs", "scope": "1-163"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/transport.test.mjs", "scope": "1-206"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs", "scope": "1-222"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs", "scope": "1-132"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs", "scope": "1-120,172-229; remaining matching test names searched"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs", "scope": "1-254"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/workflow-diagnostics.test.mjs", "scope": "1-181"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-diagnostics.test.mjs", "scope": "1-104,328-389; diagnostic fixture and assertions"},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs", "scope": "263-342; source batch envelope assertions and additional test names searched"}
+  ],
+  "limitations": [
+    "This is a completed scoped source audit, not a passing runtime qualification. No tests, benchmarks, builds, generators or installation actions were run, as required by the protocol.",
+    "Only the identity diagnostic was called on the live MCP server. No store capability probe, scenario state read or managed YAML parse was needed or attempted.",
+    "The active model name is observable from runtime instructions; the provider and reasoning-effort route are not independently observable.",
+    "The live identity and the local dist stamp differ. Findings refer to the inspected current source; they are not claimed as reproduced failures of the currently serving package.",
+    "The escaping-heavy batch threshold and cold-schema replacement scenario require the proposed isolated regressions. No timings, token savings, percentage gains or operational frequency are measured.",
+    "Product tools and storage were inspected only at the listed contract, registration, budget and isolation boundaries. This report does not claim a substantive audit of every product scenario or a full transaction/recovery review.",
+    "One initial grep request mistakenly supplied a wildcard as a literal path and failed with exit 2. It was corrected using the documented include filter; no missing evidence or transient service failure resulted."
+  ],
+  "transient_evidence": "No confirmed transient failure. CodeGraph, file inspection, native tool discovery and the read-only runtime diagnostic succeeded.",
+  "completion": {
+    "review_complete": true,
+    "recommendations_implemented": false,
+    "unread_assigned_area": false,
+    "report_schema_validation": "Passed a read-only JSON parse, required recommendation-field checks, finding-ID consistency, coverage consistency, referenced-file existence, and personal-absolute-path screen: 2 findings and 39 inspected paths. The first path screen falsely matched slash-separated prose describing root, home and workspace; the wording was clarified and the check passed. No application tests are implied.",
+    "follow_up": "Implementation and execution of the proposed regressions require separate authorization; they are recommendations, not unfinished actions in this audit."
+  }
+}

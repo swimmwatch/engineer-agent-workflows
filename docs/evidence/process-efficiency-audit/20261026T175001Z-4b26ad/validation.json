@@ -1,0 +1,1550 @@
+{
+  "task_id": "F01",
+  "status": "pass",
+  "audit_status": "complete",
+  "captured_at": "2026-10-26T18:22:05.599Z",
+  "scope": "Deterministic audit artifact/status/byte checks, not repository tests or application execution",
+  "checks": [
+    {
+      "name": "Required report files exist and parse",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "primary": 14,
+        "verification": 3,
+        "repair": 0,
+        "adjudication": 0
+      }
+    },
+    {
+      "name": "Unique primary task and finding identities",
+      "passed": true,
+      "mandatory": true,
+      "details": [
+        "P01-001",
+        "P01-002",
+        "P02-F01",
+        "P02-F02",
+        "P02-F03",
+        "P03-F01",
+        "P03-F02",
+        "P06-F01",
+        "P06-F02",
+        "P07-F01",
+        "P07-F02",
+        "P07-F03",
+        "P08-01",
+        "P08-02",
+        "P09-F01",
+        "P09-F02",
+        "P09-F03",
+        "P10-F01",
+        "P10-F02",
+        "P10-F03",
+        "P10-F04",
+        "P12-F1",
+        "P12-F2",
+        "P12-F3",
+        "P12-F4",
+        "P14-01",
+        "P14-02"
+      ]
+    },
+    {
+      "name": "Verifier references are complete and unique",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "primary_findings": 27,
+        "verified_references": 27
+      }
+    },
+    {
+      "name": "All current 17 skills match saved inventory and existing canonical entries",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "inventory_basis": "Current catalog/skills.json read and 17 canonical paths returned by glob; no skill invocation.",
+        "skills": [
+          "code-review-and-quality",
+          "code-simplification",
+          "context-engineering",
+          "context-scouting",
+          "design-planning",
+          "documentation-and-adrs",
+          "doubt-driven-development",
+          "idea-refine",
+          "incremental-implementation",
+          "interview-me",
+          "performance-optimization",
+          "planning-and-task-breakdown",
+          "product-definition",
+          "product-roadmap",
+          "security-and-hardening",
+          "spec-driven-development",
+          "technical-design"
+        ]
+      }
+    },
+    {
+      "name": "All significant assigned components have saved evidence",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "components": 21,
+        "coverage_rows": 38
+      }
+    },
+    {
+      "name": "Mandatory aspects A-H are covered",
+      "passed": true,
+      "mandatory": true,
+      "details": [
+        {
+          "id": "A",
+          "title": "Canonical skills, proportional context and progressive disclosure",
+          "primary_tasks": [
+            "P01",
+            "P02",
+            "P03",
+            "P04",
+            "P05",
+            "P11"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "B",
+          "title": "Orchestration, ownership, consent, context and repeated work",
+          "primary_tasks": [
+            "P01",
+            "P02",
+            "P03",
+            "P04",
+            "P06",
+            "P07",
+            "P09",
+            "P10",
+            "P13"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "C",
+          "title": "Batching, parsing, reuse and API adoption",
+          "primary_tasks": [
+            "P02",
+            "P06",
+            "P07",
+            "P08",
+            "P09",
+            "P10",
+            "P14"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "D",
+          "title": "Storage, budgets, isolation, concurrency, replay and recovery",
+          "primary_tasks": [
+            "P06",
+            "P07",
+            "P08",
+            "P09",
+            "P10",
+            "P14"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "E",
+          "title": "Independent review, inheritance, freshness and substantive final checks",
+          "primary_tasks": [
+            "P01",
+            "P02",
+            "P03",
+            "P06",
+            "P07"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "F",
+          "title": "Canonical ownership, generated host fidelity and packaging",
+          "primary_tasks": [
+            "P11",
+            "P13"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "G",
+          "title": "Test runner, CI, build and qualification duplication",
+          "primary_tasks": [
+            "P12"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        },
+        {
+          "id": "H",
+          "title": "Measurement, evidence attribution, priorities and limitations",
+          "primary_tasks": [
+            "P05",
+            "P08",
+            "P09",
+            "P12",
+            "P13",
+            "P14"
+          ],
+          "basis": "Saved primary evidence and the corresponding verifier verdicts/no-finding samples; source/test inspection, not behavioral execution."
+        }
+      ]
+    },
+    {
+      "name": "Required normalized report fields are present",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "aliases_supported": [
+          "actual_coverage|coverage",
+          "no_finding_checks|no_finding_evidence|no_finding_samples",
+          "findings|finding_verdicts"
+        ],
+        "note": "P11 annotates coverage strings; the machine normalization strips explanatory parentheticals. P13 protocol.md is an unambiguous run-local citation alias."
+      }
+    },
+    {
+      "name": "Reported inspected paths and citations exist",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "missing": [],
+        "directories_are_inventory_only": [
+          "exports/deepseek-harness",
+          "plugins/claude-code/engineer-agent-workflows",
+          "plugins/codex/engineer-agent-workflows"
+        ]
+      }
+    },
+    {
+      "name": "Baseline source and distribution bytes have no unreconciled drift",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "source_changes": [],
+        "distribution_changes": [],
+        "reported_hash_changes": []
+      }
+    },
+    {
+      "name": "Every independent finding citation has valid numeric line bounds",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "checked": 139,
+        "failures": [],
+        "method": "Newline byte counting only; no semantic source reread or YAML parse."
+      }
+    },
+    {
+      "name": "Every synthesized recommendation has all protocol fields",
+      "passed": true,
+      "mandatory": true,
+      "details": [
+        {
+          "id": "P01-001",
+          "missing_fields": []
+        },
+        {
+          "id": "P01-002",
+          "missing_fields": []
+        },
+        {
+          "id": "P02-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P02-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P02-F03",
+          "missing_fields": []
+        },
+        {
+          "id": "P03-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P03-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P06-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P06-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P07-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P07-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P07-F03",
+          "missing_fields": []
+        },
+        {
+          "id": "P08-01",
+          "missing_fields": []
+        },
+        {
+          "id": "P08-02",
+          "missing_fields": []
+        },
+        {
+          "id": "P09-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P09-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P09-F03",
+          "missing_fields": []
+        },
+        {
+          "id": "P10-F01",
+          "missing_fields": []
+        },
+        {
+          "id": "P10-F02",
+          "missing_fields": []
+        },
+        {
+          "id": "P10-F03",
+          "missing_fields": []
+        },
+        {
+          "id": "P10-F04",
+          "missing_fields": []
+        },
+        {
+          "id": "P14-01",
+          "missing_fields": []
+        },
+        {
+          "id": "P14-02",
+          "missing_fields": []
+        },
+        {
+          "id": "P12-F1",
+          "missing_fields": []
+        },
+        {
+          "id": "P12-F2",
+          "missing_fields": []
+        },
+        {
+          "id": "P12-F3",
+          "missing_fields": []
+        },
+        {
+          "id": "P12-F4",
+          "missing_fields": []
+        }
+      ]
+    },
+    {
+      "name": "Only independently accepted or narrowed recommendations are retained",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "rejected": 0,
+        "disputed": 0,
+        "unverified_promoted": 0
+      }
+    },
+    {
+      "name": "Hypotheses remain separate from confirmed opportunities",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "hypothesis_ids": [
+          "P08-02",
+          "P12-F3"
+        ]
+      }
+    },
+    {
+      "name": "HEAD and all non-audit status entries are preserved",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "initial_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+        "final_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+        "baseline_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+        "non_audit_status_equal_to_preparation": true,
+        "staged_index_equal_to_synthesis_start": true
+      }
+    },
+    {
+      "name": "Primary and verification reports remain byte-identical",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "P01": "c134b07cb5ffb9a55b5340624cd35a765b5445b3f4cb04cd996b131b47f834b3",
+        "P02": "ee662f8bb0f91a42bcc53dfd36d0201b86447e132e5fa58cd866d61d8ec19e72",
+        "P03": "c3d42390433267a6c2fed91559271f40f02e8966ffc40e1612485b821cbc0b38",
+        "P04": "5ce95cf70c5cc7a11174a43e830daf5d2b1da5ddadadf6cb18305ad9715ef223",
+        "P05": "6a712a8a776f49e205098cd1b75d0b4ca722d3585dca5d7980903dc0ae64c9ee",
+        "P06": "0709e882ede8cd45abf653c737d325045aea346755d696ece336b58bac5b18a9",
+        "P07": "0229f1628549c528f482a37b8eb5279c0d5f459495dc2241fd3d9ae237fb0547",
+        "P08": "cc1ae14dc00760068bb6d2c97217fe253d1ac7a0b707c520d9d6dc3182fd07a1",
+        "P09": "2d58c4c5b3288d1f5a16f99ccc4c56ec6588de0b765c838dfe89b6da6af04af0",
+        "P10": "003df7486b71af805d43a85d4fa35de3e7f1222d7125bb49e8b0de5cdcca1e90",
+        "P11": "822a9bff135a427e636034a468446a2307270714deab9793f9b6e7ff8ba05381",
+        "P12": "b919fe480af76a39c3223320c78b1fadbf8b12cc3e402f6d1456c089743cfd88",
+        "P13": "adaf21e9656937d16c0841b24ecde9a71fa32b238f65d8ddaddee78d71dbefac",
+        "P14": "17551774474b645ada0320e59cec107597ce9d61f88ca68e375701c1cafb01b5",
+        "V01": "0c2725c1033ff49559a6aab5715e241121c2c5578c086ddc54894b76a2ba6408",
+        "V02": "c53db1ddb94812af3aa631453ee3fc21d6279e7c3a4217f65c1bede91c20968d",
+        "V03": "a34f9017c90684182fd2ae7338786d22188a1a03bfa5921ecef2ab78189325bd"
+      }
+    },
+    {
+      "name": "Caller event record has balanced task starts/returns and scheduled peak eight",
+      "passed": true,
+      "mandatory": true,
+      "details": {
+        "starts_before_synthesis": 17,
+        "returns_before_synthesis": 17,
+        "reconstructed_scheduled_peak": 8,
+        "actual_provider_request_peak": null
+      }
+    },
+    {
+      "name": "Authored reports are English and contain no personal paths or secret literals",
+      "passed": true,
+      "mandatory": true,
+      "details": [
+        {
+          "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.json",
+          "no_personal_absolute_paths": true,
+          "english_no_cyrillic": true,
+          "no_secret_literals": true
+        },
+        {
+          "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.md",
+          "no_personal_absolute_paths": true,
+          "english_no_cyrillic": true,
+          "no_secret_literals": true
+        },
+        {
+          "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01.json",
+          "no_personal_absolute_paths": true,
+          "english_no_cyrillic": true,
+          "no_secret_literals": true
+        },
+        {
+          "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-source-drift.json",
+          "no_personal_absolute_paths": true,
+          "english_no_cyrillic": true,
+          "no_secret_literals": true
+        }
+      ]
+    },
+    {
+      "name": "All final deliverables exist and JSON outputs parse",
+      "passed": true,
+      "mandatory": true,
+      "details": [
+        "workflow-results.json",
+        "F01-source-drift.json",
+        "audit.json",
+        "audit.md",
+        "validation.json",
+        "F01.json"
+      ]
+    }
+  ],
+  "counts": {
+    "primary_reports": 14,
+    "verification_reports": 3,
+    "repair_reports": 0,
+    "adjudication_reports": 0,
+    "current_skills": 17,
+    "significant_components": 21,
+    "mandatory_aspects": 8,
+    "finding_references": 27,
+    "distinct_families": 26,
+    "source_confirmed_references": 25,
+    "research_hypotheses": 2,
+    "independently_accepted": 19,
+    "independently_narrowed": 8,
+    "verifier_citation_ranges": 139,
+    "baseline_source_hashes": 447,
+    "baseline_distribution_hashes": 459,
+    "reported_hash_comparisons": 133
+  },
+  "citation_checks": [
+    {
+      "finding_id": "P01-001",
+      "path": "shared/references/product-workflow.md",
+      "lines": "28-51",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-001",
+      "path": "shared/references/implementation-context.md",
+      "lines": "75-91",
+      "line_count": 115,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-001",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+      "lines": "207-239,875-938,958-1006",
+      "line_count": 1007,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-001",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+      "lines": "200-260,263-340",
+      "line_count": 494,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-002",
+      "path": "skills/design-planning/SKILL.md",
+      "lines": "13-31",
+      "line_count": 50,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-002",
+      "path": "shared/scripts/verify-engineering-manual.mjs",
+      "lines": "267-305,344-345",
+      "line_count": 428,
+      "passed": true
+    },
+    {
+      "finding_id": "P01-002",
+      "path": "tests/design-planning-skill.test.mjs",
+      "lines": "8-20",
+      "line_count": 21,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "skills/product-definition/SKILL.md",
+      "lines": "28-35",
+      "line_count": 56,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "skills/technical-design/SKILL.md",
+      "lines": "17-19",
+      "line_count": 22,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "skills/product-roadmap/SKILL.md",
+      "lines": "14-17",
+      "line_count": 21,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "skills/idea-refine/SKILL.md",
+      "lines": "31-38",
+      "line_count": 56,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "shared/references/product-workflow.md",
+      "lines": "128-149",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts",
+      "lines": "588-621,782-835,865-873,997-1031,1163-1191",
+      "line_count": 1349,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts",
+      "lines": "420-477",
+      "line_count": 1349,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+      "lines": "270-321",
+      "line_count": 1205,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-interview.test.mjs",
+      "lines": "240-323",
+      "line_count": 606,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F02",
+      "path": "skills/idea-refine/SKILL.md",
+      "lines": "21-30",
+      "line_count": 56,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F02",
+      "path": "skills/product-definition/SKILL.md",
+      "lines": "14-23",
+      "line_count": 56,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F02",
+      "path": "skills/technical-design/SKILL.md",
+      "lines": "14-16",
+      "line_count": 22,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F02",
+      "path": "skills/product-roadmap/SKILL.md",
+      "lines": "12-19",
+      "line_count": 21,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F02",
+      "path": "shared/references/product-workflow.md",
+      "lines": "20-124,128-173,180-240",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "skills/technical-design/SKILL.md",
+      "lines": "16-18",
+      "line_count": 22,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "skills/product-roadmap/SKILL.md",
+      "lines": "14-16",
+      "line_count": 21,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "shared/references/product-workflow.md",
+      "lines": "128-149",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+      "lines": "207-239,679-694,958-1006",
+      "line_count": 1007,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/interview.ts",
+      "lines": "321-329,838-873",
+      "line_count": 1349,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "shared/references/implementation-context.md",
+      "lines": "85-91",
+      "line_count": 115,
+      "passed": true
+    },
+    {
+      "finding_id": "P02-F03",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+      "lines": "200-260,263-340",
+      "line_count": 494,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F01",
+      "path": "skills/code-review-and-quality/SKILL.md",
+      "lines": "16-38",
+      "line_count": 39,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F01",
+      "path": "skills/security-and-hardening/SKILL.md",
+      "lines": "17-40",
+      "line_count": 40,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F01",
+      "path": "shared/references/test-discipline.md",
+      "lines": "136-147",
+      "line_count": 147,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F01",
+      "path": "tests/code-quality-skills.test.mjs",
+      "lines": "119-129,233-268",
+      "line_count": 314,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F02",
+      "path": "skills/doubt-driven-development/SKILL.md",
+      "lines": "26-44",
+      "line_count": 44,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F02",
+      "path": "tests/code-quality-skills.test.mjs",
+      "lines": "147-172",
+      "line_count": 314,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F02",
+      "path": "tests/fixtures/code-quality/doubt-driven-development/scenarios.json",
+      "lines": "75-97",
+      "line_count": 141,
+      "passed": true
+    },
+    {
+      "finding_id": "P03-F02",
+      "path": "shared/references/workflow-state-access.md",
+      "lines": "118-129",
+      "line_count": 129,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts",
+      "lines": "39-91,269-300",
+      "line_count": 353,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/requirements.ts",
+      "lines": "16,80-104",
+      "line_count": 170,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/reviews.ts",
+      "lines": "249-267",
+      "line_count": 317,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts",
+      "lines": "3-8",
+      "line_count": 9,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-structured-changes.test.mjs",
+      "lines": "45-58,157-231",
+      "line_count": 232,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs",
+      "lines": "100-129",
+      "line_count": 254,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/review-model.ts",
+      "lines": "11-18",
+      "line_count": 87,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts",
+      "lines": "179-236",
+      "line_count": 353,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/reviews.ts",
+      "lines": "249-267",
+      "line_count": 317,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "lines": "162-181,388-404",
+      "line_count": 445,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/review-followup.ts",
+      "lines": "339-350",
+      "line_count": 353,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-full-consistency.test.mjs",
+      "lines": "170-195",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P06-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs",
+      "lines": "159-177",
+      "line_count": 238,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "2515-2546",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "lines": "18-92",
+      "line_count": 336,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F01",
+      "path": "shared/references/product-workflow.md",
+      "lines": "207-217",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "1053-1077,1653-1656",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "861-866,2525-2536",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-recheck.test.mjs",
+      "lines": "45-90,252-268",
+      "line_count": 494,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "888-936,939-975,1026-1040,2431-2471,2497-2499",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "820-866",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts",
+      "lines": "25-53,425-438",
+      "line_count": 808,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+      "lines": "878-891",
+      "line_count": 1205,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/server.ts",
+      "lines": "137-153",
+      "line_count": 156,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs",
+      "lines": "15-27,59-104,106-122",
+      "line_count": 162,
+      "passed": true
+    },
+    {
+      "finding_id": "P07-F03",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "lines": "215-239",
+      "line_count": 336,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "lines": "131-139,162-168,388-420",
+      "line_count": 445,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/ledger.ts",
+      "lines": "67-108,158-218,277-339,370-376",
+      "line_count": 413,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-01",
+      "path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs",
+      "lines": "249-393",
+      "line_count": 393,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts",
+      "lines": "96-110,642-701,893-1012",
+      "line_count": 1272,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts",
+      "lines": "1015-1037",
+      "line_count": 1272,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-02",
+      "path": "shared/schemas/product.schema.json",
+      "lines": "1059-1094,1250-1278",
+      "line_count": 10686,
+      "passed": true
+    },
+    {
+      "finding_id": "P08-02",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs",
+      "lines": "120-218,275-291",
+      "line_count": 459,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/definition.ts",
+      "lines": "393-455",
+      "line_count": 963,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/technical.ts",
+      "lines": "373-443",
+      "line_count": 897,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/documents.ts",
+      "lines": "401-404,534-639,922-955",
+      "line_count": 1303,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/roadmap.ts",
+      "lines": "405-479",
+      "line_count": 1505,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-definition.test.mjs",
+      "lines": "507-558",
+      "line_count": 715,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs",
+      "lines": "573-658",
+      "line_count": 658,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs",
+      "lines": "125-142",
+      "line_count": 162,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F02",
+      "path": "shared/references/product-workflow.md",
+      "lines": "72-81",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tasks.ts",
+      "lines": "1231-1315",
+      "line_count": 1751,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs",
+      "lines": "1047-1118",
+      "line_count": 1172,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+      "lines": "190-192,432-473,504-532,679-713",
+      "line_count": 1007,
+      "passed": true
+    },
+    {
+      "finding_id": "P09-F03",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs",
+      "lines": "365-379,415-430",
+      "line_count": 494,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/decisions.ts",
+      "lines": "10-23,79-162",
+      "line_count": 173,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/requirements.ts",
+      "lines": "46-77",
+      "line_count": 170,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/experience.ts",
+      "lines": "17-28",
+      "line_count": 161,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "lines": "124-129,185-194,377-438",
+      "line_count": 445,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs",
+      "lines": "95-173",
+      "line_count": 260,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs",
+      "lines": "119-170",
+      "line_count": 254,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F01",
+      "path": "packages/engineer-agent-workflow-mcp/src/planning.ts",
+      "lines": "28-63",
+      "line_count": 232,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/checks.ts",
+      "lines": "20-30,84-106",
+      "line_count": 109,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/design.ts",
+      "lines": "77-91",
+      "line_count": 92,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F02",
+      "path": "packages/engineer-agent-workflow-mcp/src/catalog.ts",
+      "lines": "46-57",
+      "line_count": 98,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs",
+      "lines": "276-288",
+      "line_count": 378,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F02",
+      "path": "packages/engineer-agent-workflow-mcp/test/design-token-scope.test.mjs",
+      "lines": "33-105",
+      "line_count": 111,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/catalog.ts",
+      "lines": "64-70",
+      "line_count": 98,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F03",
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "lines": "55-66",
+      "line_count": 445,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F03",
+      "path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs",
+      "lines": "215-233",
+      "line_count": 378,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F04",
+      "path": "packages/engineer-agent-workflow-mcp/src/service.ts",
+      "lines": "162-189,300-326",
+      "line_count": 344,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F04",
+      "path": "packages/engineer-agent-workflow-mcp/src/requirements.ts",
+      "lines": "28-37,80-119",
+      "line_count": 170,
+      "passed": true
+    },
+    {
+      "finding_id": "P10-F04",
+      "path": "packages/engineer-agent-workflow-mcp/test/source-service.test.mjs",
+      "lines": "115-169",
+      "line_count": 222,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/review.ts",
+      "lines": "1759-1764,1774-1812,2501-2546",
+      "line_count": 3220,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/response-budget.ts",
+      "lines": "3-8",
+      "line_count": 9,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/server.ts",
+      "lines": "77-79,137-152",
+      "line_count": 156,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/context.ts",
+      "lines": "958-1002",
+      "line_count": 1007,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/test/review-read-efficiency.test.mjs",
+      "lines": "119-129",
+      "line_count": 254,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-01",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-review-efficiency.test.mjs",
+      "lines": "172-212",
+      "line_count": 336,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/runtime-info.ts",
+      "lines": "25-50,64-92",
+      "line_count": 92,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/state.ts",
+      "lines": "122-139",
+      "line_count": 445,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/schemas.ts",
+      "lines": "71-129",
+      "line_count": 130,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/product/tools.ts",
+      "lines": "101-106,129-172",
+      "line_count": 1205,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/src/server.ts",
+      "lines": "21-31",
+      "line_count": 156,
+      "passed": true
+    },
+    {
+      "finding_id": "P14-02",
+      "path": "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs",
+      "lines": "62-159",
+      "line_count": 243,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "scripts/build-dev.mjs",
+      "lines": "212-237",
+      "line_count": 320,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "package.json",
+      "lines": "24-28",
+      "line_count": 34,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "scripts/generate.mjs",
+      "lines": "39-79",
+      "line_count": 122,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "scripts/validate.mjs",
+      "lines": "134-198,201-223",
+      "line_count": 233,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "scripts/lib/distribution.mjs",
+      "lines": "810-864",
+      "line_count": 1061,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "tests/dev-build.test.mjs",
+      "lines": "28-45,48-135",
+      "line_count": 148,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F1",
+      "path": "tests/packaging.test.mjs",
+      "lines": "387-400,497-534,563-632",
+      "line_count": 711,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-e2e.test.mjs",
+      "lines": "148-195",
+      "line_count": 240,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "scripts/qualify-product-workflows.mjs",
+      "lines": "211-223,273-307",
+      "line_count": 323,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+      "lines": "764-778,1116-1140",
+      "line_count": 1182,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+      "lines": "300-353",
+      "line_count": 1182,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+      "lines": "78-130,1144-1182",
+      "line_count": 1182,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+      "lines": "239-286,319-333",
+      "line_count": 355,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": ".github/workflows/lifecycle.yml",
+      "lines": "64-75",
+      "line_count": 75,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F2",
+      "path": ".github/workflows/workflow-reliability-qualification.yml",
+      "lines": "38-51",
+      "line_count": 51,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": "scripts/run-tests.mjs",
+      "lines": "7-54,152-204",
+      "line_count": 212,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": "tests/test-runner.test.mjs",
+      "lines": "12-49,51-79",
+      "line_count": 202,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": "packages/engineer-agent-workflow-mcp/test/support/product-e2e-harness.mjs",
+      "lines": "101-124,764-773",
+      "line_count": 1182,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+      "lines": "246-250,277-286,319-328",
+      "line_count": 355,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": ".github/workflows/workflow-reliability-qualification.yml",
+      "lines": "18-24,48-51",
+      "line_count": 51,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F3",
+      "path": "docs/local-development.md",
+      "lines": "48-70",
+      "line_count": 158,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "scripts/benchmark-product-review.mjs",
+      "lines": "7-14,29-66",
+      "line_count": 67,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "scripts/benchmark-roadmap-retirement.mjs",
+      "lines": "54-94,178-219",
+      "line_count": 220,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "packages/engineer-agent-workflow-mcp/src/runtime-info.ts",
+      "lines": "25-51,64-92",
+      "line_count": 92,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "packages/engineer-agent-workflow-mcp/test/runtime-identity.test.mjs",
+      "lines": "62-77,84-159",
+      "line_count": 243,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "packages/engineer-agent-workflow-mcp/test/packed-artifact.test.mjs",
+      "lines": "279-286",
+      "line_count": 355,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs",
+      "lines": "174-199",
+      "line_count": 199,
+      "passed": true
+    },
+    {
+      "finding_id": "P12-F4",
+      "path": "docs/local-development.md",
+      "lines": "73-84",
+      "line_count": 158,
+      "passed": true
+    }
+  ],
+  "output_privacy": [
+    {
+      "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.json",
+      "no_personal_absolute_paths": true,
+      "english_no_cyrillic": true,
+      "no_secret_literals": true
+    },
+    {
+      "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.md",
+      "no_personal_absolute_paths": true,
+      "english_no_cyrillic": true,
+      "no_secret_literals": true
+    },
+    {
+      "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01.json",
+      "no_personal_absolute_paths": true,
+      "english_no_cyrillic": true,
+      "no_secret_literals": true
+    },
+    {
+      "path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-source-drift.json",
+      "no_personal_absolute_paths": true,
+      "english_no_cyrillic": true,
+      "no_secret_literals": true
+    }
+  ],
+  "runtime_record_note": "Caller-supplied compact runtime record retained in value; original-language P12 strings are Unicode-escaped as supplied evidence, not authored synthesis prose. Actual provider events/tokens unavailable.",
+  "repairs_or_adjudications_required_for_retained_scope": [],
+  "unverified_broader_claims": [
+    {
+      "ids": [
+        "P02-F01"
+      ],
+      "area": "Cold-context confirmed candidate scope and actual-answer provenance retrieval",
+      "disposition": "Unverified broader API need; retain only unchanged-scope reuse when authoritative current evidence is already available. No new scope reader is promoted.",
+      "owner": "Product interview/context contract owner before an API proposal"
+    },
+    {
+      "ids": [
+        "P02-F03"
+      ],
+      "area": "General ready-source batching after candidate creation",
+      "disposition": "Unverified broader route excluded. Retained recommendation is only the existing matching ready-context pre-draft phase; never pass candidate context to the ready reader.",
+      "owner": "Product context owner if after-draft routing is later requested"
+    },
+    {
+      "ids": [
+        "P10-F01"
+      ],
+      "area": "Eliminating intermediate dependency observations",
+      "disposition": "Unverified consistency equivalence excluded. Preserve every current readDependency observation; reuse parsing by exact bytes/hash and strictness only.",
+      "owner": "Workflow storage/requirements contract owner before changing observation semantics"
+    },
+    {
+      "ids": [
+        "P08-02"
+      ],
+      "area": "Old-reader compatibility for revision-hint operation records",
+      "disposition": "Unresolved versioned storage design, not a backward-compatible optional-field claim. Benchmark-first research only.",
+      "owner": "Product operation storage owner if materiality is established"
+    }
+  ],
+  "output_hashes_sha256": {
+    "workflow-results.json": "385d3953e9f5480fef7258959ac74431bd741caec3616e9096e06bae937517a5",
+    "F01-source-drift.json": "f0115db124bab88261214500847c590aa20742c0613907344c65ceadcb99a211",
+    "audit.json": "cbe78ec5d93caec3d5c99a459393e0e160f5d9fa1e134ae1ab65e181f16b2e72",
+    "audit.md": "b62f07904dda55e31030ec1029a921aea57f235d3c4184022d9a34de4e89d968",
+    "F01.json": "f726d8d58c4179ed734750d5cf6cffba1bfbca9ff5efaf4c51097cd51a64f1b1"
+  },
+  "full_tests": "not run / unauthorized",
+  "build": "not run / unauthorized",
+  "generation": "not run / unauthorized",
+  "installation": "not run / unauthorized",
+  "benchmark": "not run / unauthorized",
+  "original_reports_preserved": true,
+  "non_audit_status_preserved": true,
+  "staged_index_preserved": true,
+  "final_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+  "reproducibility": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-synthesize.mjs is a one-shot audit assembler; it refuses to overwrite pre-existing outputs and must not be rerun against these files. It imports only Node standard-library APIs and executes only read-only Git status/identity commands."
+}

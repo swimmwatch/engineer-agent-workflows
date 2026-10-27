@@ -1,0 +1,12 @@
+{
+  "name": "process-efficiency-audit-20261026",
+  "description": "Read-only project-wide process audit with a bounded dynamic agent pool, targeted follow-ups, independent Sol verification and evidence synthesis.",
+  "whenToUse": "Explicit recommendation-only audit; replay with saved script, meta and arguments through the native Harness workflow tool.",
+  "phases": [
+    {"title":"Parallel audit","detail":"Fourteen independent component/aspect assignments; reuse every available bounded slot."},
+    {"title":"Targeted clarification","detail":"At most three report recoveries, confirmed transient retries or focused evidence clarifications, scheduled immediately per item."},
+    {"title":"Independent verification","detail":"Three connected review domains, each with source checks, deduplication and no-finding samples.","provider":"openai-codex","model":"gpt-6.1-sol"},
+    {"title":"Targeted adjudication","detail":"At most two focused independent dispute resolutions, without restarting the audit.","provider":"openai-codex","model":"gpt-6.1-sol"},
+    {"title":"Evidence synthesis","detail":"Check files, structured evidence, source drift and coverage; save final English reports.","provider":"openai-codex","model":"gpt-6.1-sol"}
+  ]
+}

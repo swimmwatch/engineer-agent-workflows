@@ -1,0 +1,300 @@
+{
+  "task_id": "P09",
+  "status": "complete",
+  "audit_type": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "actual_model_observable": "gpt-6.1-sol",
+    "model_evidence": "The active developer message identifies this coding agent as gpt-6.1-sol.",
+    "configured_provider": "openai-codex",
+    "provider_evidence": "Run inputs.json:4-6 records the configured provider and sol mapping. The child transport/provider was not independently exposed by a runtime tool; configuration is not an independently measured route receipt."
+  },
+  "assigned_aspects": ["B", "C", "D", "H"],
+  "assigned_coverage": [
+    "component:product-sessions-context",
+    "component:product-roadmap-tasks",
+    "component:product-documents-amendments"
+  ],
+  "actual_coverage": [
+    "component:product-sessions-context",
+    "component:product-roadmap-tasks",
+    "component:product-documents-amendments"
+  ],
+  "coverage_boundaries": {
+    "component:product-sessions-context": "Focused implementation inspection of session registry, dispatch/delivery/acknowledgement verification, revision/receipt guards, status and bounded recovery; context selection, transitive closure, historical decisions and source batching; interview scope/question/no-answer transitions and exact evidence replay. Not an exhaustive review of every validation branch.",
+    "component:product-roadmap-tasks": "Focused inspection of Roadmap snapshot reuse, authoring/dependency changes, task retirement recovery, binding identity resolution, reservation/copy, full input checks, packet start/completion, packet roots and paused/active reconciliation. Store initialization internals and safety transaction internals remain with P08.",
+    "component:product-documents-amendments": "Focused inspection of document snapshots, create/move/rename and direct-edit acceptance, definition/technical authoring preflight and mutation interfaces, amendment preparation/rebase and activation/status. Deep review inheritance is P07 ownership; generic storage/journal correctness is P08 ownership."
+  },
+  "method": {
+    "protocol_first": true,
+    "project_index_read": true,
+    "personal_tool_search_guide_read": true,
+    "additional_scoped_instructions": "No additional AGENTS.md found under packages, shared or skills; none applicable to this run directory found under docs.",
+    "exploration": "CodeGraph was used first for indexed source exploration, followed by focused reads of omitted regions and targeted source/test searches. Current source snippets were treated as reads, not stale symbol inventories.",
+    "managed_yaml": "No live managed YAML was read or parsed. Test source containing fixture readers was inspected, not executed. No live product state was opened; scenario tool discovery was unnecessary.",
+    "execution": "No audited skill, verifier, generator, installation, publishing, commit, push, build, benchmark or test was run. Source and test inspection is the verification basis.",
+    "preservation": "Initial working directory and dirty-tree inventory were observed with rtk proxy pwd and rtk git status --short; both completed successfully. Only this unique report is written by P09.",
+    "measurements": "No end-to-end timings, model tokens or savings were measured. Source-derived operation counts and algorithm structure are not runtime performance measurements. Existing timing assertions/diagnostics were inspected but not adopted as fresh measurements."
+  },
+  "inspected_paths": [
+    {"path":"docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md","lines":[[1,43]],"role":"audit constraints"},
+    {"path":"docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json","lines":[[1,66]],"role":"assignment and configured route"},
+    {"path":"docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/baseline.json","lines":[[1,65]],"role":"source-hash baseline; final comparison may read this JSON structurally"},
+    {"path":"docs/index.md","lines":[[1,19]],"role":"project map"},
+    {"path":"catalog/skills.json","lines":[[1,22]],"role":"current skill inventory; not managed YAML"},
+    {"path":"shared/references/workflow-state-access.md","lines":[[1,129]],"role":"source reuse, authority and recovery guarantees"},
+    {"path":"shared/references/product-workflow.md","lines":[[1,240]],"role":"canonical product routing and reconciliation guidance"},
+    {"path":"shared/references/implementation-context.md","lines":[[65,115]],"role":"batch consumption and frozen packet context"},
+    {"path":"skills/product-definition/SKILL.md","lines":[[1,56]],"role":"transition caller context only; semantic skill audit belongs to P02"},
+    {"path":"skills/technical-design/SKILL.md","lines":[[1,22]],"role":"transition caller context only; semantic skill audit belongs to P02"},
+    {"path":"skills/product-roadmap/SKILL.md","lines":[[1,21]],"role":"transition caller context only; semantic skill audit belongs to P02"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/sessions.ts","lines":[[1,596]],"role":"session orchestration, delivery and recovery"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/context.ts","lines":[[16,22],[26,37],[237,283],[394,425],[432,713],[783,789],[845,1007]],"role":"focused exact context and batch flow"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/interview.ts","lines":[[565,704],[782,1193]],"role":"evidence replay identity, draft, scope and actual-answer transitions"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/documents.ts","lines":[[209,230],[241,296],[320,332],[401,406],[565,642],[698,1010],[1022,1303]],"role":"document snapshot, mutation, movement and direct-edit acceptance"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/definition.ts","lines":[[393,457],[698,874]],"role":"definition authoring preflight and replay/mutation boundary"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/technical.ts","lines":[[373,445],[691,895]],"role":"technical authoring preflight and replay/mutation boundary"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/roadmap.ts","lines":[[405,481],[1063,1189],[1222,1350]],"role":"existing snapshot reuse, dependencies and exact retirement recovery"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/tasks.ts","lines":[[388,426],[461,492],[895,1137],[1169,1229],[1231,1511],[1691,1751]],"role":"binding, input checks, bounded details, reconciliation and packet transitions"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/bindings.ts","lines":[[449,515],[796,861]],"role":"explicit workspace identity and binding resolution"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/review.ts","lines":[[1835,1958],[2079,2186],[2497,2547],[3037,3220]],"role":"amendment interfaces and activation/status; not deep review audit"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/storage.ts","lines":[[1,100],[608,703],[797,808]],"role":"existing request-local reuse and pin-verification interfaces only"},
+    {"path":"packages/engineer-agent-workflow-mcp/src/product/tools.ts","lines":[[192,315],[664,712],[1092,1117]],"role":"published source batch and active reconciliation wiring"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-context.test.mjs","lines":[[1,300],[321,430]],"role":"source batch, query identity, Unicode, packet closure and timing diagnostic contracts"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-sessions.test.mjs","lines":[],"inspection":"Test-name and focused content search only; not the complete test bodies.","role":"regression inventory for session boundaries"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs","lines":[[1,286]],"role":"lost response, owner evidence, corruption and real cancellation test source"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs","lines":[[972,1151]],"role":"reconciliation positive, replay, provenance and owner-negative tests; additional test-name search"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-documents.test.mjs","lines":[[208,261],[386,471]],"role":"move identity and explicit observed direct-edit provenance tests; additional test-name search"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-definition.test.mjs","lines":[[507,559]],"role":"member-order replay, sensitive input and CRLF tests; additional test-name search"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs","lines":[[573,658]],"role":"PRD prerequisite, foreign refs and stale-context no-write tests; additional test-name search"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs","lines":[[422,455]],"role":"impact and explicit no-overlap rebase test; additional test-name search"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-roadmap.test.mjs","lines":[],"inspection":"Focused recovery/activation/replay search only; not the complete test bodies.","role":"recovery regression inventory"},
+    {"path":"packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs","lines":[[78,129]],"role":"lost-activation acknowledgement and scoped immutable reuse test source"}
+  ],
+  "findings": [
+    {
+      "id": "P09-F01",
+      "component": "component:product-documents-amendments",
+      "title": "Reuse the existing validated document snapshot in Definition and Technical Design preflight",
+      "priority": "medium",
+      "aspects": ["B", "C", "H"],
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; runtime cost and end-to-end benefit are unmeasured.",
+      "evidence": [
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/definition.ts","lines":[393,455],"observation":"loadState calls listProductDocuments(limit:1), discards its validated snapshot, then reads the candidate, base generation, registry and every draft document again and parses those documents."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/technical.ts","lines":[373,443],"observation":"The same discarded-list preflight followed by full reload occurs for Technical Design."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/documents.ts","lines":[565,639],"observation":"Listing uses loadProductDocumentSnapshot; its loader reads all registered draft bytes, parses all documents, inventories the draft and validates membership before returning a reusable snapshot."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/documents.ts","lines":[922,934],"observation":"limit:1 limits the returned metadata, not the preceding full snapshot work."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/roadmap.ts","lines":[405,451],"observation":"Roadmap already consumes loadProductDocumentSnapshot and reuses candidateBytes, registry, documents and parsed documents while retaining its own identity and digest checks."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/storage.ts","lines":[25,52],"observation":"Existing reuse is scoped to the current read-only source audit, with clearing at transaction entry; it is not an across-operation cache."}
+      ],
+      "current_execution_path": "defineElement or defineTechnicalElement -> exact operation replay lookup -> loadState -> listProductDocuments -> full document snapshot -> discard snapshot -> second local load/parse -> semantic/provenance validation -> existing runProductMutation owner.",
+      "existing_optimizations": [
+        "Deterministic replay is attempted before authoring preflight.",
+        "Document snapshots and read-scope parsing reuse already exist.",
+        "Roadmap supplies an implemented local pattern for snapshot consumption; no new generic cache or API is needed.",
+        "Definition and Technical Design mutation target lists already exclude byte-identical draft documents; do not claim they rewrite every document."
+      ],
+      "unnecessary_work": "A successful authoring preflight processes the complete candidate document set through the list path, then repeats candidate/document reads and Markdown parsing in the same owning preflight. This is different from mandatory fresh validation at transaction entry or subsequent requests.",
+      "reproducible_scenario": "Use an isolated valid candidate with several registered documents and confirmed scope. Call one existing prd_define_* or technical_define_* tool with valid current provenance and subject. Instrument candidate/draft reads and parseProductDocument at the caller boundary. Observe the list path and the subsequent loadState loop processing the same unchanged sources. Repeat with a multi-document candidate to assess scaling. No such experiment was executed by P09.",
+      "minimal_recommendation": "Replace the discarded listProductDocuments call with the existing loadProductDocumentSnapshot and reuse its candidate bytes, registry, document bytes and parsed Markdown inside the same loadState invocation, following Roadmap's existing pattern. Retain artifact-specific registry, digest, identity, semantic-type, upstream and provenance validation. Do not broaden the snapshot lifetime or bypass transaction-boundary checks.",
+      "expected_qualitative_effect": "Less duplicate filesystem and Markdown work for each semantic authoring call, particularly multi-document candidates. It does not reduce explicit questions, independent review or transaction checks, and may be modest when model work dominates.",
+      "confidence": {"source_path":"high","runtime_impact":"unmeasured; plausible, size-dependent"},
+      "guarantees": {
+        "correctness": "Keep document inventory/membership validation, all artifact-specific checks and exact source digests. Do not substitute metadata-only listing for source validation.",
+        "compatibility": "No published MCP inputs, outputs, IDs or artifacts need change. Preserve existing stale-context and direct-edit rejection semantics.",
+        "state": "The snapshot is one preflight-owned value; mutable draft paths must not enter a global or persistent cache.",
+        "recovery": "Keep exact original intent/replay lookup and fresh mutation target verification. Sharing preflight evidence must not reuse it across recovery attempts or lock acquisition.",
+        "security": "Preserve regular-file, path, link and source-limit guards and sensitive-input screening. Untrusted source text remains data, not authority."
+      },
+      "measurement_plan": "In a separately authorized isolated regression, compare current and candidate preflight read/parse counts for small and multi-document fixtures. Time server-only wall/CPU work separately from model/tool round trips. Require byte-identical successful result/operation identity and the same rejection/no-write behavior for stale candidate, direct edit, unregistered file, foreign provenance, corrupt retained object and CRLF inputs. Reuse the current definition/technical tests and add an instrumented snapshot-consumption check. Never report a percentage from this source inspection.",
+      "complexity": "Small-to-medium internal refactor across two loaders plus focused regression instrumentation; no schema or dependency addition.",
+      "dependencies": ["Existing loadProductDocumentSnapshot in documents.ts", "Artifact-specific types and validators in definition.ts and technical.ts", "P08 review of transaction freshness boundary if implementation is later authorized"],
+      "needs_clarification": false,
+      "deduplication_note": "This concerns two concrete caller-side discarded snapshots, not a general storage cache proposal. Merge with a P08 recommendation only if it targets these same caller paths."
+    },
+    {
+      "id": "P09-F02",
+      "component": "component:product-roadmap-tasks",
+      "title": "Document the implemented owner-authorized active-queue reconciliation path",
+      "priority": "medium",
+      "aspects": ["B", "D", "H"],
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed instruction/implementation mismatch; frequency and resulting wasted work are not measured.",
+      "evidence": [
+        {"path":"shared/references/product-workflow.md","lines":[72,81],"observation":"The canonical guide describes only paused replanning and says reconciliation rejects a running owner without mentioning its implemented current-owner exception."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/tools.ts","lines":[1103,1114],"observation":"The published tool description explicitly supports recovery of an active queue with current owner_ref; the adapter passes owner_ref to reconcileTaskInputs."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/tasks.ts","lines":[1262,1289],"observation":"An active transition is allowed only with matching current owner in both bindings and retention of the current packet; fresh check identity and readiness are still enforced."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/tasks.ts","lines":[1291,1315],"observation":"Prior binding is archived; the result is planned, clears current owner/frozen inputs/progress and requires a separate subsequent implementation invocation."},
+        {"path":"packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs","lines":[1047,1118],"observation":"Existing tests specify active-owner queue restoration, exact replay, archived binding identity, invalidated old completion owner, fresh restart and published MCP availability."},
+        {"path":"packages/engineer-agent-workflow-mcp/test/product-task-pins.test.mjs","lines":[1079,1099],"observation":"Negative cases retain missing/wrong owner, mismatched bindings, omitted current packet and stale-check no-write guarantees."}
+      ],
+      "current_execution_path": "The reader reaches canonical product-workflow guidance, may conclude that a started task cannot be reconciled, while the callable task_inputs_reconcile contract implements an explicit current-owner recovery branch. Without owner_ref the implementation correctly blocks ownership takeover.",
+      "existing_optimizations": [
+        "Active-queue restoration is already implemented; no new recovery tool is warranted.",
+        "The tool description already communicates the exception correctly.",
+        "Exact check_ref, packet set, invocation provenance, prior-binding archive and exact replay avoid a blind reset or fabricated task completion."
+      ],
+      "unnecessary_work": "Conflicting instructions can cause an agent to stop unnecessarily or attempt to complete/restart a task merely to restore the remaining packet queue, despite an existing bounded transition. This is a potential workflow consequence, not a measured incident.",
+      "reproducible_scenario": "Use the existing activeTaskForReconciliation fixture scenario: current P01 owner needs to restore the P01/P02 queue without completing the task. Compare product-workflow.md's unconditional running-owner rejection with task_inputs_reconcile's published description and the successful owner_ref test. The mismatch is directly reproducible by static comparison; no live state was mutated.",
+      "minimal_recommendation": "Update only the canonical reconciliation paragraph to distinguish paused replanning from separately explicit active-queue recovery by the exact current owner. Explain owner_ref, matching shared/local ownership, retention of the active packet, archival/reset effects, fresh checks and separate restart authority. Do not tell another actor to obtain or synthesize an owner token. Regenerate distributed copies only in a separately authorized implementation task.",
+      "expected_qualitative_effect": "Fewer avoidable blocked recovery conversations and less temptation to use completion as a queue-repair mechanism. No additional automatic authority and no reduction of mandatory validation.",
+      "confidence": {"source_mismatch":"high","workflow_frequency_and_cost":"unmeasured"},
+      "guarantees": {
+        "correctness": "Describe the current branch exactly; do not weaken safety/review/recovery issue gates or omit current-packet retention.",
+        "compatibility": "Documentation alignment only; no behavior or schema change is necessary.",
+        "state": "Disclose that reconciliation archives the previous execution binding and resets active progress; it is not a no-op queue edit.",
+        "recovery": "Only the current exact owner can use active recovery. Missing/mismatched owner and stale check remain blockers; old completion ownership does not remain valid after reconciliation.",
+        "security": "Owner_ref is not authenticated human consent. Actual explicit invocation provenance and existing identity validation remain mandatory; do not infer permission from possession of references."
+      },
+      "measurement_plan": "Add a focused documentation/contract consistency regression and retain existing active-owner positive/negative tests. In a later simulated actor study, present a valid active-queue repair task and count unnecessary completion attempts, clarification turns and unsupported recovery attempts before/after the wording change. Separate actual outcomes from hypothetical savings.",
+      "complexity": "Small canonical documentation change and narrow consistency test; normal generation/fidelity checks belong to the separately authorized follow-up, not this audit.",
+      "dependencies": ["Current task_inputs_reconcile contract and its owner_ref branch", "Canonical shared product-workflow reference", "P02/P13 deduplication for instruction/documentation ownership"],
+      "needs_clarification": false,
+      "deduplication_note": "Implementation is already present and tested. Do not convert this into a request for another recovery API or a general relaxation of running-owner guards."
+    },
+    {
+      "id": "P09-F03",
+      "component": "component:product-sessions-context",
+      "title": "Index outgoing relations once per task-context selection instead of rescanning all edges",
+      "priority": "low",
+      "aspects": ["C", "H"],
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed repeated traversal work; practical performance benefit and priority remain unmeasured.",
+      "evidence": [
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/context.ts","lines":[442,473],"observation":"For each newly selected task/root reference, collectContext scans every state.relations entry and compares its from ref before enqueuing outgoing targets. It also shifts the pending array."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/context.ts","lines":[679,709],"observation":"Both initial selection and every context continuation independently reconstruct the source closure; no persistent closure cache exists."},
+        {"path":"packages/engineer-agent-workflow-mcp/test/product-context.test.mjs","lines":[365,379],"observation":"Packet-root regression establishes required task identity, dependency closure, provenance and global-policy inclusion."},
+        {"path":"packages/engineer-agent-workflow-mcp/src/product/context.ts","lines":[504,532],"observation":"The final inventory groups exact document elements, adds provenance decisions and sorts pins; traversal must preserve this selected source set."}
+      ],
+      "current_execution_path": "prepareProductContext/readContextPage -> load exact generation -> collectContext -> traverse task/packet roots -> for every newly selected reference scan all relations -> add global constraints -> group document pins and provenance -> deterministic bounded page.",
+      "existing_optimizations": [
+        "Selected-ref deduplication prevents re-expanding already selected graph nodes.",
+        "Packet planning roots can narrow semantic closure while retaining task identity, provenance and global policies.",
+        "Generation, parsed-document and pin-verification reuse are already local to LoadedState in exact source reads.",
+        "Source limits and deterministic pagination are retained rather than caching a mutable cross-request closure."
+      ],
+      "unnecessary_work": "The visible task branch performs a complete relation-array scan for each selected node, including edges unrelated to that node. For a reachable closure of R nodes and E total relations this part performs up to R full scans of E, even though one ordered outgoing adjacency map is enough. This is algorithm structure, not measured latency.",
+      "reproducible_scenario": "Construct an isolated valid generation with a chain or fan-out task closure plus unrelated edges, all within current bounds. Request task context with a small page budget and traverse all continuations. Instrument relation comparisons for increasing reachable-node and total-edge counts; compare exact returned pin/page inventories. P09 did not execute this experiment.",
+      "minimal_recommendation": "Within one task-branch collectContext invocation, build an outgoing map keyed by the full refKey while preserving original relation order, then enqueue that node's targets only. Use a monotonically increasing queue index if warranted by the same measurement. Keep every relation kind currently traversed; do not silently restrict closure to depends_on. No new public API, persistent index or global cache is necessary.",
+      "expected_qualitative_effect": "Less CPU work for large connected task closures and repeated pages. Small closures may not benefit because map construction also has a cost; benchmark before prioritizing implementation.",
+      "confidence": {"repeated_scans":"high","practical_impact":"unmeasured and workload-dependent"},
+      "guarantees": {
+        "correctness": "Preserve full product/artifact/element identities, relation order, all traversed relation kinds, deduplication, broken-reference errors, current bound checks, provenance and global policies. Do not reinterpret packet roots as permission to omit mandatory sources.",
+        "compatibility": "Require byte-identical deterministic pin ordering, page content and cursor progression for unchanged inputs. No schema change.",
+        "state": "Adjacency data is derived from the selected LoadedState for one call and discarded afterwards.",
+        "recovery": "Each new request and continuation still reloads/validates selected sources and rejects stale cursors; the recommendation does not cache across changed generations.",
+        "security": "Do not skip graph validation or trust foreign references because they were indexed. Existing source bounds, exact pins and untrusted-source handling remain unchanged."
+      },
+      "measurement_plan": "Compare relation comparisons, allocated bytes, server wall/CPU time and output equality across tiny, chain, fan-out, cyclic/duplicate-edge and unrelated-edge fixtures. Include packet roots, historical provenance, globals, pagination and broken/foreign references. Reuse existing product-context regressions and add equivalence/property checks. Evaluate model-inclusive task latency separately; claim no numeric savings until measured.",
+      "complexity": "Small local algorithm change plus focused equivalence/scale tests; O(E) temporary adjacency memory, bounded by the selected generation; no new dependency.",
+      "dependencies": ["Existing Ref/refKey identity", "Product context closure and deterministic page regressions", "Separate authorization for any benchmark or implementation"],
+      "needs_clarification": false,
+      "deduplication_note": "Scoped to collectContext's task branch. Do not generalize it into a persistent product graph service or conflate it with P08 object storage reuse."
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "id":"P09-N01",
+      "component":"component:product-sessions-context",
+      "check":"Session context/revision ownership and unknown outcomes already have explicit boundaries.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/sessions.ts:424-489", "packages/engineer-agent-workflow-mcp/src/product/sessions.ts:492-559", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:120-157", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:222-283"],
+      "conclusion":"Do not propose generic automatic retry, claim deletion or blind recovery. Current dispatch checkpoints identity before the effect, rejects replacement requests while unknown and grants only the supported completed-evidence replay contract one durable attempt. Real crash/cancel tests deliberately retain uncertain claims and remain blocked. These are guarantees, not unnecessary overhead.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N02",
+      "component":"component:product-sessions-context",
+      "check":"Delivery and receipt verification must not be removed as redundant reads.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/sessions.ts:212-219", "packages/engineer-agent-workflow-mcp/src/product/sessions.ts:235-347", "packages/engineer-agent-workflow-mcp/src/product/sessions.ts:358-388", "packages/engineer-agent-workflow-mcp/src/product/sessions.ts:562-579"],
+      "conclusion":"The wrapper validates source coverage/continuation progress and compares acknowledgements against owning source readers before releasing completion/receipts. It gates dependent calls until full delivery. A larger session delivery size or batch registration could be a future benchmark, but no finding is asserted: full wire budgets, exact delivery and same-session receipt guarantees would require contract-level work. Direct source batch tools already provide an alternative outside this wrapper.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N03",
+      "component":"component:product-sessions-context",
+      "check":"Exact source batching and actor-local reuse are implemented and already routed for implementation.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/context.ts:958-1007", "packages/engineer-agent-workflow-mcp/src/product/context.ts:267-283", "packages/engineer-agent-workflow-mcp/src/product/context.ts:879-938", "shared/references/implementation-context.md:75-100", "shared/references/workflow-state-access.md:116-129", "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs:200-260", "packages/engineer-agent-workflow-mcp/test/product-context.test.mjs:263-300"],
+      "conclusion":"No recommendation to add a new sources batch API, global cache or immediate redundant task_inputs_check. Existing batching shares LoadedState, binds continuation to ordered requests/context/version, checks full response budgets and distinguishes batch completeness from each item's completeness. Exact reuse is explicitly actor/context/version/portion scoped. Existing implementation guidance already prefers it.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N04",
+      "component":"component:product-sessions-context",
+      "check":"Interview scope and no-answer transitions preserve actual decision evidence.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/interview.ts:782-835", "packages/engineer-agent-workflow-mcp/src/product/interview.ts:997-1031", "packages/engineer-agent-workflow-mcp/src/product/interview.ts:1087-1191", "shared/references/product-workflow.md:126-149"],
+      "conclusion":"Resume returns an unresolved saved question and its options/no-answer outcome rather than generating another answer. Scope confirmation requires the exact answered affirmative proposal lineage. Do not merge prepare/answer/confirm into implicit consent or remove no-answer checkpoints to save calls. Native tools authenticate neither human identity nor independent consent; preserve provenance limitations.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N05",
+      "component":"component:product-roadmap-tasks",
+      "check":"Packet context narrows semantic consumption without narrowing frozen input verification.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/tasks.ts:1050-1136", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:1347-1385", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:1404-1495", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:1691-1750", "shared/references/product-workflow.md:53-70", "shared/references/implementation-context.md:75-100"],
+      "conclusion":"The current implementation already supplies bounded check summaries/details, exact packet roots, pinned generation reuse, full validation on start/completion, one current owner and all-frozen-plan completion accounting. Proposed shortcuts must not validate only the displayed packet roots or treat a planned state as absence of frozen execution inputs. No need for another startup check immediately after unchanged context selection.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N06",
+      "component":"component:product-roadmap-tasks",
+      "check":"Binding and reservation avoid implicit enrollment or fuzzy product guessing.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/bindings.ts:449-513", "packages/engineer-agent-workflow-mcp/src/product/bindings.ts:796-859", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:461-479", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:895-1047"],
+      "conclusion":"Bindings use canonical workspace/Git identity plus explicit registration and shared/local logical specification identities. Reservation requires an absent target and collision guards. Do not replace validation scans with name/remote matching or enroll arbitrary existing specifications as an efficiency measure. Deep catalog lock/recovery internals were not claimed as covered.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N07",
+      "component":"component:product-roadmap-tasks",
+      "check":"Dependency changes and retirement keep answered provenance, active-consumer and task-binding guards.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/roadmap.ts:1154-1187", "packages/engineer-agent-workflow-mcp/src/product/roadmap.ts:1222-1347", "packages/engineer-agent-workflow-mcp/src/product/tasks.ts:411-424", "shared/references/product-workflow.md:153-173"],
+      "conclusion":"Existing exact resume uses the original operation/context/intent and before/after target evidence; unknown target bytes block recovery. Retirement checks consumers, declared recipients and binding compatibility and changes only the candidate before review/activation. No combined unlink/retire/activate shortcut is recommended, because it would alter ownership, transaction and review boundaries.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N08",
+      "component":"component:product-documents-amendments",
+      "check":"Document movement/direct-edit acceptance preserve stable IDs and observed-source provenance.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/documents.ts:1022-1140", "packages/engineer-agent-workflow-mcp/src/product/documents.ts:1143-1303", "packages/engineer-agent-workflow-mcp/src/product/documents.ts:702-723", "packages/engineer-agent-workflow-mcp/test/product-documents.test.mjs:208-259", "packages/engineer-agent-workflow-mcp/test/product-documents.test.mjs:386-470"],
+      "conclusion":"Move is already multi-element, preserves addressed identities and exact blocks; applyChange skips byte-identical targets. Direct edits require exact observed digest, a candidate instruction reference and no unresolved edits in other documents. Accepting edits does not assert readiness. Do not bypass inspect/accept provenance or claim all listed targets are rewritten. The all-document target/save loops may warrant a separate transaction-aware benchmark, but no recommendation to narrow them is made here without proving unchanged dependency coverage.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N09",
+      "component":"component:product-documents-amendments",
+      "check":"Amendment preparation, rebase and activation already have exact bounded recovery paths.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/review.ts:1835-1958", "packages/engineer-agent-workflow-mcp/src/product/review.ts:2079-2185", "packages/engineer-agent-workflow-mcp/src/product/review.ts:3041-3190", "packages/engineer-agent-workflow-mcp/src/product/review.ts:3193-3219", "packages/engineer-agent-workflow-mcp/test/product-amendments.test.mjs:422-454", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:78-96", "shared/references/product-workflow.md:89-124"],
+      "conclusion":"Preparation has deterministic replay and bounded retirement participation, avoiding another interview merely to recreate an accepted instruction. Rebase requires an answered reconciliation decision and rejects overlapping structure/decision changes. Activation supports a coherent set of one to four candidates with corresponding current review, publishes one generation and has read-only exact-request status separating published generation from later head. The existing lost-acknowledgement flow is sufficient; do not add a generic activation retry wrapper or silently reopen a changed intention. Activation deliberately stays outside logical sessions.",
+      "classification":"source-confirmed"
+    },
+    {
+      "id":"P09-N10",
+      "component":"component:product-documents-amendments",
+      "check":"Existing reuse/replay mechanisms are recognized rather than superseded.",
+      "evidence":["packages/engineer-agent-workflow-mcp/src/product/storage.ts:25-52", "packages/engineer-agent-workflow-mcp/src/product/storage.ts:797-807", "packages/engineer-agent-workflow-mcp/src/product/definition.ts:698-725", "packages/engineer-agent-workflow-mcp/src/product/technical.ts:691-722", "packages/engineer-agent-workflow-mcp/test/product-definition.test.mjs:507-557", "packages/engineer-agent-workflow-mcp/test/product-technical.test.mjs:573-658", "packages/engineer-agent-workflow-mcp/test/product-retirement-efficiency.test.mjs:117-128"],
+      "conclusion":"Current source has scoped immutable reads and explicit clearing at transaction entry, deterministic semantic-operation replay, byte-preserving CRLF rendering and no-write negative checks. These preclude recommending a global memoizer or weakening fresh mutation verification. F01 reuses an already-owned snapshot, not cached mutable state across operations.",
+      "classification":"source-confirmed"
+    }
+  ],
+  "validation": {
+    "report_json": "passed: parsed as JSON; task/status/coverage and all required recommendation fields checked; 3 findings and 10 no-finding checks",
+    "citation_ranges": "passed: finding citations, no-finding citations and inspected source ranges resolve to existing files and in-bounds lines",
+    "source_drift": "passed: all 30 inspected non-run-artifact files matched their baseline.json SHA-256 values at final comparison; no missing baseline entries",
+    "artifact_safety": "passed: report contains no personal absolute paths or credential-pattern matches; only this report was written",
+    "validation_command": "rtk proxy python3 inline deterministic report/citation/hash validation completed successfully; no application code or tests were invoked", 
+    "tests": "not run: prohibited for P09",
+    "benchmarks": "not run: recommendation-only source inspection",
+    "commands": [{"command":"rtk proxy pwd && rtk git status --short","outcome":"success; confirmed workspace and observed pre-existing tracked/untracked changes"}]
+  },
+  "limitations": [
+    "No current runtime benchmark, timings, model token accounting or scenario execution; all findings are source-confirmed opportunities, not measured savings.",
+    "Test source was inspected, not executed. Several fixtures create Git commits or mutate isolated stores, reinforcing the prohibition on running them in this assignment.",
+    "P07 owns deep product review/inheritance; P08 owns storage, transaction locks and journal internals. Their interfaces were inspected only as needed for this task. P02 owns the complete canonical product-skill semantic audit and P11 owns distribution fidelity.",
+    "The configured route comes from run inputs and the active model identification. A separate child provider transport receipt was not available.",
+    "One CodeGraph call failed because projectPath incorrectly named a file rather than a directory. This was a non-transient invocation error, not an audit result. It was not retried; focused native file reads supplied the missing document flow evidence. No shared index was rebuilt or modified.",
+    "No managed YAML or live product state was semantically accessed, so there is no claim about a particular installed product's state or recovery outcome.",
+    "Focused ranges and test-name-only searches are explicitly distinguished from fully read files. Coverage is component-flow coverage, not exhaustive line coverage."
+  ],
+  "transient_evidence": "",
+  "coverage_gaps": [],
+  "next_action": "No implementation or runtime experiment is authorized by this report. Independent verification should validate these recommendations against current source and deduplicate overlaps before synthesis."
+}

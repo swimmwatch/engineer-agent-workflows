@@ -1,0 +1,9 @@
+{
+  "audit_dir": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad",
+  "provider": "openai-codex",
+  "luna": "gpt-6-luna",
+  "sol": "gpt-6.1-sol",
+  "concurrency": 8,
+  "repair_budget": 3,
+  "adjudication_budget": 2
+}

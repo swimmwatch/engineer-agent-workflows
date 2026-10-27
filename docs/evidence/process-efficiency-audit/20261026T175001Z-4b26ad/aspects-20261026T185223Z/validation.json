@@ -1,0 +1,144 @@
+{
+  "status": "fail",
+  "captured_at": "2026-10-26T19:01:27.209782+00:00",
+  "kind": "Documentation-only regrouping validation, not behavioral tests",
+  "aspect_notes": 12,
+  "markdown_files_including_index": 13,
+  "assigned_findings": 27,
+  "distinct_families": 26,
+  "current_skills_indexed": 17,
+  "checked_links": 360,
+  "baseline_counts": {
+    "baseline.json": 447,
+    "distribution-baseline.json": 459
+  },
+  "source_drift": [],
+  "original_audit_hash_mismatches": [],
+  "head_preserved": true,
+  "non_audit_status_preserved": false,
+  "finding_owners": {
+    "01-ready-source-batching.md": [
+      "P01-001",
+      "P02-F03"
+    ],
+    "02-product-authoring-context.md": [
+      "P02-F01",
+      "P02-F02",
+      "P09-F01"
+    ],
+    "03-design-planning-and-catalog.md": [
+      "P01-002",
+      "P10-F02",
+      "P10-F03"
+    ],
+    "04-code-security-and-adversarial-review.md": [
+      "P03-F01",
+      "P03-F02"
+    ],
+    "05-specification-review-mcp.md": [
+      "P06-F01",
+      "P06-F02"
+    ],
+    "06-product-review-mcp.md": [
+      "P07-F01",
+      "P07-F02",
+      "P07-F03",
+      "P14-01"
+    ],
+    "07-task-execution-and-context.md": [
+      "P09-F02",
+      "P09-F03"
+    ],
+    "08-decisions-and-requirement-links.md": [
+      "P08-01",
+      "P10-F01",
+      "P10-F04"
+    ],
+    "09-mcp-schema-lifecycle.md": [
+      "P14-02"
+    ],
+    "10-development-verification-and-measurements.md": [
+      "P12-F1",
+      "P12-F2",
+      "P12-F4"
+    ],
+    "11-benchmark-first-research.md": [
+      "P08-02",
+      "P12-F3"
+    ],
+    "12-skills-without-proposed-changes.md": []
+  },
+  "documents": [
+    {
+      "name": "README.md",
+      "lines": 67,
+      "sha256": "c4c80e9de1d0917de0a4ad8686bc226566aa97bc449e3e33df891d8924408139"
+    },
+    {
+      "name": "01-ready-source-batching.md",
+      "lines": 89,
+      "sha256": "fa25da718ee2dca2cd0f56e8616c6d478dd9779c971202d170a579a2ab244757"
+    },
+    {
+      "name": "02-product-authoring-context.md",
+      "lines": 100,
+      "sha256": "eb429087bfc46715a669adc04009e5ef461a593b0b190b76c028f2888acf97c1"
+    },
+    {
+      "name": "03-design-planning-and-catalog.md",
+      "lines": 105,
+      "sha256": "c5999552c4342a9d069f480565c59eafbae17ec921a17492a9226b1ac312d1bb"
+    },
+    {
+      "name": "04-code-security-and-adversarial-review.md",
+      "lines": 111,
+      "sha256": "9dab1bb47327fab2c843c23ad0f39a6268e233812bd02fc0b26e57f714fc62e7"
+    },
+    {
+      "name": "05-specification-review-mcp.md",
+      "lines": 150,
+      "sha256": "544f5a9a08df2fc52d6eac0ff9caa93dd9c62a612e78dcd58063dfe44aba93b6"
+    },
+    {
+      "name": "06-product-review-mcp.md",
+      "lines": 174,
+      "sha256": "ca04b5f8d8ec1067db488f08028d2f69ce57f2a2572d5a305b299efa5b6015d0"
+    },
+    {
+      "name": "07-task-execution-and-context.md",
+      "lines": 157,
+      "sha256": "bc48e35b6ecb794ef17d4381d9be3e1bd6f8cf92fdf2a2bce2756b3d022297aa"
+    },
+    {
+      "name": "08-decisions-and-requirement-links.md",
+      "lines": 71,
+      "sha256": "ea6f601efefd44c76e4e6d5dc08a71044170fca4d3258eff89adeca4e593adc2"
+    },
+    {
+      "name": "09-mcp-schema-lifecycle.md",
+      "lines": 59,
+      "sha256": "b7d4a668476c9d8ff2a33793d314d1d7cda7a745990d5d5896e8f7fb0b6b2129"
+    },
+    {
+      "name": "10-development-verification-and-measurements.md",
+      "lines": 71,
+      "sha256": "5f06dfcdb83f7b06df115d233e4e5669f2486bbde8e88d1e057b7f38707de715"
+    },
+    {
+      "name": "11-benchmark-first-research.md",
+      "lines": 64,
+      "sha256": "3668b787d8ca9a3ee210b7559114c740ca1c3dc7067dd2fb6acc0dac16b1d7c1"
+    },
+    {
+      "name": "12-skills-without-proposed-changes.md",
+      "lines": 37,
+      "sha256": "75abb6fd3955c85937adf92d828f96ceb9aed5f59f94063bda3dd490e769226c"
+    }
+  ],
+  "tests_builds_generation_installation": "Not run; examples and proposed checks only",
+  "errors": [
+    {
+      "reason": "HEAD/non-audit status changed; investigate ownership"
+    }
+  ]
+}

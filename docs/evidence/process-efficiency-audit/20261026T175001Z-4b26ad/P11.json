@@ -1,0 +1,75 @@
+{
+  "task_id": "P11",
+  "route": "gpt-6-luna (assigned model luna; route identifier observable in runtime context)",
+  "status": "complete",
+  "audit_mode": "Recommendation-only; source inspection and bounded read-only artifact comparison. No audited skill, generation, check mode, package/install/publish action, build or test was run.",
+  "assigned_coverage": [
+    "component:canonical-shared-resources",
+    "component:generation-validation",
+    "component:host-distributions-packaging"
+  ],
+  "actual_coverage": [
+    "component:canonical-shared-resources (ownership map, integrity markers, selected generated copies and runtime verifier)",
+    "component:generation-validation (source validation, renderer, expected-file construction, check comparison, write staging/rollback, skill/catalog constraints)",
+    "component:host-distributions-packaging (Codex, Claude Code and DeepSeek Harness source-defined packaging plus current generated directory presence and selected static copy comparisons)"
+  ],
+  "inspected_paths": [
+    {"path":"AGENTS.md","lines":"1-121 (project instructions supplied in active context)","scope":"Project constraints; output and distribution ownership requirements."},
+    {"path":"docs/index.md","lines":"1-19","scope":"Project map for generation, validation and generated outputs."},
+    {"path":"docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md","lines":"1-43","scope":"Audit constraints, evidence standards and deliverable contract."},
+    {"path":"scripts/generate.mjs","lines":"1-122","scope":"Read-only check vs publishing generation flow, pre-validation and source completeness gate."},
+    {"path":"scripts/validate.mjs","lines":"1-233","scope":"Skill/catalog validation and generated-distribution comparison flow."},
+    {"path":"scripts/lib/distribution.mjs","lines":"1-180,188-429,430-714,716-1061","scope":"Host template map, shared resource ownership, source collection, expected artifact construction, exact comparison and transactional replacement/rollback."},
+    {"path":"scripts/lib/skill-document.mjs","lines":"1-219","scope":"UTF-8/frontmatter parsing, safe validation and size constraints."},
+    {"path":"scripts/lib/catalog.mjs","lines":"1-375","scope":"Approved catalog identity/order, explicit invocation policies, release metadata validation and static JSON readers. Sensitive release metadata values were not included in this report."},
+    {"path":"scripts/lib/manifests.mjs","lines":"1-220","scope":"Canonical metadata rendering and Codex/Claude packaging manifest generation; no release metadata values reproduced."},
+    {"path":"catalog/skills.json","lines":"1-22","scope":"Static JSON collection inventory/policies; confirms 17 ordered entries; not workflow-managed YAML."},
+    {"path":"catalog/release.json","lines":"1-27","scope":"Static release metadata shape only; personal identity values are intentionally not reproduced."},
+    {"path":"shared/references/engineering-principles.md","lines":"1-82","scope":"Optimization-from-measurement and correctness/ownership constraints."},
+    {"path":"shared/scripts/verify-engineering-manual.mjs","lines":"250-359","scope":"Installed bundle digest checks and dependent-resource consistency."},
+    {"path":"tests/deepseek-export.test.mjs","lines":"1-207","scope":"Static test-source evidence for Harness leakage, explicit policies, digests, rollback, sibling preservation, tamper detection and unsafe paths; tests were not run."},
+    {"path":"tests/packaging.test.mjs","lines":"390-469,620-680","scope":"Static test-source evidence for host package content, validators, generated comparison and forbidden surfaces/private paths; tests were not run."},
+    {"path":"tests/skill-document.test.mjs","lines":"1-96","scope":"UTF-8 validation and exact 4096-byte boundary test definitions; tests were not run."},
+    {"path":"tests/catalog.test.mjs","lines":"19-118","scope":"Catalog inventory/policy, dependency and validation test definitions; tests were not run."},
+    {"path":"plugins/codex/engineer-agent-workflows/","scope":"Current generated Codex distribution path inventory; included Codex-only metadata, skill references and shared resources."},
+    {"path":"plugins/claude-code/engineer-agent-workflows/","scope":"Current generated Claude Code distribution path inventory; no Codex-only sidecars appeared in the inventoried tree."},
+    {"path":"exports/deepseek-harness/","scope":"Current Harness export path inventory, including shared verifier/resource copies; no plugin or marketplace root was present in the inventoried tree."}
+  ],
+  "no_finding_evidence": [
+    {
+      "area":"Canonical shared ownership and distribution replication",
+      "result":"Canonical shared inputs are explicitly listed and path-allowlisted before assembly (distribution.mjs:286-363); each selected skill receives only its declared shared asset set (159-167, 656-672). Host-rendered common resources get refreshed manual and context digests (538-617, 625-632), and runtime verification checks manual, test-discipline, product-protocol and context digests (verify-engineering-manual.mjs:267-359). No reportable duplicated ownership or redundant semantic re-audit was established.",
+      "evidence":["scripts/lib/distribution.mjs:103-167,286-363,514-535,538-672","shared/scripts/verify-engineering-manual.mjs:267-359","tests/deepseek-export.test.mjs:147-168"]
+    },
+    {
+      "area":"Host fidelity and leakage boundaries",
+      "result":"Renderer has closed host names and host-specific substitutions, rejects unknown/unresolved tokens, removes Codex invocation frontmatter when rendering Codex, and emits Codex sidecars only for canonical/Codex outputs (distribution.mjs:43-101,232-284,640-672). The current three host roots are present. A bounded read-only SHA-256 comparison of five relevant canonical shared reference paths against existing host copies found ten existing copies: eight exact matches and two Codex/Claude workflow-state-access mismatches; source lines 3 and 5 of the canonical file contain declared host template tokens, consistent with expected host rendering, while the Harness copy matched the canonical bytes. This was not a full rendered-output or all-file fidelity proof. Existing test definitions explicitly cover Harness leakage and host-rendered digest behavior (deepseek-export.test.mjs:27-64,147-168).",
+      "evidence":["scripts/lib/distribution.mjs:43-101,232-284,625-672","shared/references/workflow-state-access.md:3-5","tests/deepseek-export.test.mjs:27-64,121-168","Read-only SHA-256 comparison: 10 existing reference copies; 8 exact raw matches; 2 expected host-template candidates; no Harness mismatch among those paths."]
+    },
+    {
+      "area":"Generation/check semantics, digests and recovery",
+      "result":"Generation validates sources, constructs expected outputs, then either compares without writes or replaces outputs (generate.mjs:39-79). Exact byte comparison also checks complete managed path sets and unsafe paths (distribution.mjs:810-864). Publication stages a complete expected tree, preflights targets, preserves backups, verifies after publication, and reverses operations on failure while preserving sibling exports (distribution.mjs:962-1061). Existing tests define check/tamper/rollback/sibling-preservation and unsafe-symlink cases (deepseek-export.test.mjs:170-200); these are source-inspected expectations, not executed results. No missing recovery optimization was confirmed.",
+      "evidence":["scripts/generate.mjs:39-79","scripts/lib/distribution.mjs:810-864,962-1061","tests/deepseek-export.test.mjs:170-200"]
+    },
+    {
+      "area":"Catalog and skill-document limits/packaging constraints",
+      "result":"Catalog validation pins the exact 17-skill inventory, order, closed fields, dependencies and explicit-only host policies (catalog.mjs:83-163,166-234); the skill parser rejects invalid UTF-8, unsupported frontmatter, NUL/CRLF and mismatched policies while applying a 240-code-point description limit and 4096-byte document limit (skill-document.mjs:30-55,97-219). Source validation and generated expected-document construction revalidate at the respective boundaries (validate.mjs:66-157; distribution.mjs:366-393,633-647). Static tests define exact size-boundary and host packaging/private-path assertions (skill-document.test.mjs:77-96; packaging.test.mjs:402-450,650-680). No overall package size cap or measured size regression was established in inspected code.",
+      "evidence":["scripts/lib/catalog.mjs:83-163,166-234","scripts/lib/skill-document.mjs:30-55,97-219","scripts/validate.mjs:66-157","scripts/lib/distribution.mjs:366-393,633-672","tests/skill-document.test.mjs:77-96","tests/packaging.test.mjs:402-450,650-680"]
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "No scenario MCP tool was needed: workflow-managed catalog/experience/manifest YAML and live scenario state were not accessed or parsed. Only static JSON collection metadata was inspected.",
+    "No generation/check command, audited skill, build, pack/install/publish operation, or test was executed; safety constraints require source-and-test inspection only.",
+    "The comparison covered five selected shared reference paths and the existence/inventory of three host roots, not every generated file or a complete all-host rendered-byte comparison. Two raw Codex/Claude differences were not treated as leaks because canonical text contains declared host variables; the corresponding full renderer output was not generated or independently normalized.",
+    "No end-to-end performance, file-count/byte-size benchmark, or context/runtime measurement was collected; no percentage or time savings are claimed.",
+    "Initial command to invoke Python via the unavailable `python` alias exited 127; retried with `python3` and the read-only comparison completed. This did not affect inspected repository state."
+  ],
+  "uninspected_or_unverified": [
+    "Complete byte-level fidelity for every generated skill, sidecar, manifest and asset across Codex, Claude Code and Harness.",
+    "Runtime plugin discovery or installation behavior at any host.",
+    "Actual package-size constraints beyond the inspected per-skill description/document limits."
+  ],
+  "existing_changes_preserved": true,
+  "artifacts_written": ["docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P11.json"]
+}

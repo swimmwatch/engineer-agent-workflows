@@ -1,0 +1,289 @@
+{
+  "task_id": "P08",
+  "status": "complete",
+  "audit_mode": "recommendation-only",
+  "route": {
+    "assigned_model": "sol",
+    "observable_model": "gpt-6.1-sol",
+    "provider": null,
+    "evidence": "The active developer runtime identifies this coding agent as gpt-6.1-sol. The provider transport route is not exposed; it is not inferred from the assignment label.",
+    "descendants_created": 0,
+    "workflows_created": 0
+  },
+  "assigned_aspects": ["C", "D", "H"],
+  "assigned_coverage": ["component:workflow-storage", "component:product-storage", "component:transactions-and-recovery"],
+  "actual_coverage": ["component:workflow-storage", "component:product-storage", "component:transactions-and-recovery"],
+  "coverage_basis": "Current canonical TypeScript storage/ledger/operation code and selected current test source, not executed behavior or installed-runtime verification. Coverage includes cooperative interprocess locking, transaction boundaries, atomic replacement, receipts and exact replay, serialization, read-only audit reuse, freshness and interrupted-operation recovery. No skill or generated host distribution is claimed as audited by this assignment.",
+  "repository_head": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+  "source_snapshot": {
+    "packages/engineer-agent-workflow-mcp/src/state.ts": "9da7f5e9834824d5a6d843fa7b0e6abf2069827dfe748752e176c92fa290eedd",
+    "packages/engineer-agent-workflow-mcp/src/ledger.ts": "c427628e3eca2e3fdaa552376e866cb795e124762e695bb620ea847465429221",
+    "packages/engineer-agent-workflow-mcp/src/product/storage.ts": "f6d8086390eecd346c8ed04c829e03ff46dc99ac2aa4506c621d5e70869d5143",
+    "packages/engineer-agent-workflow-mcp/src/product/operations.ts": "bea2af29ce689da0a821f6ec394928ab8ff98f96a768f2bc67a87a1bde2b9ea1"
+  },
+  "inspected_paths": [
+    {"path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md", "lines": "1-43", "purpose": "Read first; authorization and report contract."},
+    {"path": "AGENTS.md", "lines": "instruction text supplied in active context", "purpose": "Applicable repository guidance; no redundant source reread."},
+    {"path": "docs/index.md", "lines": "1-19", "purpose": "Required project map."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "1-445", "purpose": "Focused CodeGraph excerpts plus current reads of the remaining implementation: path safety, dependency guards, validation, formatting, single-file mutation and receipts."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/ledger.ts", "lines": "1-38,49-55,67-123,128-413", "purpose": "Current parser, validators, history selection and search; omitted interface-only portions do not underpin conclusions."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "lines": "1-61,62-78,90-140,148-181,183-808", "purpose": "Current immutable storage, scoped reuse, verified reads, generation validation, bounded concurrency and serialization; some interface-only gaps were not needed."},
+    {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "1-165,174-198,200-1272", "purpose": "Current cooperative lock, durable checkpoints, publication, completed replay, inspection and resume; interface-only gaps were not needed."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-storage.test.mjs", "lines": "1-407", "purpose": "Reuse, canonical serialization, historical retention and corrupt/missing pinned evidence assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs", "lines": "1-508", "purpose": "Stale writer, subprocess checkpoint interruption, exact replay, changed targets, missing evidence, partial-lock cleanup and result-budget assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs", "lines": "1-162", "purpose": "Request-local reuse, audit isolation, bounded parallel reads, deterministic errors and transaction freshness assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs", "lines": "158-393", "purpose": "Parser rejection cases, revision semantics and existing large-journal test/measurement scaffold; test fixtures before line 158 were located but not fully read."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs", "lines": "1-85,103-117,249-331", "purpose": "Restart replay, append-only preservation, symlink/result-limit checks and parallel independent-server writer assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs", "lines": "1-238", "purpose": "Read-only observers, byte-preserving no-op resume and actual concurrent source-mutation conflict assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs", "lines": "112-176", "purpose": "Read callback barrier/race assertions and fixed conflict diagnostics."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs", "lines": "162-239", "purpose": "Declarative formatting, bare serializer behavior and invalid-config no-write assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs", "lines": "115-221,275-285", "purpose": "Exact completed replay, original-request binding, retained corruption, unresolved locks and restarted-actor assertions."},
+    {"path": "packages/engineer-agent-workflow-mcp/package.json", "lines": "1-43", "purpose": "Declared runtime/dependency versions and confirmation that the package test command invokes a forbidden build."}
+  ],
+  "method": {
+    "instructions": "Read protocol first, the personal tool-search guide once, and project index; applicable project guidance was already supplied in context. No additional package-scoped AGENTS.md was found. No applicable audit skill from the supplied catalog matched this source-storage review.",
+    "source_discovery": "Confirmed a root CodeGraph index, discovered the published explore schema, used CodeGraph first, then read omitted implementation ranges and current tests. Incidental unrelated snippets returned by broad CodeGraph queries were not used as coverage or evidence.",
+    "live_yaml": "No live managed YAML was read or parsed. Inspected YAML-handling implementation and test source only. Scenario MCP tools were unnecessary because no live scenario-state question was required.",
+    "execution": "Read-only directory/status, HEAD and source-hash commands only, through rtk. No test, build, generation, installation, publishing, commit, push, audited skill, workflow or descendant was run.",
+    "changes": "Initial status showed extensive existing changes. The four core audited source paths had no scoped status entries when hashed. Existing changes were preserved; only this new report is written.",
+    "dependency_context": "Package declarations pin yaml 2.9.0, ajv 6.15.0, prettier 3.9.6, zod 4.5.4 and Node >=22.20.0. Installed versions and compiled dist identity were not checked; conclusions concern local source logic, not external API claims.",
+    "measurement": "No latency, token, memory, throughput or savings measurements were performed. Existing test instrumentation is evidence of available validation mechanisms, not a measured result from this audit."
+  },
+  "established_guarantees": [
+    {
+      "id": "P08-G1",
+      "component": "workflow-storage",
+      "classification": "source-confirmed",
+      "guarantee": "Workflow mutation is a cooperative single-file transaction with bounded durable receipts, not a multi-file database transaction or perpetual exactly-once service.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "377-408", "detail": "Exclusive wx lock; artifact lock for manifest/decisions and shared design lock for catalog/experience; load and receipt lookup precede stale-context validation; unchanged outcomes verify guards and skip persistence."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "409-444", "detail": "Precommit response budgets, retention of the latest 64 receipts, structured and serialized validation, next-context precomputation, same-directory temporary write/sync, final version/guard/path checks, rename and cleanup."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs", "lines": "51-74,308-329", "detail": "Tests assert restart replay, no effect on oversize/symlink inputs and only one successful independent-server writer."}
+      ],
+      "boundaries": "The lock is cooperative and has no automatic stale-lock deletion. A crash lock requires explicit inspection. Dependencies are rechecked but not all locked together, so this is not serializable isolation against arbitrary external editors or mutually inconsistent multi-file writers. Receipt retention is bounded at 64; replay lookup intentionally returns the retained prior result rather than treating it as a new write. No parent-directory fsync appears in the inspected rename path; sudden power-loss durability is not established."
+    },
+    {
+      "id": "P08-G2",
+      "component": "workflow-storage",
+      "classification": "source-confirmed",
+      "guarantee": "Workflow reads and writes have explicit dependency freshness checks; safe parsing and formatting are part of the mutation contract.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "79-169,185-244", "detail": "Canonical project, safe relative paths, no-follow single-link reads, size/read-race checks, per-context dependency digests, strict YAML features, compiled schema-validator reuse and declarative-only formatting."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "331-375,416-439", "detail": "Guarded reads verify dependencies; synchronization preserves unchanged YAML nodes and comments; mutation validates the formatted output again before rename."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/review-conflict-causes.test.mjs", "lines": "119-170", "detail": "Barrier-based journal races and changes between repeated loads must return dependency_changed_during_read."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/decision-linking.test.mjs", "lines": "176-224", "detail": "Formatting configuration, serializer-only bare projects and invalid-config byte preservation are asserted."}
+      ],
+      "boundaries": "Freshness checks are optimistic checks, not filesystem authorization against a malicious concurrent process. No global cache of workflow source bytes was found."
+    },
+    {
+      "id": "P08-G3",
+      "component": "workflow-storage",
+      "classification": "source-confirmed",
+      "guarantee": "Decision-ledger semantics include safe data-only decoding, exact revisions, valid backward supersession links, deterministic current selection, warnings for multiple heads, and byte-based source identity.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/ledger.ts", "lines": "6-10,67-108,128-148,158-218", "detail": "16 MiB/100,000 revisions, fatal UTF-8, one strict YAML document, JSON-compatible root, specification/revision checks and original-byte version hash."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/ledger.ts", "lines": "277-339,370-409", "detail": "Unique ID/revision pairs, existing earlier supersedes links, non-superseded newest current revision, multiple-head warnings and finite JSON primitives."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs", "lines": "158-247,249-393", "detail": "Exact revision and malformed-source cases plus an existing synthetic journal exceeding 30,000 lines; no test was executed. The line count is a test assertion, not an audit measurement."}
+      ],
+      "boundaries": "Newest non-superseded selection with warnings is intentional source behavior, not permission to silently collapse ambiguous history during an optimization."
+    },
+    {
+      "id": "P08-G4",
+      "component": "product-storage",
+      "classification": "source-confirmed",
+      "guarantee": "Retained product objects are content-verified, path-validated and reused only after exact verification; generation reads validate retained inventories and pins rather than substituting latest drafts.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "lines": "235-439", "detail": "Addressed paths, before/open/after file identity checks, O_NOFOLLOW, size/hash checks, exclusive immutable creation and equality verification on EEXIST."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "lines": "608-703,718-808", "detail": "Metadata validation, registry ownership, decision identities and source-pin inventory checks precede full-generation success; save verifies references before retaining a generation."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-storage.test.mjs", "lines": "225-320,322-407", "detail": "Tests assert historical exact bytes, canonical reuse, missing/corrupt pins fail closed and fresh-process verification."}
+      ],
+      "boundaries": "Immutable create writes directly to its exclusive final pathname; a caught write/sync failure or abrupt termination can leave incomplete evidence. Existing-path digest verification rejects it rather than repairing it. Atomic complete publication of immutable files and automatic recovery from every mid-write failure are therefore not established. Identity-safe partial-lock cleanup exists separately in operations, but it cannot simply be copied to immutable objects without considering concurrent successful reuse and retained references. No deletion/repair optimization is recommended here."
+    },
+    {
+      "id": "P08-G5",
+      "component": "product-storage",
+      "classification": "source-confirmed",
+      "guarantee": "Immutable-source reuse is bounded to a read-only audit lifecycle and validation strength; mutation entry invalidates preflight reuse. Independent source reads are already bounded-parallel with deterministic failure selection and no abandoned siblings.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/storage.ts", "lines": "18-53,425-438,456-457,608-619,705-715,783-808", "detail": "AsyncLocalStorage scope and map, store/path/digest keys, separate metadata/full/parse keys, cache clear plus exit at mutation boundary, concurrency four with Promise.allSettled and source-ordered errors."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "1081-1102,1236-1271", "detail": "Start and resume discard inherited object-read scopes before transaction work."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs", "lines": "15-123,144-162", "detail": "Tests assert same-audit reuse, fresh independent audits, metadata not substituting full audit, parallel bound/drain, separate stores, invalidation and locked revalidation."}
+      ],
+      "boundaries": "Reuse relies on immutable evidence within a single audit; it is not a promise to detect an external edit after every already-completed read in that same audit. New audits and transaction boundaries revalidate. Mutable heads, locks and operation checkpoints are not memoized by this mechanism."
+    },
+    {
+      "id": "P08-G6",
+      "component": "transactions-and-recovery",
+      "classification": "source-confirmed",
+      "guarantee": "Product operations combine an exclusive per-product cooperative lock, deterministic request/intent binding, durable phase records, expected-head publication, exact retained-result replay, and explicit inspected recovery.",
+      "evidence": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "262-347,402-544,598-701", "detail": "Safe mutable reads, synced temporary atomic replacement, identity-safe cleanup of failed lock creation, conservative PID liveness, exclusive recovery claim, preflight limits and completed replay evidence checks."},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "747-890,1015-1078,1085-1142,1236-1271", "detail": "Prepared/objects/local-binding/published/complete phases; target rechecks; head publication under owner lock; read-only session eligibility rejects unresolved ownership/changed effects; inspected operation+lock hashes gate resume."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs", "lines": "168-308,310-431,433-508", "detail": "Source assertions cover stale writers, six subprocess exit checkpoints, changed targets, missing intent/generation, partial lock write cleanup and bounded replies before effects."},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs", "lines": "120-218,275-283", "detail": "Exact lost-response replay, original intent/context, corruption/unresolved-lock rejection and competing restarted actors are asserted."}
+      ],
+      "boundaries": "This is a recoverable multi-step protocol, not rollback of every local effect. A local binding can exist before head publication; callbacks must verify/idempotently handle it. Locks serialize participating writers per product, not arbitrary out-of-band edits. PID liveness is conservative, so uncertain/live owners are not reclaimed by time-to-live. Tests exercise named checkpoints, not all filesystem instruction boundaries. Parent-directory sync and power-loss durability are not established."
+    }
+  ],
+  "findings": [
+    {
+      "id": "P08-01",
+      "component": "workflow-storage",
+      "aspects": ["C", "D", "H"],
+      "title": "Separate ledger data validation from the synthetic YAML round trip in workflow storage",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; execution frequency follows the inspected code, but latency/allocation impact is unmeasured.",
+      "priority": "medium",
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/state.ts", "lines": "131-139,152-168,388-388,416-420"},
+        {"path": "packages/engineer-agent-workflow-mcp/src/ledger.ts", "lines": "67-100,158-218,227-251,277-339,370-409"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/ledger.test.mjs", "lines": "249-393"}
+      ],
+      "current_execution_path": "load(decisions) safely reads bytes, constructs a YAML Document, converts to a mapping and invokes validate. After cached AJV validation, validate constructs a second Document from that already-parsed mapping, serializes it, converts it to bytes, then calls parseLedger. parseLedger decodes/parses/converts it again, validates semantics, sorts decisions, selects current records and computes a version that validate discards. A changed decisions mutation additionally calls validate before synchronizing and again after reparsing formatted output, so the synthetic conversion recurs at multiple validation points.",
+      "existing_optimizations": [
+        "AJV validators are already reused by artifact kind; do not add another validator cache.",
+        "The original YAML Document is retained for comment/node-preserving synchronization.",
+        "Byte budgets, dependency guards, final output parse/validation, bounded receipts and precommit response-budget checks already protect the write.",
+        "Ledger pair/link validation already uses sets; there is no demonstrated need for a persistent ledger index."
+      ],
+      "unnecessary_work_or_restriction": "The second YAML encoding/decoding and read-model construction are used as an indirect semantic validator of an object that is already available. This is distinct from the necessary first parse of untrusted bytes and necessary validation of the final formatted output.",
+      "reproducible_scenario": "In an isolated fixture, submit a read or ordinary single-decision update against a decisions journal with the shape/scale of the existing large-journal test. Instrument parseAllDocuments, Document serialization and ledger semantic-validation calls. The current load path constructs/parses the synthetic ledger representation even when only validity, not a selected-current read model, is needed. Repeat for a mutation to distinguish input, changed-object and final-output validation. This scenario was not executed.",
+      "minimal_sufficient_recommendation": "Extract a shared ledger data-validation function from parseLedger that checks specification/root, JSON-compatible values, record count/fields, unique pairs and supersedes links without YAML serialization, sorting, current-selection or hashing. Keep parseLedger as the byte-reader API using the same validator and then building the read model. Use the data validator from state.validate after AJV. Retain first-source YAML safety checks, final serialized-output parsing/validation, formatting, source-byte/output-byte limits, and all precommit rereads. Preserve or explicitly test the current synthetic-representation size/error behavior rather than silently widening accepted inputs. No cache or new public MCP scenario is required.",
+      "expected_qualitative_effect": "Fewer temporary YAML strings/Documents and fewer parse/conversion/read-model passes, especially for larger ledgers. Filesystem rereads needed for freshness remain. This does not reduce a justified user approval or bypass semantic review.",
+      "confidence": {"work_exists": "high", "minimal_design_feasible": "medium-high", "material_user_visible_gain": "unmeasured; depends on journal size and call frequency"},
+      "guarantees": {
+        "correctness": "Share the same semantic validators; preserve exact revision selection and warning behavior in parseLedger callers. Do not replace semantic validation with schema-only validation.",
+        "compatibility": "Keep the parseLedger byte API and error categories. Test unknown JSON-compatible legacy fields, finite-number/prototype checks, long IDs, count/byte limits, missing links and formatting-expanded sources. Synthetic byte-limit parity is an explicit design constraint, not an assumed equivalence.",
+        "state": "No persistent read model or cache; no change to receipt identity/retention, append-only decisions, node synchronization or single-file mutation boundary.",
+        "freshness": "Keep readDependency/verifyReadGuards and final source version checks unchanged; reuse only the already-validated mapping within the current validation step.",
+        "recovery": "Keep temp write/sync/rename, precomputed context and durable receipt atomicity unchanged. Restart replay must remain identical.",
+        "security": "Never let object-only validation replace strict YAML feature/UTF-8/duplicate-key checks at byte ingress; retain no-alias/tag and JSON-only constraints."
+      },
+      "measurement_plan": {
+        "baseline": "Use isolated small and existing-large-journal-shaped fixtures; record source size, revision count, parse/serialize call counts, elapsed time and peak heap for load(decisions) and one ordinary mutation separately. Treat warm schema-compiler runs separately from first use.",
+        "comparison": "Compare unchanged behavior and an authorized prototype with identical dependency rereads and final-output validation. Report observed allocation/time distributions, not an assumed percentage. No production-state workload is needed.",
+        "success_criterion": "Synthetic YAML round trips/read-model construction disappear from object-only validation, with no acceptance/error regression and no relaxation of freshness or commit checks. Material runtime benefit must be demonstrated before claiming savings."
+      },
+      "validation_plan": [
+        "Add discriminating tests for shared semantic validation parity before an implementation change; include the existing malformed, alias/tag, supersession, exact revision and oversized fixtures.",
+        "Preserve final-output parse/validation tests, comment preservation and declarative formatter behavior.",
+        "Run authorized selected workflow stale-writer/restart receipt and guarded-read race cases after source/build identity is established in a separate implementation task. No such execution was performed in this audit."
+      ],
+      "complexity": "Medium: a narrow internal refactor plus semantic/limit/error parity tests; no dependency addition.",
+      "dependencies": ["Shared ledger validation ownership in ledger.ts", "State/ledger error-contract parity", "An authorized implementation and targeted verification task"],
+      "needs_clarification": false,
+      "clarification_detail": "No user decision blocks the audit. If exact synthetic serialization-size acceptance cannot be preserved cheaply, that behavior change must be treated as a separate contract decision, not included silently."
+    },
+    {
+      "id": "P08-02",
+      "component": "transactions-and-recovery",
+      "aspects": ["C", "D", "H"],
+      "title": "Retain an authenticated next-generation hint to avoid full history enumeration on completed replay",
+      "classification": "source-confirmed",
+      "classification_detail": "Source-confirmed engineering opportunity; the per-replay directory traversal and candidate hashing are visible, but real history size, recovery frequency and savings are unmeasured.",
+      "priority": "low; contract change after measurement",
+      "source_locations": [
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "96-110,629-639,859-887,893-1012"},
+        {"path": "packages/engineer-agent-workflow-mcp/src/product/operations.ts", "lines": "1015-1037"},
+        {"path": "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs", "lines": "120-139,161-218"}
+      ],
+      "current_execution_path": "replayProductMutationResult reads the completed operation, validates scenario/retained intent, reads and validates the retained result, locates its head target, enumerates all generation filenames, then canonicalizes/hashes a hypothetical head for each candidate until the recorded head after-digest matches. It fully loads the matched generation and recomputes the request digest before returning. The OperationRecord stores base_revision and an authenticated head target but no direct next_revision field. inspectCompletedProductReplay adds original-operation/effect/lock rechecks around this path.",
+      "existing_optimizations": [
+        "Replay uses the original retained result and intent rather than rebuilding or duplicating the effect.",
+        "Regular replayCompleted(plan, ...) already knows plan.nextRevision and directly validates that generation without enumeration; this finding is confined to the recovery path that has only retained operation evidence.",
+        "Request-local immutable-object reuse and diagnostics channels already exist; mutable operation/lock/target checks remain fresh.",
+        "Exact head bytes, reconstructed request digest and fully verified generation bind the selected revision; current behavior does not guess the latest generation."
+      ],
+      "unnecessary_work_or_restriction": "An exact operation can be located by ID, but finding its already-selected output generation depends on enumerating unrelated retained history and hashing candidate head encodings. readdir materializes the full directory even if a match is early. No generation inventory bound is applied in this path, unlike the separate bounded operation-inventory check.",
+      "reproducible_scenario": "In an isolated fixture, retain one completed operation and increase unrelated valid generation entries while keeping that operation, intent, result and target bytes unchanged. Invoke the exact completed replay path directly, or the existing lost-response session-recovery scenario. Count directory entries and candidate head encodings examined. Candidate scan position is filesystem-order dependent; do not claim a measured worst-case latency. No such experiment was run.",
+      "minimal_sufficient_recommendation": "After a benchmark confirms relevance, add a backward-compatible persisted next-generation hint to the operation contract, written with prepared operation evidence. For records containing it, validate digest syntax, reconstruct and compare the recorded head-target after-digest, load the exact generation and recompute the existing request digest exactly as today. A mismatched hint must fail closed, never fall back to latest. Keep the current enumeration only as a legacy-record fallback. Do not add a global directory cache or mutable secondary index. This is a versioned storage-contract change, not an unreviewed schema edit.",
+      "expected_qualitative_effect": "Avoids unrelated-history enumeration/candidate hashing for new completed operations during exact lost-response recovery. Full retained-source verification and live effect/lock checks remain. Ordinary mutation/replay with an already-known next revision is unaffected.",
+      "confidence": {"work_exists": "high", "minimal_design_feasible": "medium; schema and legacy-reader compatibility need design", "material_user_visible_gain": "unmeasured and probably small for short histories or rare recovery"},
+      "guarantees": {
+        "correctness": "Treat the hint as untrusted selection evidence; existing head-target and request-digest checks must authenticate it. A hint alone is never success evidence.",
+        "compatibility": "Preserve legacy records with the existing fallback and account for strict schema/older-reader behavior. The published schema was not opened because there was no explicit contract conflict; exact field/version evolution requires a separate authorized design.",
+        "state": "Store the hint in the existing atomically replaced operation record, not a separate index requiring another transaction. Keep original operation ID, intent, targets and exact result.",
+        "freshness": "Retain full generation validation and final original-operation, actual-target and unresolved-lock checks. Do not memoize mutable checkpoints across requests.",
+        "recovery": "Hint absence is legacy behavior; corruption or mismatch remains RECOVERY_REQUIRED. No replay of effects is authorized by adding a pointer. Never remove explicit inspection or the existing one-owner recovery boundary.",
+        "security": "Validate the digest before path construction, retain validateProductPath and immutable-byte verification, and do not accept user-controlled arbitrary file paths."
+      },
+      "measurement_plan": {
+        "baseline": "Vary retained generation count and matching-entry position using isolated synthetic history; observe readdir materialization, candidate-hash count, replay latency and memory separately from loadGeneration source-validation cost.",
+        "comparison": "For an authorized prototype, compare legacy fallback and hint-bearing records on identical history and source graphs. Use the existing source-validation/source-audit channels to ensure unchanged substantive validation coverage.",
+        "success_criterion": "New-record lookup work no longer scales with unrelated generation count, while exact replay bytes/context and all corruption/ownership rejection cases remain unchanged. Do not claim end-to-end improvement if source verification dominates."
+      },
+      "validation_plan": [
+        "Add hint-bearing and legacy operation fixtures, malformed/mismatched hints, missing/corrupt generation/intent/result, later-head movement and request-digest tampering cases.",
+        "Retain read-only eligibility rejection for active or unresolved locks and changed effects.",
+        "Re-run authorized targeted lost-response, restart and concurrent-recovery cases only in a separate implementation task; none were executed here."
+      ],
+      "complexity": "Medium: small runtime lookup change, but a persisted schema/reader compatibility change with migration-free legacy fallback and recovery tests.",
+      "dependencies": ["Published Operation schema/version and compatibility policy", "Operation record writer and replay reader", "Existing exact session-recovery contract", "Benchmark establishing that history enumeration matters", "Separate implementation authorization"],
+      "needs_clarification": false,
+      "clarification_detail": "The recommendation is conditional on evidence and an explicit storage-contract design; no audit clarification is needed. Compatibility policy must be resolved before implementation."
+    }
+  ],
+  "no_finding_checks": [
+    {
+      "area": "Product request-local reuse and freshness",
+      "conclusion": "Already optimized; do not propose a process-global cache or reuse preflight evidence across transaction boundaries.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/storage.ts:18-53,425-438,608-619,797-808", "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs:15-27,59-123"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Product source-read concurrency and cancellation/error cleanup",
+      "conclusion": "Independent immutable reads already run four at a time. allSettled drains the current group and reports errors in source order. No extra unconstrained Promise.all fanout or duplicate cancellation framework is justified by inspected source.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/storage.ts:705-715,743-778", "packages/engineer-agent-workflow-mcp/test/product-source-audit.test.mjs:29-57"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Observers and no-op workflow review resume",
+      "conclusion": "Read-only status and unchanged resume already avoid journal rewrites/context churn; there is no recommendation to split another observer API from these paths.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/state.ts:183-194,331-350,403-408", "packages/engineer-agent-workflow-mcp/test/review-concurrency.test.mjs:106-198,225-237"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Atomic result budgets, durable receipts and stale writers",
+      "conclusion": "Do not move response limits after commit or eliminate the final freshness pass. Workflow receipts are installed in the same artifact replacement; product results are retained before the complete checkpoint. Existing tests target these boundaries.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/state.ts:409-441", "packages/engineer-agent-workflow-mcp/src/product/operations.ts:598-639,784-810", "packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs:468-508", "packages/engineer-agent-workflow-mcp/test/workflow.test.mjs:308-329"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Canonical product serialization",
+      "conclusion": "Two-pass sizing followed by one exact Buffer allocation is deliberate bounded-memory behavior; replacing it with an unbounded stringify-then-size check is not an established optimization. Sorted keys and ordered arrays participate in content identity and request authentication.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/operations.ts:204-250,629-639", "packages/engineer-agent-workflow-mcp/src/product/storage.ts:549-605", "packages/engineer-agent-workflow-mcp/test/product-storage.test.mjs:236-256", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:161-185"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Lock granularity and recovery ownership",
+      "conclusion": "No evidence justifies replacing per-product serialization with parallel candidate writers, removing the shared design lock, silently deleting crash locks, or automatically retrying unknown effects. Those changes would weaken established ownership and recovery contracts.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/state.ts:383-385", "packages/engineer-agent-workflow-mcp/src/product/operations.ts:457-544,1049-1077,1236-1271", "packages/engineer-agent-workflow-mcp/test/product-recovery.test.mjs:198-308,433-466", "packages/engineer-agent-workflow-mcp/test/product-session-recovery.test.mjs:200-218,275-283"],
+      "classification": "source-confirmed"
+    },
+    {
+      "area": "Bounded operation-inventory scan",
+      "conclusion": "pendingOperationsForTarget validates and scans at most 10,000 retained records and is invoked under the product lock for candidate targets. It can scale with retained history and repeat for multiple candidate targets, but no inspected workload proves multiple-target repetition or a material bottleneck. No secondary index or cache is recommended without profiling.",
+      "evidence": ["packages/engineer-agent-workflow-mcp/src/product/operations.ts:15-15,824-838,1188-1223"],
+      "classification": "source-confirmed"
+    }
+  ],
+  "limitations": [
+    "No audited skills, tests, build, generator, installation, publishing, commit or push were executed. Test assertions and diagnostics code are source evidence only, not passing/current runtime measurements.",
+    "No live managed YAML was accessed and no scenario mutation was invoked. Installed MCP runtime, compiled dist identity, actual store contents and filesystem durability were not inspected.",
+    "Only selected test ranges are claimed; complete coverage of every product scenario, review receipt policy, session implementation and generated host distribution belongs to other assignments.",
+    "The four primary source hashes identify the reviewed snapshot. Other sessions may continue modifying the repository; final synthesis must compare against its baseline and re-evaluate affected citations if drift appears.",
+    "Cooperative locks and optimistic reads do not establish security against arbitrary local filesystem mutation. Direct immutable-file writes, unsynced parent-directory rename entries, interrupted lock-claim writes and sudden power loss are outside the stronger guarantees established by named checkpoint tests.",
+    "A narrow immutable partial-write cleanup is not recommended merely by analogy to lock cleanup: successful concurrent reuse or retained references can make deleting an apparently owned inode unsafe. That publication/recovery contract would need separate investigation before an efficiency change.",
+    "The persisted revision-hint recommendation requires published schema/version compatibility design. Schema internals were intentionally not inspected without an explicit contract conflict.",
+    "Actual provider transport route is not exposed; the model identity is recorded from the active developer runtime. No secrets or personal absolute paths are saved in this report."
+  ],
+  "findings_summary": {"measured": 0, "source_confirmed": 2, "hypothesis": 0, "needs_clarification": 0},
+  "completion": {
+    "assigned_source_review_complete": true,
+    "implementation_performed": false,
+    "existing_changes_preserved": true,
+    "required_runtime_checks": "None authorized for P08; primary verification is source-and-test inspection.",
+    "report_validation": {"initial_validator": "Not executed: python command unavailable, exit 127 from pyenv; this was an environment failure, not a report-validation failure or a confirmed transient MCP failure.", "correction": "Use Node.js for an independent static JSON/field/hash check. A no-op edit attempt was rejected without changing any file.", "result": "Passed with Node.js: valid JSON, required finding fields, unique IDs, exact task/report path, assigned/actual coverage agreement, inspected/no-finding evidence presence, no personal absolute path patterns, and all four primary source hashes unchanged. No repository tests were run."},
+    "report_artifact": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P08.json"
+  }
+}

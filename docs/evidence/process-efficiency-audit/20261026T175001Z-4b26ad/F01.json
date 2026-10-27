@@ -1,0 +1,389 @@
+{
+  "task_id": "F01",
+  "status": "complete",
+  "route": {
+    "assigned_model": "sol",
+    "observed_model": "gpt-6.1-sol",
+    "configured_provider": "openai-codex",
+    "provider_independently_observed": false,
+    "reasoning_effort": null,
+    "basis": "Active developer model declaration; configured provider from run inputs, not a transport receipt."
+  },
+  "assigned_coverage": [
+    "synthesis:all-17-skills",
+    "synthesis:all-significant-components",
+    "synthesis:aspects-A-H",
+    "synthesis:source-drift",
+    "synthesis:deterministic-validation"
+  ],
+  "actual_coverage": [
+    "skill:spec-driven-development",
+    "skill:planning-and-task-breakdown",
+    "skill:incremental-implementation",
+    "skill:design-planning",
+    "skill:idea-refine",
+    "skill:product-definition",
+    "skill:technical-design",
+    "skill:product-roadmap",
+    "skill:code-review-and-quality",
+    "skill:security-and-hardening",
+    "skill:doubt-driven-development",
+    "skill:context-engineering",
+    "skill:context-scouting",
+    "skill:interview-me",
+    "skill:code-simplification",
+    "skill:documentation-and-adrs",
+    "skill:performance-optimization",
+    "component:specification-review",
+    "component:product-review",
+    "component:workflow-storage",
+    "component:product-storage",
+    "component:transactions-and-recovery",
+    "component:product-sessions-context",
+    "component:product-roadmap-tasks",
+    "component:product-documents-amendments",
+    "component:scenario-decisions-requirements",
+    "component:scope-planning-design",
+    "component:catalog-experience",
+    "component:canonical-shared-resources",
+    "component:generation-validation",
+    "component:host-distributions-packaging",
+    "component:test-runner-ci",
+    "component:build-development-cycle",
+    "component:lifecycle-qualification",
+    "component:documentation-existing-workflows",
+    "component:measurement-evidence",
+    "component:mcp-contract-runtime",
+    "component:response-budgets-sources"
+  ],
+  "aspects": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "inspected_paths": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/protocol.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/inputs.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/baseline.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/distribution-baseline.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/initial-status.txt",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P01.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P02.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P03.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P04.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P05.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P06.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P07.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P08.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P09.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P10.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P11.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P12.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P13.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P14.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V01.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V02.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V03.json",
+    "docs/index.md",
+    "catalog/skills.json"
+  ],
+  "source_read_scope": "Saved evidence synthesis, inventory and byte/status validation only. No automatic repository semantic reread; no relevant changed source required one.",
+  "evidence": {
+    "primary_reports": [
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P01.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P02.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P03.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P04.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P05.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P06.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P07.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P08.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P09.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P10.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P11.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P12.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P13.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/P14.json"
+    ],
+    "verification_reports": [
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V01.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V02.json",
+      "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/V03.json"
+    ],
+    "runtime_record": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/workflow-results.json",
+    "source_drift": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-source-drift.json",
+    "audit_md": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.md",
+    "audit_json": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.json",
+    "validation": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/validation.json"
+  },
+  "findings": [],
+  "finding_references": [
+    "P01-001",
+    "P01-002",
+    "P02-F01",
+    "P02-F02",
+    "P02-F03",
+    "P03-F01",
+    "P03-F02",
+    "P06-F01",
+    "P06-F02",
+    "P07-F01",
+    "P07-F02",
+    "P07-F03",
+    "P08-01",
+    "P08-02",
+    "P09-F01",
+    "P09-F02",
+    "P09-F03",
+    "P10-F01",
+    "P10-F02",
+    "P10-F03",
+    "P10-F04",
+    "P14-01",
+    "P14-02",
+    "P12-F1",
+    "P12-F2",
+    "P12-F3",
+    "P12-F4"
+  ],
+  "confirmed_opportunities": [
+    "P01-001: Adopt the existing exact ready-source batch reader in task authoring roles",
+    "P01-002: Defer substantive quality-manual disclosure until confirmed design eligibility",
+    "P02-F01: Clarify unchanged confirmed-scope reuse; do not presume a new reader is needed",
+    "P02-F02: Conditionally deliver consumer/retirement/reviewer details without losing shared obligations",
+    "P02-F03: Batch selected upstream ready sources before crossing into candidate context",
+    "P03-F01: Add compact source-bound follow-up handoff information, not a mandatory audit ledger",
+    "P03-F02: Bind neutral reviewer input and parent reconciliation to the same artifact/contract identity",
+    "P06-F01: Reuse adaptive response budgeting at the two correction-text portion sites",
+    "P06-F02: Key cached final bodies by observed result dependencies rather than retained caller versions",
+    "P07-F01: Remove repeated whole-inventory searches while skipping an acknowledged suffix",
+    "P07-F02: Compute required recheck membership and batch progress once per unchanged loaded state",
+    "P07-F03: Extend the existing read-only audit scope over the complete single-item operation",
+    "P08-01: Share semantic ledger validation without the synthetic YAML/read-model round trip",
+    "P09-F01: Consume the existing document snapshot in current Definition/Technical preflight",
+    "P09-F02: Document the implemented exact-current-owner reconciliation exception",
+    "P09-F03: Use a call-local outgoing-relation index for task closure",
+    "P10-F01: Reuse requirement parsing without silently weakening repeated-read conflict detection",
+    "P10-F02: Reuse one scenario-local token mapping while validating all ordered references",
+    "P10-F03: Remove phantom variant continuations from description-only reads",
+    "P10-F04: Avoid full Unicode arrays and duplicate counting for bounded decision portions",
+    "P14-01: Pack product review batches against the exact success envelope",
+    "P14-02: Bind cold lazy schema compilation to one startup-verified immutable contract snapshot",
+    "P12-F1: Development snapshots repeat distribution validation",
+    "P12-F2: Q36 and Q38 execute the same restart-enabled baseline scenario",
+    "P12-F4: Benchmark result JSON omits observed executable identity"
+  ],
+  "already_optimized": [
+    "V01-N01: Confirmed no mandatory independent-review or commit completion gate. One authorized packet, scoped final diff assessment, required local checks and entry/completion specification/agreement checks have distinct purposes.",
+    "V01-N02: Confirmed separate scope confirmation, independent completeness and technical agreement roles. Specification approval has no extra final approval question and does not authorize planning or implementation. Product prerequisites are not producer/consumer invocation authority.",
+    "V01-N03: Confirmed one coordinator write owner, readers consuming their own complete originals, at most 20 outstanding items, final coordinator whole-specification consistency, provisional inheritance and required scope expansion. Mechanical coverage/receipts are explicitly not semantic or independence proof.",
+    "V01-N04: Confirmed current source/manifest changes, old/new explicit links and prior finding evidence determine mandatory detailed rechecks; profiles/context remain fresh. Expansion withdraws inherited attribution and old consistency. No-write resume and observer status are existing optimizations; they do not solve P06-F02's cached old-context body selection.",
+    "V01-N05: Confirmed existing semantic blocks, bounded pending-only delivery, atomic verdict batches, exact inherited attribution, fresh consistency and full completion audit. Warm status intentionally does not hydrate every untouched verdict; used reads and final boundaries still reject corruption.",
+    "V01-N06: Confirmed code/security work is explicit and scoped, review fixes need separate authority, security preserves controls and redaction, and doubt-driven review excludes claim/prior reasoning and stops without a fresh native reviewer. No mandatory extra reviewer should be added to ordinary standalone code/security review.",
+    "V01-N07: Confirmed same-actor retained exact text is reusable only with identity/portion freshness; different actors require their own delivery. Adaptive bounded review-get is already implemented and tested in source. Neither a global cache nor another review-get page-size optimization is warranted by these reports.",
+    "V01-N08: Confirmed one external routing owner, no redispatch when an appropriate installed skill is already selected, bounded brief/output and no auto-install or implied broader redesign. No external Penpot skill or service was invoked for this code/process audit.",
+    "V02-N01: Existing AsyncLocalStorage audit maps distinguish metadata/full verification and include store/path/digest identity. Mutation entry clears/exits inherited reuse. Independent groups use concurrency four with allSettled draining and source-order error selection. Separate audits and stores revalidate; no global cache or unbounded Promise.all recommendation is warranted.",
+    "V02-N02: Unchanged mutation outcomes skip persistence but retain final guards; observers are not additional writers. Single-file writes use cooperative locks, precommit budget validation, final freshness and synced temp-file rename, with bounded receipts. Existing assertions preserve observer context/bytes and one-successful-writer behavior.",
+    "V02-N03: Recovery is exact-evidence and owner controlled: prepared phase records, retained results, current lock/effect checks, one durably consumed session replay allowance and original handler replay. Uncertain process/cancellation claims stay blocked; competing restarted actors cannot both obtain successful recovery. Removing these boundaries as redundant retry work is unsupported.",
+    "V02-N04: An exact-source batch API already shares one LoadedState, binds continuation to ordered requests/context/source version, budgets structured and wire envelopes and errors explicitly when no item fits. Batch progress is not the same as every nested portion being complete. Do not add another API or global cache.",
+    "V02-N05: Scope proposal/actual saved answer/confirmation lineage and declared output authority are separate gates. Planning already owns a per-invocation source map, counts each unique file once and bounds raw bytes before Markdown parsing. No additional generic parser cache or merged-away consent gate is justified.",
+    "V02-N06: Catalog changes invalidate snapshots, validate dependent screens and reject unsafe removal/overrides. Local snapshot/token checks explicitly do not reproduce live visual/accessibility inspection. Repeated dependency validation is a required integrity function even when acquisition/parsing is reused.",
+    "V02-N07: Direct source reads require an absolute canonical project, safe regular selected paths, no-follow leaf open, size/metadata consistency and closed handles. Catalog discovery streams bounded direct entries without parsing inactive journals. Cursors bind project/query/source version. Do not replace these checks with cross-project/global source reuse.",
+    "V02-N08: These canonical entry points already require explicit invocation, exact ready upstream pins, evidence-first resume, actual answers/non-answers, post-confirmation profile loading, independent review ownership and stopping before the next stage. Their gates are not removed by P09-F01's internal snapshot reuse. No new efficiency finding is asserted from this bounded sample.",
+    "V03-N1: No new finding in the sampled context-reuse and progressive-disclosure policy.",
+    "V03-N2: Sampled consent and host-portability safeguards are present; do not optimize them away.",
+    "V03-N3: No source-confirmed avoidable check or approval sequence was established in the sampled standalone skills.",
+    "V03-N4: Existing rendering, integrity and packaging boundaries materially constrain safe efficiency changes.",
+    "V03-N5: No justification for removing separate CI, packed-package or CLI boundaries, or replacing existing bounded controls with new global state.",
+    "V03-N6: Sampled documentation accurately limits reuse, batching and claims; no new documentation-efficiency finding.",
+    "V03-N7: Historical metrics are carefully scoped in the sampled retained evidence, but remain historical and not independently rerun measurements."
+  ],
+  "quick_changes": [
+    "P01-001: Adopt the existing exact ready-source batch reader in task authoring roles",
+    "P01-002: Defer substantive quality-manual disclosure until confirmed design eligibility",
+    "P02-F01: Clarify unchanged confirmed-scope reuse; do not presume a new reader is needed",
+    "P02-F02: Conditionally deliver consumer/retirement/reviewer details without losing shared obligations",
+    "P02-F03: Batch selected upstream ready sources before crossing into candidate context",
+    "P03-F01: Add compact source-bound follow-up handoff information, not a mandatory audit ledger",
+    "P03-F02: Bind neutral reviewer input and parent reconciliation to the same artifact/contract identity",
+    "P06-F01: Reuse adaptive response budgeting at the two correction-text portion sites",
+    "P06-F02: Key cached final bodies by observed result dependencies rather than retained caller versions",
+    "P07-F01: Remove repeated whole-inventory searches while skipping an acknowledged suffix",
+    "P07-F02: Compute required recheck membership and batch progress once per unchanged loaded state",
+    "P07-F03: Extend the existing read-only audit scope over the complete single-item operation",
+    "P09-F01: Consume the existing document snapshot in current Definition/Technical preflight",
+    "P09-F02: Document the implemented exact-current-owner reconciliation exception",
+    "P09-F03: Use a call-local outgoing-relation index for task closure",
+    "P10-F01: Reuse requirement parsing without silently weakening repeated-read conflict detection",
+    "P10-F02: Reuse one scenario-local token mapping while validating all ordered references",
+    "P10-F04: Avoid full Unicode arrays and duplicate counting for bounded decision portions",
+    "P14-01: Pack product review batches against the exact success envelope",
+    "P12-F1: Development snapshots repeat distribution validation",
+    "P12-F2: Q36 and Q38 execute the same restart-enabled baseline scenario"
+  ],
+  "contract_changes": [
+    "P08-01: Share semantic ledger validation without the synthetic YAML/read-model round trip",
+    "P10-F03: Remove phantom variant continuations from description-only reads",
+    "P14-02: Bind cold lazy schema compilation to one startup-verified immutable contract snapshot",
+    "P12-F4: Benchmark result JSON omits observed executable identity"
+  ],
+  "hypotheses": [
+    "P08-02: Treat an authenticated replay-generation hint as a benchmark-first storage-contract candidate",
+    "P12-F3: File concurrency is not an observed total subprocess budget"
+  ],
+  "no_finding_checks": [
+    {
+      "area": "No new synthesis-only production finding",
+      "result": "Existing source evidence suffices; no new unassigned current component was discovered. All promoted references have an independent accepted/narrowed verdict."
+    },
+    {
+      "area": "Preservation and source drift",
+      "result": "No baseline or observer-hash differences; no changed source reread required. Existing non-audit worktree status and staged index retained."
+    }
+  ],
+  "required_fields_normalization": "Source report aliases normalized explicitly; original reports retained. All protocol recommendation fields are in audit.json and audit.md.",
+  "recommended_order": [
+    {
+      "phase": 1,
+      "title": "Correctness and attribution prerequisites",
+      "ids": [
+        "P06-F02",
+        "P14-01",
+        "P09-F02",
+        "P03-F02",
+        "P10-F03",
+        "P12-F4"
+      ],
+      "dependencies": "Separate implementation authority and discriminating regressions. Establish executable provenance before performance comparisons; preserve schema/cursor/receipt compatibility."
+    },
+    {
+      "phase": 2,
+      "title": "Remove bounded repeated local work and proven orchestration duplication",
+      "ids": [
+        "P07-F01",
+        "P07-F02",
+        "P07-F03",
+        "P09-F01",
+        "P10-F01",
+        "P10-F02",
+        "P08-01",
+        "P12-F1",
+        "P12-F2"
+      ],
+      "dependencies": "Preserve mutation/read observation boundaries, strict validation acceptance/error contracts, native cancellation and wrapper cleanup. P12-F1/F2 must satisfy verifier narrowing before removing calls."
+    },
+    {
+      "phase": 3,
+      "title": "Adopt existing capabilities and refine conditional instructions",
+      "ids": [
+        "P01-001",
+        "P02-F03",
+        "P02-F01",
+        "P02-F02",
+        "P03-F01",
+        "P01-002"
+      ],
+      "dependencies": "Treat P01-001/P02-F03 as one batching family. Ready/candidate contexts remain separate. Correct P09-F02 before relocating task-owner prose. Preserve obligation-to-role reachability and separate generation authority."
+    },
+    {
+      "phase": 4,
+      "title": "Measure scale-dependent candidates without adding new infrastructure",
+      "ids": [
+        "P09-F03",
+        "P08-02",
+        "P12-F3"
+      ],
+      "dependencies": "Use existing synthetic fixtures, diagnostics and concurrency controls. Evaluate P12-F2 before concurrency tuning. P08-02 needs materiality evidence and old-reader/version design before storage change."
+    }
+  ],
+  "limitations": [
+    "Recommendation-only source-and-test inspection. No optimization was implemented and no runtime discriminating scenario or benchmark was executed by synthesis.",
+    "All current 17 canonical skills and 21 assigned significant component areas have saved primary evidence. Coverage is flow-based, with explicitly partial source/test ranges, not exhaustive line or behavioral coverage.",
+    "Generated distributions were sampled semantically and compared by baseline byte hashes. Unchanged distribution bytes do not prove complete rendered fidelity, leakage absence, digest validity or installed-host correctness.",
+    "No current time, token, cost or percentage savings were measured. Static complexity, citation/file counts and structural bytes are not performance savings. Historical captures remain historical; unavailable private raw events were not searched.",
+    "Exact provider request events, actual concurrent provider requests, token usage, reasoning effort and provider/account capacity are unavailable. Configured routes and caller-supplied task-order events are not independent transport telemetry.",
+    "Serving MCP identity observed by P14 differs from the local dist stamp. Findings concern current checkout source, not reproduced failures of the serving build. No rebuild or restart was authorized.",
+    "Four existing pure parser tests passed only in P12 under its explicit protocol exception. Synthesis ran no repository tests. Full tests, builds, generation/check, installation, packaging, publishing, commit and push were not authorized and are not marked passed.",
+    "P04 and P05 report unavailable audited-skill loading attempts; no audited skill ran. These attempts are procedural deviations from the no-invocation boundary, not skill defects or executed coverage. V03 independently sampled their canonical evidence.",
+    "No repair or adjudication report was supplied or scheduled. The three broader contract questions remain excluded or narrowed rather than silently accepted.",
+    "The caller explicitly requested preservation of a runtime record containing original-language P12 limitation strings. Only that supplied evidence retains those exact values, JSON-escaped; all synthesis conclusions and reports are English.",
+    "Byte-hash snapshots and Git status are point-in-time evidence, not atomic reservations or perpetual protection from concurrent editors. Existing changes were preserved; no clean worktree is required or claimed."
+  ],
+  "unverified_areas": [
+    {
+      "area": "Complete rendered fidelity and installed runtime qualification across three hosts",
+      "reason": "Only bounded copy samples and distribution-baseline byte stability were authorized/provided; no generator or installation ran."
+    },
+    {
+      "area": "Current model-inclusive end-to-end product/session behavior, cancellation and comparative performance",
+      "reason": "Source/fixture inspection is available; live model trials and exact usage events are unavailable."
+    },
+    {
+      "area": "Historical raw capture authenticity and baseline freshness for unbaselined historical/build artifacts",
+      "reason": "Retained prose/JSON was sampled, not re-executed; see source-drift evidence."
+    },
+    {
+      "area": "Sudden power-loss durability, arbitrary-editor serializability and every filesystem-instruction failure boundary",
+      "reason": "Named cooperative recovery checkpoints do not establish those stronger guarantees."
+    }
+  ],
+  "excluded_broader_claims": [
+    {
+      "ids": [
+        "P02-F01"
+      ],
+      "area": "Cold-context confirmed candidate scope and actual-answer provenance retrieval",
+      "disposition": "Unverified broader API need; retain only unchanged-scope reuse when authoritative current evidence is already available. No new scope reader is promoted.",
+      "owner": "Product interview/context contract owner before an API proposal"
+    },
+    {
+      "ids": [
+        "P02-F03"
+      ],
+      "area": "General ready-source batching after candidate creation",
+      "disposition": "Unverified broader route excluded. Retained recommendation is only the existing matching ready-context pre-draft phase; never pass candidate context to the ready reader.",
+      "owner": "Product context owner if after-draft routing is later requested"
+    },
+    {
+      "ids": [
+        "P10-F01"
+      ],
+      "area": "Eliminating intermediate dependency observations",
+      "disposition": "Unverified consistency equivalence excluded. Preserve every current readDependency observation; reuse parsing by exact bytes/hash and strictness only.",
+      "owner": "Workflow storage/requirements contract owner before changing observation semantics"
+    },
+    {
+      "ids": [
+        "P08-02"
+      ],
+      "area": "Old-reader compatibility for revision-hint operation records",
+      "disposition": "Unresolved versioned storage design, not a backward-compatible optional-field claim. Benchmark-first research only.",
+      "owner": "Product operation storage owner if materiality is established"
+    }
+  ],
+  "measurements": "No current time/token savings measured. Exact provider request events, actual concurrency and token usage unavailable. P12 four passing parser checks and P14 identity diagnostic retained as scoped primary observations only.",
+  "coverage_summary": "17/17 current skills; 21/21 assigned significant components; aspects A-H; 14 primary and 3 verifier files present. 27 unique finding references, 26 deduplicated families, 25 source-confirmed references and 2 research hypotheses; independent verdicts: 19 accepted, 8 narrowed.",
+  "prohibited_actions_performed": [],
+  "descendants_created": 0,
+  "workflows_created": 0,
+  "artifacts_written": [
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.md",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/validation.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/workflow-results.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-source-drift.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01.json",
+    "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01-synthesize.mjs"
+  ],
+  "report_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/F01.json",
+  "audit_md": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.md",
+  "audit_json": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/audit.json",
+  "validation_path": "docs/evidence/process-efficiency-audit/20261026T175001Z-4b26ad/validation.json",
+  "validation_status": "pass",
+  "completed_at": "2026-10-26T18:22:05.595Z"
+}
