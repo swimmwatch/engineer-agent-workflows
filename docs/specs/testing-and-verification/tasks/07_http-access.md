@@ -95,7 +95,9 @@ Use actual HTTP listener requests and actual SDK Client/StdioClientTransport aga
 
 All roots, grants, SQLite files, fake state areas, browser contexts, child processes and sentinels are freshly TEST-OWNED. Production resolves actual os.userInfo/KnownFolder identity, not env homes. Ledger integration injects trusted test PlatformContext at composition so no real profile is initialized; default-anchor tests may read account metadata, but must assert without printing real paths and MUST NOT open/create the actual state area. Mock Windows mode/ACL cases are structural fail-closed fixtures, not native Windows proof.
 
-Capture baseline AFTER legitimate fixture preparation/startup/grant verification/origin claim; then assert GET/read effects separately. Observe actual FS/SQLite writes, created files/modes/bytes/rows and Set-Cookie, not filesystem read-atime or a fixture-only counter. PROVE each absence observer catches a harmless real write/call inside an owned marker root. No external app/SUT/native jobs, real user Chrome profile, consuming project or other process is used. Use event barriers/control pipes, bounded clocks and real two-process SQLite checks; no busy polling or sleeps as ownership proof. Bound each ordinary case to45s (stream30s/operation15s plus controlled close); all spawned jobs/FDs/sockets collected in finally. Forced harness kills/timeouts are failure/cleanup evidence, NOT graceful shutdown proof.
+Capture baseline AFTER legitimate fixture preparation/startup/grant verification/origin claim; then assert GET/read effects separately. Observe actual FS/SQLite writes, created files/modes/bytes/rows and Set-Cookie, not filesystem read-atime or a fixture-only counter. PROVE each absence observer catches a harmless real write/call inside an owned marker root. No external app/SUT/native jobs, real user Chrome profile, consuming project or other process is used. Before every cleanup deletion resolve and verify its absolute target lies within the recorded owned fixture root; never compute an unchecked target from an unset variable. Use event barriers/control pipes, bounded clocks and real two-process SQLite checks; no busy polling or sleeps as ownership proof. Bound each ordinary case to45s (stream30s/operation15s plus controlled close); all spawned jobs/FDs/sockets collected in finally. Forced harness kills/timeouts are failure/cleanup evidence, NOT graceful shutdown proof.
+
+Malformed HTTP rejected by Node before an API request exists may receive a bounded transport-level400/close, never raw input/exception disclosure. Once the known API boundary is entered, preserve exact common ErrorResponse/status/effect semantics; do not disguise an application failure as a parser close or require a fabricated successful DTO for an invalid protocol frame.
 
 ## HTTP and MCP public-operation matrix
 
@@ -189,7 +191,13 @@ rtk proxy node scripts/run-tests.mjs --serial --test-name-pattern='P07/H15' pack
 rtk proxy node scripts/run-tests.mjs --serial --test-name-pattern='P07/H21' packages/testing-workspace/test/origin-retirement.test.mjs
 ```
 
-Use the name-pattern form for EVERY row/subcase and confirm it actually ran. H28 is NOT satisfied by the above Node wire/metadata tests: after explicit available-browser authority, discover the real native browser tool/control and record Google Chrome identity/version, isolated context and exact fixture URL/artifact/observations. Then run the TO CREATE `http-browser-bridge.test.mjs` through the same runner with that actual controlled capability, or record witnessed manual fixture assertions. No native/browser command is invented here. If unavailable, mark the affected required Linux/Chrome proof blocked/unverified with its established owner/prerequisite; do not skip it and report a pass or add other-platform gates. Never wait indefinitely for a user/chat inside transactions/tests.
+Use the name-pattern form for EVERY row/subcase and confirm it actually ran. H28 is NOT satisfied by the above Node wire/metadata tests: after explicit available-browser authority, discover the real native browser tool/control and record Google Chrome identity/version, isolated context and exact fixture URL/artifact/observations. Then run the TO CREATE `http-browser-bridge.test.mjs` with that actual controlled capability, or record witnessed manual fixture assertions. The following is ONLY the existing Node test runner, not a browser CLI, and is runnable only after that native prerequisite:
+
+```bash
+rtk proxy node scripts/run-tests.mjs --serial --test-name-pattern='P07/H28' packages/testing-workspace/test/http-browser-bridge.test.mjs
+```
+
+No native/browser command is invented here. If unavailable, mark the affected required Linux/Chrome proof blocked/unverified with its established owner/prerequisite; do not skip it and report a pass or add other-platform gates. Never wait indefinitely for a user/chat inside transactions/tests.
 
 After all RED/GREEN/PROVE edits are restored, repeat the full current package/prerequisite regressions and scoped checks:
 
