@@ -324,6 +324,49 @@ scenarios:
     command: rtk proxy node --test packages/engineer-agent-workflow-mcp/test/product-graph-acceptance.test.mjs
     red: Observe the discriminating public result before implementing or fixing each journey.
     prove: A negative/no-side-effect assertion requires one relevant boundary mutation and restoration.
+  - id: Q-GITHUB-LIVE
+    owner_packet: P09
+    requirement_ids:
+      - REQ-003
+      - REQ-004
+      - REQ-005
+      - REQ-006
+      - REQ-007
+      - REQ-009
+      - REQ-010
+      - REQ-011
+      - REQ-012
+      - REQ-013
+      - REQ-015
+      - REQ-017
+      - REQ-018
+      - REQ-020
+      - REQ-021
+      - REQ-022
+      - REQ-023
+      - REQ-024
+      - REQ-026
+      - REQ-033
+      - REQ-038
+      - REQ-040
+    fixture: One newly created private GitHub repository and one newly created private Projects v2 board; approximately 12 synthetic Issues, two Milestones, explicit status/Stage options, ordinary/package/shared labels, a native prerequisite diamond, Backlog and deliberately unbound/out-of-board items. Bind selected exact Issue IDs to an isolated EAW product/store.
+    setup: Resolve the existing authenticated owner and required permissions without auth/configuration changes. Create uniquely named resources; explicitly set and read back repository and Project privacy independently before seeding. Retain exact IDs, URLs, visibility proofs, field/option/Issue/Milestone mappings and run identity in a private credential-free fixture inventory. Uncertain creation outcomes require exact read-back before retry.
+    actor_boundary: Existing GitHub tools or direct gh perform test-actor fixture writes only on those exact new resources. Trace those calls separately from EAW adapter calls, which must remain fixed read operations. Never use existing working/KAP resources or a runtime gh wrapper.
+    actions:
+      - Capture the actual GitHub read-back, MCP inventory and dynamic SVG/HTML-list baseline; confirm unbound/out-of-board items do not become imported tasks.
+      - Change title, board status, labels, Stage, Milestone and native dependencies; confirm each read-back within a recorded finite propagation deadline, then alternate explicit MCP and viewer-button sync.
+      - Rename a mapped status option without changing its ID; verify source labels update without losing the configured state mapping.
+      - Move a task into and out of Backlog; verify its zone and retained source dependencies, then assign an unmapped status and verify it remains explicit and cannot become falsely Ready.
+      - Repeat synchronization without source changes; compare stable task/binding/source identities and equal projected outcomes, preserving filters and viewport.
+      - Remove a selected bound Issue from Project membership while a surviving Issue still requires it; verify complete membership removes the current record/binding/card/list item, clears selection and retains an external blocking reference plus specifications/history.
+    observe: Compare GitHub read-backs, complete MCP task/binding inventories, projection revisions/signals, dynamically generated SVG/list counts/edges/labels and actual Linux browser state. Capture redacted observations/screenshots, exact runtime/browser versions and run timestamps; preserve source/specification/history digests and separate fixture-write versus EAW-read traces.
+    expected: Both synchronization entry points converge to the actual GitHub state and matching graph/list outcomes without ghost cards, false Ready, identity drift or EAW provider writes. Incomplete/failed GitHub reads never prove absence; record propagation/service errors explicitly. Required live unavailable/failed/skipped outcomes leave P09 incomplete; fake-provider success is not a substitute.
+    check_to_create: product-graph-github-live.test.mjs
+    command: rtk proxy env EAW_GITHUB_LIVE_TEST=1 node --test packages/engineer-agent-workflow-mcp/test/product-graph-github-live.test.mjs
+    driver: Built MCP stdio server, actual local HTTP server, real gh reads and already authorized Linux browser capability; pass the private inventory path through EAW_GITHUB_LIVE_FIXTURE. Ordinary offline test runs never provision resources or access the network.
+    red: Define state/identity/display assertions before the live run. Missing opt-in is not a pass; opted-in missing inventory, permission, privacy or service fails safely. Use local fixtures for discriminating failure/absence RED and PROVE; never revoke credentials, induce outages or change global configuration.
+    prove: Locally bypass membership deletion or preserve stale rendered state one at a time; the relevant public assertion must fail, then restore. Keep Q-E2E/Q-PROVIDER faults and Q-CAPACITY 1000/10000 workload local, without mass GitHub creation.
+    retention: Retain both test resources privately after the run and report exact identities and cleanup status. Deletion needs a separate explicit request naming exact IDs; no automatic or prefix-wide cleanup. Public evidence uses synthetic content and redacted identifiers where needed, never credentials or unrelated data.
   - id: Q-PACKAGING
     owner_packet: P08
     requirement_ids:

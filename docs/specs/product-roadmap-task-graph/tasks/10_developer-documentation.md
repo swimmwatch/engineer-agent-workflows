@@ -27,6 +27,7 @@ Dependencies: [P09](09_linux-acceptance.md) completed with their required checks
 Exact contracts/scenarios to read:
 
 - quality/scenarios.yaml — Q-DOCUMENTATION
+- tasks/09_linux-acceptance.md and its actual Q-GITHUB-LIVE evidence — private fixture setup, visibility proofs, synchronization/display results and resource retention; distinguish these from local fault/capacity evidence
 - contracts/mcp.md, contracts/openapi.yaml and architecture/model.dsl — stable implemented boundary references
 
 ### Scoped work and acceptance
@@ -46,6 +47,7 @@ Acceptance observations:
 - Documented binding/sync/absence/partial/restore/capability examples use synthetic identities and pass against isolated fixtures.
 - Guides accurately separate intended compatibility from executed Linux evidence and never imply execution/install/publication permission.
 - Documentation reflects P09-verified behavior and links the existing authorities without a competing spec, schema or workflow history copy.
+- Report actual private-GitHub acceptance results and retained test-resource handling from P09; do not present a skipped/unavailable live check as passed or publish credentials/private inventory.
 
 ### Test-first execution and verification
 

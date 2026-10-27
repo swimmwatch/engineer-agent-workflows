@@ -1,6 +1,6 @@
 # Product Roadmap Task Graph Handoff
 
-Status: Planning complete. Technical agreements are ready; implementation has not started.
+Status: Planning complete, including the requested private-GitHub acceptance amendment of 2026-10-26. Technical agreements are ready; implementation has not started.
 
 ## Current contract
 
@@ -13,25 +13,31 @@ The HTTP server dynamically derives/renders SVG and the task list. No generated 
 
 ## Saved outputs
 
-Ten agreed implementation packets and [plan.md](plan.md), the sole execution checklist [todo.md](todo.md), [MCP contract](../contracts/mcp.md), [OpenAPI contract](../contracts/openapi.yaml), [quality scenarios](../quality/scenarios.yaml) and [text architecture model](../architecture/model.dsl). All 40 requirements have ownership/check mappings; 15 measurable scenarios cover the actual boundaries. No design artifact/stage is required.
+Ten agreed implementation packets and [plan.md](plan.md), the sole execution checklist [todo.md](todo.md), [MCP contract](../contracts/mcp.md), [OpenAPI contract](../contracts/openapi.yaml), [quality scenarios](../quality/scenarios.yaml) and [text architecture model](../architecture/model.dsl). All 40 requirements have ownership/check mappings; 16 measurable scenarios cover the actual boundaries. The existing 15 scenarios are unchanged, and Q-GITHUB-LIVE is the required addition owned by P09. No design artifact/stage is required.
 
-Planning changed only this specification's planning artifacts and scenario-managed technical decision history. No production/runtime, installed/global configuration, commit or publication was changed. Known unrelated worktree modifications remain in the MCP README, metadata, task/tool modules, task-pin tests, shared product schema and `.local/`. Reinspect overlap before implementation; do not require a clean tree or existing commit.
+This amendment changed only the plan, P09, P10 delivery details, checklist, current handoff, quality scenarios and scenario-managed technical decision history. No production/runtime, installed/global configuration, commit or publication was changed. Preserve unrelated worktree changes and reinspect overlap before implementation; do not require a clean tree or existing commit.
 
-Additional changes appeared during planning in `skills/planning-and-task-breakdown/references/technical-agreement.md` and its two generated host copies. Their owner was not established here; planning did not edit them and they do not overlap this invocation's output writes. Preserve/reinspect them before any later collection regeneration.
+## Private GitHub acceptance amendment
 
-## Verification on 2026-10-24
+The user's direct instruction of 2026-10-26 adds a required real-provider run to [P09](09_linux-acceptance.md): create one new private repository and one new private Projects v2 board, verify their visibility independently before seeding, then use approximately 12 synthetic Issues, two Milestones, labels, status/Stage options and native dependencies. Exercise field/link changes, stable status-option IDs, Backlog, unknown status, repeated synchronization and selected-task removal from Project membership. Compare actual GitHub read-backs with complete MCP inventories and dynamically generated SVG/HTML-list/browser state through both sync entry points.
 
-- Engineering-manual bundle verifier: passed.
-- Entry and final MCP specification checks: pass; Approved, reviewed and the pinned behavioral/specification/review identities are unchanged.
-- Final `planning_packet_check`: **10/10 ready**, using exact returned agreement refs/digests recorded in each packet. The first implementation-eligible packet is still P01; dependency completion for later packets is not implied.
-- Exact frozen proposal sections were compared before/after formatting: unchanged.
-- Saved profile YAML: real parser with duplicate-key rejection passed.
-- OpenAPI 3.1 structural contract validation: passed against the official [2022-10-07 meta-schema](https://spec.openapis.org/oas/3.1/schema/2022-10-07), including a negative control that rejects a missing version.
-- Requirement coverage: 40/40; unique scenarios: 15; unique packet agreement metadata: 10; dependency graph acyclic; local Markdown links and scoped whitespace passed.
-- Architecture model: declared identifiers, relation endpoints, view scopes and balanced blocks checked. An external Structurizr DSL compiler/render was not run; no rendered-diagram or compiler pass is claimed.
-- Prettier 3.9.6 check: passed for the specification/workflow YAML (read-only), task Markdown, MCP/OpenAPI contracts and quality scenarios.
+Fixture writes belong to the test actor through existing GitHub tools/direct gh; the EAW adapter remains read-only. Keep injected faults and the 1000-task/10000-edge capacity workload local. The opt-in live check is separate from normal offline runs and is mandatory for P09 completion; unavailable/failed/skipped is not a pass. Keep exact resource IDs, privacy proofs and mappings in a private credential-free inventory. Retain the resources privately after acceptance; deletion requires a separate explicit request naming exact IDs.
 
-Validation used the actual saved artifacts with the existing system Python YAML/jsonschema and local pinned Prettier; temporary validation/formatting scripts are not production artifacts. Runtime feature tests, actual browser acceptance, live board probes and KAP workflow operations were not run because this invocation is planning-only.
+P09's new binding is `b8d263ab-6516-459a-81df-317828aea304@2`, proposal `P09-github-live-acceptance-v2`, digest `452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5`. Its recorded answer cites the actual direct user instruction, without claiming a new native-question response or execution authority. All other packet bindings remain unchanged. P10 delivery details consume actual live acceptance results and distinguish them from local evidence.
+
+No GitHub test repository, Project or seed data has been created. No live or runtime feature test has run. Resource creation and execution belong to the later separately invoked P09, after P01-P08 complete.
+
+## Verification on 2026-10-26
+
+- Engineering-manual bundle verifier: passed during this planning amendment.
+- MCP specification check: pass; Approved and reviewed, with unchanged pinned source/specification/review identities.
+- Final `planning_packet_check`: **10/10 ready**, including P09's replacement binding. Dependency completion is not implied; P01 remains the first implementation-eligible packet.
+- All 11 bound source sections, including shared architecture and each packet's technical proposal, are unchanged after the agreement and formatting.
+- Quality YAML: actual PyYAML 6.0.2 parser with duplicate-key rejection passed; 16 unique scenarios, 15 existing scenario records unchanged, valid owners and requirement IDs.
+- Requirement coverage: 40/40; ten unique packet agreement records; dependency graph acyclic; local Markdown links and scoped whitespace passed.
+- Prettier 3.9.6 check: passed for the amended Markdown/quality artifacts and workflow YAML (read-only).
+
+Checks used the saved planning artifacts and existing tooling. Unchanged OpenAPI/architecture contracts were not revalidated against an external compiler/schema in this amendment. Runtime feature tests, actual browser acceptance, GitHub-resource creation/live acceptance and KAP workflow operations were not run because this invocation changes only the plan. No runtime or native-platform pass is claimed.
 
 Three OpenAPI references intentionally target future canonical graph definitions: `RoadmapGraphPage`, `RoadmapGraphProblem` and `RoadmapGraphSyncStatus`. They are declared planning references, not currently resolved implementation schemas. P02/P04/P05 add the exact selectors; P06 must validate complete reference resolution against their saved canonical definitions. This is a future implementation prerequisite, not a claimed runtime pass.
 

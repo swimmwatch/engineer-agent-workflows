@@ -1594,18 +1594,6 @@ decisions:
     context_reason: null
 extensions:
   workflow_mcp_receipts:
-    - id: 79d4454d0f6157ff921f4a35dda3d367b839a46966aa740f1a233b87a2ada13e
-      result:
-        decision_ref:
-          id: 545aba40-664a-4ae3-bd9e-e823840917f3
-          revision: 1
-        state: instructed
-    - id: 71cc7fec80cbc337437a6654b436ed690805b6b804007512c54aeef686eb5d21
-      result:
-        decision_ref:
-          id: 0984640e-6976-46d8-83f4-75ce99fec048
-          revision: 1
-        state: instructed
     - id: 4fe91eda4eb86878e26cfc3542e41b60e8c6b80c6182e93548ac86cbdbba38d1
       result:
         decision_ref:
@@ -3163,6 +3151,37 @@ extensions:
               id: a0537887-401d-4835-9a5e-bc1d03217fcd
               revision: 2
             proposal_digest: 3e703d871e9ac92b075b9d3294c3c3bf62266d7fe8c84f813fe485add76e7ebb
+        unresolved_packet_ids: []
+    - id: 83b0a6cd46faf538e56204308418733ff88a451cf618b30ab38eeb8bdff7c1bf
+      result:
+        question_ref:
+          id: b8d263ab-6516-459a-81df-317828aea304
+          revision: 1
+        question:
+          text: "User-directed P09 amendment: add required actual GitHub display/synchronization acceptance using one newly created private test repository and private Projects v2 board. Retain deterministic local tests, keep EAW read-only, isolate all fixture mutations, verify privacy and capture actual MCP/HTTP/SVG outcomes. Creation/execution happens in a later explicit P09 invocation; no GitHub resource is created by this planning amendment."
+          kind: free_text
+          options: []
+          option_bindings: []
+        proposals:
+          - id: P09-github-live-acceptance-v2
+            packet_id: P09
+            digest: 452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5
+        next: Ask this saved question through the native host question tool and record its actual answer.
+    - id: 61b59de6c6b8a95c5a6a13909ff6110b68da13667627a85a4f5e86c0b8363a01
+      result:
+        decision_ref:
+          id: b8d263ab-6516-459a-81df-317828aea304
+          revision: 2
+        question_ref:
+          id: b8d263ab-6516-459a-81df-317828aea304
+          revision: 2
+        agreements:
+          - packet_id: P09
+            proposal_id: P09-github-live-acceptance-v2
+            agreement_ref:
+              id: b8d263ab-6516-459a-81df-317828aea304
+              revision: 2
+            proposal_digest: 452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5
         unresolved_packet_ids: []
 specification_reviews:
   version: 1
@@ -7491,5 +7510,224 @@ planning_decisions:
       specification_version: e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8
       review_ref: fd840f43-b70d-463d-991c-204f891f1b2e
       id: a0537887-401d-4835-9a5e-bc1d03217fcd
+      revision: 2
+      supersedes_revision: 1
+    - question:
+        text: "User-directed P09 amendment: add required actual GitHub display/synchronization acceptance using one newly created private test repository and private Projects v2 board. Retain deterministic local tests, keep EAW read-only, isolate all fixture mutations, verify privacy and capture actual MCP/HTTP/SVG outcomes. Creation/execution happens in a later explicit P09 invocation; no GitHub resource is created by this planning amendment."
+        kind: free_text
+        options: []
+        option_bindings: []
+      proposals:
+        - id: P09-github-live-acceptance-v2
+          packet_id: P09
+          requirement_ids:
+            - REQ-001
+            - REQ-002
+            - REQ-003
+            - REQ-004
+            - REQ-005
+            - REQ-006
+            - REQ-007
+            - REQ-008
+            - REQ-009
+            - REQ-010
+            - REQ-011
+            - REQ-012
+            - REQ-013
+            - REQ-014
+            - REQ-015
+            - REQ-016
+            - REQ-017
+            - REQ-018
+            - REQ-019
+            - REQ-020
+            - REQ-021
+            - REQ-022
+            - REQ-023
+            - REQ-024
+            - REQ-025
+            - REQ-026
+            - REQ-027
+            - REQ-028
+            - REQ-029
+            - REQ-030
+            - REQ-031
+            - REQ-032
+            - REQ-033
+            - REQ-034
+            - REQ-035
+            - REQ-036
+            - REQ-037
+            - REQ-038
+            - REQ-039
+            - REQ-040
+          sources:
+            - path: docs/specs/product-roadmap-task-graph/tasks/plan.md
+              heading: Shared architecture
+              text: |+
+                ## Shared architecture
+
+                This plan implements the existing Approved `../spec.md`, not another product workflow invocation. The pinned behavioral source version is `6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5`; the specification version is `e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8`, reviewed by `fd840f43-b70d-463d-991c-204f891f1b2e`.
+
+                - Existing product IDs, task IDs, candidate previews, ready Roadmap sources, source pins and task workflow ownership remain authoritative. Board observations cannot approve, review, retire or execute workflow artifacts.
+                - All new durable graph records use the existing separate product-data root, its safe-path validation and immutable object store. There is no consuming-project graph database or skill installation.
+                - The graph policy kernel is independent of providers, storage, HTTP and browser code. The provider returns normalized observations; one synchronization service reconciles them and owns publication. MCP and HTTP call that same service.
+                - Public persisted and wire definitions are added during implementation to the existing authoritative `shared/schemas/product.schema.json`. Planning describes the intended extensions and references them; it creates no second schema source or production schema changes.
+                - The only profile outputs are `../contracts/mcp.md`, `../contracts/openapi.yaml`, `../quality/scenarios.yaml` and `../architecture/model.dsl`. No design artifact or Penpot stage is required.
+                - Runtime targets remain Linux, macOS and Windows and current desktop Chrome/Edge, Firefox and Safari. Executable acceptance in this work remains Linux-only; Linux WebKit is not native Safari evidence.
+                - New identifiers below are proposed binding ownership boundaries. Private helper names and equivalent statement organization remain flexible.
+
+              digest: e570a0b47f2170b31f72b35eb076393ca43e2ae80f5d1bf3640adabcc5bf27e8
+            - path: docs/specs/product-roadmap-task-graph/tasks/09_linux-acceptance.md
+              heading: Technical proposal
+              text: |+
+                ## Technical proposal
+
+                Extend the existing Node test/test-support infrastructure with synthetic product-store and fake-provider fixtures, and use an already available Linux browser automation capability for actual HTTP/viewer interactions. Add required real-GitHub acceptance using one newly created private test repository and one newly created private Projects v2 board, as explicitly requested on 2026-10-26. Existing production/KAP resources, global configuration and runtime architecture remain unchanged. Normalized fixtures preserve opaque IDs, both dependency representations and exact source/graph/specification identities. Use the actual built MCP stdio server and actual local HTTP server, not mocks of their public boundary.
+
+                Own the end-to-end and capacity scenarios in `../quality/scenarios.yaml`. Exercise normal, invalid, repeated, interrupted-publication, denied-origin/session, partial, overlapping-sync, cancelled and recovery paths. Compare resulting MCP data and server-generated SVG/list counts/revisions/states. Capture provider invocation types/counts, source-pin/history before/after digests, task/binding absence, listener/child cleanup and redacted diagnostics through safe observation surfaces. Use direct-gh test executables for deterministic faults, not an additional runtime wrapper. Provider writes are confined to the newly created private fixture resources and performed by the test operator/agent through existing GitHub tools or direct gh; EAW's adapter remains read-only. Never use an existing working board or repository as a substitute fixture.
+
+                For the real-provider run, resolve the already authenticated owner and required permissions, create uniquely named test-only resources, explicitly set/check repository and Project privacy independently, and record their exact IDs before seeding. Stop if privacy, ownership or required permissions cannot be established; do not refresh authentication/configuration automatically. Seed approximately 12 synthetic Issues, two Milestones, explicit status/Stage options, ordinary/package/shared labels, a native prerequisite diamond, a Backlog task and deliberately unbound/out-of-board items. Bind only selected Issue IDs to an isolated local EAW test product/store. The live test is a separately opted-in `product-graph-github-live.test.mjs`, excluded from ordinary offline test execution and never credited as passed when skipped.
+
+                Run `Q-GITHUB-LIVE` against actual GitHub reads and the built MCP/HTTP/browser boundaries: baseline display, title/status/label/Stage/Milestone/dependency changes, status-option rename without an identity change, Backlog transitions, explicit unknown status, repeat-run identity stability and removal from Project membership. Alternate MCP and viewer-button synchronization, compare complete task/binding inventories and dynamically rendered SVG/list output, and preserve filters/viewport. After removal, verify automatic current-record/binding deletion, cleared selection and an external blocking reference if a surviving Issue still requires the removed item; retain specifications/history. Wait only a bounded interval for GitHub read-back to confirm fixture changes before synchronization and report propagation or service failures explicitly. Capture fixture-write calls separately from EAW read calls. Keep 1000/10000 capacity and injected failure checks local; do not bulk-create capacity fixtures on GitHub.
+
+                Keep a private run inventory with resource IDs/URLs, visibility proofs, field/option/Issue/Milestone bindings and cleanup status, without credentials or unrelated repository data. Published evidence uses synthetic content and redacted identifiers where needed. Retain the private resources after acceptance; deletion requires a separate explicit request naming the exact created resources, never a prefix-wide cleanup. Resource creation and test execution belong to a later explicit P09 invocation, not this planning amendment. The required live check remains incomplete if unavailable, failed or skipped.
+
+                For the documented Linux machine/browser/runtime versions, exercise the synthetic 40-task/8-layer reference and the 1000-task/10000-source-edge boundary. Measure server derivation/rendering separately from remote provider latency; initial local presentation is <=5 seconds after data availability, and p95 of 20 representative search/filter interactions is <=250 ms. Over-limit cases preserve prior valid observations and fail visibly. Keyboard-only, 1024x768, 200% zoom, measured contrast and inert-injection/network-blocked interaction checks remain separate observations, not a screenshot-only claim.
+
+                Run required Linux Chromium-family and Firefox checks using existing authorized capabilities. Record which exact browser versions actually ran; other target browsers/platforms retain intended compatibility and static/platform-policy evidence only. Linux WebKit, if used, is supplemental and never native Safari proof. Missing required Linux execution capability leaves this packet incomplete without changing support requirements or installing tools automatically.
+
+                Run affected unit/integration checks first and repository-proportional final build/lint/test/generation validation after they pass. Apply RED/GREEN/PROVE at the narrowest owning boundary, including absence assertions and source-preservation checks. An environmental failure is not a pass. Preserve failed evidence and name the actual next action/owner; do not weaken a check to finish. A separate optional code/security review, commit or publication is not an acceptance gate.
+
+                Requirement IDs: REQ-001 through REQ-040, with individual ownership/check mappings in the plan and scenario IDs, not one undifferentiated pass.
+
+                Evidence: the MCP package already uses Node tests and root `scripts/run-tests.mjs`; root/package manifests expose build/lint/test and generation checks. Current planning host reports Node `v24.20.0` and gh `2.92.0`; these observations are not runtime feature acceptance. Reverify actual tool/browser versions at execution.
+
+              digest: 0bd27f9777c7db6038da32c4699e57b8b7c6720e0577d549f31724df5337ad0c
+          digest: 452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5
+      answer: null
+      agreements: []
+      status: prepared
+      source_version: 6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5
+      specification_version: e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8
+      review_ref: fd840f43-b70d-463d-991c-204f891f1b2e
+      id: b8d263ab-6516-459a-81df-317828aea304
+      revision: 1
+      supersedes_revision: null
+    - question:
+        text: "User-directed P09 amendment: add required actual GitHub display/synchronization acceptance using one newly created private test repository and private Projects v2 board. Retain deterministic local tests, keep EAW read-only, isolate all fixture mutations, verify privacy and capture actual MCP/HTTP/SVG outcomes. Creation/execution happens in a later explicit P09 invocation; no GitHub resource is created by this planning amendment."
+        kind: free_text
+        options: []
+        option_bindings: []
+      proposals:
+        - id: P09-github-live-acceptance-v2
+          packet_id: P09
+          requirement_ids:
+            - REQ-001
+            - REQ-002
+            - REQ-003
+            - REQ-004
+            - REQ-005
+            - REQ-006
+            - REQ-007
+            - REQ-008
+            - REQ-009
+            - REQ-010
+            - REQ-011
+            - REQ-012
+            - REQ-013
+            - REQ-014
+            - REQ-015
+            - REQ-016
+            - REQ-017
+            - REQ-018
+            - REQ-019
+            - REQ-020
+            - REQ-021
+            - REQ-022
+            - REQ-023
+            - REQ-024
+            - REQ-025
+            - REQ-026
+            - REQ-027
+            - REQ-028
+            - REQ-029
+            - REQ-030
+            - REQ-031
+            - REQ-032
+            - REQ-033
+            - REQ-034
+            - REQ-035
+            - REQ-036
+            - REQ-037
+            - REQ-038
+            - REQ-039
+            - REQ-040
+          sources:
+            - path: docs/specs/product-roadmap-task-graph/tasks/plan.md
+              heading: Shared architecture
+              text: |+
+                ## Shared architecture
+
+                This plan implements the existing Approved `../spec.md`, not another product workflow invocation. The pinned behavioral source version is `6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5`; the specification version is `e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8`, reviewed by `fd840f43-b70d-463d-991c-204f891f1b2e`.
+
+                - Existing product IDs, task IDs, candidate previews, ready Roadmap sources, source pins and task workflow ownership remain authoritative. Board observations cannot approve, review, retire or execute workflow artifacts.
+                - All new durable graph records use the existing separate product-data root, its safe-path validation and immutable object store. There is no consuming-project graph database or skill installation.
+                - The graph policy kernel is independent of providers, storage, HTTP and browser code. The provider returns normalized observations; one synchronization service reconciles them and owns publication. MCP and HTTP call that same service.
+                - Public persisted and wire definitions are added during implementation to the existing authoritative `shared/schemas/product.schema.json`. Planning describes the intended extensions and references them; it creates no second schema source or production schema changes.
+                - The only profile outputs are `../contracts/mcp.md`, `../contracts/openapi.yaml`, `../quality/scenarios.yaml` and `../architecture/model.dsl`. No design artifact or Penpot stage is required.
+                - Runtime targets remain Linux, macOS and Windows and current desktop Chrome/Edge, Firefox and Safari. Executable acceptance in this work remains Linux-only; Linux WebKit is not native Safari evidence.
+                - New identifiers below are proposed binding ownership boundaries. Private helper names and equivalent statement organization remain flexible.
+
+              digest: e570a0b47f2170b31f72b35eb076393ca43e2ae80f5d1bf3640adabcc5bf27e8
+            - path: docs/specs/product-roadmap-task-graph/tasks/09_linux-acceptance.md
+              heading: Technical proposal
+              text: |+
+                ## Technical proposal
+
+                Extend the existing Node test/test-support infrastructure with synthetic product-store and fake-provider fixtures, and use an already available Linux browser automation capability for actual HTTP/viewer interactions. Add required real-GitHub acceptance using one newly created private test repository and one newly created private Projects v2 board, as explicitly requested on 2026-10-26. Existing production/KAP resources, global configuration and runtime architecture remain unchanged. Normalized fixtures preserve opaque IDs, both dependency representations and exact source/graph/specification identities. Use the actual built MCP stdio server and actual local HTTP server, not mocks of their public boundary.
+
+                Own the end-to-end and capacity scenarios in `../quality/scenarios.yaml`. Exercise normal, invalid, repeated, interrupted-publication, denied-origin/session, partial, overlapping-sync, cancelled and recovery paths. Compare resulting MCP data and server-generated SVG/list counts/revisions/states. Capture provider invocation types/counts, source-pin/history before/after digests, task/binding absence, listener/child cleanup and redacted diagnostics through safe observation surfaces. Use direct-gh test executables for deterministic faults, not an additional runtime wrapper. Provider writes are confined to the newly created private fixture resources and performed by the test operator/agent through existing GitHub tools or direct gh; EAW's adapter remains read-only. Never use an existing working board or repository as a substitute fixture.
+
+                For the real-provider run, resolve the already authenticated owner and required permissions, create uniquely named test-only resources, explicitly set/check repository and Project privacy independently, and record their exact IDs before seeding. Stop if privacy, ownership or required permissions cannot be established; do not refresh authentication/configuration automatically. Seed approximately 12 synthetic Issues, two Milestones, explicit status/Stage options, ordinary/package/shared labels, a native prerequisite diamond, a Backlog task and deliberately unbound/out-of-board items. Bind only selected Issue IDs to an isolated local EAW test product/store. The live test is a separately opted-in `product-graph-github-live.test.mjs`, excluded from ordinary offline test execution and never credited as passed when skipped.
+
+                Run `Q-GITHUB-LIVE` against actual GitHub reads and the built MCP/HTTP/browser boundaries: baseline display, title/status/label/Stage/Milestone/dependency changes, status-option rename without an identity change, Backlog transitions, explicit unknown status, repeat-run identity stability and removal from Project membership. Alternate MCP and viewer-button synchronization, compare complete task/binding inventories and dynamically rendered SVG/list output, and preserve filters/viewport. After removal, verify automatic current-record/binding deletion, cleared selection and an external blocking reference if a surviving Issue still requires the removed item; retain specifications/history. Wait only a bounded interval for GitHub read-back to confirm fixture changes before synchronization and report propagation or service failures explicitly. Capture fixture-write calls separately from EAW read calls. Keep 1000/10000 capacity and injected failure checks local; do not bulk-create capacity fixtures on GitHub.
+
+                Keep a private run inventory with resource IDs/URLs, visibility proofs, field/option/Issue/Milestone bindings and cleanup status, without credentials or unrelated repository data. Published evidence uses synthetic content and redacted identifiers where needed. Retain the private resources after acceptance; deletion requires a separate explicit request naming the exact created resources, never a prefix-wide cleanup. Resource creation and test execution belong to a later explicit P09 invocation, not this planning amendment. The required live check remains incomplete if unavailable, failed or skipped.
+
+                For the documented Linux machine/browser/runtime versions, exercise the synthetic 40-task/8-layer reference and the 1000-task/10000-source-edge boundary. Measure server derivation/rendering separately from remote provider latency; initial local presentation is <=5 seconds after data availability, and p95 of 20 representative search/filter interactions is <=250 ms. Over-limit cases preserve prior valid observations and fail visibly. Keyboard-only, 1024x768, 200% zoom, measured contrast and inert-injection/network-blocked interaction checks remain separate observations, not a screenshot-only claim.
+
+                Run required Linux Chromium-family and Firefox checks using existing authorized capabilities. Record which exact browser versions actually ran; other target browsers/platforms retain intended compatibility and static/platform-policy evidence only. Linux WebKit, if used, is supplemental and never native Safari proof. Missing required Linux execution capability leaves this packet incomplete without changing support requirements or installing tools automatically.
+
+                Run affected unit/integration checks first and repository-proportional final build/lint/test/generation validation after they pass. Apply RED/GREEN/PROVE at the narrowest owning boundary, including absence assertions and source-preservation checks. An environmental failure is not a pass. Preserve failed evidence and name the actual next action/owner; do not weaken a check to finish. A separate optional code/security review, commit or publication is not an acceptance gate.
+
+                Requirement IDs: REQ-001 through REQ-040, with individual ownership/check mappings in the plan and scenario IDs, not one undifferentiated pass.
+
+                Evidence: the MCP package already uses Node tests and root `scripts/run-tests.mjs`; root/package manifests expose build/lint/test and generation checks. Current planning host reports Node `v24.20.0` and gh `2.92.0`; these observations are not runtime feature acceptance. Reverify actual tool/browser versions at execution.
+
+              digest: 0bd27f9777c7db6038da32c4699e57b8b7c6720e0577d549f31724df5337ad0c
+          digest: 452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5
+      answer:
+        text: Добавь в план тестирование работы с GitHub. Для этого потребуется создать приватный тестовый репозиторий и приватную тестовую доску, чтобы проверить логику отображения задач и синхронизации.
+        source: Direct user instruction in this chat on 2026-10-26 explicitly requests adding private GitHub repository/Project integration testing to the plan. Exact instruction recorded; no additional native question or execution authorization is claimed.
+        selected_ids: []
+        accepted_proposal_ids:
+          - P09-github-live-acceptance-v2
+        rejected_proposal_ids: []
+        question_ref:
+          id: b8d263ab-6516-459a-81df-317828aea304
+          revision: 1
+      agreements:
+        - packet_id: P09
+          proposal_id: P09-github-live-acceptance-v2
+          agreement_ref:
+            id: b8d263ab-6516-459a-81df-317828aea304
+            revision: 2
+          proposal_digest: 452aa60f5965f04b10a2940b702b21b751c5edd33e46e43be4f240edd1f530d5
+      status: answered
+      source_version: 6087eb0c0dfca148e9afc43780651ece85bd5d9660313a049d34071925e8eaa5
+      specification_version: e257fb7b0011d3d9e5e9b0754391b65133e83054bc7327fd2110163f0dab5af8
+      review_ref: fd840f43-b70d-463d-991c-204f891f1b2e
+      id: b8d263ab-6516-459a-81df-317828aea304
       revision: 2
       supersedes_revision: 1
