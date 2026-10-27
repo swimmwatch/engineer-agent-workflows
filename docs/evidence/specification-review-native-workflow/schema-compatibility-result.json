@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "packet_id": "P04",
+  "status": "incomplete",
+  "evidence_level": "preflight",
+  "baseline": {
+    "client_version": "0.2.1-rc.3",
+    "upstream_commit": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60"
+  },
+  "observed": {
+    "client_version": "0.2.1-rc.2",
+    "tools_version": "0.2.1-rc.2",
+    "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+    "tools_module_sha256": "1e53932e7c4213ea24a7d87f06960b7a7702cb21f8a5741c97242b4a470a442a"
+  },
+  "checks": {
+    "client_version": {
+      "status": "pass"
+    },
+    "native_schemas": [
+      {
+        "component": "detailSchema",
+        "status": "pass",
+        "violation_count": 0
+      },
+      {
+        "component": "finalSchema",
+        "status": "pass",
+        "violation_count": 0
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "code": "HOST_VERSION_REQUIRES_RECONCILIATION"
+    },
+    {
+      "code": "NATIVE_QUALIFICATION_REQUIRED"
+    }
+  ],
+  "metrics": {
+    "preflight_elapsed_ms": 98.324927,
+    "version_probe": {
+      "elapsed_ms": 52.51173,
+      "stdin_bytes": 0,
+      "stdout_bytes": 11,
+      "stderr_bytes": 0,
+      "exit_code": 0,
+      "signal": null
+    },
+    "schema_probe": {
+      "elapsed_ms": 43.315636,
+      "stdin_bytes": 29374,
+      "stdout_bytes": 131,
+      "stderr_bytes": 0,
+      "exit_code": 0,
+      "signal": null
+    },
+    "model_reviews": 0,
+    "model_turns": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "cache_tokens": null,
+    "scenario_handler_ms": null,
+    "lock_wait_ms": null,
+    "submission_ack_ms": null,
+    "lane_idle_ms": null
+  },
+  "required_evidence": [
+    "native_engine",
+    "four_model_reviews",
+    "native_cancellation_cleanup",
+    "all_actor_metrics"
+  ],
+  "next_action": "reconcile_host_version"
+}

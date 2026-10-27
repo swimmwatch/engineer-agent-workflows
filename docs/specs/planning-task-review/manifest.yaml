@@ -1,0 +1,44 @@
+schema_version: 1
+depth: deep
+confirmed: true
+rationale:
+  - Review implementations against prepared planning packets, as the selected kap-app source workflow does; exclude a separate pre-implementation plan-review mode.
+  - "Deep: public MCP evolution, independent native reviewers, executable verification, durable source identity and recovery."
+  - Support the repository's established Codex, Claude Code and DeepSeek Harness distribution targets and existing supported environments; verify native capability differences instead of assuming parity.
+  - Planning will author the declared MCP contract and data schemas; this invocation produces only a specification bundle and research evidence.
+  - No planning packets, implementation, global installation/configuration, commits, pushes, publishing or external comments.
+profiles:
+  - id: core
+    reason: Canonical explicit-only review skill, native reviewer coordination and host portability across Codex, Claude Code and DeepSeek Harness.
+    state: active
+  - id: backend
+    reason: The ecosystem classifies a separately validated MCP service contract under backend; the review workflow needs exact scenario inputs, outputs and failures.
+    state: active
+  - id: data
+    reason: Source-bound findings, evidence, review results and interrupted-run recovery require durable state integrity and compatibility.
+    state: active
+  - id: ui
+    reason: No visual product UI or design artifact is requested.
+    state: not_applicable
+  - id: events
+    reason: No event transport contract is requested.
+    state: not_applicable
+  - id: operations
+    reason: Execution limits and recovery are within the review contract; no independent deployment or availability workstream.
+    state: not_applicable
+  - id: security
+    reason: Applicable security review and execution safety are covered within the workflow; no separate security platform or dedicated security-only workflow.
+    state: not_applicable
+  - id: cross-surface
+    reason: Host portability is core tooling behavior; no UI/API/event user journey.
+    state: not_applicable
+planning_artifacts:
+  - contracts/mcp.md
+  - contracts/schemas/data.schema.json
+extensions:
+  workflow_mcp_receipts:
+    - id: 5d7715c8792f4ec71e429cdb7a35ec2e26a5aaa5e75d596b2bb3d989f669c3b6
+      result:
+        confirmed: true
+        depth: deep
+        next: Load only the confirmed active profile references.

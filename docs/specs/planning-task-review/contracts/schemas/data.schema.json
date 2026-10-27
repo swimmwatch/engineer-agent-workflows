@@ -1,0 +1,2153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engineer-agent-workflows.invalid/planning-task-review/data-v1.schema.json",
+  "title": "Implementation packet review data contract v1",
+  "description": "Planning contract snapshot for the MCP-owned extensions.packet_review namespace. Runtime canonical definitions are promoted into shared/schemas/decisions.schema.json by PTR-01; this file is not a second runtime journal or validator.",
+  "type": "object",
+  "required": ["schema_version", "runs", "packet_attempts"],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/packetReviewRun"
+      }
+    },
+    "packet_attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/packetVerificationAttempt"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "packetReviewLocation": {
+      "type": "object",
+      "required": ["path", "source_digest"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "file_mode": {
+          "type": "string",
+          "pattern": "^[0-7]{6}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewSelection": {
+      "type": "object",
+      "required": [
+        "mode",
+        "baseline_ref",
+        "target_ref",
+        "paths",
+        "effective_digest",
+        "attributes_digest"
+      ],
+      "properties": {
+        "mode": {
+          "enum": ["committed", "working_tree", "staged", "empty_baseline"]
+        },
+        "baseline_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "target_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "baseline_oid": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "target_oid": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "effective_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "index_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "index_differs": {
+          "type": "boolean"
+        },
+        "attributes_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewLimits": {
+      "type": "object",
+      "required": [
+        "invocation_ms",
+        "check_ms",
+        "cleanup_ms",
+        "max_packets",
+        "max_units",
+        "unit_input_bytes",
+        "actor_input_bytes",
+        "actor_result_bytes"
+      ],
+      "properties": {
+        "invocation_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1800000
+        },
+        "check_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 120000
+        },
+        "cleanup_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 30000
+        },
+        "max_packets": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 20
+        },
+        "max_units": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 128
+        },
+        "unit_input_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 32768
+        },
+        "actor_input_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 65536
+        },
+        "actor_result_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 16384
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewInvocation": {
+      "type": "object",
+      "required": [
+        "invocation_id",
+        "started_at",
+        "expires_at",
+        "effective_actor_ms",
+        "status",
+        "limits",
+        "enforcement",
+        "stop_status",
+        "cleanup_status"
+      ],
+      "properties": {
+        "invocation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effective_actor_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "enum": [
+            "active",
+            "completed",
+            "interrupted",
+            "expired",
+            "cancelled",
+            "failed"
+          ]
+        },
+        "limits": {
+          "$ref": "#/definitions/packetReviewLimits"
+        },
+        "enforcement": {
+          "type": "object",
+          "required": ["kind", "control_ref", "capability_evidence_ref"],
+          "properties": {
+            "kind": {
+              "enum": ["native_caller", "native_runner"]
+            },
+            "control_ref": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "capability_evidence_ref": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "additionalProperties": false
+        },
+        "resume_of": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stop_status": {
+          "enum": [
+            "not_requested",
+            "requested",
+            "confirmed",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cleanup_status": {
+          "enum": [
+            "not_required",
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "unknown"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewUnit": {
+      "type": "object",
+      "required": [
+        "unit_id",
+        "packet_ids",
+        "criterion_ids",
+        "source_refs",
+        "shared_constraint_refs",
+        "depends_on_units",
+        "original_bytes",
+        "source_version"
+      ],
+      "properties": {
+        "unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "packet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "criterion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewLocation"
+          }
+        },
+        "shared_constraint_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "depends_on_units": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "original_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewAssignment": {
+      "type": "object",
+      "required": [
+        "assignment_id",
+        "actor_ref",
+        "phase",
+        "unit_ids",
+        "source_version",
+        "status",
+        "input_bytes",
+        "result_bytes",
+        "assessment_scope"
+      ],
+      "properties": {
+        "assignment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "native_context_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "phase": {
+          "enum": ["fact_collection", "main_review", "verification"]
+        },
+        "axis": {
+          "enum": ["requirements", "security", "architecture"]
+        },
+        "unit_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "cancelled",
+            "incomplete",
+            "stale"
+          ]
+        },
+        "input_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "result_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "assessment_scope": {
+          "enum": ["unit", "integration", "whole_report"]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "fact_collection"
+              }
+            },
+            "required": ["phase"]
+          },
+          "then": {
+            "required": ["axis"]
+          }
+        }
+      ]
+    },
+    "packetReviewCriterion": {
+      "type": "object",
+      "required": [
+        "criterion_id",
+        "packet_id",
+        "location",
+        "implementation",
+        "test_sufficiency",
+        "required_history",
+        "required_check",
+        "explanation",
+        "evidence_refs",
+        "assessment_refs"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "packet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "location": {
+          "$ref": "#/definitions/packetReviewLocation"
+        },
+        "implementation": {
+          "enum": [
+            "meets",
+            "violates",
+            "missing",
+            "unverifiable",
+            "not_applicable"
+          ]
+        },
+        "test_sufficiency": {
+          "enum": [
+            "sufficient",
+            "insufficient",
+            "missing",
+            "unverifiable",
+            "not_applicable"
+          ]
+        },
+        "required_history": {
+          "enum": ["sufficient", "missing", "unverifiable", "not_required"]
+        },
+        "required_check": {
+          "enum": [
+            "passed",
+            "assertion_failed",
+            "unavailable",
+            "not_run",
+            "not_required"
+          ]
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "assessment_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewProposition": {
+      "type": "object",
+      "required": [
+        "proposition_id",
+        "parent_finding_id",
+        "claim",
+        "severity",
+        "disposition",
+        "approval_material",
+        "origin_actor_ref",
+        "affected_packet_ids",
+        "criterion_ids",
+        "evidence_refs",
+        "reason"
+      ],
+      "properties": {
+        "proposition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "parent_finding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "severity": {
+          "enum": ["critical", "required", "optional", "info"]
+        },
+        "disposition": {
+          "enum": ["confirmed", "refuted", "unverifiable"]
+        },
+        "approval_material": {
+          "type": "boolean"
+        },
+        "origin_actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "assessor_actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "affected_packet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "criterion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "enum": ["confirmed", "refuted"]
+              }
+            },
+            "required": ["disposition"]
+          },
+          "then": {
+            "required": ["assessor_actor_ref"]
+          }
+        }
+      ]
+    },
+    "packetReviewFinding": {
+      "type": "object",
+      "required": [
+        "finding_id",
+        "origin_actor_ref",
+        "packet_ids",
+        "criterion_ids",
+        "original_claim",
+        "failure_scenario",
+        "impact",
+        "proposed_correction",
+        "confidence",
+        "original_severity",
+        "disposition",
+        "propositions",
+        "disposition_history_refs",
+        "disposition_history"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "origin_actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "packet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "criterion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "location": {
+          "$ref": "#/definitions/packetReviewLocation"
+        },
+        "original_claim": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "failure_scenario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "proposed_correction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "confidence": {
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "original_severity": {
+          "enum": ["critical", "required", "optional", "info"]
+        },
+        "disposition": {
+          "enum": [
+            "confirmed",
+            "partially_confirmed",
+            "refuted",
+            "unverifiable"
+          ]
+        },
+        "propositions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewProposition"
+          },
+          "minItems": 1
+        },
+        "disposition_history_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "disposition_history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/packetReviewFindingDisposition"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewExecution": {
+      "type": "object",
+      "required": [
+        "execution_id",
+        "operation_id",
+        "actor_ref",
+        "phase",
+        "source_version",
+        "environment_ref",
+        "evidence_kind",
+        "command_ref",
+        "working_directory_ref",
+        "source_refs",
+        "status",
+        "expected",
+        "observed",
+        "assertion_observed",
+        "restoration_status",
+        "effective_limit_ms"
+      ],
+      "properties": {
+        "execution_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "phase": {
+          "enum": ["fact_collection", "main_review", "verification"]
+        },
+        "question_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "criterion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "finding_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "environment_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "evidence_kind": {
+          "enum": ["new_execution", "valid_reuse"]
+        },
+        "reused_execution_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "reuse_assessment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "command_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "working_directory_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewLocation"
+          }
+        },
+        "status": {
+          "enum": [
+            "not_run",
+            "running",
+            "passed",
+            "assertion_failed",
+            "unavailable",
+            "timed_out",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "expected": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "observed": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "assertion_observed": {
+          "type": "boolean"
+        },
+        "resource_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "mutation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "restoration_status": {
+          "enum": ["not_required", "pending", "completed", "failed", "unknown"]
+        },
+        "effective_limit_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": ["question_ref"]
+        },
+        {
+          "required": ["criterion_ids"],
+          "properties": {
+            "criterion_ids": {
+              "minItems": 1
+            }
+          }
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evidence_kind": {
+                "const": "valid_reuse"
+              }
+            },
+            "required": ["evidence_kind"]
+          },
+          "then": {
+            "required": ["reused_execution_ref", "reuse_assessment"]
+          }
+        }
+      ]
+    },
+    "packetReviewResource": {
+      "type": "object",
+      "required": [
+        "resource_id",
+        "resource_kind",
+        "ownership",
+        "safe_reference",
+        "cleanup_status"
+      ],
+      "properties": {
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "resource_kind": {
+          "enum": ["workspace", "database", "fixture"]
+        },
+        "ownership": {
+          "enum": ["created", "reused"]
+        },
+        "safe_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "creator_actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "creation_evidence_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "cleanup_status": {
+          "enum": [
+            "not_required",
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cleanup_evidence_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "recovery_next_action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "recovery_owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "ownership": {
+                "const": "created"
+              }
+            },
+            "required": ["ownership"]
+          },
+          "then": {
+            "required": ["creator_actor_ref", "creation_evidence_ref"],
+            "properties": {
+              "cleanup_status": {
+                "enum": ["pending", "running", "completed", "failed", "unknown"]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "cleanup_status": {
+                "const": "not_required"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packetReviewEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "operation_id",
+        "kind",
+        "source_version",
+        "entity_ref",
+        "payload_digest",
+        "sequence",
+        "observed_at"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "kind": {
+          "enum": [
+            "prepared",
+            "assigned",
+            "unit_assessed",
+            "stage_assessed",
+            "finding_disposition",
+            "execution_observed",
+            "resource_observed",
+            "invocation_started",
+            "invocation_stopped",
+            "finalized"
+          ]
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "entity_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "payload_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewFinalization": {
+      "type": "object",
+      "required": [
+        "execution_status",
+        "coverage_status",
+        "freshness",
+        "consistency_status",
+        "cleanup_status",
+        "unresolved_material_refs",
+        "judgment",
+        "reason"
+      ],
+      "properties": {
+        "execution_status": {
+          "enum": [
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "cancelled",
+            "expired",
+            "interrupted"
+          ]
+        },
+        "coverage_status": {
+          "enum": ["pending", "partial", "complete"]
+        },
+        "freshness": {
+          "enum": ["fresh", "stale", "unknown"]
+        },
+        "consistency_status": {
+          "enum": ["pending", "consistent", "conflict", "unknown"]
+        },
+        "cleanup_status": {
+          "enum": ["not_required", "completed", "pending", "failed", "unknown"]
+        },
+        "unresolved_material_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "judgment": {
+          "enum": [
+            "approve",
+            "approve_with_comments",
+            "request_changes",
+            "incomplete"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewRun": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "specification",
+        "packet_ids",
+        "mode",
+        "input_issues",
+        "behavioral_source_version",
+        "specification_version",
+        "source_version",
+        "selection",
+        "units",
+        "criteria",
+        "assignments",
+        "findings",
+        "executions",
+        "resources",
+        "invocations",
+        "events",
+        "finalization",
+        "packet_inputs",
+        "assessments"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "specification": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "packet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "mode": {
+          "enum": ["normal", "diagnostic"]
+        },
+        "input_issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "behavioral_source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "specification_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection": {
+          "$ref": "#/definitions/packetReviewSelection"
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewUnit"
+          }
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewCriterion"
+          }
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewAssignment"
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewFinding"
+          }
+        },
+        "executions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewExecution"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewResource"
+          }
+        },
+        "invocations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewInvocation"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewEvent"
+          }
+        },
+        "finalization": {
+          "$ref": "#/definitions/packetReviewFinalization"
+        },
+        "packet_inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewInput"
+          },
+          "minItems": 1
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewAssessment"
+          }
+        },
+        "integration_assessment_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "consistency_assessment_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "finalization": {
+                "properties": {
+                  "judgment": {
+                    "enum": ["approve", "approve_with_comments"]
+                  }
+                },
+                "required": ["judgment"]
+              }
+            },
+            "required": ["finalization"]
+          },
+          "then": {
+            "properties": {
+              "mode": {
+                "const": "normal"
+              },
+              "input_issues": {
+                "maxItems": 0
+              },
+              "finalization": {
+                "properties": {
+                  "execution_status": {
+                    "const": "completed"
+                  },
+                  "coverage_status": {
+                    "const": "complete"
+                  },
+                  "freshness": {
+                    "const": "fresh"
+                  },
+                  "consistency_status": {
+                    "const": "consistent"
+                  },
+                  "cleanup_status": {
+                    "enum": ["not_required", "completed"]
+                  },
+                  "unresolved_material_refs": {
+                    "maxItems": 0
+                  }
+                }
+              },
+              "criteria": {
+                "items": {
+                  "properties": {
+                    "implementation": {
+                      "enum": ["meets", "not_applicable"]
+                    },
+                    "test_sufficiency": {
+                      "enum": ["sufficient", "not_applicable"]
+                    },
+                    "required_history": {
+                      "enum": ["sufficient", "not_required"]
+                    },
+                    "required_check": {
+                      "enum": ["passed", "not_required"]
+                    }
+                  }
+                }
+              },
+              "findings": {
+                "items": {
+                  "properties": {
+                    "propositions": {
+                      "not": {
+                        "contains": {
+                          "anyOf": [
+                            {
+                              "properties": {
+                                "disposition": {
+                                  "const": "confirmed"
+                                },
+                                "severity": {
+                                  "enum": ["critical", "required"]
+                                }
+                              },
+                              "required": ["disposition", "severity"]
+                            },
+                            {
+                              "properties": {
+                                "disposition": {
+                                  "const": "unverifiable"
+                                },
+                                "approval_material": {
+                                  "const": true
+                                }
+                              },
+                              "required": ["disposition", "approval_material"]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "resources": {
+                "items": {
+                  "properties": {
+                    "cleanup_status": {
+                      "enum": ["not_required", "completed"]
+                    }
+                  }
+                }
+              },
+              "assignments": {
+                "minItems": 5
+              },
+              "assessments": {
+                "minItems": 5
+              },
+              "packet_inputs": {
+                "items": {
+                  "required": ["agreement_ref", "proposal_digest"],
+                  "properties": {
+                    "input_status": {
+                      "const": "current"
+                    },
+                    "issues": {
+                      "maxItems": 0
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "integration_assessment_ref",
+              "consistency_assessment_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "packetVerificationObservation": {
+      "type": "object",
+      "required": [
+        "observation_id",
+        "operation_id",
+        "sequence",
+        "kind",
+        "observed_at",
+        "source_identity",
+        "source_refs",
+        "command_ref",
+        "working_directory_ref",
+        "expected",
+        "observed",
+        "outcome",
+        "assertion_observed",
+        "restoration_status"
+      ],
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": ["red", "green", "prove", "check", "restoration"]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_identity": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewLocation"
+          }
+        },
+        "command_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "working_directory_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+        },
+        "expected": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "observed": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "outcome": {
+          "enum": [
+            "expected_failure",
+            "passed",
+            "failed",
+            "unavailable",
+            "timed_out",
+            "cancelled",
+            "unknown"
+          ]
+        },
+        "assertion_observed": {
+          "type": "boolean"
+        },
+        "mutation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "restoration_status": {
+          "enum": ["not_required", "pending", "completed", "failed", "unknown"]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "prove"
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "required": ["mutation_ref"]
+          }
+        }
+      ]
+    },
+    "packetReviewInput": {
+      "type": "object",
+      "required": [
+        "packet_id",
+        "path",
+        "packet_digest",
+        "requirement_ids",
+        "contract_refs",
+        "input_status",
+        "issues"
+      ],
+      "properties": {
+        "packet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+        },
+        "packet_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "requirement_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "contract_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetReviewLocation"
+          }
+        },
+        "agreement_ref": {
+          "type": "object",
+          "required": ["id", "revision"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "proposal_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "input_status": {
+          "enum": ["current", "missing", "legacy", "stale", "unverifiable"]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "packetReviewAssessment": {
+      "type": "object",
+      "required": [
+        "assessment_id",
+        "assignment_id",
+        "actor_ref",
+        "phase",
+        "scope",
+        "unit_ids",
+        "criterion_ids",
+        "source_version",
+        "coverage",
+        "observations",
+        "evidence_refs",
+        "finding_refs",
+        "unresolved_refs",
+        "reason"
+      ],
+      "properties": {
+        "assessment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "assignment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "phase": {
+          "enum": ["fact_collection", "main_review", "verification"]
+        },
+        "scope": {
+          "enum": ["unit", "integration", "whole_report"]
+        },
+        "unit_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "criterion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "coverage": {
+          "enum": ["complete", "partial", "unavailable"]
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "finding_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "unresolved_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "main_axes": {
+          "type": "object",
+          "required": [
+            "correctness",
+            "readability",
+            "architecture",
+            "security",
+            "performance"
+          ],
+          "properties": {
+            "correctness": {
+              "type": "object",
+              "required": ["outcome", "reason", "evidence_refs"],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "no_concern",
+                    "concern",
+                    "unverifiable",
+                    "not_applicable"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "readability": {
+              "type": "object",
+              "required": ["outcome", "reason", "evidence_refs"],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "no_concern",
+                    "concern",
+                    "unverifiable",
+                    "not_applicable"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "architecture": {
+              "type": "object",
+              "required": ["outcome", "reason", "evidence_refs"],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "no_concern",
+                    "concern",
+                    "unverifiable",
+                    "not_applicable"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "security": {
+              "type": "object",
+              "required": ["outcome", "reason", "evidence_refs"],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "no_concern",
+                    "concern",
+                    "unverifiable",
+                    "not_applicable"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "performance": {
+              "type": "object",
+              "required": ["outcome", "reason", "evidence_refs"],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "no_concern",
+                    "concern",
+                    "unverifiable",
+                    "not_applicable"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "main_review"
+              }
+            },
+            "required": ["phase"]
+          },
+          "then": {
+            "required": ["main_axes"]
+          }
+        }
+      ]
+    },
+    "packetVerificationAttempt": {
+      "type": "object",
+      "required": [
+        "attempt_id",
+        "packet_id",
+        "behavioral_source_version",
+        "specification_version",
+        "agreement_ref",
+        "proposal_digest",
+        "required_kinds",
+        "observations",
+        "completion_state",
+        "required_check_status",
+        "restoration_status"
+      ],
+      "properties": {
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "packet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "behavioral_source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "specification_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "agreement_ref": {
+          "type": "object",
+          "required": ["id", "revision"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "proposal_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "required_kinds": {
+          "type": "array",
+          "items": {
+            "enum": ["red", "green", "prove"]
+          },
+          "uniqueItems": true
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packetVerificationObservation"
+          }
+        },
+        "completion_state": {
+          "enum": [
+            "running",
+            "completed",
+            "incomplete",
+            "failed",
+            "interrupted"
+          ]
+        },
+        "required_check_status": {
+          "enum": ["passed", "failed", "missing", "not_required"]
+        },
+        "restoration_status": {
+          "enum": ["not_required", "pending", "completed", "failed", "unknown"]
+        },
+        "prior_attempt_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "completion_state": {
+                "const": "completed"
+              }
+            },
+            "required": ["completion_state"]
+          },
+          "then": {
+            "properties": {
+              "required_check_status": {
+                "enum": ["passed", "not_required"]
+              },
+              "restoration_status": {
+                "enum": ["completed", "not_required"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "completion_state": {
+                "const": "completed"
+              },
+              "required_kinds": {
+                "contains": {
+                  "const": "red"
+                }
+              }
+            },
+            "required": ["completion_state", "required_kinds"]
+          },
+          "then": {
+            "properties": {
+              "observations": {
+                "contains": {
+                  "properties": {
+                    "kind": {
+                      "const": "red"
+                    },
+                    "assertion_observed": {
+                      "const": true
+                    }
+                  },
+                  "required": ["kind", "assertion_observed"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "completion_state": {
+                "const": "completed"
+              },
+              "required_kinds": {
+                "contains": {
+                  "const": "green"
+                }
+              }
+            },
+            "required": ["completion_state", "required_kinds"]
+          },
+          "then": {
+            "properties": {
+              "observations": {
+                "contains": {
+                  "properties": {
+                    "kind": {
+                      "const": "green"
+                    },
+                    "assertion_observed": {
+                      "const": true
+                    }
+                  },
+                  "required": ["kind", "assertion_observed"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "completion_state": {
+                "const": "completed"
+              },
+              "required_kinds": {
+                "contains": {
+                  "const": "prove"
+                }
+              }
+            },
+            "required": ["completion_state", "required_kinds"]
+          },
+          "then": {
+            "properties": {
+              "observations": {
+                "contains": {
+                  "properties": {
+                    "kind": {
+                      "const": "prove"
+                    },
+                    "assertion_observed": {
+                      "const": true
+                    }
+                  },
+                  "required": ["kind", "assertion_observed"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packetReviewFindingDisposition": {
+      "type": "object",
+      "required": [
+        "disposition_ref",
+        "sequence",
+        "source_version",
+        "observed_at",
+        "assessor_actor_ref",
+        "disposition",
+        "propositions",
+        "evidence_refs",
+        "reason"
+      ],
+      "properties": {
+        "disposition_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_version": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assessor_actor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "disposition": {
+          "enum": [
+            "confirmed",
+            "partially_confirmed",
+            "refuted",
+            "unverifiable"
+          ]
+        },
+        "propositions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/packetReviewProposition"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "x-requirements": [
+    "IPR-006",
+    "IPR-007",
+    "IPR-008",
+    "IPR-009",
+    "IPR-010",
+    "IPR-011",
+    "IPR-012",
+    "IPR-013",
+    "IPR-014",
+    "IPR-015",
+    "IPR-016",
+    "IPR-017",
+    "IPR-018",
+    "IPR-019",
+    "IPR-020",
+    "IPR-021",
+    "IPR-022",
+    "IPR-023",
+    "IPR-024",
+    "IPR-025"
+  ]
+}

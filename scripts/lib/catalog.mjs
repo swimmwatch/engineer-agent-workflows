@@ -81,13 +81,17 @@ function assertScalarString(value, rule, code = "E_INVALID_CATALOG") {
 }
 
 function validatePolicies(value) {
-  assertExactKeys(value, ["codex", "claude"], "skill policies");
+  assertExactKeys(value, ["codex", "claude", "deepseek-harness"], "skill policies");
   assertExactKeys(value.codex, ["allowImplicitInvocation"], "Codex policy");
   assertExactKeys(
     value.claude,
     ["disableModelInvocation", "userInvocable"],
     "Claude policy",
   );
+  assertExactKeys(value["deepseek-harness"], ["disableModelInvocation", "userInvocable"], "DeepSeek Harness policy");
+  if (value["deepseek-harness"].disableModelInvocation !== true || value["deepseek-harness"].userInvocable !== true) {
+    throw new ValidationError("E_INVALID_CATALOG", "DeepSeek Harness policy must be explicit-only and user-invocable");
+  }
   if (value.codex.allowImplicitInvocation !== false) {
     throw new ValidationError(
       "E_INVALID_CATALOG",

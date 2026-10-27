@@ -251,7 +251,7 @@ export async function qualifyProductWorkflows({ modelTrials = false } = {}) {
     const trials = modelTrials
       ? await Promise.all([
           runModelTrial({
-            model: "gpt-5.6-sol",
+            model: "gpt-6.1-sol",
             effort: "high",
             role: "independent-reviewer",
             workspace: result.workspaces[0],
@@ -260,7 +260,7 @@ export async function qualifyProductWorkflows({ modelTrials = false } = {}) {
               "Independently assess the current product definition and delivery task for internal consistency. Use the available product workflow MCP read-only capabilities against this workspace and read the selected source content completely where material. Do not modify files or workflow state. Report the exact source version, artifacts actually inspected, any blockers, and a concise acceptance result.",
           }),
           runModelTrial({
-            model: "gpt-5.6-terra",
+            model: "gpt-6.1-terra",
             effort: "high",
             role: "prospective-implementer",
             workspace: result.workspaces[1],

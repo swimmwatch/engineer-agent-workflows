@@ -238,6 +238,9 @@ export function consistencyReceipt(context: Context, run: Data, item: Item, s: S
 export async function validateFollowup(context: Context, run: Data, s: Snapshot): Promise<void> {
   if (!run.followup) return;
   if (!run.consistency) fail("CONSISTENCY_REQUIRED", "Complete a new whole-specification consistency read and verdict.");
+  await validateReviewProvenance(context, run, s);
+}
+export async function validateReviewProvenance(context: Context, run: Data, s: Snapshot): Promise<void> {
   const visited = new Set<string>();
   let target: Data | undefined = run;
   while (target) {

@@ -1,0 +1,136 @@
+schema_version: 1
+spec_slug: deepseek-harness-export
+decisions:
+  - id: scope.manifest
+    category: scope
+    state: needs_user
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer: null
+    status: prepared
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - The user explicitly approved Standard depth with core and operations and requested implementation of the complete DeepSeek Harness export plan.
+      profiles:
+        - id: core
+          reason: Strict host templating, catalog policy and deterministic skill generation.
+          state: active
+        - id: operations
+          reason: Filesystem export, safe replacement, compatibility verification and operating documentation.
+          state: active
+      planning_artifacts: []
+    revision: 1
+    supersedes_revision: null
+    question_origin:
+      id: scope.manifest
+      revision: 1
+  - id: scope.manifest
+    category: scope
+    state: answered
+    provenance: user
+    question:
+      text: Confirm this exact scope proposal, or request a correction.
+      kind: single_choice
+      options:
+        - id: confirm
+          label: Confirm this proposal
+        - id: change
+          label: Change the proposal
+    answer:
+      text: "Implement the approved Standard plan with core and operations: export all 17 skills as a DeepSeek Harness filesystem catalog; resolve MCP tool names at runtime; do not install, register, commit or publish."
+      selected_ids:
+        - confirm
+    status: answered
+    scope:
+      schema_version: 1
+      depth: standard
+      confirmed: false
+      rationale:
+        - The user explicitly approved Standard depth with core and operations and requested implementation of the complete DeepSeek Harness export plan.
+      profiles:
+        - id: core
+          reason: Strict host templating, catalog policy and deterministic skill generation.
+          state: active
+        - id: operations
+          reason: Filesystem export, safe replacement, compatibility verification and operating documentation.
+          state: active
+      planning_artifacts: []
+    revision: 2
+    supersedes_revision: 1
+    question_origin:
+      id: scope.manifest
+      revision: 1
+    answer_source: "Current chat: explicit Standard/core+operations selection followed by user message PLEASE IMPLEMENT THIS PLAN."
+    answered_question:
+      id: scope.manifest
+      revision: 1
+  - category: scope
+    state: instructed
+    provenance: user
+    instruction:
+      text: Export all 17 canonical skills to exports/deepseek-harness/skills with strict host templating and per-host rendered resource digests. Use Harness native question/delegation tools and runtime MCP name resolution. Preserve existing hosts, resource budgets and safe generation; verify the pinned upstream provider in isolation. No installation, MCP registration, commit, push or publication.
+      source: "Current chat: user supplied the complete implementation plan and explicitly requested implementation."
+      kind: initial_request
+    related_decisions: []
+    requirement_ids:
+      - DSH-001
+      - DSH-002
+      - DSH-003
+      - DSH-004
+    question: null
+    answer: null
+    id: 1d5a5724-5001-4786-9ea2-e90b62a7fd17
+    revision: 1
+    supersedes_revision: null
+extensions:
+  workflow_mcp_receipts:
+    - id: bd64c9283cb812c083428c31dc62104bb99d6a8aa4df378875eb1634a229f21c
+      result:
+        question_ref:
+          id: scope.manifest
+          revision: 1
+        question:
+          text: Confirm this exact scope proposal, or request a correction.
+          kind: single_choice
+          options:
+            - id: confirm
+              label: Confirm this proposal
+            - id: change
+              label: Change the proposal
+        proposal:
+          schema_version: 1
+          depth: standard
+          confirmed: false
+          rationale:
+            - The user explicitly approved Standard depth with core and operations and requested implementation of the complete DeepSeek Harness export plan.
+          profiles:
+            - id: core
+              reason: Strict host templating, catalog policy and deterministic skill generation.
+              state: active
+            - id: operations
+              reason: Filesystem export, safe replacement, compatibility verification and operating documentation.
+              state: active
+          planning_artifacts: []
+        next: Ask this saved question with the host-native question tool; then record the actual answer.
+    - id: fe8816891ddcd047e13a977aba9c9ce17549731827adc6f505267604b1b85ae2
+      result:
+        decision_ref:
+          id: scope.manifest
+          revision: 2
+        state: answered
+    - id: a988a9fc909c1b379932bec01f93afc21b85722d61fff0abab6126de3579baae
+      result:
+        decision_ref:
+          id: 1d5a5724-5001-4786-9ea2-e90b62a7fd17
+          revision: 1
+        state: instructed

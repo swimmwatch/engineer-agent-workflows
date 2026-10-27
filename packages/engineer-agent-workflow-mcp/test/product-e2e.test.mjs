@@ -87,7 +87,7 @@ test("Q38: model trials isolate the local development MCP and read-only tools", 
   assert.equal(typeof imported.modelTrialCodexArgs, "function");
 
   const args = imported.modelTrialCodexArgs({
-    model: "gpt-5.6-sol",
+    model: "gpt-6.1-sol",
     effort: "low",
     workspace: "/synthetic/workspace",
     prompt: "Inspect synthetic product inputs.",

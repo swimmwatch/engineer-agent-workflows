@@ -1,0 +1,692 @@
+{
+  "schema_version": 1,
+  "packet_id": "P04",
+  "status": "pass",
+  "tested_on": "2026-10-27",
+  "scope": "Isolated Harness rc.2 compatibility qualification; no global installation or rc.3 live-runtime claim.",
+  "native_models": {
+    "schema_version": 1,
+    "packet_id": "P04",
+    "status": "pass",
+    "evidence_level": "native_models",
+    "packet_complete": false,
+    "provider": "openai-codex",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "child_tool_presentation": "native",
+    "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+    "mcp_build_id": "a169b19b0a1e9007573215303175f6166da4e776c88ad8d9d5724861409bf991",
+    "cases": [
+      {
+        "name": "native-omission",
+        "status": "pass",
+        "expected": "gaps",
+        "observed": "gaps",
+        "consistency": "gap",
+        "spec_sha256": "16943acabb0659f27a5327d88811b28a4563ab12f660abb1ffb2560adc0400f1",
+        "source_sha256": "bdcbd0cb876e0bd4181017f21b7c6341b7e3a740f1282e48d7535e03c1a644cd",
+        "actors": [
+          {
+            "index": 0,
+            "role": "parent",
+            "metrics": {
+              "turns": 1,
+              "steps": 2,
+              "model_responses": 2,
+              "usage_observations": 2,
+              "input_tokens_observed": 4266,
+              "output_tokens_observed": 850,
+              "mcp_calls": 3
+            }
+          },
+          {
+            "index": 1,
+            "role": "detailed",
+            "metrics": {
+              "turns": 1,
+              "steps": 22,
+              "model_responses": 22,
+              "usage_observations": 22,
+              "input_tokens_observed": 44570,
+              "output_tokens_observed": 19894,
+              "mcp_calls": 37
+            }
+          },
+          {
+            "index": 2,
+            "role": "detailed",
+            "metrics": {
+              "turns": 1,
+              "steps": 15,
+              "model_responses": 15,
+              "usage_observations": 15,
+              "input_tokens_observed": 74646,
+              "output_tokens_observed": 19829,
+              "mcp_calls": 37
+            }
+          },
+          {
+            "index": 3,
+            "role": "detailed",
+            "metrics": {
+              "turns": 1,
+              "steps": 12,
+              "model_responses": 12,
+              "usage_observations": 12,
+              "input_tokens_observed": 45839,
+              "output_tokens_observed": 13205,
+              "mcp_calls": 23
+            }
+          },
+          {
+            "index": 4,
+            "role": "final",
+            "metrics": {
+              "turns": 1,
+              "steps": 16,
+              "model_responses": 16,
+              "usage_observations": 16,
+              "input_tokens_observed": 30905,
+              "output_tokens_observed": 8608,
+              "mcp_calls": 16
+            }
+          }
+        ],
+        "metrics": {
+          "elapsed_ms": 457251.55137400003,
+          "setup_ms": 1747.5418490000002,
+          "total_items": 56,
+          "recorded_items": 56,
+          "mcp_calls": 119,
+          "mcp_rpc_ms": 7110.023415999826,
+          "mcp_response_bytes": 631621,
+          "scenario_handler_ms": 5692.1924150001405,
+          "handler_calls": 119,
+          "lock_wait_ms": 0.5537509999703616,
+          "submission_samples": 3,
+          "native_runs_started": 1,
+          "native_runs_ended": 1,
+          "peak_judges": 3,
+          "parent_model_steps_while_pending": 0,
+          "rejected_model_arguments": 1,
+          "intentional_cancellations": 0,
+          "resumed_invocations": 0,
+          "native_schema_checks": 4,
+          "omission_evidence_found": 1,
+          "lane_idle_ms": null,
+          "cleanup_completed": 1
+        },
+        "usage": {
+          "requests": 67,
+          "totals": {
+            "input": {
+              "total": 1643682,
+              "observed_subtotal": 1643682,
+              "missing": 0
+            },
+            "cachedInput": {
+              "total": 1443456,
+              "observed_subtotal": 1443456,
+              "missing": 0
+            },
+            "cacheWrite": {
+              "total": null,
+              "observed_subtotal": 0,
+              "missing": 67
+            },
+            "output": {
+              "total": 62386,
+              "observed_subtotal": 62386,
+              "missing": 0
+            },
+            "reasoningOutput": {
+              "total": 6280,
+              "observed_subtotal": 6280,
+              "missing": 0
+            }
+          }
+        },
+        "errors": []
+      },
+      {
+        "name": "native-conflict",
+        "status": "pass",
+        "expected": "gaps",
+        "observed": "gaps",
+        "consistency": "conflict",
+        "spec_sha256": "1b3a4b65f6a1d3fdbe3c47a732c2238dc859e9b4404e99c47ced6ac08d3a122b",
+        "source_sha256": "b487cc4b80025d3d89022d8f34995e26ab0004d195b319ca811edaaaae3a4b75",
+        "actors": [
+          {
+            "index": 0,
+            "role": "parent",
+            "metrics": {
+              "turns": 2,
+              "steps": 3,
+              "model_responses": 3,
+              "usage_observations": 3,
+              "input_tokens_observed": 4920,
+              "output_tokens_observed": 1249,
+              "mcp_calls": 4
+            }
+          },
+          {
+            "index": 1,
+            "role": "detailed",
+            "metrics": {
+              "turns": 1,
+              "steps": 8,
+              "model_responses": 8,
+              "usage_observations": 8,
+              "input_tokens_observed": 19798,
+              "output_tokens_observed": 7838,
+              "mcp_calls": 11
+            }
+          },
+          {
+            "index": 3,
+            "role": "final",
+            "metrics": {
+              "turns": 1,
+              "steps": 15,
+              "model_responses": 15,
+              "usage_observations": 15,
+              "input_tokens_observed": 21050,
+              "output_tokens_observed": 5983,
+              "mcp_calls": 13
+            }
+          }
+        ],
+        "metrics": {
+          "elapsed_ms": 287115.25036000006,
+          "setup_ms": 878.5521589999553,
+          "total_items": 8,
+          "recorded_items": 8,
+          "mcp_calls": 33,
+          "mcp_rpc_ms": 1768.142739000381,
+          "mcp_response_bytes": 176397,
+          "scenario_handler_ms": 940.9214190000267,
+          "handler_calls": 33,
+          "lock_wait_ms": 0.05542100002639927,
+          "submission_samples": 1,
+          "native_runs_started": 2,
+          "native_runs_ended": 2,
+          "peak_judges": 1,
+          "parent_model_steps_while_pending": 0,
+          "rejected_model_arguments": 0,
+          "intentional_cancellations": 1,
+          "resumed_invocations": 1,
+          "native_schema_checks": 2,
+          "omission_evidence_found": 0,
+          "lane_idle_ms": null,
+          "cleanup_completed": 1
+        },
+        "usage": {
+          "requests": 26,
+          "totals": {
+            "input": {
+              "total": 342856,
+              "observed_subtotal": 342856,
+              "missing": 0
+            },
+            "cachedInput": {
+              "total": 297088,
+              "observed_subtotal": 297088,
+              "missing": 0
+            },
+            "cacheWrite": {
+              "total": null,
+              "observed_subtotal": 0,
+              "missing": 26
+            },
+            "output": {
+              "total": 15070,
+              "observed_subtotal": 15070,
+              "missing": 0
+            },
+            "reasoningOutput": {
+              "total": 3113,
+              "observed_subtotal": 3113,
+              "missing": 0
+            }
+          }
+        },
+        "errors": []
+      }
+    ],
+    "metrics": {
+      "elapsed_ms": 747053.049615
+    },
+    "next_action": "qualification_evidence_ready",
+    "baseline": {
+      "client_version": "0.2.1-rc.3",
+      "upstream_commit": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60"
+    },
+    "observed": {
+      "client_version": "0.2.1-rc.2",
+      "tools_version": "0.2.1-rc.2",
+      "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+      "tools_module_sha256": "1e53932e7c4213ea24a7d87f06960b7a7702cb21f8a5741c97242b4a470a442a",
+      "provider_version": "0.2.0-alpha.10",
+      "provider_module_sha256": "de23f7bb02ace34b66f11dd60bceaaf5ec6b93630bab9a1198efdc380b7a564c",
+      "reviewer_sha256": "2524bb76e249a1469b8b98c87c2b1f7b5b477788354080daddb0493782371faf"
+    },
+    "preflight": {
+      "checks": {
+        "client_version": {
+          "status": "pass"
+        },
+        "native_schemas": [
+          {
+            "component": "detailSchema",
+            "status": "pass",
+            "violation_count": 0
+          },
+          {
+            "component": "finalSchema",
+            "status": "pass",
+            "violation_count": 0
+          }
+        ]
+      },
+      "metrics": {
+        "preflight_elapsed_ms": 120.408381,
+        "version_probe": {
+          "elapsed_ms": 64.271404,
+          "stdin_bytes": 0,
+          "stdout_bytes": 11,
+          "stderr_bytes": 0,
+          "exit_code": 0,
+          "signal": null
+        },
+        "schema_probe": {
+          "elapsed_ms": 42.691629000000006,
+          "stdin_bytes": 29374,
+          "stdout_bytes": 131,
+          "stderr_bytes": 0,
+          "exit_code": 0,
+          "signal": null
+        },
+        "model_reviews": 0,
+        "model_turns": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "cache_tokens": null,
+        "scenario_handler_ms": null,
+        "lock_wait_ms": null,
+        "submission_ack_ms": null,
+        "lane_idle_ms": null
+      }
+    },
+    "process": {
+      "elapsed_ms": 747165.983275,
+      "stdin_bytes": 1290,
+      "stdout_bytes": 4393,
+      "stderr_bytes": 185,
+      "exit_code": 0,
+      "signal": null
+    }
+  },
+  "corrected_negative_control": {
+    "name": "native-paraphrase",
+    "status": "pass",
+    "observed": "reviewed",
+    "consistency": "consistent",
+    "elapsed_ms": 271093.32332100003,
+    "spec_sha256": "56bde16cd6bc977cb9f843d9bf96aa4b01e24f447314ce7a9950ae5635cf45c4",
+    "source_sha256": "4b8da0d5ef25b87a47c4d01c1afa47de6036ba60e4c6853852e732da9546d5e9",
+    "total_items": 6,
+    "recorded_items": 6,
+    "actors": {
+      "parent": {
+        "turns": 1,
+        "steps": 2,
+        "model_responses": 2
+      },
+      "child-1": {
+        "turns": 1,
+        "steps": 12,
+        "model_responses": 12
+      },
+      "child-2": {
+        "turns": 1,
+        "steps": 15,
+        "model_responses": 15
+      }
+    },
+    "native_runs_started": 1,
+    "native_runs_ended": 1,
+    "peak_judges": 1,
+    "parent_model_steps_while_pending": 0,
+    "requests": 29,
+    "usage": {
+      "input": {
+        "total": 368105,
+        "observed_subtotal": 368105,
+        "missing": 0
+      },
+      "cachedInput": {
+        "total": 322816,
+        "observed_subtotal": 322816,
+        "missing": 0
+      },
+      "cacheWrite": {
+        "total": null,
+        "observed_subtotal": 0,
+        "missing": 29
+      },
+      "output": {
+        "total": 13804,
+        "observed_subtotal": 13804,
+        "missing": 0
+      },
+      "reasoningOutput": {
+        "total": 2410,
+        "observed_subtotal": 2410,
+        "missing": 0
+      }
+    },
+    "execution": "retained isolated driver; same native child-tool composition before durable CLI extraction"
+  },
+  "trace_metrics": [
+    {
+      "case": "native-conflict",
+      "mcp_tool_calls_by_name": {
+        "workflow_runtime_info": 5,
+        "specification_review_prepare_workflow": 6,
+        "specification_review_get": 16,
+        "specification_open": 2,
+        "specification_review_submit_batch": 1,
+        "specification_review_consistency_record": 1,
+        "specification_review_complete": 1,
+        "specification_review_status": 1
+      },
+      "rpc_elapsed_by_name_ms": {
+        "workflow_runtime_info": {
+          "samples": 5,
+          "sum": 23.017859999963548,
+          "max": 7.0064730000449345
+        },
+        "specification_review_prepare_workflow": {
+          "samples": 6,
+          "sum": 1111.8621920000878,
+          "max": 357.0612030000193
+        },
+        "specification_review_get": {
+          "samples": 16,
+          "sum": 403.1865880000987,
+          "max": 58.64075200003572
+        },
+        "specification_open": {
+          "samples": 2,
+          "sum": 64.94125500001246,
+          "max": 44.398526999983005
+        },
+        "specification_review_submit_batch": {
+          "samples": 1,
+          "sum": 54.85544099996332,
+          "max": 54.85544099996332
+        },
+        "specification_review_consistency_record": {
+          "samples": 1,
+          "sum": 37.15119300002698,
+          "max": 37.15119300002698
+        },
+        "specification_review_complete": {
+          "samples": 1,
+          "sum": 45.192975000012666,
+          "max": 45.192975000012666
+        },
+        "specification_review_status": {
+          "samples": 1,
+          "sum": 28.862970000016503,
+          "max": 28.862970000016503
+        }
+      },
+      "exact_read_text_utf8_bytes": 25968,
+      "repeated_identical_chunk_deliveries": 0,
+      "repeated_identical_chunk_utf8_bytes": 0,
+      "detailed_submit_calls_after_intentional_cancellation": 0,
+      "saved_counts": [
+        7
+      ],
+      "disposal_marker": true
+    },
+    {
+      "case": "native-omission",
+      "mcp_tool_calls_by_name": {
+        "workflow_runtime_info": 6,
+        "specification_review_prepare_workflow": 8,
+        "specification_open": 3,
+        "specification_review_get": 96,
+        "specification_review_submit_batch": 3,
+        "specification_review_consistency_record": 1,
+        "specification_review_complete": 1,
+        "specification_review_status": 1
+      },
+      "rpc_elapsed_by_name_ms": {
+        "workflow_runtime_info": {
+          "samples": 6,
+          "sum": 31.43258199993761,
+          "max": 11.335094999998546
+        },
+        "specification_review_prepare_workflow": {
+          "samples": 8,
+          "sum": 2071.8314899999496,
+          "max": 439.4558359999792
+        },
+        "specification_open": {
+          "samples": 3,
+          "sum": 139.84564700000192,
+          "max": 74.82478399999673
+        },
+        "specification_review_get": {
+          "samples": 96,
+          "sum": 4043.2387110001364,
+          "max": 90.47601199999917
+        },
+        "specification_review_submit_batch": {
+          "samples": 3,
+          "sum": 456.0393010000116,
+          "max": 161.9055609999923
+        },
+        "specification_review_consistency_record": {
+          "samples": 1,
+          "sum": 173.67665399995167,
+          "max": 173.67665399995167
+        },
+        "specification_review_complete": {
+          "samples": 1,
+          "sum": 120.43801799998619,
+          "max": 120.43801799998619
+        },
+        "specification_review_status": {
+          "samples": 1,
+          "sum": 77.10503799997969,
+          "max": 77.10503799997969
+        }
+      },
+      "exact_read_text_utf8_bytes": 119677,
+      "repeated_identical_chunk_deliveries": 15,
+      "repeated_identical_chunk_utf8_bytes": 18331,
+      "detailed_submit_calls_after_intentional_cancellation": null,
+      "saved_counts": [
+        20,
+        40,
+        55
+      ],
+      "disposal_marker": true
+    }
+  ],
+  "comparison": {
+    "baseline_evidence": "harness-codex-model-result.json",
+    "baseline_case": "sequential-omission",
+    "baseline_elapsed_ms": 831157.735587,
+    "current_elapsed_ms": 457251.55137400003,
+    "speedup": 1.8177253485295901,
+    "elapsed_reduction_percent": 44.986188325484456,
+    "same_spec_and_source_sha256": true,
+    "samples_per_variant": 1,
+    "presentation_changed": true,
+    "confounds": [
+      "PTC versus native child-tool presentation",
+      "request/cache behavior",
+      "provider latency",
+      "concurrent local regression checks"
+    ],
+    "statistically_generalizable": false,
+    "comparison_kind": "sequential_control_of_the_new_workflow",
+    "historical_implementation_compared": false,
+    "control_pair_mcp_build_id": null,
+    "control_pair_build_identity_limit": "MCP source was unchanged, but historical per-process build IDs were not retained.",
+    "interpretation": "Control of the new body only; use historical-comparison-result.json for the actual pre-change implementation."
+  },
+  "checks": {
+    "focused_tests": 36,
+    "focused_passed": 36,
+    "focused_skipped": 0,
+    "regression_tests": 67,
+    "regression_passed": 67,
+    "regression_skipped": 0,
+    "regression_first_attempt": {
+      "passed": 65,
+      "failed": 1,
+      "skipped": 1,
+      "failure": "Unicode scenario returned incomplete; three targeted reruns and complete repeat passed without changing production or assertions; transient cause not established."
+    },
+    "prove": {
+      "baseline_pass": true,
+      "controls": [
+        {
+          "control": "changed-provider-loads",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "missing-usage-as-zero",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "unfinished-saves-pass",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "public-report-leak",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "unrelated-gap-satisfies-omission",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "vague-negative-fixture",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "ptc-child-input-loss",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "blocked-parent-dispatch",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "parent-does-not-await",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "implicit-model-authority",
+          "detected": true,
+          "exit_code": 1
+        },
+        {
+          "control": "cancel-outside-selection",
+          "detected": true,
+          "exit_code": 1
+        }
+      ],
+      "all_restored": true
+    }
+  },
+  "limits": [
+    "Lane-idle time is unavailable, not zero.",
+    "Provider cache-write metrics are unavailable.",
+    "Host per-actor usage has no cache split; provider cached input is reported for the whole case.",
+    "Model cancellation was injected after durable detailed saves, during tool acknowledgment; active HTTP-inference cancellation was not qualified.",
+    "Whole installed web profile, external MCP integrations, Claude live runtime and rc.3 model runtime were not launched."
+  ],
+  "next_packet": "P05 requires a separate invocation",
+  "final_binding": {
+    "specification": {
+      "status": "pass",
+      "document_status": "approved",
+      "approval_checkpoint_status": "recorded",
+      "approval_checkpoint_written": false,
+      "coverage_status": "reviewed",
+      "source_version": "73f93f290e0ee7f969abc43af3121ea341dbe82a1db897896c27c678d09e7f43",
+      "specification_version": "969d6857c4f6decb623d7b60d841223057289f9dc0fb94f85fa4291f573ade2f",
+      "review_ref": "442a54a2-2c8a-4cf0-b3eb-44e9e77edb05",
+      "semantic_correctness_proven": false,
+      "reviewer_independence_authenticated": false,
+      "issues": [],
+      "checked": [
+        "scope_consistency",
+        "decision_resolution",
+        "requirement_references",
+        "review_freshness"
+      ],
+      "not_checked": [
+        "behavior_completeness",
+        "user_answer_authenticity",
+        "reviewer_independence"
+      ],
+      "approved_by_tool": false
+    },
+    "packet": {
+      "status": "ready",
+      "issues": [],
+      "agreement_ref": {
+        "id": "2edffc92-63d8-41fa-a5dd-455a309a2f12",
+        "revision": 10
+      },
+      "proposal_id": "P04-harness-parent-await-metrics-v5",
+      "proposal_digest": "e06d21e9af3745f82c2bf30c007f92eb7dce2e4b1f038656827cb5e1b04469bc",
+      "source_version": "73f93f290e0ee7f969abc43af3121ea341dbe82a1db897896c27c678d09e7f43",
+      "specification_version": "969d6857c4f6decb623d7b60d841223057289f9dc0fb94f85fa4291f573ade2f",
+      "review_ref": "442a54a2-2c8a-4cf0-b3eb-44e9e77edb05"
+    }
+  },
+  "cleanup": {
+    "active_owned_model_processes": [],
+    "credential_source_links_removed": 2,
+    "copied_peer_links_removed": 304,
+    "new_model_home_removed": true,
+    "old_model_home_removed": true
+  },
+  "preservation": {
+    "entry_files": 2047,
+    "missing": [],
+    "unrelated_changes_preserved": true,
+    "index_empty": true,
+    "production_workflow_unchanged": true
+  },
+  "source_sha256": {
+    "scripts/qualify-specification-review.mjs": "f5c1491c0b4620e25dbd0ce7601f914f5c3e3dd0a8f51014aebbf7e353a5ba5f",
+    "scripts/lib/specification-review-native-fixtures.mjs": "8185f6eeb929e8999230141e1fddbcceca231a8e56ac287389c2cac52f01890f",
+    "scripts/lib/specification-review-native-report.mjs": "c757ddd10738740dcbbc121873f10355705ccba88e2f55075583bc11739628df",
+    "scripts/lib/specification-review-native-worker.mjs": "ba0758a800d9ec2628b0c2de49546f421db9c088cf102066d08617d4af9b40d3",
+    "scripts/lib/specification-review-native-telemetry.mjs": "8eb6247aa4b434a9124aa16364058c398eb2fcda744c83c17c4a67cd91a00906",
+    "tests/specification-review-qualification.test.mjs": "1f5ad09a8eac86adb392b99f9dc3857abf1f99f25a089a55fdf385e88ca58af4",
+    "tests/specification-review-native-report.test.mjs": "12ea06be3fbb8531463a9c15c668e5d657def8917c36d62b6812003c654dd0e1",
+    "tests/specification-review-native-worker.test.mjs": "3efcab6b6c9949bbb8049154cc3db9a838d58c354e0ed583e477e72a26a69049"
+  },
+  "historical_comparison_evidence": "historical-comparison-result.json"
+}

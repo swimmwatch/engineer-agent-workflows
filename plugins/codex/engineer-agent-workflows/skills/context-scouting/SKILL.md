@@ -24,7 +24,7 @@ Read `AGENTS.md` only if absent from active context or itself in scope.
 3. Request `gpt-6-luna` through the native tool's supported model field,
    or the user's supported explicit override for this task. Do not compare models,
    research prices, change global settings, or alter main/reviewer/implementer models.
-   Use supported `medium` reasoning where exposed; otherwise omit it, do not invent
+   Use supported `medium` reasoning; otherwise omit it, do not invent
    fields. Prefer fresh context; never silently inherit a larger parent model.
    Distinguish requested from effective selection; the latter is unknown without
    host evidence. Model aliases do not pin an underlying release.

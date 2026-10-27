@@ -108,8 +108,8 @@ function eventsFor(scenario) {
 }
 
 function runFor(scenario, host, pass, set = scenario.set) {
-  const sharedModel = host === "codex" ? "gpt-5.6-sol" : "claude-opus-5";
-  const implementationModel = host === "codex" ? "gpt-5.6-terra" : "claude-sonnet-5";
+  const sharedModel = host === "codex" ? "gpt-6.1-sol" : "claude-opus-5";
+  const implementationModel = host === "codex" ? "gpt-6.1-terra" : "claude-sonnet-5";
   return {
     runId: `${set}-${host}-${scenario.id}-${pass}`,
     scenarioId: scenario.id,
@@ -179,10 +179,10 @@ function validEvidence(registry) {
     classification: "SYNTHETIC",
     selectedHostRoles: Object.fromEntries(
       Object.keys(registry.policy.fullMatrix).map((host) => [host, {
-        specification: host === "codex" ? "gpt-5.6-sol" : "claude-opus-5",
-        planning: host === "codex" ? "gpt-5.6-sol" : "claude-opus-5",
-        review: host === "codex" ? "gpt-5.6-sol" : "claude-opus-5",
-        implementation: host === "codex" ? "gpt-5.6-terra" : "claude-sonnet-5"
+        specification: host === "codex" ? "gpt-6.1-sol" : "claude-opus-5",
+        planning: host === "codex" ? "gpt-6.1-sol" : "claude-opus-5",
+        review: host === "codex" ? "gpt-6.1-sol" : "claude-opus-5",
+        implementation: host === "codex" ? "gpt-6.1-terra" : "claude-sonnet-5"
       }]),
     ),
     fullPasses,
@@ -691,9 +691,9 @@ test("frozen source resolves to a captured artifact and matches every run", asyn
 test("selected role labels cannot override the independent trial policy", async () => {
   const registry = await loadWorkflowEvidenceRegistry();
   const evidence = validEvidence(registry);
-  evidence.selectedHostRoles.codex.review = "gpt-5.6-terra";
+  evidence.selectedHostRoles.codex.review = "gpt-6.1-terra";
   for (const evaluation of evidence.evaluations) {
-    if (evaluation.runId.includes("-codex-")) evaluation.reviewerModel = "gpt-5.6-terra";
+    if (evaluation.runId.includes("-codex-")) evaluation.reviewerModel = "gpt-6.1-terra";
   }
   assert.ok(findingCodes(verifyWorkflowEvidence(evidence, registry, { allowSynthetic: true }))
     .includes("host-role-not-permitted"));

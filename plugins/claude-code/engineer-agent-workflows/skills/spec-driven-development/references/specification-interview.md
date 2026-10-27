@@ -180,6 +180,8 @@ unverifiable promise, orphan requirement, orphan planned contract, or conflict.
 New or changed specifications use this persisted completeness cycle. Legacy
 specifications remain explicitly unverified until changed; do not bulk-migrate.
 
+For an explicitly requested native review, read `references/native-specification-review.md` from this matching bundle. That route owns native scheduling, persistence and recovery; the ordinary scheduling, persistence and recovery below apply only outside the native path. Both routes use the semantic criteria in `references/completeness-review.md`. Otherwise use the ordinary independent checker.
+
 1. Preserve original instructions, complete the interview and write Draft.
    Link sources with `decision_link_requirements`, using its batch form when
    several decisions need updates; use `requirement_list/get` for exact
@@ -192,13 +194,14 @@ specifications remain explicitly unverified until changed; do not bulk-migrate.
    mechanical issues and `specification_check_state`. Repair
    missing links/definitions and start again after changes. An ID link does not
    establish that every condition in the original answer survived. Observe
-   progress with read-only `specification_review_status`; do not repeat start.
-3. Delegate to a separate fresh context with
+   ordinary review progress with read-only `specification_review_status`; do not
+   repeat start.
+3. For the ordinary route, delegate to a separate fresh context with
    `references/completeness-review.md`, returned context/review reference, the
    current specification and only confirmed active profile references. Provide
    raw sources through MCP, not an author-selected subset, suspected bugs,
    expected verdicts or a ready-made conclusion. Lite is short, never skipped.
-4. The reviewer reads every portion, records findings and completes the run.
+4. For that route, the reviewer reads every portion, records findings and completes the run.
    It does not edit the specification. Parallel read-only status and evidence
    calls are safe. If a separate context is unavailable,
    leave the run incomplete and request an independently invoked reviewer; do

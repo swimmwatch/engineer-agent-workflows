@@ -37,18 +37,26 @@ export const CLAUDE_MARKETPLACE_PATH = ".claude-plugin/marketplace.json";
 export const CODEX_PLUGIN_ROOT = CODEX_PLUGIN_SOURCE.slice(2);
 export const CLAUDE_PLUGIN_ROOT = CLAUDE_PLUGIN_SOURCE.slice(2);
 export const PLUGIN_ROOT = CODEX_PLUGIN_ROOT;
+export const DEEPSEEK_EXPORT_ROOT = "exports/deepseek-harness";
 export const SHARED_ROOT = "shared";
 
 const HOST_TEMPLATE_PATTERN = /\{\{HOST_[A-Z0-9_]+\}\}/g;
+const NATIVE_REVIEW_ROUTE = "For an explicitly requested native review, read `references/native-specification-review.md` from this matching bundle. That route owns native scheduling, persistence and recovery; the ordinary scheduling, persistence and recovery below apply only outside the native path. Both routes use the semantic criteria in `references/completeness-review.md`. Otherwise use the ordinary independent checker.";
 const HOST_TEMPLATE_VALUES = Object.freeze({
   codex: Object.freeze({
     "{{HOST_DISPLAY_NAME}}": "Codex",
     "{{HOST_PROJECT_INSTRUCTIONS}}": "AGENTS.md",
     "{{HOST_QUESTION_TOOL}}": "request_user_input",
     "{{HOST_AUTHOR_MODEL}}": "Sol; Astra for difficult or disputed cases",
-    "{{HOST_IMPLEMENTATION_MODEL}}": "Terra",
+    "{{HOST_IMPLEMENTATION_MODEL}}": "GPT-6.1 Terra",
     "{{HOST_REVIEW_MODEL}}": "Sol; Astra for difficult or disputed cases",
     "{{HOST_SCOUT_MODEL}}": "gpt-6-luna",
+    "{{HOST_SCOUT_REASONING_EFFORT}}": "medium",
+    "{{HOST_SCOUT_SELECTION_GUIDANCE}}": "Request `gpt-6-luna` through the native tool's supported model field,\n   or the user's supported explicit override for this task. Do not compare models,\n   research prices, change global settings, or alter main/reviewer/implementer models.\n   Use supported `medium` reasoning; otherwise omit it, do not invent",
+    "{{HOST_DELEGATION_GUIDANCE}}": "Use the exposed native subagent schema and supported controls.",
+    "{{HOST_MCP_TOOL_GUIDANCE}}": "Resolve logical scenario names against the callable tools and their published schemas; never construct a tool namespace.",
+    "{{HOST_NATIVE_REVIEW_ROUTE}}": "Use the ordinary independent checker in a separate context. If independence or enhanced review support is unavailable, leave the review incomplete; never substitute self-review.",
+    "{{HOST_NATIVE_REVIEW_HOST_GUIDANCE}}": "Use the ordinary independent checker in a separate context.",
   }),
   "claude-code": Object.freeze({
     "{{HOST_DISPLAY_NAME}}": "Claude Code",
@@ -58,10 +66,52 @@ const HOST_TEMPLATE_VALUES = Object.freeze({
     "{{HOST_IMPLEMENTATION_MODEL}}": "Sonnet",
     "{{HOST_REVIEW_MODEL}}": "Opus",
     "{{HOST_SCOUT_MODEL}}": "haiku",
+    "{{HOST_SCOUT_REASONING_EFFORT}}": "medium",
+    "{{HOST_SCOUT_SELECTION_GUIDANCE}}": "Request `haiku` through the native tool's supported model field,\n   or the user's supported explicit override for this task. Do not compare models,\n   research prices, change global settings, or alter main/reviewer/implementer models.\n   Use supported `medium` reasoning; otherwise omit it, do not invent",
+    "{{HOST_DELEGATION_GUIDANCE}}": "Use the exposed native subagent schema and supported controls.",
+    "{{HOST_MCP_TOOL_GUIDANCE}}": "Resolve logical scenario names against the callable tools and their published schemas; never construct a tool namespace.",
+    "{{HOST_NATIVE_REVIEW_ROUTE}}": NATIVE_REVIEW_ROUTE,
+    "{{HOST_NATIVE_REVIEW_HOST_GUIDANCE}}": "Read the installed `workflows/specification-review.js` exactly; it begins with literal `export const meta = {...}` and the common body. Discover the callable native workflow tool and its actual schema. Use `scriptPath` only when that schema and permitted file access support it; otherwise pass the exact installed script through its supported inline-script field. Do not infer capability from a CLI version, an SDK or this packaged file. Verify the schema supports every required hook and structured result. Use the task's permitted judging and final model routes through the actual native fields; advisory recommendations do not change the main model. Missing native support selects the ordinary independent checker, not an invented tool call.",
+  }),
+  "deepseek-harness": Object.freeze({
+    "{{HOST_DISPLAY_NAME}}": "DeepSeek Harness",
+    "{{HOST_PROJECT_INSTRUCTIONS}}": "AGENTS.md",
+    "{{HOST_QUESTION_TOOL}}": "ask_user_question",
+    "{{HOST_AUTHOR_MODEL}}": "the current session model",
+    "{{HOST_IMPLEMENTATION_MODEL}}": "the current session model",
+    "{{HOST_REVIEW_MODEL}}": "the current session model",
+    "{{HOST_SCOUT_MODEL}}": "the user-confirmed advertised model",
+    "{{HOST_SCOUT_REASONING_EFFORT}}": "low",
+    "{{HOST_SCOUT_SELECTION_GUIDANCE}}": "Discover routes with `list_subagent_models`, then obtain the user's model choice\n   via `ask_user_question`; apply the recommendations in the delegation reference.\n   While the answer is pending, do not spawn or use fallback discovery.\n   Use supported `low` reasoning; otherwise omit it, do not invent",
+    "{{HOST_DELEGATION_GUIDANCE}}": [
+      "### Harness model choice",
+      "",
+      "First call `list_subagent_models` to discover authorized routes and efforts. Then use callable `ask_user_question`, following its published schema, to ask which exact `provider` and `model` pair the scout should use. Only offer advertised routes; copy their identifiers exactly, including custom provider names. Harness does not imply a model vendor. Even with only one suitable route, ask the user to choose that route or direct discovery.",
+      "",
+      "Present a short task-appropriate list with the recommended option first and a brief reason for each option. Apply the following family recommendations only to advertised models; these are starting suggestions for bounded read-only scouting, not measured quality, speed or cost rankings:",
+      "",
+      "- OpenAI: prefer `gpt-6-luna` when advertised, as this collection's scout recommendation.",
+      "- Anthropic: suggest Claude Haiku for lookup, extraction and concise summaries; offer an advertised Sonnet alternative when the task needs more involved synthesis.",
+      "- Gemini: suggest Flash-Lite for narrow lookup and extraction, or Flash for broader multi-file synthesis.",
+      "- DeepSeek: suggest Flash (such as advertised `deepseek-flash`) for bounded discovery; never require it when the user uses another family.",
+      "",
+      "Prefer an already expressed user preference when marking the recommendation; otherwise recommend an advertised suitable `gpt-6-luna` route when present. For other or unfamiliar models, use available capability evidence and disclose uncertainty; do not invent aliases, infer a family from a provider label alone, research prices, or promise savings. Include suitable alternatives within the question schema's option limit and let the user name any other advertised route. Do not change global settings or main/reviewer/implementer models.",
+      "",
+      "Wait for an explicit answer before calling `subagent`. Silence, a preselected option, a dismissed question or a pending answer is never consent; do not use fallback discovery while awaiting the answer. Honor direct discovery or cancellation. For the same task, reuse an explicit confirmed route while it remains available; new tasks require a new choice. If the confirmed route becomes unavailable or is rejected, refresh discovery and ask again; never silently substitute or inherit another model. If discovery, the question tool or explicit route selection is unavailable, disclose the limitation and use only the entrypoint's bounded direct fallback.",
+      "",
+      "Pass the confirmed `provider` and `model` together through callable `subagent` with its published schema. Set `reasoning_effort` to `low` only if advertised for that route; otherwise omit it. Supply `description`, `prompt` and task `cwd` as supported; prefer fresh spawn context. The call returns an activation immediately. Continue independent work, then end the turn when only child results remain; completion notices resume the parent. Do not invent a wait tool. Use callable `send_message` and `interrupt_agent` with `agent_id` for supported control; follow their published schemas.",
+    ].join("\n"),
+    "{{HOST_MCP_TOOL_GUIDANCE}}": "Resolve logical scenario names against this session's callable MCP tools and published schemas. Harness can normalize and hash long server-qualified names; never concatenate prefixes or compute aliases. A renamed server needs runtime resolution, not regenerated skills. Missing required capability blocks the affected operation.",
+    "{{HOST_NATIVE_REVIEW_ROUTE}}": NATIVE_REVIEW_ROUTE,
+    "{{HOST_NATIVE_REVIEW_HOST_GUIDANCE}}": "Read the installed `workflows/specification-review.js` body and `workflows/specification-review.meta.json` as separate exact resources. Discover the callable `workflow` tool, or `run_code.workflow` only if actually exposed, and inspect its schema. Pass the exact body as `script`, parsed plain JSON metadata as `meta`, and prepared input as `args` only where those fields are supported. The body contains no `export const meta`. Use foreground execution; omit `run_in_background` or set it false where supported. No saved-workflow registry or nested workflow is required. Before dispatch, discover actual routes with `list_subagent_models` and use `ask_user_question` to obtain explicit advertised `provider` and `model` pairs for judging and final roles. Reuse a confirmed pair only for the same task/role while available; a pending answer, rejected route or missing selection blocks dispatch, never silently inherit or substitute. Pass the exact pairs in `roles.judge` and `roles.final`; no inspection role or main-model switch. The native foreground call waits for the terminal result; do not end the parent turn to await a detached wakeup.",
   }),
 });
 
 const MANUAL_REFERENCE = "references/engineering-principles.md";
+const REVIEW_BODY = "workflows/specification-review.body.js";
+const REVIEW_METADATA = "workflows/specification-review.meta.json";
+const REVIEW_SCRIPT = "workflows/specification-review.js";
+const REVIEW_REFERENCE = "references/native-specification-review.md";
 const TEST_DISCIPLINE_REFERENCE = "references/test-discipline.md";
 const PRODUCT_WORKFLOW_REFERENCE = "references/product-workflow.md";
 const PRODUCT_WORKFLOW_MARKER = "product-workflow.sha256";
@@ -191,14 +241,14 @@ function copyMap(input) {
 }
 
 export function renderHostTemplate(input, host, relativePath) {
-  const values = HOST_TEMPLATE_VALUES[host];
-  if (values === undefined) {
+  if (!Object.hasOwn(HOST_TEMPLATE_VALUES, host)) {
     throw new ValidationError(
       "E_INVALID_MANIFEST",
       "host template target is unsupported",
       { relativePath },
     );
   }
+  const values = HOST_TEMPLATE_VALUES[host];
   const bytes = Buffer.from(input);
   if (!bytes.includes(Buffer.from("{{HOST_", "ascii"))) {
     return bytes;
@@ -242,6 +292,57 @@ function renderCodexSkillDocument(entry, input, relativePath) {
     "codex",
     relativePath,
   );
+}
+
+function validateReviewAssets(name, assets) {
+  const paths = [...assets.keys()];
+  const shadowsGeneratedScript = paths.some((asset) => typeof asset === "string"
+    && asset.toLowerCase() === REVIEW_SCRIPT);
+  if (shadowsGeneratedScript) {
+    throw new ValidationError("E_INVALID_SKILL", "workflow script path is reserved for generated output");
+  }
+  if (name === "spec-driven-development") {
+    if (!assets.has(REVIEW_BODY) || !assets.has(REVIEW_METADATA) || !assets.has(REVIEW_REFERENCE)) {
+      throw new ValidationError("E_INVALID_SKILL", "workflow canonical assets are missing or incomplete");
+    }
+  } else if (assets.has(REVIEW_BODY) || assets.has(REVIEW_METADATA) || assets.has(REVIEW_REFERENCE)) {
+    throw new ValidationError("E_INVALID_SKILL", "workflow assets belong to the specification skill");
+  }
+}
+
+function parseReviewMetadata(bytes) {
+  let metadata;
+  try {
+    const text = decodeUTF8(bytes);
+    metadata = JSON.parse(text);
+  } catch (error) {
+    throw new ValidationError("E_INVALID_SKILL", "workflow metadata is invalid JSON", { cause: error });
+  }
+  if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)
+      || typeof metadata.name !== "string" || metadata.name.trim().length === 0
+      || typeof metadata.description !== "string" || metadata.description.trim().length === 0
+      || (metadata.phases !== undefined && (!Array.isArray(metadata.phases)
+        || metadata.phases.some((phase) => phase === null || typeof phase !== "object"
+          || typeof phase.title !== "string" || phase.title.trim().length === 0)))) {
+    throw new ValidationError("E_INVALID_SKILL", "workflow metadata must declare an identity and valid phases");
+  }
+  return metadata;
+}
+
+function addReviewWorkflow(files, assets, host, directory) {
+  if (host === null || host === "codex") return;
+  const body = renderHostTemplate(assets.get(REVIEW_BODY), host, `${directory}/${REVIEW_BODY}`);
+  const metadataBytes = renderHostTemplate(assets.get(REVIEW_METADATA), host, `${directory}/${REVIEW_METADATA}`);
+  const metadata = parseReviewMetadata(metadataBytes);
+  if (host === "claude-code") {
+    const serializedMetadata = JSON.stringify(metadata);
+    const declaration = Buffer.from(`export const meta = ${serializedMetadata};\n`, "utf8");
+    const script = Buffer.concat([declaration, body]);
+    files.set(`${directory}/${REVIEW_SCRIPT}`, script);
+  } else {
+    files.set(`${directory}/${REVIEW_SCRIPT}`, body);
+    files.set(`${directory}/${REVIEW_METADATA}`, metadataBytes);
+  }
 }
 
 export async function collectReleaseSource(root, catalogValue, releaseValue) {
@@ -383,6 +484,7 @@ JSON.stringify([
         await readRegularFile(root, `${relativeDirectory}/${relativeAsset}`),
       );
     }
+    validateReviewAssets(entry.name, assets);
     skills.push({
       entry: structuredClone(entry),
       document: canonicalDocument,
@@ -464,7 +566,11 @@ function productWorkflowMarker(source, catalog, sharedManual, callerName, host) 
       });
       return { name, bytes, references };
     });
-  const digest = productWorkflowDigest(protocol, profiles, skillDocuments);
+  const digest = productWorkflowDigest(
+    render(protocol, `${SHARED_ROOT}/${PRODUCT_WORKFLOW_REFERENCE}`),
+    profiles,
+    skillDocuments,
+  );
   return Buffer.from(`${digest}\n`, "ascii");
 }
 
@@ -573,164 +679,66 @@ export function buildGeneratedFiles(source) {
     throw new ValidationError("E_INVALID_MANIFEST", "workflow context does not match its digest");
   }
   const files = new Map();
-  for (const [index, skill] of source.skills.entries()) {
-    const entry = catalog.skills[index];
-    if (
-      skill === null ||
-      typeof skill !== "object" ||
-      JSON.stringify(skill.entry) !== JSON.stringify(entry) ||
-      !(skill.document instanceof Uint8Array) ||
-      !(skill.assets instanceof Map)
-    ) {
-      throw new ValidationError(
-        "E_INVALID_MANIFEST",
-        "release skill source does not match the catalog",
-      );
+  const hosts = [
+    { host: null, root: "" },
+    { host: "codex", root: CODEX_PLUGIN_ROOT },
+    { host: "claude-code", root: CLAUDE_PLUGIN_ROOT },
+    { host: "deepseek-harness", root: DEEPSEEK_EXPORT_ROOT },
+  ];
+  for (const { host, root: hostRoot } of hosts) {
+    const render = (bytes, relativePath) => host === null
+      ? Buffer.from(bytes) : renderHostTemplate(bytes, host, relativePath);
+    const resources = new Map([...sharedManual].map(([asset, bytes]) => [asset, render(bytes, `${SHARED_ROOT}/${asset}`)]));
+    resources.set(WORKFLOW_CONTEXT_MARKER, workflowContextMarker(resources));
+    for (const [marker, resource] of [[MANUAL_MARKER, MANUAL_REFERENCE], [TEST_DISCIPLINE_MARKER, TEST_DISCIPLINE_REFERENCE]]) {
+      resources.set(marker, Buffer.from(`${crypto.createHash("sha256").update(resources.get(resource)).digest("hex")}\n`, "ascii"));
     }
-    validateSkillDocument(entry, skill.document);
-    for (const [relativeAsset, bytes] of skill.assets) {
-      validateRelativePath(relativeAsset);
-      if (
-        relativeAsset === "SKILL.md" ||
-        relativeAsset.startsWith("agents/") ||
-        !(bytes instanceof Uint8Array)
-      ) {
-        throw new ValidationError(
-          "E_INVALID_MANIFEST",
-          "release skill asset path is reserved",
-        );
+    for (const [index, skill] of source.skills.entries()) {
+      const entry = catalog.skills[index];
+      if (skill === null || typeof skill !== "object" ||
+          JSON.stringify(skill.entry) !== JSON.stringify(entry) ||
+          !(skill.document instanceof Uint8Array) || !(skill.assets instanceof Map)) {
+        throw new ValidationError("E_INVALID_MANIFEST", "release skill source does not match the catalog");
+      }
+      validateSkillDocument(entry, skill.document);
+      validateReviewAssets(entry.name, skill.assets);
+      const directory = `${hostRoot ? `${hostRoot}/` : ""}skills/${entry.name}`;
+      const document = host === "codex"
+        ? renderCodexSkillDocument(entry, skill.document, `${directory}/SKILL.md`)
+        : render(skill.document, `${directory}/SKILL.md`);
+      if (host !== "codex") validateSkillDocument(entry, document);
+      else if (document.length > 4096) throw new ValidationError("E_INVALID_SKILL", "SKILL.md exceeds 4096 UTF-8 bytes", { relativePath: `${directory}/SKILL.md` });
+      files.set(`${directory}/SKILL.md`, document);
+      if (host === null || host === "codex") files.set(`${directory}/agents/openai.yaml`, Buffer.from(renderCodexSkillMetadata(entry), "utf8"));
+      for (const [asset, bytes] of skill.assets) {
+        validateRelativePath(asset);
+        if (asset === "SKILL.md" || asset.startsWith("agents/") || !(bytes instanceof Uint8Array)) {
+          throw new ValidationError("E_INVALID_MANIFEST", "release skill asset path is reserved");
+        }
+        if (asset === REVIEW_BODY || asset === REVIEW_METADATA) continue;
+        if (host === "codex" && asset === REVIEW_REFERENCE) continue;
+        if (host !== null) files.set(`${directory}/${asset}`, render(bytes, `${directory}/${asset}`));
+      }
+      if (entry.name === "spec-driven-development") {
+        addReviewWorkflow(files, skill.assets, host, directory);
+      }
+      for (const asset of sharedAssetsForSkill(entry.name)) {
+        const sharedAsset = asset.slice(`${SHARED_ROOT}/`.length);
+        let bytes;
+        if (sharedAsset === PRODUCT_PROTOCOL_MARKER) {
+          bytes = productProtocolMarker(sharedManual, host, `${directory}/${PRODUCT_WORKFLOW_REFERENCE}`);
+        } else if (sharedAsset === PRODUCT_WORKFLOW_MARKER) {
+          bytes = productWorkflowMarker(source, catalog, sharedManual, entry.name, host);
+        } else {
+          bytes = resources.get(sharedAsset);
+          if (bytes === undefined) throw new ValidationError("E_INVALID_MANIFEST", "release shared skill resource is unavailable", { relativePath: asset });
+        }
+        files.set(`${directory}/${asset}`, Buffer.from(bytes));
       }
     }
-    const name = entry.name;
-    const rootDirectory = `skills/${name}`;
-    const codexPluginDirectory = `${CODEX_PLUGIN_ROOT}/skills/${name}`;
-    const claudePluginDirectory = `${CLAUDE_PLUGIN_ROOT}/skills/${name}`;
-    const sidecar = Buffer.from(
-      renderCodexSkillMetadata(entry),
-      "utf8",
-    );
-    files.set(`${rootDirectory}/SKILL.md`, Buffer.from(skill.document));
-    files.set(`${rootDirectory}/agents/openai.yaml`, sidecar);
-    files.set(
-      `${codexPluginDirectory}/SKILL.md`,
-      renderCodexSkillDocument(
-        entry,
-        skill.document,
-        `${rootDirectory}/SKILL.md`,
-      ),
-    );
-    files.set(
-      `${codexPluginDirectory}/agents/openai.yaml`,
-      Buffer.from(sidecar),
-    );
-    files.set(
-      `${claudePluginDirectory}/SKILL.md`,
-      renderHostTemplate(
-        skill.document,
-        "claude-code",
-        `${rootDirectory}/SKILL.md`,
-      ),
-    );
-    for (const [relativeAsset, bytes] of skill.assets) {
-      files.set(
-        `${codexPluginDirectory}/${relativeAsset}`,
-        renderHostTemplate(
-          bytes,
-          "codex",
-          `${rootDirectory}/${relativeAsset}`,
-        ),
-      );
-      files.set(
-        `${claudePluginDirectory}/${relativeAsset}`,
-        renderHostTemplate(
-          bytes,
-          "claude-code",
-          `${rootDirectory}/${relativeAsset}`,
-        ),
-      );
+    if (host === "codex" || host === "claude-code") {
+      for (const [asset, bytes] of resources) files.set(`${hostRoot}/${SHARED_ROOT}/${asset}`, Buffer.from(bytes));
     }
-    for (const relativeAsset of sharedAssetsForSkill(name)) {
-      const sharedRelativeAsset = relativeAsset.slice(`${SHARED_ROOT}/`.length);
-      if (sharedRelativeAsset === PRODUCT_PROTOCOL_MARKER) {
-        files.set(
-          `${rootDirectory}/${relativeAsset}`,
-          productProtocolMarker(
-            sharedManual,
-            null,
-            `${rootDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
-          ),
-        );
-        files.set(
-          `${codexPluginDirectory}/${relativeAsset}`,
-          productProtocolMarker(
-            sharedManual,
-            "codex",
-            `${codexPluginDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
-          ),
-        );
-        files.set(
-          `${claudePluginDirectory}/${relativeAsset}`,
-          productProtocolMarker(
-            sharedManual,
-            "claude-code",
-            `${claudePluginDirectory}/${PRODUCT_WORKFLOW_REFERENCE}`,
-          ),
-        );
-        continue;
-      }
-      if (sharedRelativeAsset === PRODUCT_WORKFLOW_MARKER) {
-        files.set(
-          `${rootDirectory}/${relativeAsset}`,
-          productWorkflowMarker(source, catalog, sharedManual, name, null),
-        );
-        files.set(
-          `${codexPluginDirectory}/${relativeAsset}`,
-          productWorkflowMarker(source, catalog, sharedManual, name, "codex"),
-        );
-        files.set(
-          `${claudePluginDirectory}/${relativeAsset}`,
-          productWorkflowMarker(
-            source,
-            catalog,
-            sharedManual,
-            name,
-            "claude-code",
-          ),
-        );
-        continue;
-      }
-      const bytes = sharedManual.get(sharedRelativeAsset);
-      if (bytes === undefined) {
-        throw new ValidationError(
-          "E_INVALID_MANIFEST",
-          "release shared skill resource unavailable",
-          { relativePath: relativeAsset },
-        );
-      }
-        files.set(
-          `${rootDirectory}/${relativeAsset}`,
-          Buffer.from(bytes),
-        );
-        files.set(
-          `${codexPluginDirectory}/${relativeAsset}`,
-          Buffer.from(bytes),
-        );
-        files.set(
-          `${claudePluginDirectory}/${relativeAsset}`,
-          Buffer.from(bytes),
-        );
-    }
-  }
-
-  for (const [relativeAsset, bytes] of sharedManual) {
-    files.set(
-      `${CODEX_PLUGIN_ROOT}/${SHARED_ROOT}/${relativeAsset}`,
-      Buffer.from(bytes),
-    );
-    files.set(
-      `${CLAUDE_PLUGIN_ROOT}/${SHARED_ROOT}/${relativeAsset}`,
-      Buffer.from(bytes),
-    );
   }
 
   files.set(
@@ -747,7 +755,7 @@ export function buildGeneratedFiles(source) {
       renderPluginCatalog(
         catalog,
         release,
-        source.manualDigest,
+        files.get(`${CODEX_PLUGIN_ROOT}/${SHARED_ROOT}/${MANUAL_MARKER}`).toString("ascii").trimEnd(),
       ),
       "utf8",
     ),
@@ -758,7 +766,7 @@ export function buildGeneratedFiles(source) {
       renderPluginCatalog(
         catalog,
         release,
-        source.manualDigest,
+        files.get(`${CLAUDE_PLUGIN_ROOT}/${SHARED_ROOT}/${MANUAL_MARKER}`).toString("ascii").trimEnd(),
       ),
       "utf8",
     ),
@@ -774,7 +782,20 @@ export function buildGeneratedFiles(source) {
   return copyMap(files);
 }
 
+async function assertSafeAncestors(root, relativePath) {
+  const segments = relativePath.split("/");
+  for (let index = 1; index < segments.length; index += 1) {
+    const relative = segments.slice(0, index).join("/");
+    const stat = await lstatOptional(absolutePath(root, relative), relative);
+    if (stat === undefined) return;
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw new ValidationError("E_UNSAFE_PATH", "generated target parent must be a real directory", { relativePath: relative });
+    }
+  }
+}
+
 async function walkOptional(root, relativePath) {
+  await assertSafeAncestors(root, relativePath);
   const directoryPath = absolutePath(root, relativePath);
   const stat = await lstatOptional(directoryPath, relativePath);
   if (stat === undefined) {
@@ -812,6 +833,7 @@ async function collectManagedActualPaths(root, catalog) {
       );
     }
   }
+  paths.push(...(await walkOptional(root, DEEPSEEK_EXPORT_ROOT)));
   paths.push(...(await walkOptional(root, "plugins")));
   paths.push(...(await walkOptional(root, ".agents/plugins")));
   paths.push(...(await walkOptional(root, ".claude-plugin")));
@@ -838,6 +860,7 @@ export async function hasGeneratedArtifacts(root, catalogValue) {
   }
   for (const relativePath of [
     "plugins",
+    DEEPSEEK_EXPORT_ROOT,
     ".agents/plugins",
     ".claude-plugin",
   ]) {
@@ -864,6 +887,7 @@ export async function compareGeneratedOutputs(
     left.localeCompare(right, "en"),
   );
   for (const relativePath of expectedPaths) {
+    await assertSafeAncestors(root, relativePath);
     const filePath = absolutePath(root, relativePath);
     const stat = await lstatOptional(filePath, relativePath);
     if (stat === undefined || stat.isSymbolicLink() || !stat.isFile()) {
@@ -928,6 +952,7 @@ function managedTargets(catalog) {
         : []),
     ]),
     "plugins",
+    DEEPSEEK_EXPORT_ROOT,
     ".agents/plugins",
     ".claude-plugin",
   ];
@@ -959,6 +984,7 @@ async function ensureSafeParents(root, relativePath, createdDirectories) {
 }
 
 async function preflightTarget(root, stagingRoot, relativePath) {
+  await assertSafeAncestors(root, relativePath);
   const target = absolutePath(root, relativePath);
   const staged = absolutePath(stagingRoot, relativePath);
   const [targetStat, stagedStat] = await Promise.all([

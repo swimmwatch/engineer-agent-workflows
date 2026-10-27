@@ -1,5 +1,11 @@
 # Workflow State Access
 
+Resolve logical scenario names against the callable tools and their published schemas; never construct a tool namespace.
+
+Use callable `request_user_input` for questions and follow its published
+schema. Pending, missing or cancelled answers are not consent; await an explicit
+human selection or custom answer before dependent work.
+
 Use the callable scenario tools of `engineer-agent-workflow-mcp` for all reads,
 creation, updates and validation of these four workflow documents. Do not hand-edit
 them, generate YAML payloads, reconstruct entire documents, or use a local reader

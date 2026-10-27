@@ -1,6 +1,9 @@
 # engineer-agent-workflows
 
-Reusable engineering Agent Skills for Codex and Claude Code.
+Reusable engineering Agent Skills for Codex, Claude Code and DeepSeek Harness.
+
+DeepSeek Harness receives a generated filesystem collection containing all 17
+skills. See the [export and compatibility guide](docs/deepseek-harness.md).
 
 > [!IMPORTANT]
 > This repository is in pre-release development. No public release or compatibility
@@ -70,6 +73,10 @@ architecture contracts but does not create them.
 Only after scope confirmation does it load one dedicated reference for each
 active profile; inactive profile guidance stays out of the working context.
 
+For explicit independent completeness review, see the
+[specification review workflow guide](docs/specification-review-workflow.md)
+for native launch, ordinary fallback, correction/recovery and measured limits.
+
 `planning-and-task-breakdown` requires that Approved specification and
 confirmed manifest. It creates the declared reviewable contracts, then writes
 test-first task packets. Even a Lite plan includes `plan.md`, `todo.md`, a
@@ -85,7 +92,7 @@ invocation. Incorrect checks, stale contracts, and environment failures are
 handled separately from implementation defects.
 
 Model recommendations are rendered per host and never switch or gate a model:
-Codex suggests Sol for authoring/review, Terra for implementation, and Astra for
+Codex suggests Sol for authoring/review, GPT-6.1 Terra for implementation, and Astra for
 difficult cases; Claude suggests Opus for authoring/review and Sonnet for
 implementation. Lite changes normally keep existing contracts inline instead
 of creating an extra contract file solely because a profile is active.

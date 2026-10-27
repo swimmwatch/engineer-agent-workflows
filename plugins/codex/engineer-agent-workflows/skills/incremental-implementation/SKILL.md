@@ -5,7 +5,7 @@ description: "Implement exactly one authorized task packet per explicit invocati
 # Incremental Implementation
 
 Implement exactly one explicitly authorized packet.
-Model suggestion: Terra. Never switch or gate on model.
+Model suggestion: GPT-6.1 Terra. Never switch or gate on model.
 Do not reread supplied SKILL.md or references; retrieve gaps or stop; never rerender.
 1. Set `skill_dir` to its absolute directory.
    Run `node "$skill_dir/shared/scripts/verify-engineering-manual.mjs" "$skill_dir"`

@@ -77,7 +77,8 @@ export function parseRequirementContent(content: string, strict = true): Require
   return { content, version: hash(versionContent), status, requirements };
 }
 
-export function portion(value: string, identity: string, cursor?: string): Data {
+export function portion(value: string, identity: string, cursor?: string, maxCharacters = PORTION_CODE_POINTS): Data {
+  if (!Number.isSafeInteger(maxCharacters) || maxCharacters < 1 || maxCharacters > 4096) fail("INVALID_INPUT", "Text portions require 1–4096 Unicode code points.");
   let offset = 0, unitOffset = 0, totalCharacters: number;
   let hashState = createHash("sha256");
   if (cursor) {
@@ -108,7 +109,7 @@ export function portion(value: string, identity: string, cursor?: string): Data 
   }
   if (offset > totalCharacters) fail("INVALID_CURSOR", "The continuation is outside this source.");
   const remaining = totalCharacters - offset;
-  const pageCharacters = Math.min(PORTION_CODE_POINTS, remaining);
+  const pageCharacters = Math.min(maxCharacters, remaining);
   const next = offset + pageCharacters;
   const nextUnitOffset = unitOffsetAt(value, pageCharacters, unitOffset);
   const pageText = value.slice(unitOffset, nextUnitOffset);

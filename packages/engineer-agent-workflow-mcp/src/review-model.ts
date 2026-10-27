@@ -56,6 +56,11 @@ export function reviewRuns(ledger: Data): Data[] {
   return rows(section.runs);
 }
 
+export function supersedingReview(s: Snapshot, target: string): Data | undefined {
+  return reviewRuns(s.ledger).find((candidate) => candidate.audit_restart
+    && obj(candidate.audit_restart).previous_review_ref === target);
+}
+
 export function getRun(s: Snapshot, target: string): Data {
   const run = reviewRuns(s.ledger).find((r) => r.id === target);
   if (!run) fail("NOT_FOUND", "The review does not belong to this specification.");
@@ -69,6 +74,10 @@ export function getRun(s: Snapshot, target: string): Data {
       },
     }));
   }
+  const successor = supersedingReview(s, target);
+  if (successor) fail("INVALID_STATE", "This review was superseded by an audit restart; inspect its status for the current generation.", {
+    review_ref: target, superseded_by: successor.id,
+  });
   return run;
 }
 

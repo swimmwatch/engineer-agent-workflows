@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { projectRoot, makeTempTree } from "./lib/fixtures.mjs";
 import { verifyEngineeringManual } from "../shared/scripts/verify-engineering-manual.mjs";
 import { evaluateWorkflowEfficiency } from "./lib/workflow-efficiency.mjs";
+import { renderHostTemplate } from "../scripts/lib/distribution.mjs";
 
 const sha = value => createHash("sha256").update(value).digest("hex");
 const read = relative => fs.readFile(path.join(projectRoot, relative), "utf8");
@@ -44,10 +45,10 @@ test("moved obligations remain exact and ordinary startup reads fewer instructio
   const candidate = (await Promise.all(candidatePaths.map(read))).reduce((sum, source) => sum + Buffer.byteLength(source), 0);
   const baseline = Object.entries(mapping.baselineBytes).filter(([name]) => !name.endsWith("product-workflow.md")).reduce((sum, [, bytes]) => sum + bytes, 0);
   assert.ok(candidate < baseline, `${candidate} must be less than ${baseline}`);
-  for (const host of ["codex", "claude-code"]) {
+  for (const [host, root] of [["codex", "plugins/codex/engineer-agent-workflows"], ["claude-code", "plugins/claude-code/engineer-agent-workflows"], ["deepseek-harness", "exports/deepseek-harness"]]) {
     for (const name of ["workflow-state-access", "implementation-context"]) {
       const relative = `shared/references/${name}.md`;
-      assert.equal(await read(`plugins/${host}/engineer-agent-workflows/skills/incremental-implementation/${relative}`), await read(relative));
+      assert.equal(await read(`${root}/skills/incremental-implementation/${relative}`), renderHostTemplate(await read(relative), host, relative).toString());
     }
   }
 });

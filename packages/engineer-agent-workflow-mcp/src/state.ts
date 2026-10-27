@@ -2,6 +2,7 @@ import { constants } from "node:fs";
 import { lstat, mkdir, open, readFile, realpath, rename, unlink } from "node:fs/promises";
 import { createHash, randomUUID } from "node:crypto";
 import { dirname, isAbsolute, join } from "node:path";
+import { setTimeout as delay } from "node:timers/promises";
 import Ajv from "ajv";
 import { format } from "prettier";
 import type { Options } from "prettier";
@@ -374,23 +375,76 @@ function synchronize(document: Document, node: unknown, before: unknown, after: 
   }
   return replacement;
 }
-export async function mutate(contextText: string, kind: Kind, operation: string, input: Data, change: (value: Data, context: Context) => Promise<Data | UnchangedMutation> | Data | UnchangedMutation, dependencies: Kind[] = []): Promise<Data> {
+type Mutation = (value: Data, context: Context) => Promise<Data | UnchangedMutation> | Data | UnchangedMutation;
+type Replay = (value: Data, context: Context, savedResult: Data) => Promise<Data> | Data;
+
+async function acquireReviewLock(path: string, signal?: AbortSignal) {
+  const started = performance.now();
+  const deadline = started + 5_000;
+  for (;;) {
+    signal?.throwIfAborted();
+    const remaining = deadline - performance.now();
+    if (remaining <= 0) {
+      fail("BUSY", "Review submission lock acquisition timed out; inspect its owner before retrying.", {
+        operation_applied: false,
+        lock_wait_ms: performance.now() - started,
+        next_action: "inspect_lock_owner",
+      });
+    }
+    try {
+      const handle = await open(path, "wx", 0o600);
+      return { handle, waitMs: performance.now() - started };
+    } catch (error) {
+      if (!(error && typeof error === "object" && "code" in error && error.code === "EEXIST")) throw error;
+      const backoff = Math.max(0, Math.min(20, deadline - performance.now()));
+      await delay(backoff, undefined, signal ? { signal } : undefined);
+    }
+  }
+}
+
+export async function mutate(contextText: string, kind: Kind, operation: string, input: Data, change: Mutation, dependencies: Kind[] = [], replay?: Replay): Promise<Data> {
+  return mutateOwned(contextText, kind, operation, input, change, dependencies, undefined, replay);
+}
+
+export async function mutateReviewSubmission(contextText: string, operation: string, input: Data, change: Mutation, signal?: AbortSignal): Promise<Data> {
+  return mutateOwned(contextText, "decisions", operation, input, change, [], { signal });
+}
+
+async function mutateOwned(contextText: string, kind: Kind, operation: string, input: Data, change: Mutation, dependencies: Kind[], submission?: { signal: AbortSignal | undefined }, replay?: Replay): Promise<Data> {
   const context = decode(contextText);
   context.project = await canonicalProject(context.project);
   readGuards.set(context, new Map());
   const relative = artifactPath(kind, context.specification);
-  const path = await safePath(context.project, relative, true);
+  const path = await safePath(context.project, relative, !submission);
   const lockPath = kind === "catalog" || kind === "experience" ? join(context.project, "design", ".workflow-lock") : `${path}.workflow-lock`;
   let lock;
-  try { lock = await open(lockPath, "wx", 0o600); } catch { return fail("BUSY", "Artifact is locked; reopen after the active write finishes. A crash lock requires explicit inspection."); }
+  let lockWaitMs = 0;
+  if (submission) {
+    const acquired = await acquireReviewLock(lockPath, submission.signal);
+    lock = acquired.handle;
+    lockWaitMs = acquired.waitMs;
+  } else {
+    try { lock = await open(lockPath, "wx", 0o600); } catch { return fail("BUSY", "Artifact is locked; reopen after the active write finishes. A crash lock requires explicit inspection."); }
+  }
   let temporary: string | undefined;
   try {
     const snapshot = await load(context, kind);
+    // Native review appends validate their logical source and assignments under
+    // this lock; unrelated saved appends must not require caller context relay.
+    if (submission) context.versions.decisions = snapshot.version;
     const receiptId = hash(JSON.stringify({ operation, input }));
     const extension = obj(snapshot.value.extensions ?? {});
     const receipts = rows(extension.workflow_mcp_receipts ?? []);
-    const previous = receipts.find((r) => r.id === receiptId);
-    if (previous) return result(context, obj(previous.result), true);
+    const previous = submission ? undefined : receipts.find((r) => r.id === receiptId);
+    if (previous) {
+      const savedResult = obj(previous.result);
+      if (!replay) return result(context, savedResult, true);
+      // Lifecycle-sensitive operations reconcile saved replies under the same
+      // lock. Replay may report current state but never persists a mutation.
+      const reported = await replay(structuredClone(snapshot.value), context, savedResult);
+      await verifyReadGuards(context);
+      return result(context, reported, true);
+    }
     for (const checked of new Set([kind, ...dependencies])) {
       const current = checked === kind ? snapshot : await load(context, checked);
       if (current.version !== context.versions[checked]) {
@@ -401,18 +455,24 @@ export async function mutate(contextText: string, kind: Kind, operation: string,
       }
     }
     const value = structuredClone(snapshot.value);
+    submission?.signal?.throwIfAborted();
     const outcome = await change(value, context);
+    submission?.signal?.throwIfAborted();
     if (isUnchanged(outcome)) {
       await verifyReadGuards(context);
-      return result(context, outcome.value);
+      const reported = submission ? { ...outcome.value, lock_wait_ms: lockWaitMs } : outcome.value;
+      return result(context, reported, submission !== undefined);
     }
+    const reported = submission ? { ...outcome, lock_wait_ms: lockWaitMs } : outcome;
     // Budget both the structured result and its escaped MCP text mirror before
     // installing bytes. A failed readback must never conceal a committed write.
-    const preview = { protocol_version: 2, context: contextText, result: outcome, replayed: false };
+    const preview = { protocol_version: 2, context: contextText, result: reported, replayed: false };
     const previewText = JSON.stringify(preview);
     if (Buffer.byteLength(previewText) > 20 * 1024 || Buffer.byteLength(JSON.stringify({ content: [{ type: "text", text: previewText }], structuredContent: preview })) > 60 * 1024) fail("RESULT_LIMIT", "Scenario result would exceed the response budget; shorten this proposal or question.");
-    const nextExtension = obj(value.extensions ?? {});
-    value.extensions = { ...nextExtension, workflow_mcp_receipts: [...receipts, { id: receiptId, result: outcome }].slice(-64) };
+    if (!submission) {
+      const nextExtension = obj(value.extensions ?? {});
+      value.extensions = { ...nextExtension, workflow_mcp_receipts: [...receipts, { id: receiptId, result: outcome }].slice(-64) };
+    }
     await validate(kind, value, context.specification);
     snapshot.document.contents = synchronize(snapshot.document, snapshot.document.contents, snapshot.value, value);
     const output = await formatWorkflowYaml(context, Buffer.from(snapshot.document.toString({ lineWidth: 0 })));
@@ -422,6 +482,7 @@ export async function mutate(contextText: string, kind: Kind, operation: string,
     // Activating UI may expose unsafe design paths that were correctly inactive.
     const nextContext = await refresh(context, kind === "manifest" ? value : undefined);
     nextContext.versions[kind] = hash(output);
+    submission?.signal?.throwIfAborted();
     temporary = join(dirname(path), `.workflow-${randomUUID()}.tmp`);
     const file = await open(temporary, "wx", snapshot.bytes ? (await lstat(path)).mode & 0o777 : 0o600);
     try { await file.writeFile(output); await file.sync(); } finally { await file.close(); }
@@ -436,9 +497,10 @@ export async function mutate(contextText: string, kind: Kind, operation: string,
     }
     await verifyReadGuards(context);
     await safePath(context.project, relative);
+    submission?.signal?.throwIfAborted();
     await rename(temporary, path);
     temporary = undefined;
-    return { protocol_version: 2, context: encode(nextContext), result: outcome, replayed: false };
+    return { protocol_version: 2, context: encode(nextContext), result: reported, replayed: false };
   } catch (error) {
     throw await enrichConflict(error, context, kind, input);
   } finally { if (temporary) await unlink(temporary).catch(() => undefined); await lock.close(); await unlink(lockPath); }

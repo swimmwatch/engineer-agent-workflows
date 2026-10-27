@@ -1,0 +1,20 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - The user explicitly approved Standard depth with core and operations and requested implementation of the complete DeepSeek Harness export plan.
+profiles:
+  - id: core
+    reason: Strict host templating, catalog policy and deterministic skill generation.
+    state: active
+  - id: operations
+    reason: Filesystem export, safe replacement, compatibility verification and operating documentation.
+    state: active
+planning_artifacts: []
+extensions:
+  workflow_mcp_receipts:
+    - id: fe67dac4f12bd034f5adf0e9eb12a02a32d7d5e6ece3c62b852f6c393b658597
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.

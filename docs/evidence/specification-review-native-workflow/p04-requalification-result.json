@@ -1,0 +1,1560 @@
+{
+  "schema_version": 1,
+  "packet_id": "P04",
+  "status": "pass",
+  "packet_complete": true,
+  "recorded_at": "2026-10-27T21:13:21.891Z",
+  "scope": "User-authorized affected acceptance rework; isolated Harness rc.2 and Codex models.",
+  "accepted_cases": [
+    {
+      "name": "native-clean",
+      "status": "pass",
+      "expected": "reviewed",
+      "observed": "reviewed",
+      "consistency": "consistent",
+      "spec_sha256": "c098d8b598f59838101c964f006d01e35478c5116ca98d64301bade88d1ca834",
+      "source_sha256": "3f92a5af8b26c69e5f522142e253f1a062f25eb2db06105bdecb660ddd9988f3",
+      "actors": [
+        {
+          "index": 0,
+          "role": "parent",
+          "metrics": {
+            "turns": 1,
+            "steps": 2,
+            "model_responses": 2,
+            "usage_observations": 2,
+            "input_tokens_observed": 4651,
+            "output_tokens_observed": 1083,
+            "mcp_calls": 3,
+            "scope_reads": 0
+          }
+        },
+        {
+          "index": 1,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 18,
+            "model_responses": 18,
+            "usage_observations": 18,
+            "input_tokens_observed": 57613,
+            "output_tokens_observed": 20607,
+            "mcp_calls": 39,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 2,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 12,
+            "model_responses": 12,
+            "usage_observations": 12,
+            "input_tokens_observed": 57312,
+            "output_tokens_observed": 14340,
+            "mcp_calls": 24,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 3,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 13,
+            "model_responses": 13,
+            "usage_observations": 13,
+            "input_tokens_observed": 44097,
+            "output_tokens_observed": 19457,
+            "mcp_calls": 36,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 4,
+          "role": "final",
+          "metrics": {
+            "turns": 1,
+            "steps": 27,
+            "model_responses": 27,
+            "usage_observations": 27,
+            "input_tokens_observed": 101432,
+            "output_tokens_observed": 23141,
+            "mcp_calls": 50,
+            "scope_reads": 1
+          }
+        }
+      ],
+      "metrics": {
+        "elapsed_ms": 544297.2212650001,
+        "setup_ms": 1805.59748,
+        "total_items": 56,
+        "recorded_items": 56,
+        "mcp_calls": 155,
+        "mcp_rpc_ms": 8696.064137999821,
+        "mcp_response_bytes": 1068030,
+        "scenario_handler_ms": 6980.076484999867,
+        "handler_calls": 155,
+        "lock_wait_ms": 1.3318020000006072,
+        "submission_samples": 3,
+        "native_runs_started": 1,
+        "native_runs_ended": 1,
+        "peak_judges": 3,
+        "parent_model_steps_while_pending": 0,
+        "rejected_model_arguments": 0,
+        "intentional_cancellations": 0,
+        "resumed_invocations": 0,
+        "native_schema_checks": 4,
+        "omission_evidence_found": 0,
+        "filesystem_calls": 10,
+        "forbidden_filesystem_successes": 0,
+        "denied_filesystem_attempts": 1,
+        "filesystem_audit_pass": 1,
+        "judges_missing_scope": 0,
+        "scope_order_rejections": 0,
+        "parent_program_rejections": 0,
+        "semantic_witness_verified": null,
+        "matched_semantic_items": 0,
+        "lane_idle_ms": null,
+        "cleanup_completed": 1
+      },
+      "usage": {
+        "requests": 72,
+        "totals": {
+          "input": {
+            "total": 2499857,
+            "observed_subtotal": 2499857,
+            "missing": 0
+          },
+          "cachedInput": {
+            "total": 2234752,
+            "observed_subtotal": 2234752,
+            "missing": 0
+          },
+          "cacheWrite": {
+            "total": null,
+            "observed_subtotal": 0,
+            "missing": 72
+          },
+          "output": {
+            "total": 78628,
+            "observed_subtotal": 78628,
+            "missing": 0
+          },
+          "reasoningOutput": {
+            "total": 4247,
+            "observed_subtotal": 4247,
+            "missing": 0
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "native-omission",
+      "status": "pass",
+      "expected": "gaps",
+      "observed": "gaps",
+      "consistency": "gap",
+      "spec_sha256": "820e644d6adeb91b3bd398917e03d6c63924bf98591206df6dbcb29a73f5a1a0",
+      "source_sha256": "3f92a5af8b26c69e5f522142e253f1a062f25eb2db06105bdecb660ddd9988f3",
+      "actors": [
+        {
+          "index": 0,
+          "role": "parent",
+          "metrics": {
+            "turns": 1,
+            "steps": 2,
+            "model_responses": 2,
+            "usage_observations": 2,
+            "input_tokens_observed": 4617,
+            "output_tokens_observed": 741,
+            "mcp_calls": 3,
+            "scope_reads": 0
+          }
+        },
+        {
+          "index": 1,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 11,
+            "model_responses": 11,
+            "usage_observations": 11,
+            "input_tokens_observed": 38514,
+            "output_tokens_observed": 15705,
+            "mcp_calls": 27,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 2,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 14,
+            "model_responses": 14,
+            "usage_observations": 14,
+            "input_tokens_observed": 42964,
+            "output_tokens_observed": 18758,
+            "mcp_calls": 36,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 3,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 13,
+            "model_responses": 13,
+            "usage_observations": 13,
+            "input_tokens_observed": 44680,
+            "output_tokens_observed": 22953,
+            "mcp_calls": 46,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 4,
+          "role": "final",
+          "metrics": {
+            "turns": 1,
+            "steps": 23,
+            "model_responses": 23,
+            "usage_observations": 23,
+            "input_tokens_observed": 58340,
+            "output_tokens_observed": 13255,
+            "mcp_calls": 25,
+            "scope_reads": 1
+          }
+        }
+      ],
+      "metrics": {
+        "elapsed_ms": 454360.16012499994,
+        "setup_ms": 3393.3057489999337,
+        "total_items": 56,
+        "recorded_items": 56,
+        "mcp_calls": 140,
+        "mcp_rpc_ms": 7445.012638999731,
+        "mcp_response_bytes": 842813,
+        "scenario_handler_ms": 5682.474499999938,
+        "handler_calls": 140,
+        "lock_wait_ms": 0.662917000008747,
+        "submission_samples": 3,
+        "native_runs_started": 1,
+        "native_runs_ended": 1,
+        "peak_judges": 3,
+        "parent_model_steps_while_pending": 0,
+        "rejected_model_arguments": 0,
+        "intentional_cancellations": 0,
+        "resumed_invocations": 0,
+        "native_schema_checks": 4,
+        "omission_evidence_found": 1,
+        "filesystem_calls": 8,
+        "forbidden_filesystem_successes": 0,
+        "denied_filesystem_attempts": 0,
+        "filesystem_audit_pass": 1,
+        "judges_missing_scope": 0,
+        "scope_order_rejections": 0,
+        "parent_program_rejections": 0,
+        "semantic_witness_verified": 1,
+        "matched_semantic_items": 2,
+        "lane_idle_ms": null,
+        "cleanup_completed": 1
+      },
+      "usage": {
+        "requests": 63,
+        "totals": {
+          "input": {
+            "total": 1962683,
+            "observed_subtotal": 1962683,
+            "missing": 0
+          },
+          "cachedInput": {
+            "total": 1773568,
+            "observed_subtotal": 1773568,
+            "missing": 0
+          },
+          "cacheWrite": {
+            "total": null,
+            "observed_subtotal": 0,
+            "missing": 63
+          },
+          "output": {
+            "total": 71412,
+            "observed_subtotal": 71412,
+            "missing": 0
+          },
+          "reasoningOutput": {
+            "total": 4161,
+            "observed_subtotal": 4161,
+            "missing": 0
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "native-paraphrase",
+      "status": "pass",
+      "expected": "reviewed",
+      "observed": "reviewed",
+      "consistency": "consistent",
+      "spec_sha256": "3563d4b00f4517fdef649071784c0787edd20df2069a10972e45a3938227cff3",
+      "source_sha256": "2f7a33b9ee99992870229e235018f2ed90b3bba0380681635c43be23e945c63e",
+      "actors": [
+        {
+          "index": 0,
+          "role": "parent",
+          "metrics": {
+            "turns": 1,
+            "steps": 2,
+            "model_responses": 2,
+            "usage_observations": 2,
+            "input_tokens_observed": 4705,
+            "output_tokens_observed": 1029,
+            "mcp_calls": 3,
+            "scope_reads": 0
+          }
+        },
+        {
+          "index": 1,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 13,
+            "model_responses": 13,
+            "usage_observations": 13,
+            "input_tokens_observed": 35398,
+            "output_tokens_observed": 7874,
+            "mcp_calls": 12,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 2,
+          "role": "final",
+          "metrics": {
+            "turns": 1,
+            "steps": 8,
+            "model_responses": 8,
+            "usage_observations": 8,
+            "input_tokens_observed": 24742,
+            "output_tokens_observed": 5433,
+            "mcp_calls": 12,
+            "scope_reads": 1
+          }
+        }
+      ],
+      "metrics": {
+        "elapsed_ms": 225568.23329499998,
+        "setup_ms": 1140.975211,
+        "total_items": 6,
+        "recorded_items": 6,
+        "mcp_calls": 30,
+        "mcp_rpc_ms": 1831.7213819999813,
+        "mcp_response_bytes": 171557,
+        "scenario_handler_ms": 840.6236070000277,
+        "handler_calls": 30,
+        "lock_wait_ms": 0.29729000000224914,
+        "submission_samples": 1,
+        "native_runs_started": 1,
+        "native_runs_ended": 1,
+        "peak_judges": 1,
+        "parent_model_steps_while_pending": 0,
+        "rejected_model_arguments": 0,
+        "intentional_cancellations": 0,
+        "resumed_invocations": 0,
+        "native_schema_checks": 2,
+        "omission_evidence_found": 0,
+        "filesystem_calls": 4,
+        "forbidden_filesystem_successes": 0,
+        "denied_filesystem_attempts": 0,
+        "filesystem_audit_pass": 1,
+        "judges_missing_scope": 0,
+        "scope_order_rejections": 0,
+        "parent_program_rejections": 0,
+        "semantic_witness_verified": null,
+        "matched_semantic_items": 0,
+        "lane_idle_ms": null,
+        "cleanup_completed": 1
+      },
+      "usage": {
+        "requests": 23,
+        "totals": {
+          "input": {
+            "total": 334797,
+            "observed_subtotal": 334797,
+            "missing": 0
+          },
+          "cachedInput": {
+            "total": 269952,
+            "observed_subtotal": 269952,
+            "missing": 0
+          },
+          "cacheWrite": {
+            "total": null,
+            "observed_subtotal": 0,
+            "missing": 23
+          },
+          "output": {
+            "total": 14336,
+            "observed_subtotal": 14336,
+            "missing": 0
+          },
+          "reasoningOutput": {
+            "total": 2163,
+            "observed_subtotal": 2163,
+            "missing": 0
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "native-conflict",
+      "status": "pass",
+      "expected": "gaps",
+      "observed": "gaps",
+      "consistency": "conflict",
+      "spec_sha256": "d32938b32fd28f327d31b6c30a1c3c29986cd06d3693e3e26b2dda9ad32e0274",
+      "source_sha256": "3307cd333ae0f8c4cfeb40978b640467dcce339ae49a1c417f13d860db245a23",
+      "actors": [
+        {
+          "index": 0,
+          "role": "parent",
+          "metrics": {
+            "turns": 2,
+            "steps": 3,
+            "model_responses": 3,
+            "usage_observations": 3,
+            "input_tokens_observed": 5365,
+            "output_tokens_observed": 1424,
+            "mcp_calls": 4,
+            "scope_reads": 0
+          }
+        },
+        {
+          "index": 1,
+          "role": "detailed",
+          "metrics": {
+            "turns": 1,
+            "steps": 13,
+            "model_responses": 13,
+            "usage_observations": 13,
+            "input_tokens_observed": 21203,
+            "output_tokens_observed": 10039,
+            "mcp_calls": 13,
+            "scope_reads": 1
+          }
+        },
+        {
+          "index": 3,
+          "role": "final",
+          "metrics": {
+            "turns": 1,
+            "steps": 10,
+            "model_responses": 10,
+            "usage_observations": 10,
+            "input_tokens_observed": 31340,
+            "output_tokens_observed": 6942,
+            "mcp_calls": 15,
+            "scope_reads": 1
+          }
+        }
+      ],
+      "metrics": {
+        "elapsed_ms": 258502.08566799999,
+        "setup_ms": 887.4270770000003,
+        "total_items": 8,
+        "recorded_items": 8,
+        "mcp_calls": 37,
+        "mcp_rpc_ms": 1977.6476759997895,
+        "mcp_response_bytes": 222279,
+        "scenario_handler_ms": 1144.1987990000018,
+        "handler_calls": 37,
+        "lock_wait_ms": 0.1008330000040587,
+        "submission_samples": 1,
+        "native_runs_started": 2,
+        "native_runs_ended": 2,
+        "peak_judges": 1,
+        "parent_model_steps_while_pending": 0,
+        "rejected_model_arguments": 1,
+        "intentional_cancellations": 1,
+        "resumed_invocations": 1,
+        "native_schema_checks": 2,
+        "omission_evidence_found": 0,
+        "filesystem_calls": 4,
+        "forbidden_filesystem_successes": 0,
+        "denied_filesystem_attempts": 0,
+        "filesystem_audit_pass": 1,
+        "judges_missing_scope": 0,
+        "scope_order_rejections": 0,
+        "parent_program_rejections": 0,
+        "semantic_witness_verified": 1,
+        "matched_semantic_items": 4,
+        "lane_idle_ms": null,
+        "cleanup_completed": 1
+      },
+      "usage": {
+        "requests": 26,
+        "totals": {
+          "input": {
+            "total": 414132,
+            "observed_subtotal": 414132,
+            "missing": 0
+          },
+          "cachedInput": {
+            "total": 356224,
+            "observed_subtotal": 356224,
+            "missing": 0
+          },
+          "cacheWrite": {
+            "total": null,
+            "observed_subtotal": 0,
+            "missing": 26
+          },
+          "output": {
+            "total": 18405,
+            "observed_subtotal": 18405,
+            "missing": 0
+          },
+          "reasoningOutput": {
+            "total": 2284,
+            "observed_subtotal": 2284,
+            "missing": 0
+          }
+        }
+      },
+      "errors": []
+    }
+  ],
+  "accepted_review_elapsed_ms_sum": 1482727.7003529998,
+  "completed_invocation_elapsed_ms_sum": 1508354.277481,
+  "invocations": [
+    {
+      "id": "frozen-four-case-attempt",
+      "report": {
+        "schema_version": 1,
+        "packet_id": "P04",
+        "status": "fail",
+        "evidence_level": "native_models",
+        "packet_complete": false,
+        "provider": "openai-codex",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "xhigh",
+        "child_tool_presentation": "native",
+        "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+        "mcp_build_id": "fa979a48f90f11c50fa6e0aaa99d94917ab76c84e5192a8f60695c6830b5f9de",
+        "cases": [
+          {
+            "name": "native-clean",
+            "status": "pass",
+            "expected": "reviewed",
+            "observed": "reviewed",
+            "consistency": "consistent",
+            "spec_sha256": "c098d8b598f59838101c964f006d01e35478c5116ca98d64301bade88d1ca834",
+            "source_sha256": "3f92a5af8b26c69e5f522142e253f1a062f25eb2db06105bdecb660ddd9988f3",
+            "actors": [
+              {
+                "index": 0,
+                "role": "parent",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 2,
+                  "model_responses": 2,
+                  "usage_observations": 2,
+                  "input_tokens_observed": 4651,
+                  "output_tokens_observed": 1083,
+                  "mcp_calls": 3,
+                  "scope_reads": 0
+                }
+              },
+              {
+                "index": 1,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 18,
+                  "model_responses": 18,
+                  "usage_observations": 18,
+                  "input_tokens_observed": 57613,
+                  "output_tokens_observed": 20607,
+                  "mcp_calls": 39,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 2,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 12,
+                  "model_responses": 12,
+                  "usage_observations": 12,
+                  "input_tokens_observed": 57312,
+                  "output_tokens_observed": 14340,
+                  "mcp_calls": 24,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 3,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 13,
+                  "model_responses": 13,
+                  "usage_observations": 13,
+                  "input_tokens_observed": 44097,
+                  "output_tokens_observed": 19457,
+                  "mcp_calls": 36,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 4,
+                "role": "final",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 27,
+                  "model_responses": 27,
+                  "usage_observations": 27,
+                  "input_tokens_observed": 101432,
+                  "output_tokens_observed": 23141,
+                  "mcp_calls": 50,
+                  "scope_reads": 1
+                }
+              }
+            ],
+            "metrics": {
+              "elapsed_ms": 544297.2212650001,
+              "setup_ms": 1805.59748,
+              "total_items": 56,
+              "recorded_items": 56,
+              "mcp_calls": 155,
+              "mcp_rpc_ms": 8696.064137999821,
+              "mcp_response_bytes": 1068030,
+              "scenario_handler_ms": 6980.076484999867,
+              "handler_calls": 155,
+              "lock_wait_ms": 1.3318020000006072,
+              "submission_samples": 3,
+              "native_runs_started": 1,
+              "native_runs_ended": 1,
+              "peak_judges": 3,
+              "parent_model_steps_while_pending": 0,
+              "rejected_model_arguments": 0,
+              "intentional_cancellations": 0,
+              "resumed_invocations": 0,
+              "native_schema_checks": 4,
+              "omission_evidence_found": 0,
+              "filesystem_calls": 10,
+              "forbidden_filesystem_successes": 0,
+              "denied_filesystem_attempts": 1,
+              "filesystem_audit_pass": 1,
+              "judges_missing_scope": 0,
+              "scope_order_rejections": 0,
+              "parent_program_rejections": 0,
+              "semantic_witness_verified": null,
+              "matched_semantic_items": 0,
+              "lane_idle_ms": null,
+              "cleanup_completed": 1
+            },
+            "usage": {
+              "requests": 72,
+              "totals": {
+                "input": {
+                  "total": 2499857,
+                  "observed_subtotal": 2499857,
+                  "missing": 0
+                },
+                "cachedInput": {
+                  "total": 2234752,
+                  "observed_subtotal": 2234752,
+                  "missing": 0
+                },
+                "cacheWrite": {
+                  "total": null,
+                  "observed_subtotal": 0,
+                  "missing": 72
+                },
+                "output": {
+                  "total": 78628,
+                  "observed_subtotal": 78628,
+                  "missing": 0
+                },
+                "reasoningOutput": {
+                  "total": 4247,
+                  "observed_subtotal": 4247,
+                  "missing": 0
+                }
+              }
+            },
+            "errors": []
+          },
+          {
+            "name": "native-omission",
+            "status": "pass",
+            "expected": "gaps",
+            "observed": "gaps",
+            "consistency": "gap",
+            "spec_sha256": "820e644d6adeb91b3bd398917e03d6c63924bf98591206df6dbcb29a73f5a1a0",
+            "source_sha256": "3f92a5af8b26c69e5f522142e253f1a062f25eb2db06105bdecb660ddd9988f3",
+            "actors": [
+              {
+                "index": 0,
+                "role": "parent",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 2,
+                  "model_responses": 2,
+                  "usage_observations": 2,
+                  "input_tokens_observed": 4617,
+                  "output_tokens_observed": 741,
+                  "mcp_calls": 3,
+                  "scope_reads": 0
+                }
+              },
+              {
+                "index": 1,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 11,
+                  "model_responses": 11,
+                  "usage_observations": 11,
+                  "input_tokens_observed": 38514,
+                  "output_tokens_observed": 15705,
+                  "mcp_calls": 27,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 2,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 14,
+                  "model_responses": 14,
+                  "usage_observations": 14,
+                  "input_tokens_observed": 42964,
+                  "output_tokens_observed": 18758,
+                  "mcp_calls": 36,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 3,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 13,
+                  "model_responses": 13,
+                  "usage_observations": 13,
+                  "input_tokens_observed": 44680,
+                  "output_tokens_observed": 22953,
+                  "mcp_calls": 46,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 4,
+                "role": "final",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 23,
+                  "model_responses": 23,
+                  "usage_observations": 23,
+                  "input_tokens_observed": 58340,
+                  "output_tokens_observed": 13255,
+                  "mcp_calls": 25,
+                  "scope_reads": 1
+                }
+              }
+            ],
+            "metrics": {
+              "elapsed_ms": 454360.16012499994,
+              "setup_ms": 3393.3057489999337,
+              "total_items": 56,
+              "recorded_items": 56,
+              "mcp_calls": 140,
+              "mcp_rpc_ms": 7445.012638999731,
+              "mcp_response_bytes": 842813,
+              "scenario_handler_ms": 5682.474499999938,
+              "handler_calls": 140,
+              "lock_wait_ms": 0.662917000008747,
+              "submission_samples": 3,
+              "native_runs_started": 1,
+              "native_runs_ended": 1,
+              "peak_judges": 3,
+              "parent_model_steps_while_pending": 0,
+              "rejected_model_arguments": 0,
+              "intentional_cancellations": 0,
+              "resumed_invocations": 0,
+              "native_schema_checks": 4,
+              "omission_evidence_found": 1,
+              "filesystem_calls": 8,
+              "forbidden_filesystem_successes": 0,
+              "denied_filesystem_attempts": 0,
+              "filesystem_audit_pass": 1,
+              "judges_missing_scope": 0,
+              "scope_order_rejections": 0,
+              "parent_program_rejections": 0,
+              "semantic_witness_verified": 1,
+              "matched_semantic_items": 2,
+              "lane_idle_ms": null,
+              "cleanup_completed": 1
+            },
+            "usage": {
+              "requests": 63,
+              "totals": {
+                "input": {
+                  "total": 1962683,
+                  "observed_subtotal": 1962683,
+                  "missing": 0
+                },
+                "cachedInput": {
+                  "total": 1773568,
+                  "observed_subtotal": 1773568,
+                  "missing": 0
+                },
+                "cacheWrite": {
+                  "total": null,
+                  "observed_subtotal": 0,
+                  "missing": 63
+                },
+                "output": {
+                  "total": 71412,
+                  "observed_subtotal": 71412,
+                  "missing": 0
+                },
+                "reasoningOutput": {
+                  "total": 4161,
+                  "observed_subtotal": 4161,
+                  "missing": 0
+                }
+              }
+            },
+            "errors": []
+          },
+          {
+            "name": "native-paraphrase",
+            "status": "fail",
+            "expected": "reviewed",
+            "observed": "pending",
+            "consistency": "pending",
+            "spec_sha256": "3563d4b00f4517fdef649071784c0787edd20df2069a10972e45a3938227cff3",
+            "source_sha256": "2f7a33b9ee99992870229e235018f2ed90b3bba0380681635c43be23e945c63e",
+            "actors": [
+              {
+                "index": 0,
+                "role": "parent",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 2,
+                  "model_responses": 2,
+                  "usage_observations": 2,
+                  "input_tokens_observed": 7489,
+                  "output_tokens_observed": 852,
+                  "mcp_calls": 1,
+                  "scope_reads": 0
+                }
+              }
+            ],
+            "metrics": {
+              "elapsed_ms": 17409.962202999974,
+              "setup_ms": 793.5625430000946,
+              "total_items": 6,
+              "recorded_items": 0,
+              "mcp_calls": 4,
+              "mcp_rpc_ms": 81.26964800001588,
+              "mcp_response_bytes": 22470,
+              "scenario_handler_ms": 71.62420699999996,
+              "handler_calls": 4,
+              "lock_wait_ms": null,
+              "submission_samples": 0,
+              "native_runs_started": 0,
+              "native_runs_ended": 0,
+              "peak_judges": 0,
+              "parent_model_steps_while_pending": 0,
+              "rejected_model_arguments": 0,
+              "intentional_cancellations": 0,
+              "resumed_invocations": 0,
+              "native_schema_checks": 0,
+              "omission_evidence_found": 0,
+              "filesystem_calls": 0,
+              "forbidden_filesystem_successes": 0,
+              "denied_filesystem_attempts": 0,
+              "filesystem_audit_pass": 1,
+              "judges_missing_scope": 0,
+              "scope_order_rejections": 0,
+              "parent_program_rejections": 1,
+              "semantic_witness_verified": null,
+              "matched_semantic_items": 0,
+              "lane_idle_ms": null,
+              "cleanup_completed": 1
+            },
+            "usage": {
+              "requests": 2,
+              "totals": {
+                "input": {
+                  "total": 7489,
+                  "observed_subtotal": 7489,
+                  "missing": 0
+                },
+                "cachedInput": {
+                  "total": 0,
+                  "observed_subtotal": 0,
+                  "missing": 0
+                },
+                "cacheWrite": {
+                  "total": null,
+                  "observed_subtotal": 0,
+                  "missing": 2
+                },
+                "output": {
+                  "total": 852,
+                  "observed_subtotal": 852,
+                  "missing": 0
+                },
+                "reasoningOutput": {
+                  "total": 284,
+                  "observed_subtotal": 284,
+                  "missing": 0
+                }
+              }
+            },
+            "errors": [
+              "QUALIFICATION_PARENT_PROGRAM_MISMATCH",
+              "QUALIFICATION_PARENT_PROGRAM_MISMATCH"
+            ]
+          }
+        ],
+        "metrics": {
+          "elapsed_ms": 1022178.152956
+        },
+        "next_action": "resolve_native_failure",
+        "baseline": {
+          "client_version": "0.2.1-rc.3",
+          "upstream_commit": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60"
+        },
+        "observed": {
+          "client_version": "0.2.1-rc.2",
+          "tools_version": "0.2.1-rc.2",
+          "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+          "tools_module_sha256": "1e53932e7c4213ea24a7d87f06960b7a7702cb21f8a5741c97242b4a470a442a",
+          "provider_version": "0.2.0-alpha.10",
+          "provider_module_sha256": "de23f7bb02ace34b66f11dd60bceaaf5ec6b93630bab9a1198efdc380b7a564c",
+          "reviewer_sha256": "2524bb76e249a1469b8b98c87c2b1f7b5b477788354080daddb0493782371faf",
+          "mcp_snapshot_sha256": "53d4545e185d610c11b70e9bf5b5baf4adb8c3a2b21c65c5a233f2170a861cb9",
+          "mcp_snapshot_artifact_count": 94
+        },
+        "preflight": {
+          "checks": {
+            "client_version": {
+              "status": "pass"
+            },
+            "native_schemas": [
+              {
+                "component": "detailSchema",
+                "status": "pass",
+                "violation_count": 0
+              },
+              {
+                "component": "finalSchema",
+                "status": "pass",
+                "violation_count": 0
+              }
+            ]
+          },
+          "metrics": {
+            "preflight_elapsed_ms": 99.922648,
+            "version_probe": {
+              "elapsed_ms": 55.497485000000005,
+              "stdin_bytes": 0,
+              "stdout_bytes": 11,
+              "stderr_bytes": 0,
+              "exit_code": 0,
+              "signal": null
+            },
+            "schema_probe": {
+              "elapsed_ms": 41.897248000000005,
+              "stdin_bytes": 29374,
+              "stdout_bytes": 131,
+              "stderr_bytes": 0,
+              "exit_code": 0,
+              "signal": null
+            },
+            "model_reviews": 0,
+            "model_turns": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "cache_tokens": null,
+            "scenario_handler_ms": null,
+            "lock_wait_ms": null,
+            "submission_ack_ms": null,
+            "lane_idle_ms": null
+          }
+        },
+        "process": {
+          "elapsed_ms": 1022300.579268,
+          "stdin_bytes": 1538,
+          "stdout_bytes": 7161,
+          "stderr_bytes": 185,
+          "exit_code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "id": "remaining-two-case-retry",
+      "report": {
+        "schema_version": 1,
+        "packet_id": "P04",
+        "status": "pass",
+        "evidence_level": "native_models",
+        "packet_complete": false,
+        "provider": "openai-codex",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "xhigh",
+        "child_tool_presentation": "native",
+        "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+        "mcp_build_id": "bfa3d4a9a0d6f33bc1f27f35ea319ddbb2e64aeb4b9ad891080cb34b37d75304",
+        "cases": [
+          {
+            "name": "native-paraphrase",
+            "status": "pass",
+            "expected": "reviewed",
+            "observed": "reviewed",
+            "consistency": "consistent",
+            "spec_sha256": "3563d4b00f4517fdef649071784c0787edd20df2069a10972e45a3938227cff3",
+            "source_sha256": "2f7a33b9ee99992870229e235018f2ed90b3bba0380681635c43be23e945c63e",
+            "actors": [
+              {
+                "index": 0,
+                "role": "parent",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 2,
+                  "model_responses": 2,
+                  "usage_observations": 2,
+                  "input_tokens_observed": 4705,
+                  "output_tokens_observed": 1029,
+                  "mcp_calls": 3,
+                  "scope_reads": 0
+                }
+              },
+              {
+                "index": 1,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 13,
+                  "model_responses": 13,
+                  "usage_observations": 13,
+                  "input_tokens_observed": 35398,
+                  "output_tokens_observed": 7874,
+                  "mcp_calls": 12,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 2,
+                "role": "final",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 8,
+                  "model_responses": 8,
+                  "usage_observations": 8,
+                  "input_tokens_observed": 24742,
+                  "output_tokens_observed": 5433,
+                  "mcp_calls": 12,
+                  "scope_reads": 1
+                }
+              }
+            ],
+            "metrics": {
+              "elapsed_ms": 225568.23329499998,
+              "setup_ms": 1140.975211,
+              "total_items": 6,
+              "recorded_items": 6,
+              "mcp_calls": 30,
+              "mcp_rpc_ms": 1831.7213819999813,
+              "mcp_response_bytes": 171557,
+              "scenario_handler_ms": 840.6236070000277,
+              "handler_calls": 30,
+              "lock_wait_ms": 0.29729000000224914,
+              "submission_samples": 1,
+              "native_runs_started": 1,
+              "native_runs_ended": 1,
+              "peak_judges": 1,
+              "parent_model_steps_while_pending": 0,
+              "rejected_model_arguments": 0,
+              "intentional_cancellations": 0,
+              "resumed_invocations": 0,
+              "native_schema_checks": 2,
+              "omission_evidence_found": 0,
+              "filesystem_calls": 4,
+              "forbidden_filesystem_successes": 0,
+              "denied_filesystem_attempts": 0,
+              "filesystem_audit_pass": 1,
+              "judges_missing_scope": 0,
+              "scope_order_rejections": 0,
+              "parent_program_rejections": 0,
+              "semantic_witness_verified": null,
+              "matched_semantic_items": 0,
+              "lane_idle_ms": null,
+              "cleanup_completed": 1
+            },
+            "usage": {
+              "requests": 23,
+              "totals": {
+                "input": {
+                  "total": 334797,
+                  "observed_subtotal": 334797,
+                  "missing": 0
+                },
+                "cachedInput": {
+                  "total": 269952,
+                  "observed_subtotal": 269952,
+                  "missing": 0
+                },
+                "cacheWrite": {
+                  "total": null,
+                  "observed_subtotal": 0,
+                  "missing": 23
+                },
+                "output": {
+                  "total": 14336,
+                  "observed_subtotal": 14336,
+                  "missing": 0
+                },
+                "reasoningOutput": {
+                  "total": 2163,
+                  "observed_subtotal": 2163,
+                  "missing": 0
+                }
+              }
+            },
+            "errors": []
+          },
+          {
+            "name": "native-conflict",
+            "status": "pass",
+            "expected": "gaps",
+            "observed": "gaps",
+            "consistency": "conflict",
+            "spec_sha256": "d32938b32fd28f327d31b6c30a1c3c29986cd06d3693e3e26b2dda9ad32e0274",
+            "source_sha256": "3307cd333ae0f8c4cfeb40978b640467dcce339ae49a1c417f13d860db245a23",
+            "actors": [
+              {
+                "index": 0,
+                "role": "parent",
+                "metrics": {
+                  "turns": 2,
+                  "steps": 3,
+                  "model_responses": 3,
+                  "usage_observations": 3,
+                  "input_tokens_observed": 5365,
+                  "output_tokens_observed": 1424,
+                  "mcp_calls": 4,
+                  "scope_reads": 0
+                }
+              },
+              {
+                "index": 1,
+                "role": "detailed",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 13,
+                  "model_responses": 13,
+                  "usage_observations": 13,
+                  "input_tokens_observed": 21203,
+                  "output_tokens_observed": 10039,
+                  "mcp_calls": 13,
+                  "scope_reads": 1
+                }
+              },
+              {
+                "index": 3,
+                "role": "final",
+                "metrics": {
+                  "turns": 1,
+                  "steps": 10,
+                  "model_responses": 10,
+                  "usage_observations": 10,
+                  "input_tokens_observed": 31340,
+                  "output_tokens_observed": 6942,
+                  "mcp_calls": 15,
+                  "scope_reads": 1
+                }
+              }
+            ],
+            "metrics": {
+              "elapsed_ms": 258502.08566799999,
+              "setup_ms": 887.4270770000003,
+              "total_items": 8,
+              "recorded_items": 8,
+              "mcp_calls": 37,
+              "mcp_rpc_ms": 1977.6476759997895,
+              "mcp_response_bytes": 222279,
+              "scenario_handler_ms": 1144.1987990000018,
+              "handler_calls": 37,
+              "lock_wait_ms": 0.1008330000040587,
+              "submission_samples": 1,
+              "native_runs_started": 2,
+              "native_runs_ended": 2,
+              "peak_judges": 1,
+              "parent_model_steps_while_pending": 0,
+              "rejected_model_arguments": 1,
+              "intentional_cancellations": 1,
+              "resumed_invocations": 1,
+              "native_schema_checks": 2,
+              "omission_evidence_found": 0,
+              "filesystem_calls": 4,
+              "forbidden_filesystem_successes": 0,
+              "denied_filesystem_attempts": 0,
+              "filesystem_audit_pass": 1,
+              "judges_missing_scope": 0,
+              "scope_order_rejections": 0,
+              "parent_program_rejections": 0,
+              "semantic_witness_verified": 1,
+              "matched_semantic_items": 4,
+              "lane_idle_ms": null,
+              "cleanup_completed": 1
+            },
+            "usage": {
+              "requests": 26,
+              "totals": {
+                "input": {
+                  "total": 414132,
+                  "observed_subtotal": 414132,
+                  "missing": 0
+                },
+                "cachedInput": {
+                  "total": 356224,
+                  "observed_subtotal": 356224,
+                  "missing": 0
+                },
+                "cacheWrite": {
+                  "total": null,
+                  "observed_subtotal": 0,
+                  "missing": 26
+                },
+                "output": {
+                  "total": 18405,
+                  "observed_subtotal": 18405,
+                  "missing": 0
+                },
+                "reasoningOutput": {
+                  "total": 2284,
+                  "observed_subtotal": 2284,
+                  "missing": 0
+                }
+              }
+            },
+            "errors": []
+          }
+        ],
+        "metrics": {
+          "elapsed_ms": 486176.124525
+        },
+        "next_action": "qualification_evidence_ready",
+        "baseline": {
+          "client_version": "0.2.1-rc.3",
+          "upstream_commit": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60"
+        },
+        "observed": {
+          "client_version": "0.2.1-rc.2",
+          "tools_version": "0.2.1-rc.2",
+          "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+          "tools_module_sha256": "1e53932e7c4213ea24a7d87f06960b7a7702cb21f8a5741c97242b4a470a442a",
+          "provider_version": "0.2.0-alpha.10",
+          "provider_module_sha256": "de23f7bb02ace34b66f11dd60bceaaf5ec6b93630bab9a1198efdc380b7a564c",
+          "reviewer_sha256": "2524bb76e249a1469b8b98c87c2b1f7b5b477788354080daddb0493782371faf",
+          "mcp_snapshot_sha256": "56f2dea42b53ed9a2a6ababffeab3452be11a566399a4c9ea787867d5e9004b3",
+          "mcp_snapshot_artifact_count": 94
+        },
+        "preflight": {
+          "checks": {
+            "client_version": {
+              "status": "pass"
+            },
+            "native_schemas": [
+              {
+                "component": "detailSchema",
+                "status": "pass",
+                "violation_count": 0
+              },
+              {
+                "component": "finalSchema",
+                "status": "pass",
+                "violation_count": 0
+              }
+            ]
+          },
+          "metrics": {
+            "preflight_elapsed_ms": 106.111298,
+            "version_probe": {
+              "elapsed_ms": 59.989092,
+              "stdin_bytes": 0,
+              "stdout_bytes": 11,
+              "stderr_bytes": 0,
+              "exit_code": 0,
+              "signal": null
+            },
+            "schema_probe": {
+              "elapsed_ms": 43.587260000000015,
+              "stdin_bytes": 29374,
+              "stdout_bytes": 131,
+              "stderr_bytes": 0,
+              "exit_code": 0,
+              "signal": null
+            },
+            "model_reviews": 0,
+            "model_turns": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "cache_tokens": null,
+            "scenario_handler_ms": null,
+            "lock_wait_ms": null,
+            "submission_ack_ms": null,
+            "lane_idle_ms": null
+          }
+        },
+        "process": {
+          "elapsed_ms": 486296.288321,
+          "stdin_bytes": 1505,
+          "stdout_bytes": 4633,
+          "stderr_bytes": 185,
+          "exit_code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "earlier_aborted_attempt": {
+    "status": "aborted",
+    "reason": "MCP_BUILD_CHANGED",
+    "case": "native-clean",
+    "trace_observed_span_ms": 319822.585855,
+    "build_ids": [
+      "cdeeef0d4a0cd18dd0a052d4f106e43b2c51d58c737fbd7430544ecf74a050ff",
+      "0ef838815a74fd2414bcfbc2619e3e8eabd081df5e2b52f2e410ea287814b088"
+    ],
+    "detailed_items_saved": 55,
+    "disposed": {
+      "completed": true
+    },
+    "usage": {
+      "requests": 40,
+      "totals": {
+        "input": {
+          "total": 1217326,
+          "observed_subtotal": 1217326,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 1070336,
+          "observed_subtotal": 1070336,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 40
+        },
+        "output": {
+          "total": 63354,
+          "observed_subtotal": 63354,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 3340,
+          "observed_subtotal": 3340,
+          "missing": 0
+        }
+      }
+    },
+    "qualified": false
+  },
+  "live_audits": [
+    {
+      "case": "native-clean",
+      "build_id": "fa979a48f90f11c50fa6e0aaa99d94917ab76c84e5192a8f60695c6830b5f9de",
+      "actual_routes": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "xhigh"
+        }
+      ],
+      "cancelled_after_saved_items": null,
+      "detailed_submissions_after_cancel": null
+    },
+    {
+      "case": "native-omission",
+      "build_id": "fa979a48f90f11c50fa6e0aaa99d94917ab76c84e5192a8f60695c6830b5f9de",
+      "actual_routes": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "xhigh"
+        }
+      ],
+      "cancelled_after_saved_items": null,
+      "detailed_submissions_after_cancel": null
+    },
+    {
+      "case": "native-paraphrase",
+      "build_id": "fa979a48f90f11c50fa6e0aaa99d94917ab76c84e5192a8f60695c6830b5f9de",
+      "actual_routes": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "xhigh"
+        }
+      ],
+      "cancelled_after_saved_items": null,
+      "detailed_submissions_after_cancel": null
+    },
+    {
+      "case": "native-conflict",
+      "build_id": "bfa3d4a9a0d6f33bc1f27f35ea319ddbb2e64aeb4b9ad891080cb34b37d75304",
+      "actual_routes": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "xhigh"
+        }
+      ],
+      "cancelled_after_saved_items": 7,
+      "detailed_submissions_after_cancel": 0
+    },
+    {
+      "case": "native-paraphrase",
+      "build_id": "bfa3d4a9a0d6f33bc1f27f35ea319ddbb2e64aeb4b9ad891080cb34b37d75304",
+      "actual_routes": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "xhigh"
+        }
+      ],
+      "cancelled_after_saved_items": null,
+      "detailed_submissions_after_cancel": null
+    }
+  ],
+  "build_isolation": {
+    "snapshot_per_invocation": true,
+    "all_reader_identities_verified": true,
+    "compared_twins_share_build": true,
+    "changed_executable_files_between_invocations": [
+      "packet-review-inputs.js",
+      "runtime-info.js"
+    ]
+  },
+  "checks": {
+    "focused": {
+      "passed": 70,
+      "failed": 0,
+      "skipped": 0
+    },
+    "regression": {
+      "passed": 67,
+      "failed": 0,
+      "skipped": 0,
+      "note": "66 passed in the grouped run; the one missing opt-in native-validator check then passed separately with its prepared module."
+    },
+    "prove": {
+      "detected": 39,
+      "restored": true,
+      "groups": {
+        "access": 7,
+        "omission_and_report": 10,
+        "conflict_scope_and_entrypoint": 5,
+        "worker": 8,
+        "snapshot": 6,
+        "foreground_report_gates": 3
+      }
+    },
+    "independent_code_audit": "No remaining confirmed defects; parent direct-MCP bypass candidate withdrawn after actual rc.2 dispatch inspection.",
+    "engineering_manual": "pass",
+    "git_worktree": true
+  },
+  "final_bindings": {
+    "specification": {
+      "status": "pass",
+      "document_status": "approved",
+      "approval_checkpoint_status": "recorded",
+      "approval_checkpoint_written": false,
+      "coverage_status": "reviewed",
+      "source_version": "73f93f290e0ee7f969abc43af3121ea341dbe82a1db897896c27c678d09e7f43",
+      "specification_version": "969d6857c4f6decb623d7b60d841223057289f9dc0fb94f85fa4291f573ade2f",
+      "review_ref": "442a54a2-2c8a-4cf0-b3eb-44e9e77edb05",
+      "semantic_correctness_proven": false,
+      "reviewer_independence_authenticated": false,
+      "issues": [],
+      "checked": [
+        "scope_consistency",
+        "decision_resolution",
+        "requirement_references",
+        "review_freshness"
+      ],
+      "not_checked": [
+        "behavior_completeness",
+        "user_answer_authenticity",
+        "reviewer_independence"
+      ],
+      "approved_by_tool": false
+    },
+    "packet": {
+      "status": "ready",
+      "issues": [],
+      "agreement_ref": {
+        "id": "2edffc92-63d8-41fa-a5dd-455a309a2f12",
+        "revision": 10
+      },
+      "proposal_id": "P04-harness-parent-await-metrics-v5",
+      "proposal_digest": "e06d21e9af3745f82c2bf30c007f92eb7dce2e4b1f038656827cb5e1b04469bc",
+      "source_version": "73f93f290e0ee7f969abc43af3121ea341dbe82a1db897896c27c678d09e7f43",
+      "specification_version": "969d6857c4f6decb623d7b60d841223057289f9dc0fb94f85fa4291f573ade2f",
+      "review_ref": "442a54a2-2c8a-4cf0-b3eb-44e9e77edb05"
+    }
+  },
+  "cleanup": {
+    "credential_symlink_removed": true,
+    "owned_home_removed": true,
+    "owned_peer_symlinks_removed": 304,
+    "dependency_targets_removed": false,
+    "remaining_fixture_projects": 0,
+    "global_credentials_read_or_written_by_cleanup": false
+  },
+  "repair_source_sha256": {
+    "scripts/qualify-specification-review.mjs": "a655dc54837548abdabf2cc65e6c763a098c5db168317ebfc15c783fad45bf6b",
+    "scripts/lib/specification-review-native-worker.mjs": "620bb7b24ffa31d93cd57795a92fae4a3333fee6b83a93a8a1f3ddf291f656b7",
+    "scripts/lib/specification-review-native-access.mjs": "b7c964540ec6de9824e36eaff82675605a2f771fcf7d438bc48df666d43450d3",
+    "scripts/lib/specification-review-native-fixtures.mjs": "df816245f9e48d8172c39efdf00d73a1851c68a970a2b88f6471dc26aeaf04c4",
+    "scripts/lib/specification-review-native-report.mjs": "1229c7f228dab507493672620a2df3b927959c6b8b5803a4934b6a110be6b8d4",
+    "scripts/lib/specification-review-native-snapshot.mjs": "18fa9ff11cd6ddf453fcfdae0fcb90fb4e53f1545e9726ee7f29ed87e76a541a",
+    "packages/engineer-agent-workflow-mcp/test-support/review-workflow-fixture.mjs": "db848bad2612a2f5b2e79a649afc562c241dd1c2a3da9711f979f7c9882d6dd9",
+    "tests/specification-review-native-worker.test.mjs": "38d741b33d6d84af9f378bae7cec6acc7f8b379dd02d96b6d8e77e7abf7d7b01",
+    "tests/specification-review-native-access.test.mjs": "475e420f6e14dff02b3d2be375be748dd87fdb044e44b9caff81e2fe7cb42b85",
+    "tests/specification-review-native-report.test.mjs": "89c7d119b8c6cceba324337b98fd563c365a9f2ad3d7f6409c5e8b541eb34d09",
+    "tests/specification-review-native-snapshot.test.mjs": "8af29adc77acf4bd89ea73ecf352874093c25d80f4e6091254896646850dff4d"
+  },
+  "limitations": [
+    "Fixed synthetic witnesses do not establish general natural-language semantic correctness.",
+    "The scoped native-tools guard is not an arbitrary-code or operating-system sandbox.",
+    "No new before/after speedup: the fully defined fixture corpus differs from historical inputs.",
+    "No rc.3 model runtime, Claude live trial, global profile or installed MCP refresh was qualified.",
+    "Cache-write metrics and lane-idle metrics remain unavailable, not zero."
+  ],
+  "final_artifact_checks": {
+    "whitespace": "pass",
+    "whitespace_negative_control": "detected",
+    "checked_files": 17,
+    "local_markdown_links": 22,
+    "repair_source_hashes": "pass",
+    "entry_files": 2065,
+    "missing_entry_files": 0,
+    "feature_managed_yaml_changed": 0
+  }
+}

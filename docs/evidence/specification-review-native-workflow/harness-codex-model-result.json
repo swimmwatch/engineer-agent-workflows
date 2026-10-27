@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "packet_id": "P04",
+  "status": "incomplete",
+  "tested_on": "2026-10-27",
+  "provider": "openai-codex",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "host_version": "0.2.1-rc.2",
+  "codex_connect_version": "0.2.0-alpha.10",
+  "authority": "Direct user instruction to use Codex models; existing advertised profile route retained.",
+  "summary": {
+    "passed": 3,
+    "blocked": 1,
+    "complete_reviews_repeated": 0
+  },
+  "cases": [
+    {
+      "name": "sequential-omission",
+      "result": "pass",
+      "expected": "gaps",
+      "observed": "gaps",
+      "elapsed_ms": 831157.735587,
+      "total_items": 56,
+      "recorded_items": 56,
+      "consistency_status": "gap",
+      "spec_sha256": "16943acabb0659f27a5327d88811b28a4563ab12f660abb1ffb2560adc0400f1",
+      "semantic_control_source_sha256": "bdcbd0cb876e0bd4181017f21b7c6341b7e3a740f1282e48d7535e03c1a644cd",
+      "child_tool_presentation": "ptc",
+      "actors": {
+        "parent": {
+          "model_responses": 2,
+          "usage_observations": 2,
+          "inputTokens_observed": 3935,
+          "outputTokens_observed": 397,
+          "steps": 2,
+          "mcp_calls": 2
+        },
+        "child-1": {
+          "model_responses": 10,
+          "usage_observations": 10,
+          "inputTokens_observed": 46319,
+          "outputTokens_observed": 11193,
+          "steps": 10,
+          "mcp_calls": 26
+        },
+        "child-2": {
+          "model_responses": 16,
+          "usage_observations": 16,
+          "inputTokens_observed": 63896,
+          "outputTokens_observed": 11433,
+          "steps": 16,
+          "mcp_calls": 40
+        },
+        "child-3": {
+          "model_responses": 15,
+          "usage_observations": 15,
+          "inputTokens_observed": 63031,
+          "outputTokens_observed": 12063,
+          "steps": 15,
+          "mcp_calls": 48
+        },
+        "child-4": {
+          "model_responses": 15,
+          "usage_observations": 15,
+          "inputTokens_observed": 46021,
+          "outputTokens_observed": 9262,
+          "steps": 15,
+          "mcp_calls": 24
+        }
+      },
+      "model_routes": [
+        {
+          "provider": "openai-codex",
+          "model": "gpt-6.1-sol"
+        }
+      ],
+      "mcp_response_bytes": 695699,
+      "mcp_rejections": {
+        "INVALID_INPUT": 18
+      },
+      "saved_verdict_counts": {
+        "covered": 52,
+        "gap": 3
+      },
+      "saved_gap_evidence": [
+        {
+          "item_index": 27,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        },
+        {
+          "item_index": 28,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        },
+        {
+          "item_index": 54,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        }
+      ],
+      "native": {
+        "runs_started": 0,
+        "runs_ended": 0,
+        "child_starts": 0,
+        "child_ends": 0,
+        "active_at_terminal_snapshot": 0,
+        "peak_concurrency": 0,
+        "parent_model_steps_while_pending": 0
+      },
+      "parent_mcp_calls": [
+        "specification_review_prepare_workflow",
+        "specification_review_prepare_workflow"
+      ],
+      "owned_runtime_disposal_completed": true
+    },
+    {
+      "name": "native-omission",
+      "result": "pass",
+      "expected": "gaps",
+      "observed": "gaps",
+      "elapsed_ms": 461455.51014,
+      "total_items": 56,
+      "recorded_items": 56,
+      "consistency_status": "gap",
+      "spec_sha256": "16943acabb0659f27a5327d88811b28a4563ab12f660abb1ffb2560adc0400f1",
+      "semantic_control_source_sha256": "bdcbd0cb876e0bd4181017f21b7c6341b7e3a740f1282e48d7535e03c1a644cd",
+      "child_tool_presentation": "ptc",
+      "actors": {
+        "parent": {
+          "model_responses": 2,
+          "usage_observations": 2,
+          "inputTokens_observed": 4122,
+          "outputTokens_observed": 651,
+          "steps": 2,
+          "mcp_calls": 2
+        },
+        "child-2": {
+          "model_responses": 14,
+          "usage_observations": 14,
+          "inputTokens_observed": 60194,
+          "outputTokens_observed": 8742,
+          "steps": 14,
+          "mcp_calls": 28
+        },
+        "child-1": {
+          "model_responses": 17,
+          "usage_observations": 17,
+          "inputTokens_observed": 72679,
+          "outputTokens_observed": 11658,
+          "steps": 17,
+          "mcp_calls": 40
+        },
+        "child-3": {
+          "model_responses": 15,
+          "usage_observations": 15,
+          "inputTokens_observed": 59913,
+          "outputTokens_observed": 10993,
+          "steps": 15,
+          "mcp_calls": 52
+        },
+        "child-4": {
+          "model_responses": 19,
+          "usage_observations": 19,
+          "inputTokens_observed": 45741,
+          "outputTokens_observed": 10490,
+          "steps": 19,
+          "mcp_calls": 21
+        }
+      },
+      "model_routes": [
+        {
+          "provider": "openai-codex",
+          "model": "gpt-6.1-sol"
+        }
+      ],
+      "mcp_response_bytes": 653754,
+      "mcp_rejections": {
+        "INVALID_INPUT": 15
+      },
+      "saved_verdict_counts": {
+        "covered": 52,
+        "gap": 3
+      },
+      "saved_gap_evidence": [
+        {
+          "item_index": 27,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        },
+        {
+          "item_index": 28,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        },
+        {
+          "item_index": 54,
+          "requirement_ids": [
+            "CLI-001"
+          ],
+          "mentions_empty_value": true
+        }
+      ],
+      "native": {
+        "runs_started": 1,
+        "runs_ended": 1,
+        "child_starts": 4,
+        "child_ends": 4,
+        "active_at_terminal_snapshot": 0,
+        "peak_concurrency": 3,
+        "parent_model_steps_while_pending": 0
+      },
+      "parent_mcp_calls": [
+        "specification_review_prepare_workflow",
+        "specification_review_prepare_workflow"
+      ],
+      "owned_runtime_disposal_completed": true
+    },
+    {
+      "name": "native-paraphrase",
+      "result": "blocked",
+      "expected": "reviewed",
+      "observed": "pending",
+      "elapsed_ms": 221917.98188799992,
+      "total_items": 8,
+      "recorded_items": 0,
+      "consistency_status": "pending",
+      "spec_sha256": "18c60470e9050415c1d544a800ddf81b7eb294a8f7b17131cb27524f165afbe0",
+      "semantic_control_source_sha256": "4b8da0d5ef25b87a47c4d01c1afa47de6036ba60e4c6853852e732da9546d5e9",
+      "child_tool_presentation": "ptc",
+      "actors": {
+        "parent": {
+          "model_responses": 2,
+          "usage_observations": 2,
+          "inputTokens_observed": 5956,
+          "outputTokens_observed": 796,
+          "steps": 2,
+          "mcp_calls": 2
+        },
+        "child-1": {
+          "model_responses": 11,
+          "usage_observations": 11,
+          "inputTokens_observed": 53149,
+          "outputTokens_observed": 7290,
+          "steps": 11,
+          "mcp_calls": 10
+        }
+      },
+      "model_routes": [
+        {
+          "provider": "openai-codex",
+          "model": "gpt-6.1-sol"
+        }
+      ],
+      "mcp_response_bytes": 48723,
+      "mcp_rejections": {
+        "INVALID_INPUT": 1
+      },
+      "saved_verdict_counts": {},
+      "saved_gap_evidence": [],
+      "native": {
+        "runs_started": 1,
+        "runs_ended": 1,
+        "child_starts": 1,
+        "child_ends": 1,
+        "active_at_terminal_snapshot": 0,
+        "peak_concurrency": 1,
+        "parent_model_steps_while_pending": 0
+      },
+      "parent_mcp_calls": [
+        "specification_review_prepare_workflow",
+        "specification_review_prepare_workflow"
+      ],
+      "owned_runtime_disposal_completed": true,
+      "blocker": "Harness PTC SDK renders advertised MCP parameter schemas as unknown; the judge stopped without guessing or saving."
+    },
+    {
+      "name": "native-conflict",
+      "result": "pass",
+      "expected": "gaps",
+      "observed": "gaps",
+      "elapsed_ms": 292640.829106,
+      "total_items": 8,
+      "recorded_items": 8,
+      "consistency_status": "conflict",
+      "spec_sha256": "1b3a4b65f6a1d3fdbe3c47a732c2238dc859e9b4404e99c47ced6ac08d3a122b",
+      "semantic_control_source_sha256": "b487cc4b80025d3d89022d8f34995e26ab0004d195b319ca811edaaaae3a4b75",
+      "child_tool_presentation": "native",
+      "actors": {
+        "parent": {
+          "model_responses": 2,
+          "usage_observations": 2,
+          "inputTokens_observed": 4064,
+          "outputTokens_observed": 611,
+          "steps": 2,
+          "mcp_calls": 2
+        },
+        "child-1": {
+          "model_responses": 10,
+          "usage_observations": 10,
+          "inputTokens_observed": 36283,
+          "outputTokens_observed": 8363,
+          "steps": 10,
+          "mcp_calls": 12
+        },
+        "child-2": {
+          "model_responses": 14,
+          "usage_observations": 14,
+          "inputTokens_observed": 45157,
+          "outputTokens_observed": 6245,
+          "steps": 14,
+          "mcp_calls": 14
+        }
+      },
+      "model_routes": [
+        {
+          "provider": "openai-codex",
+          "model": "gpt-6.1-sol"
+        }
+      ],
+      "mcp_response_bytes": 116519,
+      "mcp_rejections": {
+        "INVALID_INPUT": 4
+      },
+      "saved_verdict_counts": {
+        "covered": 4,
+        "conflict": 3
+      },
+      "saved_gap_evidence": [],
+      "native": {
+        "runs_started": 1,
+        "runs_ended": 1,
+        "child_starts": 2,
+        "child_ends": 2,
+        "active_at_terminal_snapshot": 0,
+        "peak_concurrency": 1,
+        "parent_model_steps_while_pending": 0
+      },
+      "parent_mcp_calls": [
+        "specification_review_prepare_workflow",
+        "specification_review_prepare_workflow"
+      ],
+      "owned_runtime_disposal_completed": true
+    }
+  ],
+  "provider_request_metrics": [
+    {
+      "name": "interrupted-launch-pilot",
+      "requests": 2,
+      "outcomes": {
+        "completed": 2
+      },
+      "usage": {
+        "input": {
+          "total": 11332,
+          "observed_subtotal": 11332,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 0,
+          "observed_subtotal": 0,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 2
+        },
+        "output": {
+          "total": 509,
+          "observed_subtotal": 509,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 99,
+          "observed_subtotal": 99,
+          "missing": 0
+        }
+      }
+    },
+    {
+      "name": "sequential-omission",
+      "requests": 58,
+      "outcomes": {
+        "completed": 58
+      },
+      "usage": {
+        "input": {
+          "total": 1727202,
+          "observed_subtotal": 1727202,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 1504000,
+          "observed_subtotal": 1504000,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 58
+        },
+        "output": {
+          "total": 44348,
+          "observed_subtotal": 44348,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 8612,
+          "observed_subtotal": 8612,
+          "missing": 0
+        }
+      }
+    },
+    {
+      "name": "native-omission",
+      "requests": 67,
+      "outcomes": {
+        "completed": 67
+      },
+      "usage": {
+        "input": {
+          "total": 1952601,
+          "observed_subtotal": 1952601,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 1709952,
+          "observed_subtotal": 1709952,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 67
+        },
+        "output": {
+          "total": 42534,
+          "observed_subtotal": 42534,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 8936,
+          "observed_subtotal": 8936,
+          "missing": 0
+        }
+      }
+    },
+    {
+      "name": "native-paraphrase",
+      "requests": 13,
+      "outcomes": {
+        "completed": 13
+      },
+      "usage": {
+        "input": {
+          "total": 220897,
+          "observed_subtotal": 220897,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 161792,
+          "observed_subtotal": 161792,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 13
+        },
+        "output": {
+          "total": 8086,
+          "observed_subtotal": 8086,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 4218,
+          "observed_subtotal": 4218,
+          "missing": 0
+        }
+      }
+    },
+    {
+      "name": "native-conflict",
+      "requests": 26,
+      "outcomes": {
+        "completed": 26
+      },
+      "usage": {
+        "input": {
+          "total": 375936,
+          "observed_subtotal": 375936,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 290432,
+          "observed_subtotal": 290432,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 26
+        },
+        "output": {
+          "total": 15219,
+          "observed_subtotal": 15219,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 3246,
+          "observed_subtotal": 3246,
+          "missing": 0
+        }
+      }
+    }
+  ],
+  "paired_comparison": {
+    "same_spec_bytes": true,
+    "same_semantic_control_source": true,
+    "sequential_ms": 831157.735587,
+    "native_ms": 461455.51014,
+    "observed_elapsed_ratio": 1.8011654803619894,
+    "universal_speedup_established": false,
+    "statistical_significance_established": false,
+    "baseline": "Pinned body driven through ordinary sequential Harness subagent activations in a private baseline adapter; native run uses the actual foreground workflow tool."
+  },
+  "schema_projection_control": {
+    "raw_projection": "unknown",
+    "without_dialect_projection": "unknown",
+    "simple_projection": "{\n  context: string;\n}",
+    "bounded_projection": "unknown",
+    "advertised_fields": [
+      "context",
+      "review_ref",
+      "source_version",
+      "group_ref",
+      "items"
+    ],
+    "raw_schema_unchanged": true
+  },
+  "credential_handling": {
+    "credential_files_copied": false,
+    "existing_source_read_through_private_link": true,
+    "credential_persistence_disabled_in_private_runtime": true,
+    "new_login_started": false,
+    "source_link_removed_after_trials": true
+  },
+  "limitations": [
+    "One paraphrase control remains incomplete; no semantic verdict was saved for it.",
+    "The fourth control uses native child-tool presentation and ordinary final reads; it is not a PTC schema-rendering pass.",
+    "A full installed web-profile launch and rc.3 native/model qualification were not performed.",
+    "The production qualification utility still implements preflight only.",
+    "Real-model cancellation was not added to this four-case workload.",
+    "Scenario-handler time is not separable from transport in this adapter; missing metrics are not zero.",
+    "There was one paid parent-only interrupted launch before session persistence/query services were added; its two requests are reported separately.",
+    "Tool-argument rejections occurred and are reported even in completed reviews."
+  ],
+  "next_action": {
+    "owner": "implementation agent after explicit user authority for a repeat billable trial",
+    "action": "Repeat only the blocked paraphrase control with native child-tool presentation, then reconcile the durable runner and host qualification."
+  },
+  "observed_request_routes": [
+    {
+      "provider": "openai-codex",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh"
+    }
+  ],
+  "workflow_sha256": "da2dd786eb06c8d4716d847893e35302f51630ebf90314458fed1c513e334ae4",
+  "preservation": {
+    "entry_files": 2045,
+    "missing_files": 0,
+    "repository_production_changes_by_this_invocation": false,
+    "concurrent_changes_left_untouched": [],
+    "index_empty": true
+  },
+  "private_driver_final_snapshot_sha256": {
+    "live-runtime.mjs": "799b00821e6d32197ca9a5b07bd6d64310efef112d28234d35f2d5de59eb6f46",
+    "model-trials.mjs": "bc64f694311e5d7f12dc43f5bf94ebae48d74d21bb14e461b0b30ea082e5ec34"
+  },
+  "final_checks": {
+    "specification": "approved_reviewed",
+    "technical_agreement": "ready",
+    "qualification": "incomplete",
+    "diff_check": "pass",
+    "links_whitespace_disclosure": "pass"
+  }
+}

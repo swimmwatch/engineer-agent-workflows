@@ -211,6 +211,22 @@ test("host template rendering fails closed", () => {
   );
 });
 
+async function nativeReviewDiskOutputsPreserveHostIsolation(t) {
+  const root = await copyReleaseSource(t);
+  await generateRepository(root);
+  const relative = "skills/spec-driven-development/workflows/specification-review.js";
+  const claude = await fs.readFile(path.join(root, CLAUDE_PLUGIN_ROOT, relative), "utf8");
+  const harness = await fs.readFile(path.join(root, "exports/deepseek-harness", relative), "utf8");
+  assert.match(claude, /^export const meta = \{/);
+  assert.doesNotMatch(harness, /export const meta/);
+  const metadata = await fs.readFile(path.join(root, "exports/deepseek-harness", "skills/spec-driven-development/workflows/specification-review.meta.json"), "utf8");
+  assert.equal(JSON.parse(metadata).name, "specification-review");
+  await assert.rejects(fs.access(path.join(root, CODEX_PLUGIN_ROOT, relative)), { code: "ENOENT" });
+  const checked = await generateRepository(root, { check: true });
+  assert.equal(checked.checked, true);
+}
+test("generated native review files on disk preserve host isolation and deterministic checks", nativeReviewDiskOutputsPreserveHostIsolation);
+
 function mutateAtPath(value, segments, replacement) {
   const copy = structuredClone(value);
   let target = copy;

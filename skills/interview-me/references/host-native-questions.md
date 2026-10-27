@@ -10,6 +10,8 @@ Use callable `{{HOST_QUESTION_TOOL}}`.
 Inspect the exposed schema at runtime and follow its current fields and limits.
 Do not construct tool namespaces, invent response fields, or enter plan mode
 solely to ask.
+Treat any pending question result as unanswered until an explicit human selection
+or custom answer arrives; follow the exposed schema for continuation.
 
 Ask one question at a time because the next question depends on the preceding
 answer. Give each question a stable semantic ID and attach the agent's current

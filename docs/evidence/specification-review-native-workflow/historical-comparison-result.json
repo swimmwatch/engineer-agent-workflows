@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "tested_on": "2026-10-27",
+  "comparison_kind": "archived_implementation_vs_current_native_workflow",
+  "historical": {
+    "schema_version": 1,
+    "name": "historical-omission",
+    "baseline_commit": "4c56a8230dde21f0bbb9a8226296dddfb3369a47",
+    "baseline": "Archived production MCP and ordinary independent reviewer reference; no new workflow body.",
+    "provider": "openai-codex",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "observed": "gaps",
+    "consistency": "gap",
+    "total_items": 56,
+    "recorded_items": 56,
+    "spec_sha256": "16943acabb0659f27a5327d88811b28a4563ab12f660abb1ffb2560adc0400f1",
+    "source_sha256": "bdcbd0cb876e0bd4181017f21b7c6341b7e3a740f1282e48d7535e03c1a644cd",
+    "mcp_build_id": "772847cc4ca53d707cb9350cc2f18cb7ce6a0a60f20fa80dbc50076c2780cafb",
+    "metrics": {
+      "elapsed_ms": 725662.708778,
+      "setup_ms": 1836.463722,
+      "mcp_calls": 106,
+      "mcp_rpc_ms": 6749.7659170000525,
+      "mcp_response_bytes": 439875,
+      "rejected_model_arguments": 0,
+      "native_runs_started": 0,
+      "scenario_handler_ms": 5844.446063000307,
+      "handler_calls": 106,
+      "read_calls": 88,
+      "maximum_exact_portion_code_points": 1024,
+      "exact_read_text_utf8_bytes": 73098,
+      "repeated_identical_chunk_deliveries": 0,
+      "repeated_identical_chunk_utf8_bytes": 0,
+      "submission_roundtrip_ms": 787.3583610000351,
+      "lock_wait_ms": null,
+      "lane_idle_ms": null,
+      "parent_turn_elapsed_ms": 725661
+    },
+    "actors": [
+      {
+        "index": 0,
+        "role": "parent",
+        "metrics": {
+          "turns": 1,
+          "steps": 2,
+          "model_responses": 2,
+          "usage_observations": 2,
+          "input_tokens_observed": 8650,
+          "output_tokens_observed": 677,
+          "mcp_calls": 5
+        }
+      },
+      {
+        "index": 1,
+        "role": "detailed",
+        "metrics": {
+          "turns": 1,
+          "steps": 102,
+          "model_responses": 102,
+          "usage_observations": 102,
+          "input_tokens_observed": 146863,
+          "output_tokens_observed": 46104,
+          "mcp_calls": 101
+        }
+      }
+    ],
+    "usage": {
+      "requests": 104,
+      "totals": {
+        "input": {
+          "total": 7415161,
+          "observed_subtotal": 7415161,
+          "missing": 0
+        },
+        "cachedInput": {
+          "total": 7259648,
+          "observed_subtotal": 7259648,
+          "missing": 0
+        },
+        "cacheWrite": {
+          "total": null,
+          "observed_subtotal": 0,
+          "missing": 104
+        },
+        "output": {
+          "total": 46781,
+          "observed_subtotal": 46781,
+          "missing": 0
+        },
+        "reasoningOutput": {
+          "total": 1067,
+          "observed_subtotal": 1067,
+          "missing": 0
+        }
+      }
+    },
+    "cleanup_completed": true,
+    "tools_by_name": {
+      "workflow_runtime_info": 2,
+      "specification_open": 2,
+      "specification_review_status": 3,
+      "scope_get": 1,
+      "specification_review_get": 88,
+      "specification_review_record": 1,
+      "specification_review_record_batch": 6,
+      "decision_find": 1,
+      "specification_review_consistency_record": 1,
+      "specification_review_complete": 1
+    },
+    "parent_tool_calls": [
+      "workflow_runtime_info",
+      "specification_open",
+      "specification_review_status",
+      "specification_open",
+      "specification_review_status"
+    ],
+    "rejected_calls": [],
+    "saved_verdicts": {
+      "covered": 52,
+      "gap": 3
+    },
+    "retained_clause_finding_count": 3
+  },
+  "current_evidence": "p04-qualification-result.json",
+  "current_case": "native-omission",
+  "baseline_source_sha256": {
+    "packages/engineer-agent-workflow-mcp/src/requirements.ts": "fb442fc117daed33a1ce05ef4aa56828742af3089e828b3faafa48bc6cb007a5",
+    "packages/engineer-agent-workflow-mcp/src/reviews.ts": "4c72ba34126ad9e83e42de1de364f2581d1acf5fd3202e0ce444ff90ccd20a94",
+    "packages/engineer-agent-workflow-mcp/src/review-model.ts": "c80acc6f9043d5f0ab36f3a6a3765c66b884ee0ae49eb8852cc9b9ee6616c412",
+    "packages/engineer-agent-workflow-mcp/src/review-followup.ts": "4aebb7b0ffc0f44fc2e8ae72e4cfe18e3f82a95cde9e6ac29c87889d90951840",
+    "plugins/codex/engineer-agent-workflows/skills/spec-driven-development/references/completeness-review.md": "1ff316b3f3bd0e07fd366b0b01f26792f708d5c161c06204fcc6f6a3bbdf8637"
+  },
+  "adapter_sha256": {
+    "historical-runtime.mjs": "d644ab74defbaa5e5c22f7fbc7721887a963bff358930e127be72bbfb4e323b6",
+    "fixture.mjs": "cfd1aa47b626099da8f5bae1f1bf286a55294b39daa0ce0c4a902d5d59068261",
+    "run-baseline.mjs": "ee72bf73db8de075d15d9007beacf86acac71508efc674fc98d9ecf6fdd94215"
+  },
+  "semantic_comparison": {
+    "same_detailed_verdicts": true,
+    "old_detailed_verdict_counts": {
+      "covered": 52,
+      "gap": 3
+    },
+    "new_detailed_verdict_counts": {
+      "covered": 52,
+      "gap": 3
+    },
+    "old_retained_clause_finding_indices": [
+      27,
+      28,
+      54
+    ],
+    "old_final_consistency": "gap",
+    "new_final_consistency": "gap"
+  },
+  "comparison": {
+    "old_elapsed_ms": 725661,
+    "new_elapsed_ms": 456735,
+    "speedup": 1.58880094584387,
+    "elapsed_reduction_percent": 37.05945338112424,
+    "timing_boundary": "Parent turn/start through turn/end in both persisted sessions; includes preparation, reviewer work, direct parent verification and final parent response.",
+    "old_driver_elapsed_ms": 725662.708778,
+    "new_driver_elapsed_ms": 457251.55137400003,
+    "same_specification_and_source_bytes": true,
+    "same_model_and_effort": true,
+    "samples_per_variant": 1,
+    "old_reviewers": 1,
+    "new_detailed_reviewers": 3,
+    "new_final_reviewers": 1,
+    "old_mcp_build_id": "772847cc4ca53d707cb9350cc2f18cb7ce6a0a60f20fa80dbc50076c2780cafb",
+    "new_mcp_build_id": "a169b19b0a1e9007573215303175f6166da4e776c88ad8d9d5724861409bf991",
+    "old_requests": 104,
+    "new_requests": 67,
+    "old_input_tokens": 7415161,
+    "new_input_tokens": 1643682,
+    "old_cached_input_tokens": 7259648,
+    "new_cached_input_tokens": 1443456,
+    "old_output_tokens": 46781,
+    "new_output_tokens": 62386,
+    "old_read_calls": 88,
+    "new_read_calls": 96,
+    "old_model_actor_mcp_calls": 106,
+    "new_model_actor_mcp_calls": 116,
+    "old_model_actor_response_bytes": 439875,
+    "new_model_actor_response_bytes": 618729
+  },
+  "limits": [
+    "One real run per implementation; no statistical guarantee.",
+    "Current run is the previously retained real trial; executions are not contemporaneous or randomized.",
+    "Changes include MCP pagination/submission, reviewer instructions, actor count and orchestration; the aggregate difference cannot isolate each contribution.",
+    "Both implementations ran on isolated Harness rc.2 with Codex; this is not a historical Codex desktop timing claim.",
+    "Inputs are the same synthetic 26-requirement omission fixture, not the live testing-and-verification review.",
+    "The archived generated Codex ordinary-review instruction is used on Harness with unchanged semantic and persistence rules; no new native review body executes.",
+    "Parent/child model time is included; synthetic authoring and runtime setup are reported separately."
+  ],
+  "completion_checks": {
+    "archived_production_sources_unchanged": true,
+    "current_production_code_unchanged": true,
+    "active_owned_processes": [],
+    "temporary_credential_link_removed": true,
+    "temporary_home_removed": true,
+    "copied_peer_links_removed": 304,
+    "entry_files_preserved": 2056,
+    "other_session_changes_preserved": true,
+    "disclosure": "pass",
+    "local_links": "pass",
+    "whitespace": "pass"
+  }
+}

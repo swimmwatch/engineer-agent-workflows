@@ -1,0 +1,8 @@
+{
+  "name": "specification-review",
+  "description": "Review an enrolled specification with independent direct-submission judges and a final consistency gate.",
+  "phases": [
+    { "title": "Detailed review" },
+    { "title": "Final consistency" }
+  ]
+}

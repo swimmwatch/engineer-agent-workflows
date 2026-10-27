@@ -23,10 +23,7 @@ Read `{{HOST_PROJECT_INSTRUCTIONS}}` only if absent from active context or itsel
 2. Start with one scout. Add another only for substantial, independent work within
    host limits. Only after choosing delegation, read [delegation.md](references/delegation.md).
    Use the smallest adequate depth; depth is separate from reasoning effort.
-3. Request `{{HOST_SCOUT_MODEL}}` through the native tool's supported model field,
-   or the user's supported explicit override for this task. Do not compare models,
-   research prices, change global settings, or alter main/reviewer/implementer models.
-   Use supported `medium` reasoning where exposed; otherwise omit it, do not invent
+3. {{HOST_SCOUT_SELECTION_GUIDANCE}}
    fields. Prefer fresh context; never silently inherit a larger parent model.
    Distinguish requested from effective selection; the latter is unknown without
    host evidence. Model aliases do not pin an underlying release.

@@ -9,6 +9,7 @@ import { experienceTools } from "./experience.js";
 import { checkTools } from "./checks.js";
 import { requirementTools } from "./requirements.js";
 import { reviewTools } from "./reviews.js";
+import { reviewRestartTools } from "./review-restart.js";
 import { followupTools } from "./review-followup.js";
 import { productTools } from "./product/tools.js";
 import { describeInputSchema } from "./metadata.js";
@@ -16,6 +17,8 @@ import { WorkflowError } from "./state.js";
 import { tool, type WorkflowTool } from "./api.js";
 import { runtimeIdentity } from "./runtime-info.js";
 import { planningTools } from "./planning.js";
+import { packetReviewTools } from "./packet-review-tools.js";
+import { boundedSuccessResult } from "./response-budget.js";
 
 const runtimeInfo: WorkflowTool = tool("workflow_runtime_info",
   "Identify the serving MCP build and exact implemented capabilities; read only. Missing identity requires an explicit package refresh and process restart.",
@@ -27,7 +30,7 @@ runtimeInfo.outputSchema = z.toJSONSchema(z.object({ protocol_version: z.literal
   contract_digest: z.string().nullable(), identity_status: z.enum(["verified", "unavailable"]),
   reason: z.string().nullable(), refresh_requirement: z.string().nullable(), capabilities: z.array(z.string()),
 }) }));
-export const workflowTools: WorkflowTool[] = [...scopeTools, ...decisionTools, ...catalogTools, ...experienceTools, ...checkTools, ...requirementTools, ...reviewTools, ...followupTools, ...planningTools, ...productTools, runtimeInfo];
+export const workflowTools: WorkflowTool[] = [...scopeTools, ...decisionTools, ...catalogTools, ...experienceTools, ...checkTools, ...requirementTools, ...reviewTools, ...followupTools, ...reviewRestartTools, ...planningTools, ...packetReviewTools, ...productTools, runtimeInfo];
 
 const ERROR_MESSAGES: Readonly<Record<string, string>> = {
   INVALID_INPUT: "The request does not match the decision-reader contract.",
@@ -74,15 +77,8 @@ export function errorResult(error: unknown): CallToolResult {
 }
 
 export function successResult(payload: Record<string, unknown>): CallToolResult {
-  const text = JSON.stringify(payload);
-  if (Buffer.byteLength(text) > 24 * 1024) {
-    return errorResult(new LedgerError("RESULT_LIMIT", "Structured response limit exceeded."));
-  }
-  const result: CallToolResult = {
-    content: [{ type: "text", text }], structuredContent: payload,
-  };
-  return Buffer.byteLength(JSON.stringify(result)) <= 64 * 1024
-    ? result : errorResult(new LedgerError("RESULT_LIMIT", "Wire response limit exceeded."));
+  return boundedSuccessResult(payload)
+    ?? errorResult(new LedgerError("RESULT_LIMIT", "Response limit exceeded."));
 }
 
 const common = {
@@ -140,12 +136,12 @@ export function createServer(): Server {
   })));
   server.setRequestHandler("tools/list", () => Promise.resolve({ tools: definitions }));
   // Validate inside the bounded error boundary; SDK tool validation reflects all issues.
-  server.setRequestHandler("tools/call", async (request) => {
+  server.setRequestHandler("tools/call", async (request, requestContext) => {
     try {
       const workflow = workflowTools.find((tool) => tool.name === request.params.name);
       if (workflow) {
         const definition = definitions.find((tool) => tool.name === workflow.name);
-        return server.projectCallToolResult(successResult(await workflow.run(request.params.arguments)), definition?.outputSchema);
+        return server.projectCallToolResult(successResult(await workflow.run(request.params.arguments, requestContext.mcpReq.signal)), definition?.outputSchema);
       }
       const payload = await executeTool(request.params.name, request.params.arguments);
       const outputSchema = outputs.get(request.params.name);

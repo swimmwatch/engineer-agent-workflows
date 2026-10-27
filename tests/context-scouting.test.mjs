@@ -129,6 +129,7 @@ test("context scouting is a separate standalone explicit-only catalog identity",
   assert.deepEqual(entry.policies, {
     codex: { allowImplicitInvocation: false },
     claude: { disableModelInvocation: true, userInvocable: true },
+    "deepseek-harness": { disableModelInvocation: true, userInvocable: true },
   });
 });
 
@@ -138,7 +139,7 @@ test("context scouting source and generated maps preserve portable instruction c
   const skill = source.skills.find((skill) => skill.entry.name === name);
   assert.ok(skill, "Missing context-scouting source");
   assert.ok(skill.document.length <= 4096);
-  assert.match(skill.document.toString(), /\{\{HOST_SCOUT_MODEL\}\}/);
+  assert.match(skill.document.toString(), /\{\{HOST_SCOUT_SELECTION_GUIDANCE\}\}/);
   assert.doesNotMatch(
     skill.document.toString(),
     /gpt-6-luna|\bhaiku\b|AGENTS\.md|CLAUDE\.md/,
@@ -161,7 +162,7 @@ test("PROVE rejects wrong model, implicit policy, lost obligations, unresolved t
   const mutations = [
     [
       "wrong model",
-      (text) => text.replace("{{HOST_SCOUT_MODEL}}", "gpt-6-astra"),
+      (text) => text.replace("{{HOST_SCOUT_SELECTION_GUIDANCE}}", "Request `gpt-6-astra`"),
       /Wrong codex scout model/,
     ],
     [

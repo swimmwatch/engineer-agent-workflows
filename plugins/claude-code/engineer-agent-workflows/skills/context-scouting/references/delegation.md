@@ -4,6 +4,8 @@ Read this reference only after deciding to delegate useful discovery.
 
 ## Assignment
 
+Use the exposed native subagent schema and supported controls.
+
 Prefer fresh context without the full parent conversation through the supported
 native mechanism. Supply the exact question, absolute target roots or source
 locations, known facts, applicable instructions, allowed scope, search depth,

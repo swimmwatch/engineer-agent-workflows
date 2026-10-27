@@ -13,6 +13,10 @@
       "claude": {
         "disableModelInvocation": true,
         "userInvocable": true
+      },
+      "deepseek-harness": {
+        "disableModelInvocation": true,
+        "userInvocable": true
       }
     }
   },
@@ -28,6 +32,10 @@
         "allowImplicitInvocation": false
       },
       "claude": {
+        "disableModelInvocation": true,
+        "userInvocable": true
+      },
+      "deepseek-harness": {
         "disableModelInvocation": true,
         "userInvocable": true
       }

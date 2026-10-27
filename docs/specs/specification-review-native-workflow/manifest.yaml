@@ -1,0 +1,23 @@
+schema_version: 1
+depth: standard
+confirmed: true
+rationale:
+  - The user confirmed Standard depth for a deterministic specification-review workflow on Claude Code and DeepSeek Harness; implementation and installation remain separate stages.
+profiles:
+  - id: core
+    reason: Deterministic review sequencing and preservation of semantic review evidence.
+    state: active
+  - id: cross-surface
+    reason: One portable workflow contract with native Claude Code and DeepSeek Harness adapters.
+    state: active
+  - id: operations
+    reason: Bounded execution, failure recovery, observability and measured performance.
+    state: active
+planning_artifacts: []
+extensions:
+  workflow_mcp_receipts:
+    - id: 2ff11e868a4324f31def6f7f7f2c163960495574324d0cb643b0426a128ff3f1
+      result:
+        confirmed: true
+        depth: standard
+        next: Load only the confirmed active profile references.

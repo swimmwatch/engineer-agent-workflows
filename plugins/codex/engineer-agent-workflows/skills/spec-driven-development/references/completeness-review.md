@@ -15,6 +15,12 @@ for each confirmed active profile; do not load inactive profiles or the entire
 author workflow. Unconfirmed scope blocks review. All fixture answers are
 simulation data, never real customer authorization.
 
+## Review Route
+
+Use the ordinary independent checker in a separate context. If independence or enhanced review support is unavailable, leave the review incomplete; never substitute self-review.
+
+## Ordinary Detailed Review
+
 Use `specification_review_get` for every server-enumerated detailed item,
 starting at index 0 and following `next_item_index`. Follow all `next_cursor`
 portions to reconstruct its exact text before judging it. Keep returned context
@@ -30,6 +36,50 @@ author's tool. Use `requirement_list/get` for additional exact requirements and
 `decision_find/get` for source revisions. Large blocks and reference arrays
 must be read through all continuations. Do not replace originals with search
 snippets, summaries or the author's chosen condition list.
+
+## Bounded Parallel Review
+
+This section applies only to the ordinary review route.
+
+For a large inventory, use a separate-context review coordinator with two or
+three independent reader subagents when the host supports delegation and that
+overhead is justified. Keep small reviews sequential. The author supplies only
+the target, current context, review reference and this reference, not expected
+verdicts. The coordinator owns all review writes and final consistency judgment;
+the author never becomes the independent reviewer. If delegation is unavailable,
+the separate checker uses the sequential path above.
+
+The coordinator enumerates the full server inventory, retains its project,
+specification, review and source versions, and assigns disjoint detailed-item
+indexes in rounds with at most 20 outstanding items in total. Each reader loads
+the confirmed active-profile references, reads its own assigned exact originals,
+questions, predecessor history and requirements through every continuation, and
+returns its own semantic verdict, explanation, evidence references, counterexample
+when needed, and server-issued complete-read receipt. Readers never write review
+state, manufacture receipts, judge unseen text, or reuse another reader's source
+consumption. An incomplete or failed reader leaves its items pending.
+
+After readers return, the coordinator verifies assignments and source versions
+and records their unchanged verdicts through the supported bounded batch or
+single-item operations. Use only the latest successful write context. Finish
+checkpointing the round before assigning another; keep no unbounded verdict
+backlog. On a conflict, pause dispatch and writes and follow the recovery rules
+below. Reconcile status and saved results before resuming; changed review inputs
+invalidate pending reader results. Never overwrite an acknowledged verdict.
+
+After every detailed item is acknowledged, the coordinator itself reads every
+portion of the final whole-specification context, including all saved outcomes,
+and judges cross-section consistency before completing the review. Parallel
+local verdicts do not replace this final semantic check or authorize approval.
+
+If the host provides callable programmatic tool composition, a reader may follow
+a bounded chain of returned cursors in one execution, retaining all exact text
+for its own semantic assessment. Respect execution and context budgets; stop at
+an explicit continuation if needed. Do not return only a summary, hash or receipt
+to an actor that must still judge that source. This reduces model round trips,
+not the number of MCP reads, and does not prove faster model comprehension.
+
+## Context And Recovery
 
 The opaque context changes after every successful write: replace it with the
 returned context, not the initial one. On `CONFLICT`, stop all further writes and
@@ -64,8 +114,8 @@ delivery; do not demand that later feature now. Deferral neither cancels the
 original request nor authorizes removing existing behavior. Require coverage of
 all retained conditions, dependencies and shared constraints. An author's split
 proposal, silence, or a `context_reason` label cannot authorize narrowing. Report
-unsupported exclusions and missing retained safeguards as gaps. Read the full
-server inventory normally; narrowing is not permission to skip original sources.
+unsupported exclusions and missing retained safeguards as gaps. Narrowing scope
+is not permission to omit retained source conditions from review.
 
 Before aggregating a compound source to `covered`, locate support in the actual
 requirement text for every independently testable material obligation within
@@ -108,9 +158,7 @@ Different compliant representations are not a gap unless an established consumer
 or relevant profile obligation requires one canonical result. Ground that need
 in the actual scope or evidence, not an imagined consumer or architecture.
 
-Call `specification_review_record` once per fully read detailed item, or use
-the bounded batch operation above. Do not record the enhanced run's final
-`context:specification` item as an ordinary or batched verdict. For `covered`,
+For `covered`,
 explain the actual correspondence and supply `evidence_requirement_ids` and/or
 `evidence_source_refs`. A behavioral source needs supporting requirements; a
 requirement needs original source refs. References alone do not prove meaning.
@@ -122,6 +170,13 @@ the specification yourself or accept speculation as a customer answer.
 Use `not_applicable` only for a source explicitly classified as non-behavioral
 context, with justification. For an active profile with no further material
 gap, use `covered` and explain why; inactive profiles are not review items.
+
+## Ordinary Persistence And Completion
+
+This section and Context And Recovery apply only to the ordinary review route.
+Call `specification_review_record` once per fully read detailed item, or use
+the bounded batch operation above. Do not record the enhanced run's final
+`context:specification` item as an ordinary or batched verdict.
 After every detailed result is durably acknowledged, read the enhanced run's
 final `context:specification` item through all portions. It contains the exact
 complete current specification and saved detailed outcomes. Assess normative

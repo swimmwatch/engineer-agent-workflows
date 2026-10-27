@@ -1,0 +1,21 @@
+# Illustrative shape only; no live Penpot identity or verified export.
+schema_version: 1
+penpot:
+  instance: https://design.example.invalid
+  team_id: example-team
+  project_id: example-project
+  file_id: example-system-file
+snapshot:
+  path: design/system/library.penpot
+  sha256: null
+  status: pending
+components:
+  - id: button.primary
+    purpose: Submit the current form.
+    allowed_overrides: [label]
+    accessibility: Preserve an accessible name and visible focus state.
+    variants:
+      - id: default
+        main_component_id: example-button-default
+      - id: disabled
+        main_component_id: example-button-disabled

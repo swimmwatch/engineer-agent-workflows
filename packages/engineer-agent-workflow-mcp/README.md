@@ -35,6 +35,30 @@ client and Node's test runner, including real stdio and packed-package runs.
 Packing tests resolve workspace ancestor dependencies, not a clean registry
 installation. Model sessions and live Penpot are not part of npm tests.
 
+## Specification review audit recovery
+
+Use `specification_review_restart` when saved evidence in the latest unfinished
+FULL review is known to be untrustworthy, for example after context compaction
+left only summaries available to a judging actor. Pass the current context,
+`review_ref`, exact review `source_version` and a non-sensitive `reason`.
+The tool appends a new FULL generation on the unchanged inputs with zero saved
+results and links its cause to the previous run. Old records and immutable input
+snapshots remain intact, but the superseded run cannot accept writes or complete.
+Its status reports `audit_status: superseded` and `superseded_by`.
+The new generation's status exposes `audit_restart` with the saved cause and
+previous reference, including to a fresh client that did not launch the restart.
+
+Use the returned new `review_ref` and acquire new exact reads. Old receipts and
+continuations do not establish reads in this generation. Enhanced FULL retains
+its whole-context consistency gate; neither review completion nor specification
+approval is implied. An identical retry returns the existing successor without
+resetting its new work and reports its current progress. Even an exact request
+replay checks current inputs and rejects a successor replaced by another review;
+a saved reply does not establish current validity. Ordinary interruption with trusted saves still resumes
+the same review; FOLLOWUP and completed reviews are not audit-restarted here.
+Discover the capability after updating/restarting the MCP process before use;
+do not edit journals or fabricate an input change as a substitute.
+
 ## Product reliability tools
 
 `task_inputs_reconcile` also supports explicitly authorized active-queue recovery.

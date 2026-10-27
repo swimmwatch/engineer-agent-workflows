@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "packet_id": "P04",
+  "status": "incomplete",
+  "evidence_level": "preflight",
+  "baseline": {
+    "client_version": "0.2.1-rc.3",
+    "upstream_commit": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60"
+  },
+  "observed": {
+    "client_version": "0.2.1-rc.2",
+    "tools_version": "0.2.1-rc.2",
+    "workflow_sha256": "9497630a49a6552983c2b7f019f54c7d18a2cae18787160d7f44aa09a9e5defd",
+    "tools_module_sha256": "1e53932e7c4213ea24a7d87f06960b7a7702cb21f8a5741c97242b4a470a442a"
+  },
+  "checks": {
+    "client_version": {
+      "status": "pass"
+    },
+    "native_schemas": [
+      {
+        "component": "detailSchema",
+        "status": "fail",
+        "violation_count": 5
+      },
+      {
+        "component": "finalSchema",
+        "status": "fail",
+        "violation_count": 3
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "code": "HOST_VERSION_REQUIRES_RECONCILIATION"
+    },
+    {
+      "code": "UNSUPPORTED_SCHEMA",
+      "component": "detailSchema"
+    },
+    {
+      "code": "UNSUPPORTED_SCHEMA",
+      "component": "finalSchema"
+    },
+    {
+      "code": "NATIVE_QUALIFICATION_REQUIRED"
+    }
+  ],
+  "metrics": {
+    "preflight_elapsed_ms": 95.693733,
+    "version_probe": {
+      "elapsed_ms": 48.421151,
+      "stdin_bytes": 0,
+      "stdout_bytes": 11,
+      "stderr_bytes": 0,
+      "exit_code": 0,
+      "signal": null
+    },
+    "schema_probe": {
+      "elapsed_ms": 45.288189,
+      "stdin_bytes": 29136,
+      "stdout_bytes": 131,
+      "stderr_bytes": 0,
+      "exit_code": 0,
+      "signal": null
+    },
+    "model_reviews": 0,
+    "model_turns": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "cache_tokens": null,
+    "scenario_handler_ms": null,
+    "lock_wait_ms": null,
+    "submission_ack_ms": null,
+    "lane_idle_ms": null
+  },
+  "required_evidence": [
+    "native_engine",
+    "four_model_reviews",
+    "native_cancellation_cleanup",
+    "all_actor_metrics"
+  ],
+  "next_action": "repair_schema_compatibility"
+}

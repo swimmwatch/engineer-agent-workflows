@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "status": "implementation_verified_activation_pending",
+  "recorded_at": "2026-10-27T22:12:54.470609+00:00",
+  "operation": "specification_review_restart",
+  "behavior": {
+    "latest_unfinished_full_only": true,
+    "reason_required": true,
+    "unchanged_inputs": true,
+    "new_review_identity": true,
+    "no_inherited_results": true,
+    "prior_history_and_snapshots_preserved": true,
+    "superseded_mutations_rejected": true,
+    "old_receipts_and_cursors_rejected": true,
+    "consistency_and_completion_preserved": true,
+    "cause_visible_to_fresh_clients": true,
+    "idempotent_retry_preserves_new_work": true,
+    "exact_retry_revalidates_current_state": true,
+    "retry_requires_latest_successor": true
+  },
+  "checks": {
+    "new_protocol_cases": 11,
+    "mcp_regression": {
+      "passed": 132,
+      "failed": 0,
+      "optional_skipped": 1
+    },
+    "workflow_regression": {
+      "passed": 61,
+      "failed": 0,
+      "optional_skipped": 1,
+      "phase": "initial_implementation_before_replay_correction"
+    },
+    "prove": {
+      "baseline_pass": true,
+      "controls": [
+        {
+          "control": "carry-untrusted-results",
+          "detected": true
+        },
+        {
+          "control": "reuse-review-identity",
+          "detected": true
+        },
+        {
+          "control": "allow-old-writes",
+          "detected": true
+        },
+        {
+          "control": "ignore-source-pin",
+          "detected": true
+        },
+        {
+          "control": "drop-consistency",
+          "detected": true
+        },
+        {
+          "control": "lose-restart-idempotency",
+          "detected": true
+        },
+        {
+          "control": "hide-superseded-status",
+          "detected": true
+        }
+      ],
+      "all_restored": true,
+      "phase": "initial_implementation_before_replay_correction"
+    },
+    "build": "pass",
+    "lint": "pass",
+    "source_validation": "pass",
+    "generated_check": "pass",
+    "canonical_generated_schema_copies": 18
+  },
+  "unrelated_preexisting_failure": {
+    "test": "published tools explain provenance-bearing input fields",
+    "field": "task_packet_review_prepare.selection.baseline_ref",
+    "pre_fix_isolated_reproduction": true,
+    "source_changed_by_this_fix": false,
+    "rerun_during_implementation_review": false
+  },
+  "archive": {
+    "filename": "engineer-agent-workflows-engineer-agent-workflow-mcp-0.0.0-development.tgz",
+    "sha256": "0ac761029822473b5e74ddecffe7eee1bee20df2e492216ad83cfb8eacffc23e",
+    "files": 98,
+    "unpacked_size": 2588020
+  },
+  "package_acceptance": {
+    "status": "pass",
+    "build_id": "e45a863f2aad696328e7cc69bda5b3dc106e25dbf6c722db0fc94e10d0c852f3",
+    "identity_status": "verified",
+    "archive_stdio_startup": true,
+    "audit_restart": true,
+    "unchanged_inputs": true,
+    "old_run_superseded": true,
+    "fresh_consistency_completion": true,
+    "specification_remains_draft": true,
+    "simulation_only": true,
+    "protocol_cases_passed": 11,
+    "dependencies": "reused_pinned_workspace_dependencies"
+  },
+  "deployment": {
+    "installed_build_id": "772847cc4ca53d707cb9350cc2f18cb7ce6a0a60f20fa80dbc50076c2780cafb",
+    "installed_restart_capability": false,
+    "global_installation_changed": false,
+    "consumer_review_changed": false,
+    "required_owner_action": "Explicit authorization for global MCP replacement; then agent installs verified archive and server must restart."
+  },
+  "source_sha256": {
+    "packages/engineer-agent-workflow-mcp/src/review-restart.ts": "db99d2e8be5dee3b7381dfe94fae47b0e3a3370c90c92009cc0a1c1b9c74d31f",
+    "packages/engineer-agent-workflow-mcp/src/review-model.ts": "480cd1bf9dd48a5ec78c7e140d2f7b530b961d2cdbdb1caf65f11cc697265add",
+    "packages/engineer-agent-workflow-mcp/src/reviews.ts": "58ef38cad9e617af85a0a137f1c8bdd312bb2a67db1e3ed40a5705dfa777d164",
+    "packages/engineer-agent-workflow-mcp/src/server.ts": "57f0c00614a4780cc09aa3f9ab045de2ac2daabc74ff6c483cfb9381ffb9690b",
+    "packages/engineer-agent-workflow-mcp/test/review-audit-restart.test.mjs": "16aeca4b7801bd2a65889d61b6821c527fabf12cb5f86f437eaaa938d2d45826",
+    "shared/schemas/decisions.schema.json": "688e6210dbf0b3bac15924f9794be56185765ba5690f10ccbebd869fcc69a8ef",
+    "packages/engineer-agent-workflow-mcp/README.md": "92283a7799ba2d762e70fcde4d72749df3ec65645b8fd2a70cedf0f3f3696d7c",
+    "docs/specification-review-workflow.md": "030fbe719d0a31254a27140289da539928712a6032e5a63d7de5b763f767ff78",
+    "packages/engineer-agent-workflow-mcp/src/state.ts": "813b0b7cb6ed5739fea218575a8e56cb00cce803a5d93b05a6a77b82a287f701"
+  },
+  "final_checks": {
+    "source_hashes": "pass",
+    "whitespace": "pass",
+    "local_markdown_links": 14,
+    "derived_schemas_byte_identical": 18,
+    "packed_runtime_matches_current_build": true
+  },
+  "implementation_review": {
+    "verified_findings_fixed": 2,
+    "new_red_to_green_cases": 4,
+    "exact_replay_current_progress": true,
+    "exact_replay_rejects_superseded_successor": true,
+    "retries_reject_ordinary_full_mode_replacement": true,
+    "exact_replay_rejects_changed_inputs": true,
+    "journal_unchanged_on_replay": true
+  },
+  "superseded_archive": {
+    "filename": "engineer-agent-workflows-engineer-agent-workflow-mcp-0.0.0-development.tgz",
+    "sha256": "ec162773c3cdae76edac2c29e104ed038ddfcaf460406ebed8989d06992bc267",
+    "files": 98,
+    "unpacked_size": 2586470,
+    "build_id": "7be43b1529eb7188afd730b7e23fcff9312cd15a9e246f1e06dc3e77fa3867a0"
+  }
+}
